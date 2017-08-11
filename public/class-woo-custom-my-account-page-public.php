@@ -49,9 +49,8 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	public function __construct( $plugin_name, $version ) {
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
+		$this->plugin_name	 = $plugin_name;
+		$this->version		 = $version;
 	}
 
 	/**
@@ -59,7 +58,7 @@ class Woo_Custom_My_Account_Page_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles() {
+	public function wccma_enqueue_styles() {
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -72,9 +71,7 @@ class Woo_Custom_My_Account_Page_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/woo-custom-my-account-page-public.css', array(), $this->version, 'all' );
-
 	}
 
 	/**
@@ -82,7 +79,7 @@ class Woo_Custom_My_Account_Page_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
+	public function wccma_enqueue_scripts() {
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -95,9 +92,21 @@ class Woo_Custom_My_Account_Page_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/woo-custom-my-account-page-public.js', array( 'jquery' ), $this->version, false );
+	}
 
+	/**
+	 * Actions performed to show the user avatar on my-account page
+	 */
+	public function wccma_myaccount_content() {
+		$user_avatar = get_avatar( get_current_user_id() );
+		$user = get_userdata( get_current_user_id() );
+		?>
+		<div class="wccma-user-avatar">
+			<?php echo $user_avatar;?>
+			<p><?php echo $user->data->display_name;?></p>
+		</div>
+		<?php
 	}
 
 }

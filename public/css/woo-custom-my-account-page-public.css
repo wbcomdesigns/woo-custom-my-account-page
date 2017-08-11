@@ -2,3 +2,10 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+.wccma-user-avatar {
+	margin-bottom: 5%;
+	width: 20%;
+}
+.wccma-user-avatar img {
+	border-radius: 50%;
+}
