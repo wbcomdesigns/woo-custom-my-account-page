@@ -2,6 +2,9 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 global $woo_custom_my_account_page;
 // echo '<pre>'; print_r($woo_custom_my_account_page); die;
+
+$my_account_menu_items = wc_get_account_menu_items();
+unset( $my_account_menu_items['customer-logout'] );
 ?>
 <table class="form-table">
 	<tbody>
@@ -21,7 +24,7 @@ global $woo_custom_my_account_page;
 			<td>
 				<select class="" required name="wccma-default-tab">
 					<option value=""><?php _e( '--Select--', WCCMA_TEXT_DOMAIN );?></option>
-					<?php foreach( wc_get_account_menu_items() as $slug => $item ) {?>
+					<?php foreach( $my_account_menu_items as $slug => $item ) {?>
 						<option value="<?php echo $slug;?>" <?php echo ($slug == $woo_custom_my_account_page->default_woo_tab) ? 'selected' : '';?>><?php echo $item;?></option>
 					<?php }?>
 				</select>
