@@ -19,7 +19,7 @@ class Woo_Custom_My_Account_Page_Globals {
 	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
-	private $plugin_name;
+	public $plugin_name;
 
 	/**
 	 * The version of this plugin.
@@ -64,9 +64,15 @@ class Woo_Custom_My_Account_Page_Globals {
 
 	public function setup_plugin_global() {
 		global $woo_custom_my_account_page;
-		$wccma_settings = get_option( 'wccma_settings', true );
-		if( !empty( $wccma_settings ) ) {
+		$wccma_settings = get_option( 'wccma_settings' );
+
+		$this->allow_custom_user_avatar = 'no';
+		if( isset( $wccma_settings['allow_custom_user_avatar'] ) ) {
 			$this->allow_custom_user_avatar = $wccma_settings['allow_custom_user_avatar'];
+		}
+
+		$this->default_woo_tab = 'dashboard';
+		if( isset( $wccma_settings['default_woo_tab'] ) ) {
 			$this->default_woo_tab = $wccma_settings['default_woo_tab'];
 		}
 	}

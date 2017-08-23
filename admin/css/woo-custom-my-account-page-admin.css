@@ -2,3 +2,39 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+.wccma-endpoints-management span{
+	text-transform: uppercase;
+	vertical-align: middle;
+}
+.wccma-endpoints-management input{
+	float: right;
+	margin-left: 1% !important;
+}
+.wccma-endpoints-management{
+	border-bottom: 1px solid;
+	padding-bottom: 2%;
+}
+
+.wccma-my-account-menu-item{
+	border: 1px solid #CCC;
+	border-radius: 2px;
+	padding: 1%;
+	margin: 0 auto;
+	margin-top: 1%;
+	cursor: pointer;
+}
+.wccma-my-account-menu-item label{
+	text-transform: uppercase;
+	font-weight: bold;
+	margin-left: 10px;
+}
+.wccma-menu-item-details{
+	display: none;
+}
+.wccma-angles{
+	float: right;
+}
+.wccma-menu-item-details{
+	border: 1px solid #CCC;
+	border-top: none;
+}

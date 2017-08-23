@@ -9,3 +9,9 @@
 .wccma-user-avatar img {
 	border-radius: 50%;
 }
+.wccma-update-avatar-error p{
+	color: red;
+}
+.wccma-avatar-update-success p{
+	color: green;
+}

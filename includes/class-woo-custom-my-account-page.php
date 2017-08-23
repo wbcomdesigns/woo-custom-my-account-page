@@ -74,8 +74,8 @@ class Woo_Custom_My_Account_Page {
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
-		$this->define_public_hooks();
 		$this->define_globals();
+		$this->define_public_hooks();
 	}
 
 	/**
@@ -153,7 +153,7 @@ class Woo_Custom_My_Account_Page {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Woo_Custom_My_Account_Page_Admin( $this->get_plugin_name(), $this->get_version() );
-
+		global $woo_custom_my_account_page;
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'wccma_admin_enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'wccma_admin_enqueue_scripts' );
 		$this->loader->add_action( 'bp_setup_admin_bar', $plugin_admin, 'wccma_setup_admin_bar' );
@@ -161,6 +161,10 @@ class Woo_Custom_My_Account_Page {
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wccma_register_general_settings' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wccma_register_endpoints_settings' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wccma_register_support_settings' );
+
+		if( stripos( $_SERVER['REQUEST_URI'], $woo_custom_my_account_page->plugin_name ) !== false ) {
+			$this->loader->add_action( 'admin_footer', $plugin_admin, 'wccma_admin_modals' );
+		}
 	}
 
 	/**
@@ -173,10 +177,15 @@ class Woo_Custom_My_Account_Page {
 	private function define_public_hooks() {
 
 		$plugin_public = new Woo_Custom_My_Account_Page_Public( $this->get_plugin_name(), $this->get_version() );
-
+		global $woo_custom_my_account_page;
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'wccma_enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'wccma_enqueue_scripts' );
 		$this->loader->add_action( 'woocommerce_before_account_navigation', $plugin_public, 'wccma_myaccount_content' );
+		$this->loader->add_action( 'init', $plugin_public, 'wccma_create_uploads_directory' );
+		if( $woo_custom_my_account_page->allow_custom_user_avatar == 'yes' ) {
+			$this->loader->add_action( 'wp_footer', $plugin_public, 'wccma_modals' );
+		}
+		$this->loader->add_filter( 'get_avatar', $plugin_public, 'wccma_user_custom_avatar', 1, 5 );
 	}
 
 	/**

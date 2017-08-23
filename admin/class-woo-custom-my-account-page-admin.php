@@ -76,6 +76,8 @@ class Woo_Custom_My_Account_Page_Admin {
 		 */
 
 		if( strpos( $_SERVER['REQUEST_URI'], $this->plugin_name ) !== false ) {
+			wp_enqueue_style( $this->plugin_name.'-modal-css', WCCMA_PLUGIN_URL . 'public/css/woo-custom-my-account-page-modal.css' );
+			wp_enqueue_style( $this->plugin_name.'-font=awesome', plugin_dir_url( __FILE__ ) . 'css/font-awesome.min.css' );
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/woo-custom-my-account-page-admin.css' );
 		}
 	}
@@ -239,6 +241,23 @@ class Woo_Custom_My_Account_Page_Admin {
 					'href' => trailingslashit( $base_url )
 				) );
 			}
+		}
+	}
+
+	/**
+	 * Modals in admin area - all defined in footer
+	 */
+	public function wccma_admin_modals(){
+		//Add endpoint modal
+		$endpoint_modal = WCCMA_PLUGIN_PATH.'templates/modals/wccma-add-endpoint-modal.php';
+		if( file_exists( $endpoint_modal ) ) {
+			include_once $endpoint_modal;
+		}
+
+		//Add group modal
+		$group_modal = WCCMA_PLUGIN_PATH.'templates/modals/wccma-add-group-modal.php';
+		if( file_exists( $group_modal ) ) {
+			include_once $group_modal;
 		}
 	}
 
