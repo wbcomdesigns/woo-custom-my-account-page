@@ -28,15 +28,14 @@
 	font-weight: bold;
 	margin-left: 10px;
 }
-.wccma-menu-item-details{
-	display: none;
-}
 .wccma-angles{
 	float: right;
 }
 .wccma-menu-item-details{
 	border: 1px solid #CCC;
 	border-top: none;
+	padding: 20px 15%;
+	display: none;
 }
 
 /*SUPPORT*/

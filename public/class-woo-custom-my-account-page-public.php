@@ -114,7 +114,7 @@ class Woo_Custom_My_Account_Page_Public {
 	 * Define the modals used in the plugin
 	 */
 	public function wccma_modals() {
-		$file = WCCMA_PLUGIN_PATH.'templates/modals/wccma-user-avatar-modal.php';
+		$file = WCCMA_PLUGIN_PATH.'public/templates/modals/wccma-user-avatar-modal.php';
 		if( file_exists( $file ) ) {
 			include_once $file;
 		}
