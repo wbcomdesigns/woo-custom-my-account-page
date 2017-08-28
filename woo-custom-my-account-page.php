@@ -105,7 +105,7 @@ function wccma_plugin_admin_notice() {
 	$wc_plugin		 = __( 'WooCommerce', WCCMA_TEXT_DOMAIN );
 
 	echo '<div class="error"><p>'
-	. sprintf( __( '%1$s is ineffective now as it requires %2$s to function correctly.', WCCMA_TEXT_DOMAIN ), '<strong>' . esc_html( $wccma_plugin ) . '</strong>', '<strong>' . esc_html( $wc_plugin ) . '</strong>' )
+	. sprintf( __( '%1$s is ineffective now as it requires %2$s to be installed and active.', WCCMA_TEXT_DOMAIN ), '<strong>' . esc_html( $wccma_plugin ) . '</strong>', '<strong>' . esc_html( $wc_plugin ) . '</strong>' )
 	. '</p></div>';
 	if ( isset( $_GET[ 'activate' ] ) )
 		unset( $_GET[ 'activate' ] );

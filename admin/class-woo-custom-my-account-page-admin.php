@@ -120,8 +120,14 @@ class Woo_Custom_My_Account_Page_Admin {
 		$tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $this->plugin_name;
 		?>
 		<div class="wrap">
-			<h2><?php _e( 'Custom My Account Page - WooCommerce', WCCMA_TEXT_DOMAIN ); ?></h2>
-			<p><?php _e( 'This plugin will allow the site administrator to setup a custom <strong>WooCommerce My Account Page</strong>.', WCCMA_TEXT_DOMAIN ); ?></p>
+			<div class="wccma-header">
+				<h2 class="wccma-plugin-heading"><?php _e( 'WooCommerce Custom My Account Page', WCCMA_TEXT_DOMAIN );?></h2>
+				<div class="wccma-extra-actions">
+					<button type="button" class="button button-secondary" onclick="window.open('https://wbcomdesigns.com/contact/', '_blank');"><i class="fa fa-envelope" aria-hidden="true"></i> <?php _e( 'Email Support', WCCMA_TEXT_DOMAIN )?></button>
+					<button type="button" class="button button-secondary" onclick="window.open('https://wbcomdesigns.com/helpdesk/article-categories/woo-custom-my-account-page/', '_blank');"><i class="fa fa-file" aria-hidden="true"></i> <?php _e( 'User Manual', WCCMA_TEXT_DOMAIN )?></button>
+					<button type="button" class="button button-secondary" onclick="window.open('https://wordpress.org/support/plugin/woo-custom-my-account-page/reviews/', '_blank');"><i class="fa fa-star" aria-hidden="true"></i> <?php _e( 'Rate Us on WordPress.org', WCCMA_TEXT_DOMAIN )?></button>
+				</div>
+			</div>
 			<?php $this->wccma_plugin_settings_tabs(); ?>
 			<form action="" method="POST" id="<?php echo $tab; ?>-settings-form" enctype="multipart/form-data">
 				<?php do_settings_sections( $tab ); ?>
