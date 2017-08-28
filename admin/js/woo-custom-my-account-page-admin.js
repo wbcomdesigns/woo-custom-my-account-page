@@ -52,9 +52,20 @@ jQuery(document).ready(function( $ ) {
 		if( element_height[0] > 5 ) {
 			$('#span-menu-'+menu+' i').attr('class', 'fa fa-angle-down');
 			$('#menu-'+menu+' label').css('color', '#000');
+			$('#'+menu+'-power-icon').css('color', '#000');
 		} else {
 			$('#span-menu-'+menu+' i').attr('class', 'fa fa-angle-up');
 			$('#menu-'+menu+' label').css('color', '#0073aa');
+			$('#'+menu+'-power-icon').css('color', '#0073aa');
+		}
+	});
+
+	$(document).on('keyup', '#wccma-add-endpoint-input', function(){
+		var val = $(this).val();
+		if( val != '' ) {
+			$('#wccma-save-endpoint').prop("disabled", false);
+		} else {
+			$('#wccma-save-endpoint').prop("disabled", true);
 		}
 	});
 });

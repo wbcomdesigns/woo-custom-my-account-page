@@ -125,7 +125,7 @@ class Woo_Custom_My_Account_Page_Admin {
 				<div class="wccma-extra-actions">
 					<button type="button" class="button button-secondary" onclick="window.open('https://wbcomdesigns.com/contact/', '_blank');"><i class="fa fa-envelope" aria-hidden="true"></i> <?php _e( 'Email Support', WCCMA_TEXT_DOMAIN )?></button>
 					<button type="button" class="button button-secondary" onclick="window.open('https://wbcomdesigns.com/helpdesk/article-categories/woo-custom-my-account-page/', '_blank');"><i class="fa fa-file" aria-hidden="true"></i> <?php _e( 'User Manual', WCCMA_TEXT_DOMAIN )?></button>
-					<button type="button" class="button button-secondary" onclick="window.open('https://wordpress.org/support/plugin/woo-custom-my-account-page/reviews/', '_blank');"><i class="fa fa-star" aria-hidden="true"></i> <?php _e( 'Rate Us on WordPress.org', WCCMA_TEXT_DOMAIN )?></button>
+					<button disabled type="button" class="button button-secondary" onclick="window.open('https://wordpress.org/support/plugin/woo-custom-my-account-page/reviews/', '_blank');"><i class="fa fa-star" aria-hidden="true"></i> <?php _e( 'Rate Us on WordPress.org', WCCMA_TEXT_DOMAIN )?></button>
 				</div>
 			</div>
 			<?php $this->wccma_plugin_settings_tabs(); ?>
@@ -255,13 +255,13 @@ class Woo_Custom_My_Account_Page_Admin {
 	 */
 	public function wccma_admin_modals(){
 		//Add endpoint modal
-		$endpoint_modal = WCCMA_PLUGIN_PATH.'templates/modals/wccma-add-endpoint-modal.php';
+		$endpoint_modal = WCCMA_PLUGIN_PATH.'admin/templates/modals/wccma-add-endpoint-modal.php';
 		if( file_exists( $endpoint_modal ) ) {
 			include_once $endpoint_modal;
 		}
 
 		//Add group modal
-		$group_modal = WCCMA_PLUGIN_PATH.'templates/modals/wccma-add-group-modal.php';
+		$group_modal = WCCMA_PLUGIN_PATH.'admin/templates/modals/wccma-add-group-modal.php';
 		if( file_exists( $group_modal ) ) {
 			include_once $group_modal;
 		}
