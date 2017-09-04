@@ -7,7 +7,8 @@
 		<div class="wccma-add-endpoint-box">
 			<label for="wccma-add-endpoint-input"><?php _e( 'Name', WCCMA_TEXT_DOMAIN );?></label>
 			<input type="text" placeholder="<?php _e( 'Endpoint Name', WCCMA_TEXT_DOMAIN );?>" id="wccma-add-endpoint-input" class="regular-text">
-			<input type="button" value="<?php _e( 'Save', WCCMA_TEXT_DOMAIN );?>" disabled class="button button-primary" id="wccma-save-endpoint">
+			<input type="hidden" id="wccma-endpoint-slug" value="">
+			<button type="button" disabled class="button button-primary" id="wccma-save-endpoint"><?php _e( 'Save', WCCMA_TEXT_DOMAIN );?></button>
 		</div>
 	</div>
 	<footer>

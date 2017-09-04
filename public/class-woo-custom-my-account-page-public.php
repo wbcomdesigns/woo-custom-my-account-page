@@ -114,9 +114,11 @@ class Woo_Custom_My_Account_Page_Public {
 	 * Define the modals used in the plugin
 	 */
 	public function wccma_modals() {
-		$file = WCCMA_PLUGIN_PATH.'public/templates/modals/wccma-user-avatar-modal.php';
-		if( file_exists( $file ) ) {
-			include_once $file;
+		if( is_account_page() ) {
+			$file = WCCMA_PLUGIN_PATH.'public/templates/modals/wccma-user-avatar-modal.php';
+			if( file_exists( $file ) ) {
+				include_once $file;
+			}
 		}
 	}
 
@@ -157,12 +159,15 @@ class Woo_Custom_My_Account_Page_Public {
 			$user = get_user_by( 'email', $id_or_email );  
 		}
 
-		$user_avatar = get_user_meta( $user->data->ID, 'wccma_user_avatar' );
-
-		if( !empty( $user_avatar ) ) {
-			$user_avatar_url = $user_avatar[0];
-			$avatar = "<img alt='{$alt}' src='{$user_avatar_url}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
-			return $avatar;
+		if( $user !== false ) {
+			$user_avatar = get_user_meta( $user->data->ID, 'wccma_user_avatar' );
+			if( !empty( $user_avatar ) ) {
+				$user_avatar_url = $user_avatar[0];
+				$avatar = "<img alt='{$alt}' src='{$user_avatar_url}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
+				return $avatar;
+			} else {
+				return $avatar;
+			}
 		} else {
 			return $avatar;
 		}

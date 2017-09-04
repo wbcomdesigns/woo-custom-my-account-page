@@ -63,9 +63,58 @@ jQuery(document).ready(function( $ ) {
 	$(document).on('keyup', '#wccma-add-endpoint-input', function(){
 		var val = $(this).val();
 		if( val != '' ) {
+			var slug = val.toLowerCase().replace(/ /g, "-");
+			$('#wccma-endpoint-slug').val(slug);
 			$('#wccma-save-endpoint').prop("disabled", false);
 		} else {
 			$('#wccma-save-endpoint').prop("disabled", true);
 		}
+	});
+
+	$('.wccma-font-awesome-icons').selectize({
+		placeholder     : "Select Icon",
+		plugins         : ['remove_button'],
+	});
+	$('.wccma-user-roles').selectize({
+		placeholder     : "Select User Role",
+		plugins         : ['remove_button'],
+	});
+
+	//Add endpoint
+	$(document).on('click', '#wccma-save-endpoint', function(){
+		var endpoint 		= $('#wccma-add-endpoint-input').val();
+		var endpoint_slug	= $('#wccma-endpoint-slug').val();
+		var woo_endpoints	= $('#wccma-woo-endpoints').val();
+		var btn_txt			= $(this).html();
+		$(this).html( '<i class="fa fa-refresh fa-spin"></i>  Saving...' );
+		var data = {
+			'action'		: 'wccma_add_endpoint',
+			'endpoint'		: endpoint,
+			'endpoint_slug' : endpoint_slug,
+			'woo_endpoints'	: woo_endpoints
+		}
+		$.ajax({
+			dataType: "JSON",
+			url: wccma_admin_js_object.ajaxurl,
+			type: 'POST',
+			data: data,
+			success: function( response ) {
+				console.log(response['data']['message']+': '+endpoint);
+				console.log( 'Endpoints: '+response['data']['woo_endpoints'] );
+				$('#wccma-woo-endpoints').val( response['data']['woo_endpoints'] );
+				$('#wccma-add-endpoint-input').val('');
+				$('#wccma-save-endpoint').html(btn_txt);
+				$(".js-modal-close, .modal-overlay").click();
+				$('.wccma-all-endpoints').append(response['data']['html']);
+				$('.wccma-font-awesome-icons').selectize({
+					placeholder     : "Select Icon",
+					plugins         : ['remove_button'],
+				});
+				$('.wccma-user-roles').selectize({
+					placeholder     : "Select User Role",
+					plugins         : ['remove_button'],
+				});
+			},
+		});
 	});
 });
