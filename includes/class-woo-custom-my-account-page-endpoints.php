@@ -40,22 +40,29 @@ class Woo_Custom_My_Account_Page_Endpoints {
 	public function __construct( $plugin_name, $version ) {
 		global $woo_custom_my_account_page;
 		$endpoints = $woo_custom_my_account_page->endpoints;
-		$default_endpoints = array(	'dashboard', 'orders', 'downloads', 'edit-address', 'edit-account', 'customer-logout' );
+		$default_endpoints = $woo_custom_my_account_page->default_endpoints;
+		$curr_user = wp_get_current_user();
+		$curr_user_roles = $curr_user->roles;
 
 		foreach( $endpoints as $slug => $endpoint ) {
+			$denied_user_roles = array();
 			if( !in_array( $slug, $default_endpoints ) ) {
 				self::$endpoint = $slug;
-
-				add_action( 'init', array( $this, 'wccma_add_endpoints' ) );
-				add_filter( 'query_vars', array( $this, 'wccma_add_query_vars' ), 0 );
-				add_filter( 'the_title', array( $this, 'wccma_endpoint_title' ) );
-				add_filter( 'woocommerce_account_menu_items', array( $this, 'wccma_new_menu_items' ) );
-				add_action( 'woocommerce_account_' . self::$endpoint .  '_endpoint', array( $this, 'wccma_endpoint_content' ) );
-			} else {
-				self::$d_endpoint = $slug;
-
-				if( $endpoints[ self::$d_endpoint ]['content'] != '' ) {
-					add_action( 'woocommerce_account_' . self::$d_endpoint .  '_endpoint', array( $this, 'wccma_default_endpoint_content' ) );
+				if( !empty( $endpoints[ self::$endpoint ]['user_roles'] ) ) {
+					$denied_user_roles = $endpoints[ self::$endpoint ]['user_roles'];
+				}
+				$matching_user_roles = array_intersect( $curr_user_roles, $denied_user_roles );
+				if( empty( $matching_user_roles ) ) {
+					add_action( 'init', array( $this, 'wccma_add_endpoints' ) );
+					add_filter( 'query_vars', array( $this, 'wccma_add_query_vars' ), 0 );
+					add_filter( 'the_title', array( $this, 'wccma_endpoint_title' ) );
+					add_filter( 'woocommerce_account_menu_items', array( $this, 'wccma_new_menu_items' ) );
+					add_action( 'woocommerce_account_' . self::$endpoint .  '_endpoint', array( $this, 'wccma_endpoint_content' ) );
+				} else {
+					self::$d_endpoint = $slug;
+					if( $endpoints[ self::$d_endpoint ]['content'] != '' ) {
+						add_action( 'woocommerce_account_' . self::$d_endpoint .  '_endpoint', array( $this, 'wccma_default_endpoint_content' ) );
+					}
 				}
 			}
 		}

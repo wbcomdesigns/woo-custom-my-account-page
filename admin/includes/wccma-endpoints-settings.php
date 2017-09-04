@@ -11,6 +11,7 @@ foreach( $my_account_menu_items as $slug => $item ) {
 
 $font_awesome_icons = $woo_custom_my_account_page->font_awesome_icons;
 $wp_user_roles = get_editable_roles();
+unset( $wp_user_roles['administrator'] );
 ?>
 <form method="POST" action="">
 	<div class="wccma-endpoints-settings-panel">
