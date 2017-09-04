@@ -194,6 +194,7 @@ class Woo_Custom_My_Account_Page {
 			$this->loader->add_action( 'wp_footer', $plugin_public, 'wccma_modals' );
 		}
 		$this->loader->add_filter( 'get_avatar', $plugin_public, 'wccma_user_custom_avatar', 1, 5 );
+		$this->loader->add_filter( 'woocommerce_account_menu_items', $plugin_public, 'wccma_remove_my_account_menu_items' );
 	}
 
 	/**

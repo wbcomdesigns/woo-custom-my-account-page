@@ -67,6 +67,15 @@ class Woo_Custom_My_Account_Page_Globals {
 	public $endpoints;
 
 	/**
+	 * The various settings used in the plugin, variables defined in the global variable
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 * @var      array    $default_endpoints
+	 */
+	public $default_endpoints = array();
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -109,6 +118,7 @@ class Woo_Custom_My_Account_Page_Globals {
 		 * My Account Page Endpoints
 		 */
 		$this->endpoints = get_option( 'wccma_endpoints' );
+		$this->default_endpoints = array( 'dashboard', 'orders', 'downloads', 'edit-address', 'edit-account', 'customer-logout' );
 	}
 
 }

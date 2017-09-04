@@ -173,4 +173,31 @@ class Woo_Custom_My_Account_Page_Public {
 		}
 	}
 
+	/**
+	 * Remove items for the user roles selectedin admin settings
+	 */
+	public function wccma_remove_my_account_menu_items( $items ) {
+		global $woo_custom_my_account_page;
+		$endpoints = $woo_custom_my_account_page->endpoints;
+		$default_endpoints = $woo_custom_my_account_page->default_endpoints;
+		
+		$curr_user = wp_get_current_user();
+		$curr_user_roles = $curr_user->roles;
+		foreach( $endpoints as $slug => $endpoint ) {
+			if( in_array( $slug, $default_endpoints ) ) {
+				$denied_user_roles = array();
+				if( !empty( $endpoints[ $slug ]['user_roles'] ) ) {
+					$denied_user_roles = $endpoints[ $slug ]['user_roles'];
+				}
+
+				$matching_user_roles = array_intersect( $curr_user_roles, $denied_user_roles );
+				if( !empty( $matching_user_roles ) ) {
+					unset( $items[ $slug ] );
+				}
+			}
+		}
+		
+		return $items;
+	}
+
 }
