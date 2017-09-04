@@ -49,6 +49,24 @@ class Woo_Custom_My_Account_Page_Globals {
 	public $default_woo_tab;
 
 	/**
+	 * The various settings used in the plugin, variables defined in the global variable
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 * @var      array    $font_awesome_icons
+	 */
+	public $font_awesome_icons;
+
+	/**
+	 * The various settings used in the plugin, variables defined in the global variable
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 * @var      array    $endpoints
+	 */
+	public $endpoints;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -66,6 +84,17 @@ class Woo_Custom_My_Account_Page_Globals {
 		global $woo_custom_my_account_page;
 		$wccma_settings = get_option( 'wccma_settings' );
 
+		//Get Font awesome icons classes
+		$pattern = '/\.(fa-(?:\w+(?:-)?)+):before\s+{\s*content:\s*"\\\\(.+)";\s+}/';
+		$subject =  file_get_contents( WCCMA_PLUGIN_PATH.'admin/css/font-awesome.css' );
+		preg_match_all( $pattern, $subject, $matches, PREG_SET_ORDER );
+		$icons = array();
+		foreach( $matches as $match ) {
+			$icons[$match[1]] = $match[2];
+		}
+		ksort($icons);
+		$this->font_awesome_icons = $icons;
+		
 		$this->allow_custom_user_avatar = 'no';
 		if( isset( $wccma_settings['allow_custom_user_avatar'] ) ) {
 			$this->allow_custom_user_avatar = $wccma_settings['allow_custom_user_avatar'];
@@ -75,6 +104,11 @@ class Woo_Custom_My_Account_Page_Globals {
 		if( isset( $wccma_settings['default_woo_tab'] ) ) {
 			$this->default_woo_tab = $wccma_settings['default_woo_tab'];
 		}
+
+		/**
+		 * My Account Page Endpoints
+		 */
+		$this->endpoints = get_option( 'wccma_endpoints' );
 	}
 
 }

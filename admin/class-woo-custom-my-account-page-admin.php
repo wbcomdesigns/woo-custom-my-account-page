@@ -51,8 +51,14 @@ class Woo_Custom_My_Account_Page_Admin {
 		$this->plugin_name	 = $plugin_name;
 		$this->version		 = $version;
 
+		//Save general settings
 		if( isset( $_POST['wccma-save-general-settings'] ) && wp_verify_nonce( $_POST['wccma-general-settings-nonce'], 'wccma-general' ) ) {
 			$this->wccma_save_general_settings();
+		}
+
+		//Save managed endpoints
+		if( isset( $_POST['wccma-save-endpoints'] ) && wp_verify_nonce( $_POST['wccma-manage-endpoints-nonce'], 'wccma-endpoints' ) ) {
+			$this->wccma_save_endpoints();
 		}
 	}
 
@@ -63,21 +69,10 @@ class Woo_Custom_My_Account_Page_Admin {
 	 */
 	public function wccma_admin_enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Woo_Custom_My_Account_Page_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Woo_Custom_My_Account_Page_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		if( strpos( $_SERVER['REQUEST_URI'], $this->plugin_name ) !== false ) {
 			wp_enqueue_style( $this->plugin_name.'-modal-css', WCCMA_PLUGIN_URL . 'public/css/woo-custom-my-account-page-modal.css' );
-			wp_enqueue_style( $this->plugin_name.'-font=awesome', plugin_dir_url( __FILE__ ) . 'css/font-awesome.min.css' );
+			wp_enqueue_style( $this->plugin_name.'-font-awesome', plugin_dir_url( __FILE__ ) . 'css/font-awesome.min.css' );
+			wp_enqueue_style( $this->plugin_name.'-selectize', plugin_dir_url( __FILE__ ) . 'css/selectize.css' );
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/woo-custom-my-account-page-admin.css' );
 		}
 	}
@@ -89,20 +84,20 @@ class Woo_Custom_My_Account_Page_Admin {
 	 */
 	public function wccma_admin_enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Woo_Custom_My_Account_Page_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Woo_Custom_My_Account_Page_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		if( strpos( $_SERVER['REQUEST_URI'], $this->plugin_name ) !== false ) {
+
+			
+			wp_enqueue_script('tiny_mce');
+			wp_enqueue_script( $this->plugin_name.'-selectize-js', plugin_dir_url( __FILE__ ) . 'js/selectize.min.js', array( 'jquery' ) );
 			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/woo-custom-my-account-page-admin.js', array( 'jquery' ) );
+
+			wp_localize_script(
+				$this->plugin_name,
+				'wccma_admin_js_object',
+				array(
+					'ajaxurl'		=> admin_url('admin-ajax.php')
+				)
+			);
 		}
 	}
 
@@ -128,10 +123,8 @@ class Woo_Custom_My_Account_Page_Admin {
 					<button disabled type="button" class="button button-secondary" onclick="window.open('https://wordpress.org/support/plugin/woo-custom-my-account-page/reviews/', '_blank');"><i class="fa fa-star" aria-hidden="true"></i> <?php _e( 'Rate Us on WordPress.org', WCCMA_TEXT_DOMAIN )?></button>
 				</div>
 			</div>
-			<?php $this->wccma_plugin_settings_tabs(); ?>
-			<form action="" method="POST" id="<?php echo $tab; ?>-settings-form" enctype="multipart/form-data">
-				<?php do_settings_sections( $tab ); ?>
-			</form>
+			<?php $this->wccma_plugin_settings_tabs();?>
+			<?php do_settings_sections( $tab );?>
 		</div> 
 		<?php
 	}
@@ -171,9 +164,9 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * Endpoints Tab
 	 */
 	public function wccma_register_endpoints_settings() {
-		$this->plugin_settings_tabs[ 'wccma-endpoints' ] = __( 'Endpoints', WCCMA_TEXT_DOMAIN );
-		register_setting( 'wccma-endpoints', 'wccma-endpoints' );
-		add_settings_section( 'wccma-endpoints-section', ' ', array( &$this, 'wccma_endpoints_settings_content' ), 'wccma-endpoints' );
+		$this->plugin_settings_tabs[ 'endpoints' ] = __( 'Endpoints', WCCMA_TEXT_DOMAIN );
+		register_setting( 'endpoints', 'endpoints' );
+		add_settings_section( 'wccma-endpoints-section', ' ', array( &$this, 'wccma_endpoints_settings_content' ), 'endpoints' );
 	}
 
 	/**
@@ -189,9 +182,9 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * Support Tab
 	 */
 	public function wccma_register_support_settings() {
-		$this->plugin_settings_tabs[ 'wccma-support' ] = __( 'Support', WCCMA_TEXT_DOMAIN );
-		register_setting( 'wccma-support', 'wccma-support' );
-		add_settings_section( 'wccma-support-section', ' ', array( &$this, 'wccma_support_settings_content' ), 'wccma-support' );
+		$this->plugin_settings_tabs[ 'support' ] = __( 'Support', WCCMA_TEXT_DOMAIN );
+		register_setting( 'support', 'support' );
+		add_settings_section( 'wccma-support-section', ' ', array( &$this, 'wccma_support_settings_content' ), 'support' );
 	}
 
 	/**
@@ -223,8 +216,36 @@ class Woo_Custom_My_Account_Page_Admin {
 
 		update_option( 'wccma_settings', $wccma_settings );
 
-		$success_msg = "<div class='notice updated is-dismissible' id='message'>";
+		$success_msg = "<div class='notice updated' id='message'>";
 		$success_msg .= "<p>".__( 'Settings Saved.', WCCMA_TEXT_DOMAIN )."</p>";
+		$success_msg .= "</div>";
+		echo $success_msg;
+	}
+
+	/**
+	 * Save Endpoints
+	 */
+	public function wccma_save_endpoints() {
+		$woo_endpoints = unserialize( sanitize_text_field( $_POST['wccma-woo-endpoints'] ) );
+		$endpoints_data = array();
+
+		foreach( $woo_endpoints as $menu_slug ) {
+			$user_roles = array();
+			if( !empty( $_POST[ $menu_slug.'-user-roles' ] ) ) {
+				$user_roles = wp_unslash( $_POST[ $menu_slug.'-user-roles' ] );
+			}
+			
+			$endpoints_data[$menu_slug] = array(
+				'label'			=> sanitize_text_field( $_POST[ $menu_slug.'-label' ] ),
+				'icon'			=> sanitize_text_field( $_POST[ $menu_slug.'-icon' ] ),
+				'user_roles'	=> $user_roles,
+				'content'		=> stripslashes( wp_filter_post_kses( addslashes( $_POST[ $menu_slug.'-tab-content' ] ) ) )
+			);
+		}
+
+		update_option( 'wccma_endpoints', $endpoints_data );
+		$success_msg = "<div class='notice updated is-dismissible' id='message'>";
+		$success_msg .= "<p>".__( 'Endpoints Saved.', WCCMA_TEXT_DOMAIN )."</p>";
 		$success_msg .= "</div>";
 		echo $success_msg;
 	}
@@ -265,6 +286,98 @@ class Woo_Custom_My_Account_Page_Admin {
 		if( file_exists( $group_modal ) ) {
 			include_once $group_modal;
 		}
+	}
+
+	/**
+	 * Ajax served, to add endpoint
+	 */
+	public function wccma_add_endpoint() {
+		if( isset( $_POST['action'] ) && $_POST['action'] == 'wccma_add_endpoint' ) {
+			global $woo_custom_my_account_page;
+			$endpoint 			= sanitize_text_field( $_POST['endpoint'] );
+			$endpoint_slug 		= sanitize_text_field( $_POST['endpoint_slug'] );
+			$font_awesome_icons = $woo_custom_my_account_page->font_awesome_icons;
+			$wp_user_roles 		= get_editable_roles();
+			$woo_endpoints		= unserialize( stripslashes( sanitize_text_field( $_POST['woo_endpoints'] ) ) );
+			$woo_endpoints[]	= $endpoint_slug;
+
+			//Prepare endpoint details html
+			$htm = '';
+			$htm .= '<div class="wccma-my-account-menu-item wccma-endpoint" id="menu-'.$endpoint_slug.'" data-menu="'.$endpoint_slug.'">';
+			$htm .= '<span id="'.$endpoint_slug.'-power-icon"><i class="fa fa-power-off"></i></span>';
+			$htm .= '<label for="">'.$endpoint.'</label>';
+			$htm .= '<span class="wccma-angles" id="span-menu-'.$endpoint_slug.'"><i class="fa fa-angle-down"></i></span>';
+			$htm .= '</div>';
+			$htm .= '<div class="wccma-menu-item-details" id="wccma-menu-item-detail-'.$endpoint_slug.'">';
+			$htm .= '<table class="form-table">';
+			
+			//ENDPOINT LABEL
+			$htm .= '<tr>';
+			$htm .= '<th>'.__( 'Endpoint Label', WCCMA_TEXT_DOMAIN ).'</th>';
+			$htm .= '<td>';
+			$htm .= '<input type="text" class="wccma-text-input" name="'.$endpoint_slug.'-label" placeholder="'.__( 'Label', WCCMA_TEXT_DOMAIN ).'" value="'.$endpoint.'">';
+			$htm .= '<p class="description">'.__( 'This is the label that the user will see on My Account page.', WCCMA_TEXT_DOMAIN ).'</p>';
+			$htm .= '</td>';
+			$htm .= '</tr>';
+			
+			//ENDPOINT ICON
+			$htm .= '<tr>';
+			$htm .= '<th>'.__( 'Endpoint Icon', WCCMA_TEXT_DOMAIN ).'</th>';
+			$htm .= '<td>';
+			$htm .= '<select class="wccma-font-awesome-icons" name="'.$endpoint_slug.'-icon">';
+			$htm .= '<option value=""></option>';
+			if( !empty( $font_awesome_icons ) ) {
+				foreach( $font_awesome_icons as $fa_icon => $fa_icon_unicode ) {
+					$htm .= '<option value="'.$fa_icon_unicode.'">'.str_replace( '-', ' ', str_replace( 'fa-', '', $fa_icon ) ).'</option>';
+				}
+			}
+			$htm .= '</select>';
+			$htm .= '<p class="description">'.__( 'This is the icon that the denote the above mentioned label.', WCCMA_TEXT_DOMAIN ).'</p>';
+			$htm .= '</td>';
+			$htm .= '</tr>';
+
+			//USER ROLES
+			$htm .= '<tr>';
+			$htm .= '<th>'.__( 'User Roles', WCCMA_TEXT_DOMAIN ).'</th>';
+			$htm .= '<td>';
+			$htm .= '<select class="wccma-user-roles" multiple name="'.$endpoint_slug.'-user-roles[]">';
+			foreach( $wp_user_roles as $role_slug => $role ) {
+				$htm .= '<option value="'.$role_slug.'">'.$role['name'].'</option>';
+			}
+			$htm .= '</select>';
+			$htm .= '<p class="description">'.__( 'Select the user roles for which you want to hide this menu.', WCCMA_TEXT_DOMAIN ).'</p>';
+			$htm .= '</td>';
+			$htm .= '</tr>';
+
+			//ENDPOINT CONTENT
+			$htm .= '<tr>';
+			$htm .= '<th>'.__( 'Endpoint Content', WCCMA_TEXT_DOMAIN ).'</th>';
+			$htm .= '<td>';
+			$htm .= $this->wccma_get_wp_editor( '', $endpoint_slug.'-tab-content' );
+			$htm .= '<p class="description">'.__( 'This will hold the tab content.', WCCMA_TEXT_DOMAIN ).'</p>';
+			$htm .= '</td>';
+			$htm .= '</tr>';
+			$htm .= '</table>';
+			$htm .= '</div>';
+
+			$response = array(
+				'message'		=>	__( 'Endpoint added', WCCMA_TEXT_DOMAIN ),
+				'html'			=>	$htm,
+				'woo_endpoints' =>	serialize( $woo_endpoints )
+			);
+			wp_send_json_success( $response );
+			die;
+		}
+	}
+
+	function wccma_get_wp_editor( $content = '', $editor_id, $options = array() ) {
+		// ob_start();
+		$temp = wp_editor( $content, $editor_id, $options );
+		$temp = ob_get_clean();
+		// $temp .= \_WP_Editors::enqueue_scripts();
+		// $temp .= print_footer_scripts();
+		// $temp .= \_WP_Editors::editor_js();
+		return $temp;
 	}
 
 }

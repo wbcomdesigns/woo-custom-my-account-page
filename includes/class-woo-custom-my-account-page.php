@@ -76,6 +76,7 @@ class Woo_Custom_My_Account_Page {
 		$this->define_admin_hooks();
 		$this->define_globals();
 		$this->define_public_hooks();
+		$this->define_endpoints();
 	}
 
 	/**
@@ -124,6 +125,12 @@ class Woo_Custom_My_Account_Page {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-woo-custom-my-account-page-public.php';
 
+		/**
+		 * The class responsible for defining all the custom woocommerce endpoints
+		 * side of the site.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-woo-custom-my-account-page-endpoints.php';
+
 		$this->loader = new Woo_Custom_My_Account_Page_Loader();
 	}
 
@@ -164,6 +171,8 @@ class Woo_Custom_My_Account_Page {
 		if( stripos( $_SERVER['REQUEST_URI'], 'woo-custom-my-account-page' ) !== false ) {
 			$this->loader->add_action( 'admin_footer', $plugin_admin, 'wccma_admin_modals' );
 		}
+
+		$this->loader->add_action( 'wp_ajax_wccma_add_endpoint', $plugin_admin, 'wccma_add_endpoint' );
 	}
 
 	/**
@@ -196,6 +205,16 @@ class Woo_Custom_My_Account_Page {
 	public function define_globals() {
 		global $woo_custom_my_account_page;
 		$woo_custom_my_account_page = new Woo_Custom_My_Account_Page_Globals( $this->get_plugin_name(), $this->get_version() );
+	}
+
+	/**
+	 * Registers all the custom woocommerce tabs
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 */
+	public function define_endpoints() {
+		new Woo_Custom_My_Account_Page_Endpoints( $this->get_plugin_name(), $this->get_version() );
 	}
 
 	/**
