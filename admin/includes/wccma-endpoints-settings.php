@@ -20,7 +20,7 @@ unset( $wp_user_roles['administrator'] );
 			<span><?php _e( 'Manage Endpoints', WCCMA_TEXT_DOMAIN );?></span>
 			<input type="hidden" id="wccma-last-endpoint" value="">
 			<input type="button" class="button button-secondary" data-modal-id="wccma-add-endpoint-modal" id="wccma-add-endpoint" value="<?php _e( 'Add Endpoint', WCCMA_TEXT_DOMAIN );?>">
-			<input disabled type="button" class="button button-secondary" data-modal-id="wccma-add-group-modal" id="wccma-add-group" value="<?php _e( 'Add Group', WCCMA_TEXT_DOMAIN );?>">
+			<!-- <input disabled type="button" class="button button-secondary" data-modal-id="wccma-add-group-modal" id="wccma-add-group" value="<?php _e( 'Add Group', WCCMA_TEXT_DOMAIN );?>"> -->
 		</div>
 		<div class="wccma-all-endpoints">
 			<?php if( !empty( $my_account_menu_items ) ) {?>
