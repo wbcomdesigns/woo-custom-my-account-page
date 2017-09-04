@@ -60,8 +60,8 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	public function wccma_enqueue_styles() {
 		if( is_account_page() ) {
-			wp_enqueue_style( $this->plugin_name.'-modal-css', plugin_dir_url( __FILE__ ) . 'css/woo-custom-my-account-page-modal.css' );
-			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/woo-custom-my-account-page-public.css', array(), $this->version, 'all' );
+			wp_enqueue_style( $this->plugin_name.'-modal-css', WCCMA_PLUGIN_URL . 'public/css/woo-custom-my-account-page-modal.css' );
+			wp_enqueue_style( $this->plugin_name, WCCMA_PLUGIN_URL . 'public/css/woo-custom-my-account-page-public.css', array(), $this->version, 'all' );
 		}
 	}
 
@@ -73,7 +73,7 @@ class Woo_Custom_My_Account_Page_Public {
 	public function wccma_enqueue_scripts() {
 		if( is_account_page() ) {
 			global $woo_custom_my_account_page;
-			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/woo-custom-my-account-page-public.js', array( 'jquery' ), $this->version, false );
+			wp_enqueue_script( $this->plugin_name, WCCMA_PLUGIN_URL . 'public/js/woo-custom-my-account-page-public.js', array( 'jquery' ), $this->version, false );
 			wp_localize_script(
 				$this->plugin_name,
 				'wccma_public_js_obj',

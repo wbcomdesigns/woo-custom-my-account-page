@@ -71,9 +71,9 @@ class Woo_Custom_My_Account_Page_Admin {
 
 		if( strpos( $_SERVER['REQUEST_URI'], $this->plugin_name ) !== false ) {
 			wp_enqueue_style( $this->plugin_name.'-modal-css', WCCMA_PLUGIN_URL . 'public/css/woo-custom-my-account-page-modal.css' );
-			wp_enqueue_style( $this->plugin_name.'-font-awesome', plugin_dir_url( __FILE__ ) . 'css/font-awesome.min.css' );
-			wp_enqueue_style( $this->plugin_name.'-selectize', plugin_dir_url( __FILE__ ) . 'css/selectize.css' );
-			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/woo-custom-my-account-page-admin.css' );
+			wp_enqueue_style( $this->plugin_name.'-font-awesome', WCCMA_PLUGIN_URL . 'admin/css/font-awesome.min.css' );
+			wp_enqueue_style( $this->plugin_name.'-selectize', WCCMA_PLUGIN_URL . 'admin/css/selectize.css' );
+			wp_enqueue_style( $this->plugin_name, WCCMA_PLUGIN_URL . 'admin/css/woo-custom-my-account-page-admin.css' );
 		}
 	}
 
@@ -88,8 +88,8 @@ class Woo_Custom_My_Account_Page_Admin {
 
 			
 			wp_enqueue_script('tiny_mce');
-			wp_enqueue_script( $this->plugin_name.'-selectize-js', plugin_dir_url( __FILE__ ) . 'js/selectize.min.js', array( 'jquery' ) );
-			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/woo-custom-my-account-page-admin.js', array( 'jquery' ) );
+			wp_enqueue_script( $this->plugin_name.'-selectize-js', WCCMA_PLUGIN_URL . 'admin/js/selectize.min.js', array( 'jquery' ) );
+			wp_enqueue_script( $this->plugin_name, WCCMA_PLUGIN_URL . 'admin/js/woo-custom-my-account-page-admin.js', array( 'jquery' ) );
 
 			wp_localize_script(
 				$this->plugin_name,
