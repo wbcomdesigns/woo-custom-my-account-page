@@ -168,11 +168,13 @@ class Woo_Custom_My_Account_Page {
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wccma_register_endpoints_settings' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wccma_register_support_settings' );
 
-		if( stripos( $_SERVER['REQUEST_URI'], 'woo-custom-my-account-page' ) !== false ) {
+		if ( stripos( $_SERVER[ 'REQUEST_URI' ], 'woo-custom-my-account-page' ) !== false ) {
 			$this->loader->add_action( 'admin_footer', $plugin_admin, 'wccma_admin_modals' );
 		}
 
 		$this->loader->add_action( 'wp_ajax_wccma_add_endpoint', $plugin_admin, 'wccma_add_endpoint' );
+		$this->loader->add_action( 'wp_ajax_wccma_add_wp_editor', $plugin_admin, 'wccma_add_wp_editor' );
+		$this->loader->add_action( 'wp_ajax_wccma_remove_endpoints', $plugin_admin, 'wccma_remove_endpoints' );
 	}
 
 	/**
@@ -190,11 +192,13 @@ class Woo_Custom_My_Account_Page {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'wccma_enqueue_scripts' );
 		$this->loader->add_action( 'woocommerce_before_account_navigation', $plugin_public, 'wccma_myaccount_content' );
 		$this->loader->add_action( 'init', $plugin_public, 'wccma_create_uploads_directory' );
-		if( $woo_custom_my_account_page->allow_custom_user_avatar == 'yes' ) {
+		if ( $woo_custom_my_account_page->allow_custom_user_avatar == 'yes' ) {
 			$this->loader->add_action( 'wp_footer', $plugin_public, 'wccma_modals' );
 		}
 		$this->loader->add_filter( 'get_avatar', $plugin_public, 'wccma_user_custom_avatar', 1, 5 );
 		$this->loader->add_filter( 'woocommerce_account_menu_items', $plugin_public, 'wccma_remove_my_account_menu_items' );
+		$this->loader->add_action( 'template_redirect', $plugin_public, 'wccma_redirect_default_my_account_tabs' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'wccma_add_menu_style_footer' );
 	}
 
 	/**

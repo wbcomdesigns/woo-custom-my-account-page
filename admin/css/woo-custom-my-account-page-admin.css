@@ -3,114 +3,117 @@
  * included in this file.
  */
 .wccma-endpoints-management span{
-	text-transform: uppercase;
-	vertical-align: middle;
+    text-transform: uppercase;
+    vertical-align: middle;
 }
 .wccma-endpoints-management input{
-	float: right;
-	margin-left: 1% !important;
+    float: right;
+    margin-left: 1% !important;
 }
 .wccma-endpoints-management{
-	border-bottom: 1px solid;
-	padding-bottom: 2%;
+    border-bottom: 1px solid;
+    padding-bottom: 2%;
 }
 
 .wccma-my-account-menu-item{
-	border: 1px solid #CCC;
-	border-radius: 2px;
-	padding: 1%;
-	margin: 0 auto;
-	margin-top: 1%;
-	cursor: pointer;
+    border: 1px solid #CCC;
+    border-radius: 2px;
+    padding: 1%;
+    margin: 0 auto;
+    margin-top: 1%;
+    cursor: pointer;
 }
 .wccma-my-account-menu-item label{
-	text-transform: uppercase;
-	font-weight: bold;
-	margin-left: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-left: 10px;
 }
 .wccma-angles{
-	float: right;
+    float: right;
 }
 .wccma-menu-item-details{
-	border: 1px solid #CCC;
-	border-top: none;
-	padding: 20px 15%;
-	display: none;
+    border: 1px solid #CCC;
+    border-top: none;
+    padding: 20px 15%;
+    display: none;
 }
 
 /*SUPPORT*/
 .wccma-adming-setting{
-	float: left;
-	width: 90%;
+    float: left;
+    width: 90%;
 }
 button.wccma-accordion {
-	background-color: hsl(0, 0%, 87%);
-	border: medium none;
-	border-top-right-radius: 10px;
-	border-top-left-radius: 10px;
-	color: hsl(0, 0%, 27%);
-	cursor: pointer;
-	font-size: 15px;
-	margin: 0 5%;
-	outline: medium none;
-	padding: 15px 20px;
-	text-align: left;
-	transition: all 0.4s ease 0s;
-	width: 90%;
+    background-color: hsl(0, 0%, 87%);
+    border: medium none;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    color: hsl(0, 0%, 27%);
+    cursor: pointer;
+    font-size: 15px;
+    margin: 0 5%;
+    outline: medium none;
+    padding: 15px 20px;
+    text-align: left;
+    transition: all 0.4s ease 0s;
+    width: 90%;
 }
 button.wccma-accordion.active, button.wccma-accordion:hover {
-	background-color: hsl(207, 90%, 54%);
-	color:white;
+    background-color: hsl(207, 90%, 54%);
+    color:white;
 }
 div.panel {
-	padding: 0 18px;
-	background-color: white;
-	max-height: 0;
-	overflow: hidden;
-	transition: max-height 0.2s ease-out;
-	margin:0px 5%;
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    margin:0px 5%;
 }
 button.wccma-accordion::after {
-	color: hsl(0, 0%, 47%);
-	content: "+";
-	float: right;
-	font-size: 13px;
-	font-weight: bold;
-	margin-left: 5px;
+    color: hsl(0, 0%, 47%);
+    content: "+";
+    float: right;
+    font-size: 13px;
+    font-weight: bold;
+    margin-left: 5px;
 }
 button.wccma-accordion::after:hover {
-	color: white;
+    color: white;
 }
 button.wccma-accordion.active::after {
-	content: "−";
-	color:white;
+    content: "−";
+    color:white;
 }
 .wccma-admin-row{
-	clear: both;  
-	overflow: hidden;
-	padding-bottom: 5px;
+    clear: both;  
+    overflow: hidden;
+    padding-bottom: 5px;
 }
 .wccma-tab-header h3{
-	margin-left: 5%;
+    margin-left: 5%;
 }
 /*SUPPORT*/
 
 .wccma-header {
-	float: left;
-	width: 100%;
-	padding: 10px 0px;
+    float: left;
+    width: 100%;
+    padding: 10px 0px;
 }
 .wccma-header .wccma-plugin-heading {
-	float: left;
-	margin: 0px;
+    float: left;
+    margin: 0px;
 }
 .wccma-header .wccma-extra-actions {
-	float: right;
-	padding-bottom: 10px;
+    float: right;
+    padding-bottom: 10px;
 }
 .notice-success, div.updated {
-	clear: both;
+    clear: both;
 }
 .wccma-text-input{
-	width: 100%;
+    width: 100%;
+}
+.wccma-remove-endpoints-parent {
+    float: right;
 }
