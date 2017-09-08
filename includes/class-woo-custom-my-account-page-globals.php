@@ -76,6 +76,15 @@ class Woo_Custom_My_Account_Page_Globals {
 	public $default_endpoints = array();
 
 	/**
+	 * The various settings used in the plugin, variables defined in the global variable
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 * @var      array    $menu_style
+	 */
+	public $menu_style = array();
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -90,35 +99,51 @@ class Woo_Custom_My_Account_Page_Globals {
 	}
 
 	public function setup_plugin_global() {
-		global $woo_custom_my_account_page;
+		global $woo_custom_my_account_page, $wpdb;
+		$options_tbl = $wpdb->prefix . 'options';
 		$wccma_settings = get_option( 'wccma_settings' );
 
 		//Get Font awesome icons classes
 		$pattern = '/\.(fa-(?:\w+(?:-)?)+):before\s+{\s*content:\s*"\\\\(.+)";\s+}/';
-		$subject =  file_get_contents( WCCMA_PLUGIN_PATH.'admin/css/font-awesome.css' );
+		$subject = file_get_contents( WCCMA_PLUGIN_PATH . 'admin/css/font-awesome.css' );
 		preg_match_all( $pattern, $subject, $matches, PREG_SET_ORDER );
-		$icons = array();
-		foreach( $matches as $match ) {
-			$icons[$match[1]] = $match[2];
+		$icons	 = array();
+		foreach ( $matches as $match ) {
+			$icons[ $match[ 1 ] ] = $match[ 2 ];
 		}
-		ksort($icons);
+		ksort( $icons );
 		$this->font_awesome_icons = $icons;
-		
+
 		$this->allow_custom_user_avatar = 'no';
-		if( isset( $wccma_settings['allow_custom_user_avatar'] ) ) {
-			$this->allow_custom_user_avatar = $wccma_settings['allow_custom_user_avatar'];
+		if ( isset( $wccma_settings[ 'allow_custom_user_avatar' ] ) ) {
+			$this->allow_custom_user_avatar = $wccma_settings[ 'allow_custom_user_avatar' ];
 		}
 
 		$this->default_woo_tab = 'dashboard';
-		if( isset( $wccma_settings['default_woo_tab'] ) ) {
-			$this->default_woo_tab = $wccma_settings['default_woo_tab'];
+		if ( isset( $wccma_settings[ 'default_woo_tab' ] ) ) {
+			$this->default_woo_tab = $wccma_settings[ 'default_woo_tab' ];
 		}
-
+		$this->menu_style = 'sidebar';
+		if ( isset( $wccma_settings[ 'menu_style' ] ) ) {
+			$this->menu_style = $wccma_settings[ 'menu_style' ];
+		}
 		/**
 		 * My Account Page Endpoints
 		 */
-		$this->endpoints = get_option( 'wccma_endpoints' );
-		$this->default_endpoints = array( 'dashboard', 'orders', 'downloads', 'edit-address', 'edit-account', 'customer-logout' );
+		$this->endpoints		 = get_option( 'wccma_endpoints' );
+
+		/** 
+		 * Fetching default endpoint slugs from database
+		 */
+		$query = "SELECT `option_value` FROM $options_tbl WHERE `option_name` LIKE 'woocommerce_%_endpoint'";
+		$allendpoints = $wpdb->get_results( $query );
+		$woo_default_endpoints = array();
+		if( !empty( $allendpoints ) ) {
+			foreach( $allendpoints as $endpoint ) {
+				$woo_default_endpoints[] = $endpoint->option_value;
+			}
+		}
+		$this->default_endpoints = $woo_default_endpoints;
 	}
 
 }

@@ -28,9 +28,17 @@
 if ( !defined( 'WPINC' ) ) {
 	die;
 }
-
+//Define constants
 if ( !defined( 'WCCMA_TEXT_DOMAIN' ) ) {
 	define( 'WCCMA_TEXT_DOMAIN', 'woo-custom-my-account-page' );
+}
+
+if ( !defined( 'WCCMA_PLUGIN_PATH' ) ) {
+	define( 'WCCMA_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+}
+
+if ( !defined( 'WCCMA_PLUGIN_URL' ) ) {
+	define( 'WCCMA_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }
 
 /**
@@ -55,12 +63,6 @@ register_activation_hook( __FILE__, 'activate_woo_custom_my_account_page' );
 register_deactivation_hook( __FILE__, 'deactivate_woo_custom_my_account_page' );
 
 /**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-require plugin_dir_path( __FILE__ ) . 'includes/class-woo-custom-my-account-page.php';
-
-/**
  * Begins execution of the plugin.
  *
  * Since everything within the plugin is registered via hooks,
@@ -70,16 +72,11 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-woo-custom-my-account-page
  * @since    1.0.0
  */
 function run_woo_custom_my_account_page() {
-
-	//Define constants
-	if ( !defined( 'WCCMA_PLUGIN_PATH' ) ) {
-		define( 'WCCMA_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-	}
-
-	if ( !defined( 'WCCMA_PLUGIN_URL' ) ) {
-		define( 'WCCMA_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-	}
-
+	/**
+	 * The core plugin class that is used to define internationalization,
+	 * admin-specific hooks, and public-facing site hooks.
+	 */
+	require plugin_dir_path( __FILE__ ) . 'includes/class-woo-custom-my-account-page.php';
 	$plugin = new Woo_Custom_My_Account_Page();
 	$plugin->run();
 }
@@ -117,4 +114,15 @@ function wccma_admin_plugin_links( $links ) {
 		'<a href="https://wbcomdesigns.com/contact/" target="_blank" title="' . __( 'Go for any custom development.', WCCMA_TEXT_DOMAIN ) . '">' . __( 'Support', WCCMA_TEXT_DOMAIN ) . '</a>'
 	);
 	return array_merge( $links, $wccma_links );
+}
+
+function wccma_print_endpoint_field( $args ) {
+	$args = apply_filters( 'wccma_print_endpoint_field', $args );
+	wc_get_template( 'wccma-endpoint-settings-data.php', $args, '', WCCMA_PLUGIN_PATH . 'admin/includes/' );
+}
+
+function debug( $p ) {
+	echo '<pre>';
+	print_r( $p );
+	echo '</pre>';
 }

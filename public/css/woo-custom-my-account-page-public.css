@@ -3,15 +3,41 @@
  * included in this file.
  */
 .wccma-user-avatar {
-	margin-bottom: 5%;
-	width: 20%;
+    margin-bottom: 5%;
+    width: 20%;
 }
 .wccma-user-avatar img {
-	border-radius: 50%;
+    border-radius: 50%;
 }
 .wccma-update-avatar-error p{
-	color: red;
+    color: red;
 }
 .wccma-avatar-update-success p{
-	color: green;
+    color: green;
+}
+/*My Account Sidebar Style*/
+body.woocommerce-account .woocommerce-MyAccount-navigation li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+body.woocommerce-account .woocommerce-MyAccount-navigation li a {
+    display: block;
+    padding: 12px 5px 10px 20px;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    text-align: left;
+    text-transform: uppercase;
+    box-shadow: none;
+    outline: none;
+    border: 1px solid #e0e0e0;
+    margin: 0px;
+    cursor: pointer;
+}
+body.woocommerce-account .woocommerce-MyAccount-navigation li.is-active a {
+    color: #ffffff;
+}
+body.woocommerce-account .woocommerce-MyAccount-navigation li.is-active {
+    background: #3b3b3b;
 }
