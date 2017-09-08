@@ -23,7 +23,7 @@ unset( $my_account_menu_items[ 'customer-logout' ] );
 			<tr>
 				<th scope="row"><label for="wccma-menu-style-tab"><?php _e( 'Menu Style', WCCMA_TEXT_DOMAIN ); ?></label></th>
 				<td>
-					<select class="" required name="wccma-menu-style-tab">
+					<select class="wccma-menu-style-tab" required name="wccma-menu-style-tab">
 						<option value="sidebar" <?php selected( $woo_custom_my_account_page->menu_style, 'sidebar' ); ?>><?php _e( 'Sidebar', WCCMA_TEXT_DOMAIN ); ?></option>
 						<option value="tab" <?php selected( $woo_custom_my_account_page->menu_style, 'tab' ); ?>><?php _e( 'Tab', WCCMA_TEXT_DOMAIN ); ?></option>
 					</select>
@@ -34,7 +34,7 @@ unset( $my_account_menu_items[ 'customer-logout' ] );
 			<tr>
 				<th scope="row"><label for="wccma-default-active-tab"><?php _e( 'Default Tab', WCCMA_TEXT_DOMAIN ); ?></label></th>
 				<td>
-					<select class="" required name="wccma-default-tab">
+					<select class="wccma-default-tab" required name="wccma-default-tab">
 						<option value=""><?php _e( '--Select--', WCCMA_TEXT_DOMAIN ); ?></option>
 						<?php foreach ( $my_account_menu_items as $slug => $item ) { ?>
 							<option value="<?php echo $slug; ?>" <?php echo ($slug == $woo_custom_my_account_page->default_woo_tab) ? 'selected' : ''; ?>><?php echo $item; ?></option>

@@ -117,3 +117,6 @@ button.wccma-accordion.active::after {
 .wccma-remove-endpoints-parent {
     float: right;
 }
+.wccma-menu-style-tab, .wccma-default-tab {
+    width: 50%;
+}

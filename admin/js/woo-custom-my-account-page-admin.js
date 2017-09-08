@@ -80,6 +80,19 @@ jQuery( document ).ready( function ( $ ) {
         plugins: [ 'remove_button' ],
     } );
 
+    $( '.wccma-user-roles' ).selectize( {
+        placeholder: "Select User Role",
+        plugins: [ 'remove_button' ],
+    } );
+
+    $( '.wccma-default-tab' ).selectize( {
+        placeholder: "Select woocommerce endpoint"
+    } );
+
+    $( '.wccma-menu-style-tab' ).selectize( {
+        placeholder: "Select menu style"
+    } );
+
     //Add endpoint
     $( document ).on( 'click', '#wccma-save-endpoint', function () {
         var endpoint = $( '#wccma-add-endpoint-input' ).val();
