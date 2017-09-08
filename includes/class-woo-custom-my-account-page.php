@@ -158,8 +158,8 @@ class Woo_Custom_My_Account_Page {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-
-		$plugin_admin = new Woo_Custom_My_Account_Page_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_name = $this->get_plugin_name();
+		$plugin_admin = new Woo_Custom_My_Account_Page_Admin( $plugin_name, $this->get_version() );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'wccma_admin_enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'wccma_admin_enqueue_scripts' );
 		$this->loader->add_action( 'bp_setup_admin_bar', $plugin_admin, 'wccma_setup_admin_bar' );
@@ -168,7 +168,7 @@ class Woo_Custom_My_Account_Page {
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wccma_register_endpoints_settings' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wccma_register_support_settings' );
 
-		if ( stripos( $_SERVER[ 'REQUEST_URI' ], 'woo-custom-my-account-page' ) !== false ) {
+		if ( stripos( $_SERVER[ 'REQUEST_URI' ], $plugin_name ) !== false ) {
 			$this->loader->add_action( 'admin_footer', $plugin_admin, 'wccma_admin_modals' );
 		}
 
