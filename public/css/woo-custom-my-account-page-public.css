@@ -4,7 +4,8 @@
  */
 .wccma-user-avatar {
     margin-bottom: 5%;
-    width: 20%;
+    float: left;
+    text-align: center;
 }
 .wccma-user-avatar img {
     border-radius: 50%;
@@ -40,4 +41,32 @@ body.woocommerce-account .woocommerce-MyAccount-navigation li.is-active a {
 }
 body.woocommerce-account .woocommerce-MyAccount-navigation li.is-active {
     background: #3b3b3b;
+}
+.avatar-overlay-wrap {
+    position: relative;
+}
+
+.avatar-overlay-wrap .avatar-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.42);
+    border-radius: 50%;
+    opacity: 0;
+    transition:all .3s;
+    text-align: center;
+}
+.avatar-overlay-wrap:hover .avatar-overlay
+{
+    opacity: 1;
+} 
+a.avatar-overlay .fa {
+    position: relative;
+    /* left: 50%; */
+    margin: 45px 0px;
+    vertical-align: middle;
+    display: inline-block;
+    color: #fff;
+    font-size: 15px;
 }
