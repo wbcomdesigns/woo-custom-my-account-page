@@ -98,11 +98,19 @@ class Woo_Custom_My_Account_Page_Public {
 		}
 		?>
 		<div class="wccma-user-avatar">
-			<?php echo $user_avatar; ?>
-			<p><?php echo $user->data->display_name; ?></p>
-			<?php if ( $woo_custom_my_account_page->allow_custom_user_avatar == 'yes' ) { ?>
-				<a href="javascript:void(0);" data-modal-id="wccma-user-avatar-modal">Edit</a>
-			<?php } ?>
+			<div class="avatar-overlay-wrap">
+				<?php if ( $woo_custom_my_account_page->allow_custom_user_avatar == 'yes' ) { ?>
+					<a class="avatar-overlay" href="javascript:void(0);" data-modal-id="wccma-user-avatar-modal">
+						<i class="fa fa-camera"></i>
+					</a>
+				<?php } ?>				
+				<?php echo $user_avatar;?>
+			</div>
+			<p>
+				<?php echo $user->data->display_name;?>
+				
+			</p>
+			
 		</div>
 		<?php
 	}
