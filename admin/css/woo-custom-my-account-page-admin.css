@@ -120,3 +120,6 @@ button.wccma-accordion.active::after {
 .wccma-menu-style-tab, .wccma-default-tab {
     width: 50%;
 }
+body{
+    height: auto;
+}
