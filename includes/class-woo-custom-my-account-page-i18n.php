@@ -6,7 +6,7 @@
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @link       http://www.wbcomdesigns.com
+ * @link       https://wbcomdesigns.com
  * @since      1.0.0
  *
  * @package    Woo_Custom_My_Account_Page
@@ -26,6 +26,7 @@
  */
 class Woo_Custom_My_Account_Page_i18n {
 
+
 	/**
 	 * Load the plugin text domain for translation.
 	 *
@@ -34,8 +35,13 @@ class Woo_Custom_My_Account_Page_i18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-		'woo-custom-my-account-page', false, dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
+			'woo-custom-my-account-page',
+			false,
+			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);
+
 	}
+
+
 
 }

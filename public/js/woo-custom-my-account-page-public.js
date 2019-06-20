@@ -1,41 +1,32 @@
-jQuery(document).ready(function( $ ) {
+(function( $ ) {
 	'use strict';
-	var default_woo_tab = wccma_public_js_obj.default_woo_tab;
 
-	//Open the modal
-	var appendthis =  ("<div class='modal-overlay js-modal-close'></div>");
-	$('a[data-modal-id]').click(function(e) {
-		e.preventDefault();
-		$("body").append(appendthis);
-		$(".modal-overlay").fadeTo(500, 0.7);
-		var modalBox = $(this).attr('data-modal-id');
-		$('#'+modalBox).fadeIn($(this).data());
-	});
-	$(".js-modal-close, .modal-overlay").click(function() {
-		$(".modal-box, .modal-overlay").fadeOut(500, function() {
-			$(".modal-overlay").remove();
-		});
-		$('#wccma-user-avatar').val('').clone( true );
-		$('.wccma-update-avatar-error p').html('');
-	});
+	/**
+	 * All of the code for your public-facing JavaScript source
+	 * should reside in this file.
+	 *
+	 * Note: It has been assumed you will write jQuery code here, so the
+	 * $ function reference has been prepared for usage within the scope
+	 * of this function.
+	 *
+	 * This enables you to define handlers, for when the DOM is ready:
+	 *
+	 * $(function() {
+	 *
+	 * });
+	 *
+	 * When the window is loaded:
+	 *
+	 * $( window ).load(function() {
+	 *
+	 * });
+	 *
+	 * ...and/or other possibilities.
+	 *
+	 * Ideally, it is not considered best practise to attach more than a
+	 * single DOM-ready or window-load handler for a particular page.
+	 * Although scripts in the WordPress core, Plugins and Themes may be
+	 * practising this, we should strive to set a better example in our own work.
+	 */
 
-	$(window).resize(function() {
-		$(".modal-box").css({
-			top: ($(window).height() - $(".modal-box").outerHeight()) / 2,
-			left: ($(window).width() - $(".modal-box").outerWidth()) / 2
-		});
-	});
-
-	$(window).resize();
-
-	$(document).on('change', '#wccma-user-avatar', function(){
-		var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
-		if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-			$('#wccma-user-avatar').val('').clone( true );
-			$('.wccma-update-avatar-error p').html( "Only formats are allowed : "+fileExtension.join(', ') );
-		} else {
-			$('.wccma-update-avatar-error p').html('');
-		}
-	});
-
-});
+})( jQuery );

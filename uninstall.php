@@ -19,7 +19,7 @@
  * For more information, see the following discussion:
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
  *
- * @link       http://www.wbcomdesigns.com
+ * @link       https://wbcomdesigns.com
  * @since      1.0.0
  *
  * @package    Woo_Custom_My_Account_Page
