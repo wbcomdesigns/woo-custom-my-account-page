@@ -6,7 +6,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       http://www.wbcomdesigns.com
+ * @link       https://wbcomdesigns.com
  * @since      1.0.0
  *
  * @package    Woo_Custom_My_Account_Page
@@ -67,16 +67,18 @@ class Woo_Custom_My_Account_Page {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-
-		$this->plugin_name	 = 'woo-custom-my-account-page';
-		$this->version		 = '1.0.0';
+		if ( defined( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION' ) ) {
+			$this->version = WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION;
+		} else {
+			$this->version = '1.0.0';
+		}
+		$this->plugin_name = 'woo-custom-my-account-page';
 
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
-		$this->define_globals();
 		$this->define_public_hooks();
-		$this->define_endpoints();
+
 	}
 
 	/**
@@ -115,23 +117,13 @@ class Woo_Custom_My_Account_Page {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-woo-custom-my-account-page-admin.php';
 
 		/**
-		 * The class responsible for defining the global variable of the plugin
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-woo-custom-my-account-page-globals.php';
-
-		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-woo-custom-my-account-page-public.php';
 
-		/**
-		 * The class responsible for defining all the custom woocommerce endpoints
-		 * side of the site.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-woo-custom-my-account-page-endpoints.php';
-
 		$this->loader = new Woo_Custom_My_Account_Page_Loader();
+
 	}
 
 	/**
@@ -148,6 +140,7 @@ class Woo_Custom_My_Account_Page {
 		$plugin_i18n = new Woo_Custom_My_Account_Page_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+
 	}
 
 	/**
@@ -158,23 +151,12 @@ class Woo_Custom_My_Account_Page {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-		$plugin_name = $this->get_plugin_name();
-		$plugin_admin = new Woo_Custom_My_Account_Page_Admin( $plugin_name, $this->get_version() );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'wccma_admin_enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'wccma_admin_enqueue_scripts' );
-		$this->loader->add_action( 'bp_setup_admin_bar', $plugin_admin, 'wccma_setup_admin_bar' );
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'wccma_add_admin_submenu_page' );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'wccma_register_general_settings' );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'wccma_register_endpoints_settings' );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'wccma_register_support_settings' );
 
-		if ( stripos( $_SERVER[ 'REQUEST_URI' ], $plugin_name ) !== false ) {
-			$this->loader->add_action( 'admin_footer', $plugin_admin, 'wccma_admin_modals' );
-		}
+		$plugin_admin = new Woo_Custom_My_Account_Page_Admin( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_ajax_wccma_add_endpoint', $plugin_admin, 'wccma_add_endpoint' );
-		$this->loader->add_action( 'wp_ajax_wccma_add_wp_editor', $plugin_admin, 'wccma_add_wp_editor' );
-		$this->loader->add_action( 'wp_ajax_wccma_remove_endpoints', $plugin_admin, 'wccma_remove_endpoints' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+
 	}
 
 	/**
@@ -187,39 +169,10 @@ class Woo_Custom_My_Account_Page {
 	private function define_public_hooks() {
 
 		$plugin_public = new Woo_Custom_My_Account_Page_Public( $this->get_plugin_name(), $this->get_version() );
-		global $woo_custom_my_account_page;
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'wccma_enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'wccma_enqueue_scripts' );
-		$this->loader->add_action( 'woocommerce_before_account_navigation', $plugin_public, 'wccma_myaccount_content' );
-		$this->loader->add_action( 'init', $plugin_public, 'wccma_create_uploads_directory' );
-		if ( $woo_custom_my_account_page->allow_custom_user_avatar == 'yes' ) {
-			$this->loader->add_action( 'wp_footer', $plugin_public, 'wccma_modals' );
-		}
-		$this->loader->add_filter( 'get_avatar', $plugin_public, 'wccma_user_custom_avatar', 1, 5 );
-		$this->loader->add_filter( 'woocommerce_account_menu_items', $plugin_public, 'wccma_remove_my_account_menu_items' );
-		$this->loader->add_action( 'template_redirect', $plugin_public, 'wccma_redirect_default_my_account_tabs' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'wccma_add_menu_style_footer' );
-	}
 
-	/**
-	 * Registers a global variable of the plugin - woo-custom-my-account-page
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 */
-	public function define_globals() {
-		global $woo_custom_my_account_page;
-		$woo_custom_my_account_page = new Woo_Custom_My_Account_Page_Globals( $this->get_plugin_name(), $this->get_version() );
-	}
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
-	/**
-	 * Registers all the custom woocommerce tabs
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 */
-	public function define_endpoints() {
-		new Woo_Custom_My_Account_Page_Endpoints( $this->get_plugin_name(), $this->get_version() );
 	}
 
 	/**
