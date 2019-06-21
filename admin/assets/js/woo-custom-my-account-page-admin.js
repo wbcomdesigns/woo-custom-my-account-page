@@ -30,3 +30,9 @@
 	 */
 
 })( jQuery );
+
+jQuery( document ).ready(
+	function(){
+		jQuery( '.wcmp-admin-color-picker' ).wpColorPicker();
+	}
+);

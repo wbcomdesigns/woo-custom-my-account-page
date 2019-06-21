@@ -112,6 +112,11 @@ class Woo_Custom_My_Account_Page {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-woo-custom-my-account-page-i18n.php';
 
 		/**
+		 * Enqueue wbcom plugin settings file.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wbcom/wbcom-admin-settings.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-woo-custom-my-account-page-admin.php';
@@ -156,6 +161,8 @@ class Woo_Custom_My_Account_Page {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'wcmp_add_plugin_menu_page', 100 );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'wcmp_add_plugin_register_settings' );
 
 	}
 

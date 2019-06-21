@@ -58,6 +58,21 @@ function deactivate_woo_custom_my_account_page() {
 register_activation_hook( __FILE__, 'activate_woo_custom_my_account_page' );
 register_deactivation_hook( __FILE__, 'deactivate_woo_custom_my_account_page' );
 
+if ( ! defined( 'WCMP_PLUGIN_VERSION' ) ) {
+	define( 'WCMP_PLUGIN_VERSION', '1.0.0' );
+}
+if ( ! defined( 'WCMP_PLUGIN_NAME' ) ) {
+	define( 'WCMP_PLUGIN_NAME', 'woo-custom-my-account-page' );
+}
+if ( ! defined( 'WCMP_PLUGIN_FILE' ) ) {
+	define( 'WCMP_PLUGIN_FILE', __FILE__ );
+}
+if ( ! defined( 'WCMP_PLUGIN_PATH' ) ) {
+	define( 'WCMP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+}
+if ( ! defined( 'WCMP_PLUGIN_URL' ) ) {
+	define( 'WCMP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+}
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.

@@ -2,3 +2,7 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+ .wbcom-tab-content .section-title-container .button-container {
+ 	float: right;
+ }
