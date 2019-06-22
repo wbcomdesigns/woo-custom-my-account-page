@@ -1,64 +1,31 @@
-(function( $ ) {
-	'use strict';
-
-	/**
-	 * All of the code for your admin-facing JavaScript source
-	 * should reside in this file.
-	 *
-	 * Note: It has been assumed you will write jQuery code here, so the
-	 * $ function reference has been prepared for usage within the scope
-	 * of this function.
-	 *
-	 * This enables you to define handlers, for when the DOM is ready:
-	 *
-	 * $(function() {
-	 *
-	 * });
-	 *
-	 * When the window is loaded:
-	 *
-	 * $( window ).load(function() {
-	 *
-	 * });
-	 *
-	 * ...and/or other possibilities.
-	 *
-	 * Ideally, it is not considered best practise to attach more than a
-	 * single DOM-ready or window-load handler for a particular page.
-	 * Although scripts in the WordPress core, Plugins and Themes may be
-	 * practising this, we should strive to set a better example in our own work.
-	 */
-
-})( jQuery );
-
 jQuery(document).ready(function($) {
     "use strict";
-    $( '.wcmp-admin-color-picker' ).wpColorPicker();
-    $( '.wcmp_select_field' ).select2();
+
     var endpoints_container = $( ".endpoints-container" );
-    // function init_tinyMCE( id ) {
 
-    //     // get tinymce options
-    //     var mceInit = tinyMCEPreInit.mceInit,
-    //         mceKey  = Object.keys(mceInit)[0],
-    //         mce     = mceInit[ mceKey ],
-    //     // get quicktags options
-    //         qtInit  = tinyMCEPreInit.qtInit,
-    //         qtKey   = Object.keys(qtInit)[0],
-    //         qt      = mceInit[ qtKey ];
+    function init_tinyMCE( id ) {
 
-    //     // change id
-    //     mce.selector    = id;
-    //     mce.body_class  = mce.body_class.replace( mceKey, id );
-    //     qt.id           = id;
+        // get tinymce options
+        var mceInit = tinyMCEPreInit.mceInit,
+            mceKey  = Object.keys(mceInit)[0],
+            mce     = mceInit[ mceKey ],
+        // get quicktags options
+            qtInit  = tinyMCEPreInit.qtInit,
+            qtKey   = Object.keys(qtInit)[0],
+            qt      = mceInit[ qtKey ];
 
-    //     tinyMCE.init( mce );
-    //     tinyMCE.execCommand('mceRemoveEditor', true, id );
-    //     tinyMCE.execCommand('mceAddEditor', true, id );
+        // change id
+        mce.selector    = id;
+        mce.body_class  = mce.body_class.replace( mceKey, id );
+        qt.id           = id;
 
-    //     quicktags( qt );
-    //     QTags._buttonsInit();
-    // }
+        tinyMCE.init( mce );
+        tinyMCE.execCommand('mceRemoveEditor', true, id );
+        tinyMCE.execCommand('mceAddEditor', true, id );
+
+        quicktags( qt );
+        QTags._buttonsInit();
+    }
 
     /*################################
          SORT AND SAVE ENDPOINTS
@@ -198,7 +165,7 @@ jQuery(document).ready(function($) {
 
     endpoints_container.on( 'change', function( ev, elem ) {
         if( typeof elem != 'undefined' ) {
-            //init_tinyMCE(elem.find('textarea').attr('id'));
+            init_tinyMCE(elem.find('textarea').attr('id'));
         }
     });
 

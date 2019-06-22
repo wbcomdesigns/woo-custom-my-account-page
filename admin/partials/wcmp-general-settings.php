@@ -65,7 +65,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</label>
 					</th>
 					<td>
-						<select name="wcmp_general_settings[sidebar_position]">
+						<select name="wcmp_general_settings[sidebar_position]" class="wcmp_select_field">
 							<option value="left"><?php esc_html_e( 'Left', 'woo-custom-my-account-page' ); ?></option>
 							<option value="right"><?php esc_html_e( 'Right', 'woo-custom-my-account-page' ); ?></option>
 						</select>
@@ -78,7 +78,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</label>
 					</th>
 					<td>
-						<select name="wcmp_general_settings[default_endpoint]">
+						<select name="wcmp_general_settings[default_endpoint]" class="wcmp_select_field">
 							<?php
 							if ( $woocommerce_menus ) {
 								foreach ( $woocommerce_menus as $slug => $menu_name ) {
