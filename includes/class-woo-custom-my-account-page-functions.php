@@ -28,6 +28,30 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		protected static $_instance = null;
 
 		/**
+		 * Page templates
+		 *
+		 * @var string
+		 * @since 1.0.0
+		 */
+		protected $_is_myaccount = false;
+
+		/**
+		 * Boolean to check if account have menu
+		 *
+		 * @var string
+		 * @since 1.0.0
+		 */
+		protected $_my_account_have_menu = false;
+
+		/**
+		 * My account endpoint
+		 *
+		 * @var string
+		 * @since 1.0.0
+		 */
+		protected $_menu_endpoints = array();
+
+		/**
 		 * Main Woo_Custom_My_Account_Page_Functions Instance.
 		 *
 		 * Ensures only one instance of Woo_Custom_My_Account_Page_Functions is loaded or can be loaded.
@@ -40,6 +64,15 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 				self::$_instance = new self();
 			}
 			return self::$_instance;
+		}
+
+		public function __construct() {
+			add_action( 'init', array( $this, 'init' ), 100 );
+			// redirect to the default endpoint
+			add_action( 'template_redirect', array( $this, 'redirect_to_default' ), 150 );
+			// Add new navigation.
+			add_action( 'woocommerce_account_navigation', array( $this, 'wcmp_add_my_account_menu' ), 10 );
+			add_action( 'wcmp_print_single_endpoint', array( $this, 'wcmp_print_single_endpoint' ), 10, 2 );
 		}
 
 		public function wcmp_get_icon( $key ) {
@@ -243,6 +276,252 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			return $settings;
 		}
 
+		/**
+		 * Init plugins variable.
+		 *
+		 * @access public
+		 * @since  1.0.0
+		 * @author Wbcom Designs
+		 */
+		public function init() {
+
+			$myaccount_func        = instantiate_woo_custom_myaccount_functions();
+			$all_settings          = $myaccount_func->wcmp_settings_data();
+			$endpoints             = $all_settings['endpoints_settings'];
+			$this->_menu_endpoints = $endpoints;
+
+	        // get current user and set user role.
+	        $current_user = wp_get_current_user();
+	        $user_role    = (array) $current_user->roles;
+
+			// first register string for translations then remove disable.
+			foreach( $this->_menu_endpoints as $endpoint => &$options ) {
+
+	            // check if master is active.
+	            if( isset( $options['active'] ) && ! $options['active'] ) {
+	                unset( $this->_menu_endpoints[$endpoint] );
+	                continue;
+	            }
+
+	            // check master by user role and user membership.
+	            if( isset( $options['usr_roles'] ) && $this->_hide_by_usr_roles( $options['usr_roles'], $user_role )
+	            ){
+	                unset( $this->_menu_endpoints[$endpoint] );
+	                continue;
+	            }  // check master by user roles.
+	            elseif( isset( $options['usr_roles'] ) && $this->_hide_by_usr_roles( $options['usr_roles'], $user_role ) ) {
+	                unset( $this->_menu_endpoints[$endpoint] );
+	                continue;
+	            }
+	            
+			    // check if child is active.
+	            if( isset( $options['children'] ) ) {
+	                foreach ( $options['children'] as $child_endpoint => $child_options ) {
+	                    if ( ! $child_options['active'] ) {
+	                        unset( $options['children'][$child_endpoint] );
+	                        continue;
+	                    }
+	                    if ( isset( $child_options['usr_roles'] ) && $this->_hide_by_usr_roles( $child_options['usr_roles'], $user_role ) &&
+	                        isset( $child_options['membership_plans'] ) && $this->_hide_by_membership_plan( $child_options['membership_plans'] )
+	                    ) {
+	                        unset( $options['children'][$child_endpoint] );
+	                        continue;
+	                    }  // check master by user roles
+	                    elseif( isset( $child_options['usr_roles'] ) && $this->_hide_by_usr_roles( $child_options['usr_roles'], $user_role ) ) {
+	                        unset( $options['children'][$child_endpoint] );
+	                        continue;
+	                    }// check master by user membership
+	                    elseif( isset( $child_options['membership_plans'] ) && $this->_hide_by_membership_plan( $child_options['membership_plans'] ) ) {
+	                        unset( $options['children'][$child_endpoint] );
+	                        continue;
+	                    }
+
+	                    // Get translated label.
+	                    $options['children'][$child_endpoint]['label'] = $this->get_string_translated( $child_endpoint, $child_options['label'] );
+	                    empty( $child_options['url'] ) || $options['children'][$child_endpoint]['url'] = $this->get_string_translated( $child_endpoint . '_url', $child_options['url'] );
+	                    empty( $child_options['content'] ) || $options['children'][$child_endpoint]['content'] = $this->get_string_translated( $child_endpoint . '_content', $child_options['content'] );
+	                }
+	            }
+
+	            // get translated label.
+	            $options['label'] = $this->get_string_translated( $endpoint, $options['label'] );
+	            empty( $options['url'] ) || $options['url'] = $this->get_string_translated( $endpoint . '_url', $options['url'] );
+	            empty( $options['content'] ) || $options['content'] = $this->get_string_translated( $endpoint . '_content', $options['content'] );
+			}
+
+			// remove theme sidebar.
+			if( defined('YIT') && YIT ) {
+				remove_action( 'yit_content_loop', 'yit_my_account_template', 5 );
+				// also remove the my-account template
+				$my_account_id = wc_get_page_id( 'myaccount' );
+				if ( 'my-account.php' == get_post_meta( $my_account_id, '_wp_page_template', true ) ) {
+					update_post_meta( $my_account_id, '_wp_page_template', 'default' );
+				}
+			}
+
+	        // remove standard woocommerce sidebar.
+	        if( ( $priority = has_action( 'woocommerce_account_navigation', 'woocommerce_account_navigation' ) ) !== false ) {
+	            remove_action( 'woocommerce_account_navigation', 'woocommerce_account_navigation', $priority );
+	        }
+		}
+
+	    /**
+	     * Hide field based on current user role.
+	     *
+	     * @access protected
+	     * @since  1.0.0
+	     * @author Wbcom Designs
+	     * @param  array $roles
+	     * @param  array $current_user_role
+	     * @return boolean
+	     */
+	    protected function _hide_by_usr_roles( $roles, $current_user_role ) {
+	        // return if $roles is empty
+	        if ( empty( $roles ) || current_user_can( 'administrator' ) ) {
+	            return false;
+	        }
+
+	        // Check if current user can.
+	        $intersect = array_intersect( $roles, $current_user_role );
+	        if ( ! empty( $intersect ) ) {
+	            return false;
+	        }
+
+	        return true;
+	    }
+
+	    /**
+	     * Get a translated string.
+	     *
+	     * @access protected
+	     * @since  1.0.0
+	     * @author Wbcom Designs
+	     * @param  string $key
+	     * @param  string $value
+	     * @return string
+	     */
+	    public function get_string_translated( $key, $value ){
+	        if( defined( 'ICL_SITEPRESS_VERSION' ) ) {
+	            $value = apply_filters( 'wpml_translate_single_string', $value, 'yith-woocommerce-customize-myaccount-page', 'plugin_yit_wcmap_' . $key );
+	        }
+	        elseif( defined( 'POLYLANG_VERSION' ) && function_exists( 'pll__' ) ) {
+	            $value = pll__( $value );
+	        }
+
+	        return $value;
+	    }
+
+		public function wcmp_add_my_account_menu() {
+		    if( apply_filters( 'wcmp_my_account_have_menu', $this->_my_account_have_menu ) ) {
+		        return;
+	        }
+
+			$all_settings     = $this->wcmp_settings_data();
+			$general_settings = $all_settings['general_settings'];
+	        $position         = $general_settings['sidebar_position'];
+	        $tab              = $general_settings['menu_style'] == 'tab' ? '-tab' : '';
+			$endpoints        = $this->_menu_endpoints;			
+	        ob_start();
+	        ?>
+	            <div id="my-account-menu<?php echo $tab ?>" class="yith-wcmap position-<?php echo $position ?>">
+	            	<?php
+		                $args = apply_filters( 'wcmp-myaccount-menu-template-args', array(
+						'endpoints'      => $endpoints,
+						'my_account_url' => get_permalink( wc_get_page_id( 'myaccount' ) ),
+						'avatar'	     => $general_settings['custom_avatar'] == 'yes'
+					));
+					wc_get_template( 'wcmp-myaccount-menu.php', $args, '', WCMP_PLUGIN_PATH . 'public/template/' );
+					?>
+	            </div>
+	        <?php
+
+	        echo ob_get_clean();
+
+	        // set my account menu variable. This prevent double menu
+	        $this->_my_account_have_menu = true;
+	    }
+
+	    public function wcmp_print_single_endpoint( $endpoint, $options ) {
+
+	        if( ! isset( $options['url'] ) ) {
+	            $url = get_permalink( wc_get_page_id( 'myaccount' ) );
+	            $endpoint != 'dashboard' && $url = wc_get_endpoint_url( $endpoint, '', $url );
+	        } else {
+	            $url = esc_url( $options['url'] );
+	        }
+
+	        // Check if endpoint is active.
+	        $current = $this->wcmp_get_current_endpoint();
+	        $classes = array();
+	        ! empty( $options['class'] )    && $classes[] = $options['class'];
+	        ( $endpoint == $current )       && $classes[] = 'active';
+
+	        if ( $endpoint == 'orders' ) {
+	            $view_order = get_option( 'woocommerce_myaccount_view_order_endpoint', 'view-order' );
+	            ( $current == $view_order && ! in_array( 'active', $classes ) ) && $classes[] = 'active';
+	        }
+
+	        $classes = apply_filters( 'wcmp_endpoint_menu_class', $classes, $endpoint, $options );
+
+	        // build args array.
+	        $args = apply_filters( 'wcmp_print_single_endpoint_args', array(
+	            'url'       => $url,
+	            'endpoint'  => $endpoint,
+	            'options'   => $options,
+	            'classes'   => $classes
+	        ));
+
+	        wc_get_template( 'wcmp-myaccount-menu-item.php', $args, '', WCMP_PLUGIN_PATH . 'public/template/' );
+	    }
+
+	    public function wcmp_get_current_endpoint() {
+	    	global $wp;
+
+	        $current = 'dashboard';
+	        foreach( WC()->query->get_query_vars() as $key => $value ) {
+	            if ( isset( $wp->query_vars[ $key ] ) ) {
+	                $current = $key;
+	            }
+	        }
+
+	        return apply_filters( 'wcmp_get_current_endpoint', $current );
+	    }
+
+	    /**
+		 * Redirect to default endpoint
+		 *
+		 * @access public
+		 * @since 1.0.4
+		 * @author Francesco Licandro
+		 */
+		public function redirect_to_default(){
+
+			// exit if not my account
+			// if( ! $this->_is_myaccount || ! is_array( $this->_menu_endpoints ) ) {
+			// 	return;
+			// }
+
+			$current_endpoint = $this->wcmp_get_current_endpoint();
+			// if a specific endpoint is required return
+            if( $current_endpoint != 'dashboard' || apply_filters( 'yith_wcmap_no_redirect_to_default', false ) ) {
+                return;
+            }
+            $all_settings     = $this->wcmp_settings_data();
+			$general_settings = $all_settings['general_settings'];
+	        $default_endpoint = $general_settings['default_endpoint'];
+
+			// let's third part filter default endpoint
+			$default_endpoint = apply_filters( 'yith_wcmap_default_endpoint', $default_endpoint );
+			$url = wc_get_page_permalink( 'myaccount' );
+
+            // otherwise if I'm not in my account yet redirect to default
+            if( ! get_option( 'yith_wcmap_is_my_account', true ) && ! isset( $_REQUEST['elementor-preview'] ) && $current_endpoint != $default_endpoint ) {
+				$default_endpoint != 'dashboard' && $url = wc_get_endpoint_url( $default_endpoint, '', $url );
+				wp_safe_redirect( $url );
+				exit;
+			}
+		}
+
 	}
 }
 
@@ -257,4 +536,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 function instantiate_woo_custom_myaccount_functions() {
 	return Woo_Custom_My_Account_Page_Functions::instance();
 }
+
+instantiate_woo_custom_myaccount_functions();
 
