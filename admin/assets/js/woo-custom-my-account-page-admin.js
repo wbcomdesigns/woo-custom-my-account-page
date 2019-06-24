@@ -34,8 +34,8 @@
 jQuery(document).ready(function($) {
     "use strict";
     $( '.wcmp-admin-color-picker' ).wpColorPicker();
-    $( '.wcmp_select_field' ).select2();
     var endpoints_container = $( ".endpoints-container" );
+    var general_container   = $( ".wcmp_general_settings" );
     // function init_tinyMCE( id ) {
 
     //     // get tinymce options
@@ -284,7 +284,8 @@ jQuery(document).ready(function($) {
                     data = {
                         templateResult: format,
                         templateSelection: format,
-                        width: '100%'
+                        width: '100%',
+                        tags: true
                     };
                 } else if( is_endpoint ) {
                     data = {
@@ -302,5 +303,6 @@ jQuery(document).ready(function($) {
     }
 
     applySelect2( endpoints_container.find( 'select' ), true );
+    applySelect2( general_container.find( 'select' ), true );
     applySelect2( $( '#yith_wcmap_panel_general' ).find( 'select' ), false );
 });

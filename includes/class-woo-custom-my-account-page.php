@@ -112,6 +112,12 @@ class Woo_Custom_My_Account_Page {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-woo-custom-my-account-page-i18n.php';
 
 		/**
+		 * The class responsible for defining internationalization functionality
+		 * of the plugin.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-woo-custom-my-account-page-functions.php';
+
+		/**
 		 * Enqueue wbcom plugin settings file.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wbcom/wbcom-admin-settings.php';
