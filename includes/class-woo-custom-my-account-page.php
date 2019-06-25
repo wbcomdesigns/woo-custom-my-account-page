@@ -170,6 +170,10 @@ class Woo_Custom_My_Account_Page {
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'wcmp_add_plugin_menu_page', 100 );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wcmp_add_plugin_register_settings' );
 
+		// Add endpoint ajax.
+		$this->loader->add_action( 'wp_ajax_wcmp_add_field', $plugin_admin, 'wcmp_add_field_ajax' );
+		$this->loader->add_action( 'wp_ajax_nopriv_wcmp_add_field', $plugin_admin, 'wcmp_add_field_ajax' );
+
 	}
 
 	/**

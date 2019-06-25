@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="wbcom-tab-content">
-	<form method="post" action="options.php">
+	<form method="post" action="options.php" id="wbwcmp_endpoints_settings">
 		<?php
 		settings_fields( 'wcmp_endpoints_settings' );
 		do_settings_sections( 'wcmp_endpoints_settings' );
@@ -38,6 +38,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		$myaccount_func = instantiate_woo_custom_myaccount_functions();
 		$all_settings   = $myaccount_func->wcmp_settings_data();
 		$endpoints      = $all_settings['endpoints_settings'];
+		$endpoints_settings = get_option( 'wcmp_endpoints_settings' );
+		echo '<pre>endpoints_settings: '; print_r( $endpoints ); echo '</pre>';
 		?>
         <div class="dd endpoints-container">
             <ol class="dd-list endpoints">
@@ -46,7 +48,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		        ?>
 		        <li class="dd-item endpoint" data-id="<?php echo esc_attr( $key ); ?>" data-type="endpoint">
 		        	<label class="on-off-endpoint" for="<?php echo esc_attr( 'wcmp_endpoint_'. $key  . '_active' ); ?>">
-				        <input type="checkbox" class="hide-show-check" name="wcmp_endpoints_settings[<?php echo esc_attr( $key ); ?>][active]" id="<?php echo esc_attr( 'wcmp_endpoint_'. $key  . '_active' ); ?>" value="<?php echo esc_attr( $key ); ?>" <?php checked( $endpoint['active'], esc_attr( $key ) ); ?>>
+				        <input type="checkbox" class="hide-show-check" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $key ); ?>][active]" id="<?php echo esc_attr( 'wcmp_endpoint_'. $key  . '_active' ); ?>" value="<?php echo esc_attr( $key ); ?>" <?php checked( $endpoint['active'], esc_attr( $key ) ); ?>>
 				        <i class="fa fa-power-off"></i>
 				    </label>
 				    <div class="open-options field-type">
@@ -95,7 +97,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					                        </label>					                        
 					                    </th>
 					                    <td>
-					                        <input type="text" name="wcmp_endpoints_settings[<?php echo esc_attr( $key ); ?>][slug]" id="<?php echo esc_attr( 'wcmp_endpoint_'. $key  . '_slug' ); ?>" value="<?php echo esc_attr( $endpoint['slug'] ); ?>">
+					                        <input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $key ); ?>][slug]" id="<?php echo esc_attr( 'wcmp_endpoint_'. $key  . '_slug' ); ?>" value="<?php echo esc_attr( $endpoint['slug'] ); ?>">
 						                    <p class="description">
 					                        	<?php
 					                        	esc_html_e( 'Text appended to your page URLs to manage new contents in account pages. It must be unique for every page.', 'woo-custom-my-account-page' );
@@ -115,7 +117,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					                        </label>				                        
 					                    </th>
 					                    <td>
-					                        <input type="text" name="wcmp_endpoints_settings[<?php echo esc_attr( $key ); ?>][label]" id="<?php echo esc_attr( 'wcmp_endpoint_'. $key . '_label' ); ?>" value="<?php echo esc_attr( $endpoint['label'] ); ?>">					                      
+					                        <input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $key ); ?>][label]" id="<?php echo esc_attr( 'wcmp_endpoint_'. $key . '_label' ); ?>" value="<?php echo esc_attr( $endpoint['label'] ); ?>">					                      
 						                    <p class="description">
 					                        	<?php
 					                        	esc_html_e( 'Menu item for this endpoint in "My Account".', 'woo-custom-my-account-page' );
@@ -129,7 +131,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					                        <label for="<?php echo esc_attr( 'wcmp_endpoint_'. $key . '_icon' ); ?>"><?php esc_html_e( 'Endpoint icon', 'woo-custom-my-account-page' ); ?></label>
 					                    </th>
 					                    <td>
-					                    	<input type="text" name="wcmp_endpoints_settings[<?php echo esc_attr( $key ); ?>][icon]" id="<?php echo esc_attr( 'wcmp_endpoint_'. $key . '_icon' ); ?>" value="<?php echo esc_attr( $endpoint['icon'] ); ?>">
+					                    	<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $key ); ?>][icon]" id="<?php echo esc_attr( 'wcmp_endpoint_'. $key . '_icon' ); ?>" value="<?php echo esc_attr( $endpoint['icon'] ); ?>">
 						                    <p class="description">
 					                        	<?php
 					                        	esc_html_e( 'Endpoint icon for "My Account" menu option.', 'woo-custom-my-account-page' );
@@ -143,7 +145,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					                        <label for="<?php echo esc_attr( 'wcmp_endpoint_'. $key . '_class' ); ?>"><?php esc_html_e( 'Endpoint class', 'woo-custom-my-account-page' ); ?></label>
 					                    </th>
 					                    <td>
-					                        <input type="text" name="wcmp_endpoints_settings[<?php echo esc_attr( $key ); ?>][class]" id="<?php echo esc_attr( 'wcmp_endpoint_'. $key . '_class' ); ?>" value="<?php echo esc_attr( $endpoint['class'] ); ?>">
+					                        <input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $key ); ?>][class]" id="<?php echo esc_attr( 'wcmp_endpoint_'. $key . '_class' ); ?>" value="<?php echo esc_attr( $endpoint['class'] ); ?>">
 					                        <p class="description">
 					                        	<?php
 					                        	esc_html_e( 'Add additional classes to endpoint container.', 'woo-custom-my-account-page' );
@@ -157,7 +159,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					                        <label for="<?php echo esc_attr( 'wcmp_endpoint_'. $key . '_usr_roles' ); ?>"><?php esc_html_e( 'User roles', 'woo-custom-my-account-page' ); ?></label>
 					                    </th>
 					                    <td>
-					                        <select name="wcmp_endpoints_settings[<?php echo esc_attr( $key ); ?>][usr_roles][]" id="<?php echo esc_attr( 'wcmp_endpoint_'. $key . '_usr_roles' ); ?>" multiple="" tabindex="-1" aria-hidden="true">
+					                        <select name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $key ); ?>][usr_roles][]" id="<?php echo esc_attr( 'wcmp_endpoint_'. $key . '_usr_roles' ); ?>" multiple="" tabindex="-1" aria-hidden="true">
                                                <?php
                                                	if ( $user_roles ) {
 	                                                foreach ( $user_roles as $usrrole_slug => $usrrole_arr ) { 
@@ -185,6 +187,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					                        </p>
 					                    </td>
 					                </tr>
+					                <input type="hidden" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $key ); ?>][type]" id="<?php echo esc_attr( 'wcmp_endpoint_'. $key  . '_type' ); ?>" value="<?php echo esc_attr( $endpoint['type'] ); ?>">
 					            </tbody>
 					        </table>
 				        </div>
@@ -193,8 +196,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 		        <?php
 		    		}
 		        ?>
+		         <input type="hidden" class="endpoints-order" name="wcmp_endpoints_settings[endpoints-order]" id="<?php echo esc_attr( 'wcmp_endpoint_endpoints-order' ); ?>" value="">
 		    </ol>    
-        </div>	
+        </div>
+        <div class="new-field-form" style="display: none;">
+            <label for="yith-wcmap-new-field"><?php esc_html_x( 'Name', 'Label for new endpoint title',
+                    'yith-woocommerce-customize-myaccount-page' ); ?>
+                <input type="text" id="yith-wcmap-new-field" name="yith-wcmap-new-field" value="">
+            </label>
+            <div class="loader"></div>
+            <p class="error-msg"></p>
+        </div>
 		<?php submit_button(); ?>
 	</form>
 </div>
