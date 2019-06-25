@@ -36,29 +36,6 @@ jQuery(document).ready(function($) {
     $( '.wcmp-admin-color-picker' ).wpColorPicker();
     var endpoints_container = $( ".endpoints-container" );
     var general_container   = $( ".wcmp_general_settings" );
-    // function init_tinyMCE( id ) {
-
-    //     // get tinymce options
-    //     var mceInit = tinyMCEPreInit.mceInit,
-    //         mceKey  = Object.keys(mceInit)[0],
-    //         mce     = mceInit[ mceKey ],
-    //     // get quicktags options
-    //         qtInit  = tinyMCEPreInit.qtInit,
-    //         qtKey   = Object.keys(qtInit)[0],
-    //         qt      = mceInit[ qtKey ];
-
-    //     // change id
-    //     mce.selector    = id;
-    //     mce.body_class  = mce.body_class.replace( mceKey, id );
-    //     qt.id           = id;
-
-    //     tinyMCE.init( mce );
-    //     tinyMCE.execCommand('mceRemoveEditor', true, id );
-    //     tinyMCE.execCommand('mceAddEditor', true, id );
-
-    //     quicktags( qt );
-    //     QTags._buttonsInit();
-    // }
 
     /*################################
          SORT AND SAVE ENDPOINTS
@@ -71,16 +48,16 @@ jQuery(document).ready(function($) {
         });
     }
 
-    $( 'form#plugin-fw-wc' ).on( 'submit', function ( ev ) {
-
+    $( 'form#wbwcmp_endpoints_settings' ).on( 'submit', function ( ev ) {
+        ev.preventDefault();
         if( typeof $.fn.nestable == 'undefined' ) {
             return;
         }
 
         var j = $('.dd').nestable('serialize'),
             v = JSON.stringify(j);
-
         $( 'input.endpoints-order' ).val( v );
+        $(this).unbind(ev);
     });
     
     /*################################
@@ -185,22 +162,12 @@ jQuery(document).ready(function($) {
 
                 // reinit select
                 applySelect2( new_content.find( 'select' ) );
-                init_tinyMCE( new_content.find('textarea').attr('id' ) );
+               // init_tinyMCE( new_content.find('textarea').attr('id' ) );
 
                 $(document).trigger( 'yith_wcmap_field_added' );
             }
         });
     };
-
-    /*##############################
-        MOVE ENDPOINT
-     #############################*/
-
-    endpoints_container.on( 'change', function( ev, elem ) {
-        if( typeof elem != 'undefined' ) {
-            //init_tinyMCE(elem.find('textarea').attr('id'));
-        }
-    });
 
     /*##############################
         HIDE / SHOW ENDPOINT

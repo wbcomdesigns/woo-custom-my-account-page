@@ -32,25 +32,24 @@ $logout_url = ( function_exists( 'wc_logout_url' ) ) ? wc_logout_url() : wc_get_
 </div>
 
 <?php do_action( 'wcmp_before_endpoints_menu' ); ?>
-
 <ul class="myaccount-menu">
 
     <?php do_action( 'wcmp_before_endpoints_items' ); ?>
 
     <?php foreach( $endpoints as $endpoint => $options ) {
 
-        // if( isset( $options['children'] ) ) {
-        //     /**
-        //      * Print endpoints group
-        //      */
-        //     do_action( 'yith_wcmap_print_endpoints_group', $endpoint, $options );
-        // }
-        // else {
+        if( isset( $options['children'] ) ) {
+            /**
+             * Print endpoints group
+             */
+            do_action( 'wcmp_print_endpoints_group', $endpoint, $options );
+        }
+        else {
             /**
              * Print single endpoint
              */
             do_action('wcmp_print_single_endpoint', $endpoint, $options );
-        //}
+        }
     } ?>
 
     <?php do_action( 'wcmp_after_endpoints_items' ); ?>

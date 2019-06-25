@@ -69,10 +69,11 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		public function __construct() {
 			add_action( 'init', array( $this, 'init' ), 100 );
 			// redirect to the default endpoint
-			add_action( 'template_redirect', array( $this, 'redirect_to_default' ), 150 );
+			//add_action( 'template_redirect', array( $this, 'redirect_to_default' ), 150 );
 			// Add new navigation.
 			add_action( 'woocommerce_account_navigation', array( $this, 'wcmp_add_my_account_menu' ), 10 );
 			add_action( 'wcmp_print_single_endpoint', array( $this, 'wcmp_print_single_endpoint' ), 10, 2 );
+			add_action( 'wcmp_print_endpoints_group', array( $this, 'wcmp_print_endpoints_group' ), 10, 2 );
 		}
 
 		public function wcmp_get_icon( $key ) {
@@ -110,6 +111,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 				foreach ( $endpoints as $key => $endpoint ) {
 					$icon               = $this->wcmp_get_icon( $key );
 					$endpoint_arr[$key] = array(
+						'type'      => 'endpoint',
 						'active'    => $key,
 						'slug'      => $key,
 						'label'     => $endpoint,
@@ -164,12 +166,22 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$endpoints_settings = get_option( 'wcmp_endpoints_settings' );
 
 			/* Endpoints settings */
-			if ( ! empty( $endpoints_settings ) ) {
-				foreach ( $endpoints_settings as $key => $endpoint ) {
+			if ( isset( $endpoints_settings['endpoints'] ) ) {
+				foreach ( $endpoints_settings['endpoints'] as $key => $endpoint ) {
 					if ( array_key_exists( 'active', $endpoint ) ) {
 						$endpoints[$key]['active'] = $endpoint['active'];
 					} else {
 						$endpoints[$key]['active'] = '';
+					}
+					if ( ! empty( $endpoint['type'] ) ) {
+						$endpoints[$key]['type'] = $endpoint['type'];
+					} else {
+						$endpoints[$key]['type'] = 'endpoint';
+					}
+					if ( isset( $endpoint['open'] ) ) {
+						$endpoints[$key]['open'] = $endpoint['open'];
+					} else {
+						$endpoints[$key]['open'] = 'no';
 					}
 					if ( ! empty( $endpoint['slug'] ) ) {
 						$endpoints[$key]['slug'] = $endpoint['slug'];
@@ -189,17 +201,32 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 					if ( ! empty( $endpoint['class'] ) ) {
 						$endpoints[$key]['class'] = $endpoint['class'];
 					} else {
-						$endpoints[$key]['class'] = $default_endpoints[$key]['class'];
+						$endpoints[$key]['class'] = '';
 					}
 					if ( ! empty( $endpoint['usr_roles'] ) ) {
 						$endpoints[$key]['usr_roles'] = $endpoint['usr_roles'];
 					} else {
-						$endpoints[$key]['usr_roles'] = $default_endpoints[$key]['usr_roles'];
+						$endpoints[$key]['usr_roles'] = array();
 					}
 				}	
 			} else {
 				$endpoints = $default_endpoints;
 			}
+			if ( isset( $endpoints_settings['endpoints-order'] ) && ! empty( $endpoints_settings['endpoints-order'] ) ) {
+				$endpoint_orders = json_decode( $endpoints_settings['endpoints-order'], true );
+				foreach ( $endpoint_orders as $key => $endpoint_data ) {
+					if ( 'group' === $endpoint_data['type'] && isset( $endpoint_data['children'] ) ) {
+						if ( ! empty( $endpoint_data['children'] ) ) {
+							foreach ( $endpoint_data['children'] as $index => $child_endpoint ) {
+								$child_data_arr = $endpoints[$child_endpoint['id']];
+								$group_id       = $endpoint_data['id'];
+								$endpoints[$group_id]['children'][$child_endpoint['id']] = $child_data_arr;
+								unset( $endpoints[$child_endpoint['id']] );
+							}
+						}	
+					}
+				}
+			}	
 
 			/* General settings */
 			if ( ! empty( $general_settings ) ) {
@@ -487,12 +514,61 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 	        return apply_filters( 'wcmp_get_current_endpoint', $current );
 	    }
 
+        /**
+	     * Print endpoints group on front menu.
+	     *
+	     * @param  string $endpoint
+	     * @param  array $options
+ 	     * @since  1.0.0
+	     * @author Wbcom Designs
+	     */
+	    public function wcmp_print_endpoints_group( $endpoint, $options ) {
+
+	        $classes = array( 'group-' . $endpoint );
+	        $current = $this->wcmp_get_current_endpoint();
+
+	        $all_settings     = $this->wcmp_settings_data();
+			$general_settings = $all_settings['general_settings'];
+
+	        ! empty( $options['class'] ) && $classes[] = $options['class'];
+
+	        // check in child and add class active.
+	        foreach( $options['children'] as $child_key => $child ) {
+	            if( isset( $child['slug'] ) && $child_key == $current && WC()->query->get_current_endpoint() != '' ) {
+		            $options['open']    = true;
+	                $classes[]          = 'active';
+	                break;
+	            }
+	        }
+
+		    $class_icon = $options['open'] ? 'fa-chevron-up' : 'fa-chevron-down';
+	        $istab      = $general_settings['menu_style'] == 'tab' ? '-tab' : '';
+	        // options for style tab.
+		    if( $istab ) {
+			    // force option open to true.
+			    $options['open'] = true;
+		        $class_icon = 'fa-chevron-down';
+			    $classes[] = 'is-tab';
+	        }
+
+	        $classes = apply_filters( 'wcmp_endpoints_group_class', $classes, $endpoint, $options );
+
+	        // build args array
+	        $args = apply_filters( 'wcmp_print_endpoints_group_group', array(
+	            'options'       => $options,
+	            'classes'       => $classes,
+	            'class_icon'    => $class_icon
+	        ));
+
+	        wc_get_template( 'wcmp-myaccount-menu-group.php', $args, '', WCMP_PLUGIN_PATH . 'public/template/' );
+	    }
+
 	    /**
 		 * Redirect to default endpoint
 		 *
 		 * @access public
-		 * @since 1.0.4
-		 * @author Francesco Licandro
+	     * @since  1.0.0
+	     * @author Wbcom Designs
 		 */
 		public function redirect_to_default(){
 
@@ -502,19 +578,18 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// }
 
 			$current_endpoint = $this->wcmp_get_current_endpoint();
-			// if a specific endpoint is required return
-            if( $current_endpoint != 'dashboard' || apply_filters( 'yith_wcmap_no_redirect_to_default', false ) ) {
+			// if a specific endpoint is required return.
+            if ( $current_endpoint != 'dashboard' || apply_filters( 'wcmp_no_redirect_to_default', false ) ) {
                 return;
             }
             $all_settings     = $this->wcmp_settings_data();
 			$general_settings = $all_settings['general_settings'];
 	        $default_endpoint = $general_settings['default_endpoint'];
+			// let's third part filter default endpoint.
+			$default_endpoint = apply_filters( 'wcmp_default_endpoint', $default_endpoint );
+			$url              = wc_get_page_permalink( 'myaccount' );
 
-			// let's third part filter default endpoint
-			$default_endpoint = apply_filters( 'yith_wcmap_default_endpoint', $default_endpoint );
-			$url = wc_get_page_permalink( 'myaccount' );
-
-            // otherwise if I'm not in my account yet redirect to default
+            // otherwise if I'm not in my account yet redirect to default.
             if( ! get_option( 'yith_wcmap_is_my_account', true ) && ! isset( $_REQUEST['elementor-preview'] ) && $current_endpoint != $default_endpoint ) {
 				$default_endpoint != 'dashboard' && $url = wc_get_endpoint_url( $default_endpoint, '', $url );
 				wp_safe_redirect( $url );

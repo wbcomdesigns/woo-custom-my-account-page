@@ -103,6 +103,16 @@ class Woo_Custom_My_Account_Page_Admin {
 			}	
 			if ( ! wp_script_is( 'woo-custom-my-account-page-admin-js', 'enqueued' ) ) {
 				wp_enqueue_script( 'woo-custom-my-account-page-admin-js', plugin_dir_url( __FILE__ ) . 'assets/js/woo-custom-my-account-page-admin.js', array( 'jquery', 'wp-color-picker', 'nestable', 'jquery-ui-dialog' ), time(), false );
+				wp_localize_script( 'woo-custom-my-account-page-admin-js', 'ywcmap', array(
+					'ajaxurl'  	    => admin_url( 'admin-ajax.php' ),
+					'action_add'    => 'wcmp_add_field',
+					'show_lbl'	    => esc_html__( 'Show', 'woo-custom-my-account-page' ),
+					'hide_lbl'	    => esc_html__( 'Hide', 'woo-custom-my-account-page' ),
+					// 'loading'	    => '<img src="' . yith_wcmap_ASSETS_URL . '/images/wpspin_light.gif' . '">',
+					'checked'	    => '<i class="fa fa-check"></i>',
+					'error_icon'    => '<i class="fa fa-times"></i>',
+					'remove_alert' 	=> esc_html__( 'Are you sure that you want to delete this endpoint?', 'woo-custom-my-account-page' )
+				));
 			}
 
 		}
@@ -228,5 +238,227 @@ class Woo_Custom_My_Account_Page_Admin {
 	public function wcmp_endpoints_settings_content() {
 		require_once 'partials/wcmp-endpoints-settings.php';
 	}
+
+	/**
+	 * Add a new field using ajax.
+	 *
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_add_field_ajax(){
+		global $wp_roles;
+		if ( ! ( isset( $_REQUEST['action'] ) && 'wcmp_add_field' == $_REQUEST['action'] ) || ! isset( $_REQUEST['field_name'] ) || ! isset( $_REQUEST['target'] ) ) {
+			die();
+		}
+
+		// Check if is endpoint.
+		$request          = trim( $_REQUEST['target'] );
+		// Build field key.
+        $field            = $this->create_field_key( $_REQUEST['field_name'] );
+
+        $options_function = "wcmp_get_default_{$request}_options";
+        $print_function   = "wcmp_admin_print_{$request}_field";
+
+        // echo '<pre>options_function: '; print_r( $options_function ); echo '</pre>';
+        // echo '<pre>print_function: '; print_r( $print_function ); echo '</pre>';
+
+        // if ( ! $field || ! function_exists( $options_function ) || ! function_exists( $print_function ) ) {
+        //     wp_send_json( array(
+        //         'error' => esc_html__( 'An error has occurred or this endpoint field already exists. Please try again.', 'woo-custom-my-account-page' ),
+        //         'field' => false
+        //     ) );
+        // }
+
+        // Build args array.
+        $args = array(
+            'endpoint'  => $field,
+            'options'   => $this->$options_function( $field ),
+            'id'        => 'wcmp_endpoint',
+            'usr_roles' => $wp_roles->roles
+        );
+
+        ob_start();
+        $this->$print_function( $args );
+        $html = ob_get_clean();
+
+        wp_send_json( array(
+            'html'    => $html,
+            'field'   => $field
+        ) );
+	}
+
+	/**
+	 * Print endpoint field options.
+	 *
+	 * @since  1.0.0
+	 * @param  array $args Template args array
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_admin_print_endpoint_field( $args ) {
+
+	    // let third part filter template args.
+	    $args = apply_filters( 'wcmp_admin_print_endpoint_field', $args );
+	    extract( $args );
+
+	    include( WCMP_PLUGIN_PATH . 'admin/partials/endpoint-item.php' );
+	}
+
+	/**
+	 * Print endpoints group field options.
+	 *
+	 * @since  1.0.0
+	 * @param  array $args Template args array
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_admin_print_group_field( $args ) {
+
+	    // let third part filter template args.
+	    $args = apply_filters( 'wcmp_admin_print_endpoints_group', $args );
+        extract( $args );
+
+        include( WCMP_PLUGIN_PATH . 'admin/partials/group-item.php' );
+	}
+
+	/**
+     * Print endpoints link field options.
+     *
+     * @since  1.0.0
+     * @param  array $args Template args array
+     * @author Wbcom Designs
+	 * @access public
+     */
+    public function wcmp_admin_print_link_field( $args ) {
+        // let third part filter template args.
+        $args = apply_filters( 'wcmp_admin_print_link_field', $args );
+        extract( $args );
+
+        include( WCMP_PLUGIN_PATH . 'admin/partials/link-item.php' );
+    }
+
+	/**
+	 * Create field key.
+	 *
+	 * @since  1.0.0
+	 * @param  string $key
+	 * @return string
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function create_field_key( $key ) {
+
+		// Build endpoint key.
+		$field_key = strtolower( $key );
+		$field_key = trim( $field_key );
+		// Clear from space and add -
+		$field_key = sanitize_title( $field_key );
+
+		return $field_key;
+	}
+
+    /**
+     * Get default options for new endpoints.
+     *
+     * @since  1.0.0
+     * @param  string $endpoint
+     * @return array
+     * @author Wbcom Designs
+     * @access public
+     */
+    public function wcmp_get_default_endpoint_options( $endpoint ) {
+
+        $endpoint_name = $this->wcmp_build_label( $endpoint );
+
+        // Build endpoint options.
+        $options = array(
+        	'type'      => 'endpoint',
+            'slug'      => $endpoint,
+            'active'    => true,
+            'label'     => $endpoint_name,
+            'icon'      => '',
+            'class'     => '',
+            'content'   => '',
+            'usr_roles' => array()
+        );
+
+        return apply_filters( 'wcmp_get_default_endpoint_options', $options );
+    }
+
+    /**
+     * Get default options for new group.
+     *
+     * @since  1.0.0
+     * @param  string $group
+     * @return array
+     * @author Wbcom Designs
+     * @access public
+     */
+    public function wcmp_get_default_group_options( $group ) {
+
+        $group_name = $this->wcmp_build_label($group);
+
+        // build endpoint options
+        $options = array(
+        	'type'      => 'group',
+        	'slug'      => $group,
+	        'active'    => true,
+            'label'     => $group_name,
+	        'usr_roles' => '',
+            'icon'      => '',
+            'class'     => '',
+            'open'      => true,
+            'children'  => array()
+        );
+
+        return apply_filters( 'wcmp_get_default_group_options', $options );
+    }
+
+    /**
+     * Get default options for new links.
+     *
+     * @since  1.0.0
+     * @param  string $endpoint
+     * @return array
+     * @author Wbcom Designs
+     * @access public
+     */
+    public function wcmp_get_default_link_options( $endpoint ) {
+
+        $endpoint_name = $this->wcmp_build_label( $endpoint );
+
+        // Build endpoint options.
+        $options = array(
+        	'type'          => 'url',
+            'url'           => '#',
+            'active'        => true,
+            'label'         => $endpoint_name,
+            'icon'          => '',
+            'class'         => '',
+            'usr_roles'     => '',
+            'target_blank'  => false
+        );
+
+        return apply_filters( 'wcmp_get_default_link_options', $options );
+    }
+
+    /**
+     * Build endpoint label by name.
+     *
+     * @since  1.0.0
+     * @param  string $name
+     * @return string
+     * @author Wbcom Designs
+     * @access public
+     */
+    public function wcmp_build_label( $name ) {
+
+        $label = preg_replace( '/[^a-z]/', ' ', $name );
+        $label = trim( $label );
+        $label = ucfirst( $label );
+
+        return $label;
+    }
 
 }
