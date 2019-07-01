@@ -47,18 +47,6 @@ jQuery(document).ready(function($) {
             'collapseBtnHTML' : ''
         });
     }
-
-    $( 'form#wbwcmp_endpoints_settings' ).on( 'submit', function ( ev ) {
-        ev.preventDefault();
-        if( typeof $.fn.nestable == 'undefined' ) {
-            return;
-        }
-
-        var j = $('.dd').nestable('serialize'),
-            v = JSON.stringify(j);
-        $( 'input.endpoints-order' ).val( v );
-        $(this).unbind(ev);
-    });
     
     /*################################
         OPEN ENDPOINT OPTIONS
@@ -78,7 +66,10 @@ jQuery(document).ready(function($) {
     /*##############################
         ADD ENDPOINTS
     ###############################*/
-
+    
+    $( document ).on( 'wcmp_field_added', function(ev) {
+        $('body').removeClass('product_preview_open');
+    });
     $(document).on('click', '.add_new_field', function(ev){
         ev.stopPropagation();
 
@@ -109,10 +100,10 @@ jQuery(document).ready(function($) {
 
                         $(this).find('.loader').css( 'display', 'inline-block' );
 
-                        // class add field handler
+                        // class add field handler.
                         $(this).add_new_field_handler( target );
 
-                        $(document).one( 'yith_wcmap_field_added', function() {
+                        $(document).one( 'wcmp_field_added', function() {
                             content.dialog("close");
                         });
                     }
@@ -128,7 +119,7 @@ jQuery(document).ready(function($) {
     $.fn.add_new_field_handler = function( target ){
 
         var t        = $(this),
-            value    = t.find( '#yith-wcmap-new-field' ).val(),
+            value    = t.find( '#wcmp-new-field' ).val(),
             error    = t.find( '.error-msg' );
 
         // abort prev ajax request
@@ -138,11 +129,11 @@ jQuery(document).ready(function($) {
 
         // else check ajax
         xhr = $.ajax({
-            url: ywcmap.ajaxurl,
+            url: wcmp.ajaxurl,
             data: {
                 target: target,
                 field_name: value,
-                action: ywcmap.action_add
+                action: wcmp.action_add
             },
             dataType: 'json',
             beforeSend: function(){},
@@ -161,10 +152,11 @@ jQuery(document).ready(function($) {
                 $( '.endpoints-container > ol.endpoints > li.endpoint' ).last().after( new_content );
 
                 // reinit select
-                applySelect2( new_content.find( 'select' ) );
+                applySelect2( new_content.find( 'select' ), true );
                // init_tinyMCE( new_content.find('textarea').attr('id' ) );
 
-                $(document).trigger( 'yith_wcmap_field_added' );
+                $(document).trigger( 'wcmp_field_added' );
+                $(document).trigger( 'wcmp_field_order' );
             }
         });
     };
@@ -184,7 +176,7 @@ jQuery(document).ready(function($) {
         checked = ( ( check.is(':checked') && trigger == 'checkbox' ) || ( ! check.is(':checked') && trigger == 'link' ) ) ? true : false;
         all_check.prop( 'checked', checked );
         // set label
-        label = ( check.is(':checked') ) ? ywcmap.hide_lbl : ywcmap.show_lbl;
+        label = ( check.is(':checked') ) ? wcmp.hide_lbl : wcmp.show_lbl;
         all_link.html( label );
     };
 
@@ -211,7 +203,7 @@ jQuery(document).ready(function($) {
             return false;
         }
 
-        var r = confirm( ywcmap.remove_alert );
+        var r = confirm( wcmp.remove_alert );
         if ( r == true ) {
             var item = t.closest( '.dd-item' ),
                 is_group = item.find( 'ol.endpoints' ),
@@ -230,6 +222,7 @@ jQuery(document).ready(function($) {
             }
             // then remove field
             item.remove();
+            $(document).trigger( 'wcmp_field_order' );
         } else {
             return false;
         }
@@ -263,7 +256,6 @@ jQuery(document).ready(function($) {
                         minimumResultsForSearch: 10
                     };
                 }
-
                 $(this).select2(data);
             });
         }
@@ -272,4 +264,17 @@ jQuery(document).ready(function($) {
     applySelect2( endpoints_container.find( 'select' ), true );
     applySelect2( general_container.find( 'select' ), true );
     applySelect2( $( '#yith_wcmap_panel_general' ).find( 'select' ), false );
+
+    $( document ).on( 'wcmp_field_order', function(ev) {
+        console.log('huhb');
+        if( typeof $.fn.nestable != 'undefined' ) {
+            var j = $('.dd').nestable('serialize'),
+                v = JSON.stringify(j);
+            $( 'input.endpoints-order' ).val( v );
+        }
+    });
+
+    $('.dd').nestable().on('change', function() {
+      $(document).trigger( 'wcmp_field_order' );
+    });
 });

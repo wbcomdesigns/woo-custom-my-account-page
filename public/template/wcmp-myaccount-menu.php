@@ -5,7 +5,6 @@
  * @since 1.0.0
  */
 global $woocommerce, $wp, $post;
-
 $logout_url = ( function_exists( 'wc_logout_url' ) ) ? wc_logout_url() : wc_get_endpoint_url( 'customer-logout', '',  $my_account_url );
 ?>
 <div class="user-profile">

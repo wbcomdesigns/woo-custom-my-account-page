@@ -163,7 +163,7 @@ class Woo_Custom_My_Account_Page {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Woo_Custom_My_Account_Page_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Woo_Custom_My_Account_Page_Admin();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );

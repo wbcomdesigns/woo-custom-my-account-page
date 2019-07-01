@@ -18,7 +18,7 @@
         <i class="opener fa <?php echo $class_icon ?>"></i>
     </a>
 
-    <ul class="myaccount-submenu" <?php echo $options['open'] ? '' : 'style="display:none"'; ?>>
+    <ul class="myaccount-submenu" <?php echo $options['open'] == 'yes' ? '' : 'style="display:none"'; ?>>
         <?php foreach( $options['children'] as $child => $child_options ) {
             /**
              * Print single endpoint
