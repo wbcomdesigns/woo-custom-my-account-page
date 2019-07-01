@@ -188,7 +188,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 						if ( isset( $endpoint['open'] ) ) {
 							$endpoints[$key]['open'] = $endpoint['open'];
 						} else {
-							$endpoints[$key]['open'] = $default_values['open'];
+							$endpoints[$key]['open'] = 'no';
 						}
 					}	
 					if ( ! empty( $endpoint['slug'] ) ) {

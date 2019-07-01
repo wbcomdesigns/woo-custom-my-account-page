@@ -67,9 +67,6 @@ jQuery(document).ready(function($) {
         ADD ENDPOINTS
     ###############################*/
     
-    $( document ).on( 'wcmp_field_added', function(ev) {
-        $('body').removeClass('product_preview_open');
-    });
     $(document).on('click', '.add_new_field', function(ev){
         ev.stopPropagation();
 
@@ -194,7 +191,6 @@ jQuery(document).ready(function($) {
      ##############################*/
 
     $(document).on('click', '.remove-trigger', function(){
-        
         var t = $(this),
             endpoint = t.data('endpoint'),
             to_remove = $( 'input.endpoint-to-remove' );
@@ -239,7 +235,7 @@ jQuery(document).ready(function($) {
         if( typeof $.fn.select2 != 'undefined' ) {
             var data;
             $.each( select, function () {
-                // build data
+                // Build data.
                 if( $(this).hasClass('icon-select') ) {
                     data = {
                         templateResult: format,
@@ -266,7 +262,6 @@ jQuery(document).ready(function($) {
     applySelect2( $( '#yith_wcmap_panel_general' ).find( 'select' ), false );
 
     $( document ).on( 'wcmp_field_order', function(ev) {
-        console.log('huhb');
         if( typeof $.fn.nestable != 'undefined' ) {
             var j = $('.dd').nestable('serialize'),
                 v = JSON.stringify(j);

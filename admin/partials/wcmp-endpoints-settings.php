@@ -58,6 +58,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		    	}
 		        ?>
                 <input type="hidden" class="endpoints-order" name="wcmp_endpoints_settings[endpoints-order]" id="<?php echo esc_attr( 'wcmp_endpoint_endpoints-order' ); ?>" value="<?php echo esc_attr( $endpoint_order ); ?>">
+                <input type="hidden" class="endpoint-to-remove" name="wcmp_endpoints_settings[to_remove]" value="" />
 		    </ol>    
         </div>
         <div class="new-field-form" style="display: none;">

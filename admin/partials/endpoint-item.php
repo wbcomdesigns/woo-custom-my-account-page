@@ -4,7 +4,9 @@
  */
 
 global $wp_roles;
-$user_roles = $wp_roles->roles;
+$user_roles                = $wp_roles->roles;
+$myaccount_func            = instantiate_woo_custom_myaccount_functions();
+$default_endpoint_settings = $myaccount_func->default_endpoint_settings();
 ?>
 
 <li class="dd-item endpoint" data-id="<?php echo esc_attr( $options['slug'] ); ?>" data-type="endpoint">
@@ -42,6 +44,12 @@ $user_roles = $wp_roles->roles;
                     esc_html_e( 'Hide', 'woo-custom-my-account-page' );
                     ?> 
                 </span>
+                <?php if ( ! array_key_exists( $options['slug'], $default_endpoint_settings ) ) { ?>
+                    <span class="sep">|</span>
+                    <span class="remove-trigger" data-endpoint="<?php echo esc_attr( $options['slug'] ); ?>">
+                        <?php esc_html_e( 'Remove', 'woo-custom-my-account-page'); ?>
+                    </span>
+                <?php } ?>
             </div>
 
             <table class="options-table form-table">
