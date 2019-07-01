@@ -7,7 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 global $wp_roles;
-$user_roles = $wp_roles->roles;
+$user_roles     = $wp_roles->roles;
+$myaccount_func = instantiate_woo_custom_myaccount_functions();
 ?>
 
 <li class="dd-item endpoint group" data-id="<?php echo esc_attr( $options['slug'] ); ?>" data-type="group">
@@ -79,7 +80,7 @@ $user_roles = $wp_roles->roles;
                     <th>
                         <label for="<?php echo esc_attr( 'wcmp_endpoint_'. $options['slug'] . '_class' ); ?>">
                             <?php esc_html_e( 'Group class', 'woo-custom-my-account-page' ); ?>
-                        </label>                      
+                        </label>                    
                     </th>
                     <td>
                         <input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $options['slug'] ); ?>][class]" id="<?php echo esc_attr( 'wcmp_endpoint_'. $options['slug'] . '_class' ); ?>" value="<?php echo $options['class'] ?>">
@@ -151,7 +152,7 @@ $user_roles = $wp_roles->roles;
 
     </div>
 
-    <?php if( ! empty( $options['children'] ) ) : ?>
+    <?php if ( ! empty( $options['children'] ) ) : ?>
         <ol class="dd-list endpoints">
         <?php foreach ( (array) $options['children'] as $key => $single_options ) {
             $args = array(
