@@ -2,11 +2,11 @@ jQuery(document).ready(function($) {
     "use strict";
 
     function preload_popup() {
-        $('body').append( '<div id="yith-wcmap-avatar-form-overlay" class="loading"></div>' );
+        $('body').append( '<div id="wcmp-avatar-form-overlay" class="loading"></div>' );
     }
 
     function center_popup() {
-        var p = $( '#yith-wcmap-avatar-form');
+        var p = $( '#wcmp-avatar-form');
 
         if( ! p.length ) {
             return false;
@@ -20,15 +20,15 @@ jQuery(document).ready(function($) {
             height   = ( ( window_h - 120 ) > o_height ) ? o_height : ( window_h - 120 );
 
         p.css({
-            'left' : (( window_w/2 ) - ( width/2 )),
-            'top' : (( window_h/2 ) - ( height/2 )),
-            'width'     : width + 'px',
-            'height'    : height + 'px'
+            'left'   : (( window_w/2 ) - ( width/2 )),
+            'top'    : (( window_h/2 ) - ( height/2 )),
+            'width'  : width + 'px',
+            'height' : height + 'px'
         });
     }
 
     function close_popup() {
-        $( '#yith-wcmap-avatar-form, #yith-wcmap-avatar-form-overlay' ).fadeOut('slow', function(){
+        $( '#wcmp-avatar-form, #wcmp-avatar-form-overlay' ).fadeOut('slow', function(){
             $(this).remove();
         });
     }
@@ -36,20 +36,20 @@ jQuery(document).ready(function($) {
     $(window).on( 'resize', center_popup );
 
     $('#load-avatar').click( function (ev) {
+        
         ev.preventDefault();
-
         preload_popup();
 
         $.ajax({
-            url: yith_wcmap.ajaxurl.toString().replace( '%%endpoint%%', yith_wcmap.actionPrint ),
+            url: wcmp.ajaxurl.toString().replace( '%%endpoint%%', wcmp.actionPrint ),
             data: {},
             dataType: 'html',
             success: function( res ) {
 
-                $('body').append( res ).find('#yith-wcmap-avatar-form-overlay').removeClass('loading');
+                $('body').append( res ).find('#wcmp-avatar-form-overlay').removeClass('loading');
                 center_popup();
 
-                $('#yith-wcmap-avatar-form-overlay, i.close-form').click(function(){
+                $('#wcmp-avatar-form-overlay, i.close-form').click(function(){
                     close_popup();
                 })
             }
@@ -69,5 +69,5 @@ jQuery(document).ready(function($) {
 
         $(this).find('i.opener').toggleClass( 'fa-chevron-down' ).toggleClass( 'fa-chevron-up' );
         $(this).next('.myaccount-submenu').slideToggle();
-    })
+    });
 });
