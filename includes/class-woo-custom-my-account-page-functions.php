@@ -70,6 +70,9 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			add_action( 'init', array( $this, 'init' ), 100 );
 			// redirect to the default endpoint
 			//add_action( 'template_redirect', array( $this, 'redirect_to_default' ), 150 );
+			// Filter user avatar.
+			add_filter( 'get_avatar', array( $this, 'wcmp_get_avatar' ), 100, 6 );
+			
 			// Add new navigation.
 			add_action( 'woocommerce_account_navigation', array( $this, 'wcmp_add_my_account_menu' ), 10 );
 			add_action( 'wcmp_print_single_endpoint', array( $this, 'wcmp_print_single_endpoint' ), 10, 2 );
@@ -472,7 +475,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 						'my_account_url' => get_permalink( wc_get_page_id( 'myaccount' ) ),
 						'avatar'	     => $general_settings['custom_avatar'] == 'yes'
 					));
-					wc_get_template( 'wcmp-myaccount-menu.php', $args, '', WCMP_PLUGIN_PATH . 'public/template/' );
+					wc_get_template( 'wcmp-myaccount-menu.php', $args, '', WCMP_PLUGIN_PATH . 'public/templates/' );
 					?>
 	            </div>
 	        <?php
@@ -513,7 +516,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 	            'classes'   => $classes
 	        ));
 
-	        wc_get_template( 'wcmp-myaccount-menu-item.php', $args, '', WCMP_PLUGIN_PATH . 'public/template/' );
+	        wc_get_template( 'wcmp-myaccount-menu-item.php', $args, '', WCMP_PLUGIN_PATH . 'public/templates/' );
 	    }
 
 	    public function wcmp_get_current_endpoint() {
@@ -574,7 +577,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 	            'class_icon' => $class_icon
 	        ));
 
-	        wc_get_template( 'wcmp-myaccount-menu-group.php', $args, '', WCMP_PLUGIN_PATH . 'public/template/' );
+	        wc_get_template( 'wcmp-myaccount-menu-group.php', $args, '', WCMP_PLUGIN_PATH . 'public/templates/' );
 	    }
 
 	    /**
@@ -734,6 +737,185 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 	        return $label;
 	    }
+
+	    /**
+		 * Get customer avatar for user
+		 *
+		 * @access public
+		 * @since 1.0.0
+		 * @param string $avatar
+		 * @param mixed $id_or_email
+		 * @param string $size
+		 * @param string $default
+		 * @param string $alt
+		 * @param array $args
+		 * @return string
+		 */
+		public function wcmp_get_avatar( $avatar, $id_or_email, $size, $default, $alt, $args = array() ) {
+
+			if( $this->get_avatar_filter() ){
+				return $avatar;
+			}
+
+			// prevent filter
+            remove_all_filters( 'get_avatar' );
+			// re add filter
+			add_filter( 'get_avatar', array( $this, 'wcmp_get_avatar' ), 100, 6 );
+
+			if ( empty( $args ) ) {
+				$args['size'] = ( int ) $size;
+				$args['height'] = $args['size'];
+				$args['width'] = $args['size'];
+				$args['alt']     = $alt;
+				$args['extra_attr'] = '';
+			}
+
+			$user = false;
+
+			if ( is_string( $id_or_email ) && is_email( $id_or_email ) ) {
+				$user = get_user_by( 'email', $id_or_email );
+			}
+			elseif ( $id_or_email instanceof WP_User ) {
+				// User Object
+				$user = $id_or_email;
+			}
+			elseif ( $id_or_email instanceof WP_Post ) {
+				// Post Object
+				$user = get_user_by( 'id', (int) $id_or_email->post_author );
+			}
+			elseif ( $id_or_email instanceof WP_Comment ) {
+
+				if ( ! empty( $id_or_email->user_id ) ) {
+					$user = get_user_by( 'id', (int) $id_or_email->user_id );
+				}
+				if ( ( ! $user || is_wp_error( $user ) ) && ! empty( $id_or_email->comment_author_email ) ) {
+					$email = $id_or_email->comment_author_email;
+					$user = get_user_by( 'email', $email );
+				}
+			}
+
+			// get the user ID
+			$user_id = ! $user ? $id_or_email : $user->ID;
+
+			// get custom avatar
+			$custom_avatar = get_user_meta( $user_id, 'wb-wcmp-avatar', true );
+
+			if( ! $custom_avatar ){
+				return $avatar;
+			}
+
+			// maybe resize img
+			$resized = $this->wcmp_resize_avatar_url( $custom_avatar, $size );
+			// if error occurred return
+			if( ! $resized ) {
+				return $avatar;
+			}
+
+			$src   = $this->wcmp_generate_avatar_url( $custom_avatar, $size );
+			$class = array( 'avatar', 'avatar-' . (int) $args['size'], 'photo' );
+
+			$avatar = sprintf(
+				"<img alt='%s' src='%s' class='%s' height='%d' width='%d' %s/>",
+				esc_attr( $args['alt'] ),
+				esc_url( $src ),
+				esc_attr( join( ' ', $class ) ),
+				(int) $args['height'],
+				(int) $args['width'],
+				$args['extra_attr']
+			);
+
+			return $avatar;
+		}
+
+        /**
+         * Prevent get avatar filter.
+         *
+         * @since  1.0.0
+         * @return boolean
+         */
+        public function get_avatar_filter(){
+            return apply_filters( 'wcmp_get_avatar_filter', get_option( 'wb-wcmp-custom-avatar', 'yes' ) != 'yes' );
+        }
+
+    	/**
+		 * Generate avatar path.
+		 *
+		 * @param $attachment_id
+		 * @param $size
+		 * @return string
+		 */
+		public function wcmp_generate_avatar_path( $attachment_id, $size ) {
+			// Retrieves attached file path based on attachment ID.
+			$filename = get_attached_file( $attachment_id );
+
+			$pathinfo  = pathinfo( $filename );
+			$dirname   = $pathinfo['dirname'];
+			$extension = $pathinfo['extension'];
+
+			// i18n friendly version of basename().
+			$basename = wp_basename( $filename, '.' . $extension );
+
+			$suffix    = $size . 'x' . $size;
+			$dest_path = $dirname . '/' . $basename . '-' . $suffix . '.' . $extension;
+
+			return $dest_path;
+		}
+
+		/**
+		 * Generate avatar url.
+		 *
+		 * @param $attachment_id
+		 * @param $size
+		 * @return mixed
+		 */
+		public function wcmp_generate_avatar_url( $attachment_id, $size ) {
+			// Retrieves path information on the currently configured uploads directory.
+			$upload_dir = wp_upload_dir();
+
+			// Generates a file path of an avatar image based on attachment ID and size.
+			$path = $this->wcmp_generate_avatar_path( $attachment_id, $size );
+
+			return str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $path );
+		}
+
+		/**
+		 * Resize avatar.
+		 *
+		 * @param $attachment_id
+		 * @param $size
+		 * @return boolean
+		 */
+		public function wcmp_resize_avatar_url( $attachment_id, $size ) {
+
+			$dest_path = $this->wcmp_generate_avatar_path( $attachment_id, $size );
+
+			if ( file_exists( $dest_path ) ) {
+				$resize = true;
+			} else {
+				// Retrieves attached file path based on attachment ID.
+				$path = get_attached_file( $attachment_id );
+
+				// Retrieves a WP_Image_Editor instance and loads a file into it.
+				$image = wp_get_image_editor( $path );
+
+				if ( ! is_wp_error( $image ) ) {
+
+					// Resizes current image.
+					$image->resize( $size, $size, true );
+
+					// Saves current image to file.
+					$image->save( $dest_path );
+
+					$resize = true;
+
+				}
+				else {
+					$resize = false;
+				}
+			}
+
+			return $resize;
+		}
 
 	}
 }

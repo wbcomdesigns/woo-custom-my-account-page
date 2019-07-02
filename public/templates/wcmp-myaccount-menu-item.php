@@ -2,7 +2,7 @@
 /**
  * MY ACCOUNT TEMPLATE MENU ITEM
  *
- * @since 2.0.0
+ * @since 1.0.0
  */
 is_array( $classes ) && $classes = implode( ' ', $classes );
 $target = ( isset( $options['target_blank'] ) && $options['target_blank'] ) ? 'target="_blank"' : '';

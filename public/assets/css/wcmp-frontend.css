@@ -182,16 +182,17 @@
     -moz-transition: all 0.3s ease;
 }
 
-.yith-wcmap-avatar-form-popup p {
+.wcmp-avatar-form-popup p {
     margin-bottom: 0;
 }
-.yith-wcmap-avatar-form-popup .submit {
+.wcmp-avatar-form-popup .submit {
     text-align: right;
 }
 
 #my-account-content .waitlist-title-section {
     display: none;
 }
+
 /*####################
  TAB STYLE
 ####################*/
@@ -272,7 +273,7 @@
 /*###########################
 AVATAR MODAL
 ###########################*/
-#yith-wcmap-avatar-form-overlay {
+#wcmp-avatar-form-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -280,7 +281,7 @@ AVATAR MODAL
     bottom: 0;
     background-color: rgba( 0,0,0,0.5 );
 }
-div#yith-wcmap-avatar-form-overlay.loading:before {
+div#wcmp-avatar-form-overlay.loading:before {
     border: 4px double #f3f3f3;
     border-top: 4px solid #333;
     border-radius: 50%;
@@ -305,29 +306,29 @@ div#yith-wcmap-avatar-form-overlay.loading:before {
     }
 }
 
-#yith-wcmap-avatar-form {
+#wcmp-avatar-form {
     background-color: rgba(255,255,255,1);
     padding: 30px;
     position: fixed;
     border: 3px solid #e0e0e0;
 }
 
-#yith-wcmap-avatar-form h3{
+#wcmp-avatar-form h3{
     font-size: 18px;
     padding-bottom: 5px;
     margin-bottom: 15px;
     border-bottom: 1px solid #e0e0e0;
 }
-#yith-wcmap-avatar-form input[type='submit']{
+#wcmp-avatar-form input[type='submit']{
     font-size: 14px;
     padding: 8px 16px;
     transition: all 0.3s ease;
 }
-#yith-wcmap-avatar-form p.submit{
+#wcmp-avatar-form p.submit{
     text-align: right;
     margin-bottom: 10px;
 }
-#yith-wcmap-avatar-form i.close-form {
+#wcmp-avatar-form i.close-form {
     position: absolute;
     top: -15px;
     right: -15px;
@@ -344,7 +345,7 @@ div#yith-wcmap-avatar-form-overlay.loading:before {
     color: #a0a0a0;
     transition: all 0.3s ease;
 }
-#yith-wcmap-avatar-form i.close-form:hover {
+#wcmp-avatar-form i.close-form:hover {
     color: #000;
     transition: all 0.3s ease;
 }
