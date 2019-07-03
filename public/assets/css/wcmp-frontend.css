@@ -113,7 +113,8 @@
     padding-right: 5px;
     padding-left: 35px;
 }
-#my-account-menu.position-right a.group-opener i {
+#my-account-menu.position-right a.group-opener i,
+#my-account-menu.position-right .myaccount-menu a.group-opener i.opener {
     right: auto;
     left: 15px;
 }
@@ -130,13 +131,13 @@
     text-transform: uppercase;
     border: 0;
 }
-.yith-wcmap .user-image {
+.wcmp-myaccount-template .user-image {
     position: relative;
     display: inline-block;
     overflow: hidden;
     cursor: pointer;
 }
-.yith-wcmap .user-image img {
+.wcmp-myaccount-template .user-image img {
     max-width: 100%;
     height: auto;
     display: block;
@@ -173,7 +174,7 @@
     vertical-align: middle;
     font-size: 15px;
 }
-.yith-wcmap .user-image:hover #load-avatar {
+.wcmp-myaccount-template .user-image:hover #load-avatar {
     transform: scale(1.5);
     -webkit-transform: scale(1.5);
     -moz-transform: scale(1.5);

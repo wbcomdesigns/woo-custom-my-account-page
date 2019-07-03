@@ -25,7 +25,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @var   Woo_Custom_My_Account_Page_Functions
 		 * @since 1.0.0
 		 */
-		protected static $_instance = null;
+		protected static $instance = null;
 
 		/**
 		 * Page templates
@@ -60,23 +60,136 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @static
 		 */
 		public static function instance() {
-			if ( is_null( self::$_instance ) ) {
-				self::$_instance = new self();
+			if ( is_null( self::$instance ) ) {
+				self::$instance = new self();
 			}
-			return self::$_instance;
+			return self::$instance;
 		}
 
 		public function __construct() {
 			add_action( 'init', array( $this, 'init' ), 100 );
-			// redirect to the default endpoint
-			//add_action( 'template_redirect', array( $this, 'redirect_to_default' ), 150 );
+
+			// Check if is shortcode my-account.
+			add_action( 'template_redirect', array( $this, 'wcmp_check_myaccount' ), 1 );
+
+			// Redirect to the default endpoint.
+			add_action( 'template_redirect', array( $this, 'redirect_to_default' ), 150 );
 			// Filter user avatar.
 			add_filter( 'get_avatar', array( $this, 'wcmp_get_avatar' ), 100, 6 );
+
+			// Mem if is my account page.
+			add_action( 'shutdown', array( $this, 'save_is_my_account' ) );
 			
 			// Add new navigation.
 			add_action( 'woocommerce_account_navigation', array( $this, 'wcmp_add_my_account_menu' ), 10 );
+			// Manage account content.
+            add_action( 'woocommerce_account_content', array( $this, 'manage_account_content' ), 1 );
+
 			add_action( 'wcmp_print_single_endpoint', array( $this, 'wcmp_print_single_endpoint' ), 10, 2 );
 			add_action( 'wcmp_print_endpoints_group', array( $this, 'wcmp_print_endpoints_group' ), 10, 2 );
+
+			// Shortcode to print default dashboard.
+			add_shortcode( 'default_dashboard_content', array( $this, 'wcmp_print_default_dashboard_content' ) );
+		}
+
+		/**
+		 * Print default dashboard content
+		 *
+		 * @access public
+		 * @since  1.0.0
+		 * @author Wbcom Designs
+		 */
+		public function wcmp_print_default_dashboard_content( $atts ) {
+
+			$content = '';
+			$template_name = 'myaccount/dashboard.php';
+			$template = apply_filters( 'wcmp_dashboard_shortcode_template', $template_name );
+
+			ob_start();
+			wc_get_template( $template, array(
+				'current_user' => get_user_by( 'id', get_current_user_id() ),
+				)
+			);
+			$content = ob_get_clean();
+
+			return $content;
+		}
+
+		/**
+         * Manage endpoint account content based on plugin option
+         *
+         * @since  1.0.0
+         * @author Wbcom Designs
+         * @return void
+         */
+        public function manage_account_content() {
+
+            // Search for active endpoints.
+            $active     = $this->wcmp_get_current_endpoint();
+            // Get active endpoint options by slug.
+            $endpoint   = $this->wcmp_get_endpoint_by( $active, 'key', $this->_menu_endpoints );
+            if( empty( $endpoint ) || ! is_array( $endpoint ) ){
+                return;
+            }
+            // Get key.
+            $key = key( $endpoint );
+
+            // Check in custom content.
+            if( ! empty( $endpoint[$key]['content'] ) ) {
+
+                remove_action( 'woocommerce_account_content', 'woocommerce_account_content' );
+
+                // Add compatibility with WSDesk - WordPress Support Desk.
+                // if( has_shortcode(  $endpoint[$key]['content'] , 'wsdesk_support') ) {
+                //     $this->enqueue_wsdesk_scripts();
+                // }
+
+                echo do_shortcode( $endpoint[$key]['content'] );
+            }
+        }
+
+        /**
+		 * Get endpoint by a specified key
+		 *
+		 * @since  1.0.0
+		 * @author Wbcom Designs
+		 * @param  string $value
+		 * @param  string $key Can be key or slug
+		 * @param  array $items Endpoint array
+		 * @return array
+		 */
+		public function wcmp_get_endpoint_by( $value, $key = 'key', $items = array() ) {
+
+			$accepted = apply_filters( 'wcmp_get_endpoint_by_accepted_key', array( 'key', 'slug' ) );
+
+			if ( ! in_array( $key, $accepted ) ) {
+				return array();
+			}
+			$settings  = $this->wcmp_settings_data();
+			$endpoints = '';
+			if ( isset( $settings['endpoints'] ) ) {
+				$endpoints = $settings['endpoints'];
+			}	
+			//if ( empty( $items ) && ! empty( $endpoints ) )
+			empty( $items ) && $items = $endpoints;
+			$find   = array();
+
+			foreach( $items as $id => $item ) {
+				if( ( $key == 'key' && $id == $value ) || ( isset( $item[ $key ] ) && $item[ $key ] == $value ) ) {
+					$find[ $id ] = $item;
+					continue;
+				}
+				elseif( isset( $item['children'] ) ) {
+					foreach( $item['children'] as $child_id => $child ) {
+						if( ( $key == 'key' && $child_id == $value ) || ( isset( $child[ $key ] ) && $child[ $key ] == $value ) ) {
+							$find[ $child_id ] = $child;
+							continue;
+						}
+					}
+					continue;
+				}
+			}
+			return apply_filters( 'wcmp_get_endpoint_by_result', $find );
 		}
 
 		public function wcmp_get_icon( $key ) {
@@ -465,10 +578,10 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$general_settings = $all_settings['general_settings'];
 	        $position         = $general_settings['sidebar_position'];
 	        $tab              = $general_settings['menu_style'] == 'tab' ? '-tab' : '';
-			$endpoints        = $this->_menu_endpoints;			
+			$endpoints        = $this->_menu_endpoints;	
 	        ob_start();
 	        ?>
-	            <div id="my-account-menu<?php echo $tab ?>" class="yith-wcmap position-<?php echo $position ?>">
+	            <div id="my-account-menu<?php echo $tab ?>" class="wcmp-myaccount-template position-<?php echo $position ?>">
 	            	<?php
 		                $args = apply_filters( 'wcmp-myaccount-menu-template-args', array(
 						'endpoints'      => $endpoints,
@@ -581,6 +694,17 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 	    }
 
 	    /**
+		 * Save an option to check if the page is myaccount
+		 *
+		 * @access public
+		 * @since  1.0.0
+		 * @author Wbcom Designs
+		 */
+		public function save_is_my_account(){
+			update_option( 'wcmp_is_my_account', $this->_is_myaccount );
+		}
+
+	    /**
 		 * Redirect to default endpoint.
 		 *
 		 * @access public
@@ -590,13 +714,12 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		public function redirect_to_default(){
 
 			// exit if not my account
-			// if( ! $this->_is_myaccount || ! is_array( $this->_menu_endpoints ) ) {
-			// 	return;
-			// }
-
+			if( ! $this->_is_myaccount || ! is_array( $this->_menu_endpoints ) ) {
+				return;
+			}
 			$current_endpoint = $this->wcmp_get_current_endpoint();
 			// If a specific endpoint is required return.
-            if ( $current_endpoint != 'dashboard' || apply_filters( 'wcmp_no_redirect_to_default', false ) ) {
+            if ( $current_endpoint != 'dashboard' ) {
                 return;
             }
             $all_settings     = $this->wcmp_settings_data();
@@ -607,7 +730,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$url              = wc_get_page_permalink( 'myaccount' );
 
             // Otherwise, if I'm not in my account yet redirect to default.
-            if ( ! get_option( 'yith_wcmap_is_my_account', true ) && ! isset( $_REQUEST['elementor-preview'] ) && $current_endpoint != $default_endpoint ) {
+            if ( ! get_option( 'wcmp_is_my_account', true ) && ! isset( $_REQUEST['elementor-preview'] ) && $current_endpoint != $default_endpoint ) {
 				$default_endpoint != 'dashboard' && $url = wc_get_endpoint_url( $default_endpoint, '', $url );
 				wp_safe_redirect( $url );
 				exit;
@@ -739,16 +862,17 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 	    }
 
 	    /**
-		 * Get customer avatar for user
+		 * Get customer avatar for user.
 		 *
 		 * @access public
-		 * @since 1.0.0
-		 * @param string $avatar
-		 * @param mixed $id_or_email
-		 * @param string $size
-		 * @param string $default
-		 * @param string $alt
-		 * @param array $args
+		 * @since  1.0.0
+		 * @author Wbcom Designs
+		 * @param  string $avatar
+		 * @param  mixed  $id_or_email
+		 * @param  string $size
+		 * @param  string $default
+		 * @param  string $alt
+		 * @param  array  $args
 		 * @return string
 		 */
 		public function wcmp_get_avatar( $avatar, $id_or_email, $size, $default, $alt, $args = array() ) {
@@ -831,17 +955,19 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
          * Prevent get avatar filter.
          *
          * @since  1.0.0
+         * @author Wbcom Designs
          * @return boolean
          */
-        public function get_avatar_filter(){
+        public function get_avatar_filter() {
             return apply_filters( 'wcmp_get_avatar_filter', get_option( 'wb-wcmp-custom-avatar', 'yes' ) != 'yes' );
         }
 
     	/**
 		 * Generate avatar path.
 		 *
-		 * @param $attachment_id
-		 * @param $size
+		 * @param  $attachment_id
+		 * @param  $size
+		 * @author Wbcom Designs
 		 * @return string
 		 */
 		public function wcmp_generate_avatar_path( $attachment_id, $size ) {
@@ -915,6 +1041,22 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			}
 
 			return $resize;
+		}
+
+		/**
+		 * Check if is page my-account and set class variable
+		 *
+		 * @access public
+		 * @since 1.0.0
+		 * @author Francesco Licandro
+		 */
+		public function wcmp_check_myaccount() {
+			global $post;
+			if( ! is_null( $post ) && strpos( $post->post_content, 'woocommerce_my_account' ) !== false && is_user_logged_in() ) {
+				$this->_is_myaccount = true;
+			}
+
+            $this->_is_myaccount = apply_filters( 'wcmp_is_my_account_page', $this->_is_myaccount );
 		}
 
 	}

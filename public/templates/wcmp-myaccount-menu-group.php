@@ -2,28 +2,33 @@
 /**
  * MY ACCOUNT TEMPLATE MENU ITEM
  *
- * @since 2.0.0
+ * @since   1.0.0
+ * @package Woo_Custom_My_Account_Page
  */
+
 ?>
+<li class="<?php echo implode( ' ', esc_attr( $classes ) ); ?>">
 
-<li class="<?php echo implode( ' ', $classes ) ?>">
+	<a href="#" class="group-opener">
+		<?php
+		if ( ! empty( $options['icon'] ) ) :
+			// Prevent double fa-.
+			$icon = strpos( $options['icon'], 'fa-' ) === false ? 'fa-' . $options['icon'] : $options['icon'];
+			?>
+			<i class="fa <?php echo esc_attr( $icon ); ?>"></i>
+		<?php endif; ?>
+		<?php echo esc_html( $options['label'] ); ?>
+		<i class="opener fa <?php echo esc_attr( $class_icon ); ?>"></i>
+	</a>
 
-    <a href="#" class="group-opener">
-        <?php if( ! empty( $options['icon'] ) ) :
-            // prevent double fa-
-            $icon = strpos( $options['icon'], 'fa-' ) === false ? 'fa-' . $options['icon'] : $options['icon']; ?>
-            <i class="fa <?php echo $icon; ?>"></i>
-        <?php endif; ?>
-        <?php echo $options['label'] ?>
-        <i class="opener fa <?php echo $class_icon ?>"></i>
-    </a>
-
-    <ul class="myaccount-submenu" <?php echo $options['open'] == 'yes' ? '' : 'style="display:none"'; ?>>
-        <?php foreach( $options['children'] as $child => $child_options ) {
-            /**
-             * Print single endpoint
-             */
-            do_action('wcmp_print_single_endpoint', $child, $child_options );
-        } ?>
-    </ul>
+	<ul class="myaccount-submenu" <?php echo 'yes' === $options['open'] ? '' : 'style="display:none"'; ?>>
+		<?php
+		foreach ( $options['children'] as $child => $child_options ) {
+			/**
+			 * Print single endpoint
+			 */
+			do_action( 'wcmp_print_single_endpoint', $child, $child_options );
+		}
+		?>
+	</ul>
 </li>

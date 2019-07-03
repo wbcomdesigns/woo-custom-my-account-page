@@ -27,7 +27,7 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @var   Woo_Custom_My_Account_Page_Admin
 	 * @since 1.0.0
 	 */
-	protected static $_instance = null;
+	protected static $instance = null;
 
 	/**
 	 * The ID of this plugin.
@@ -48,18 +48,18 @@ class Woo_Custom_My_Account_Page_Admin {
 	private $version;
 
 	public static function instance() {
-		if ( is_null( self::$_instance ) ) {
-			self::$_instance = new self();
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
-		return self::$_instance;
+		return self::$instance;
 	}
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since  1.0.0
-	 * @param  string    $plugin_name The name of this plugin.
-	 * @param  string    $version     The version of this plugin.
+	 * @param  string $plugin_name The name of this plugin.
+	 * @param  string $version     The version of this plugin.
 	 */
 	public function __construct() {
 	}
@@ -75,7 +75,7 @@ class Woo_Custom_My_Account_Page_Admin {
 		if ( 'wb-plugins_page_woo-custom-myaccount-page' === $screen->base ) {
 			if ( ! wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
 				wp_enqueue_style( 'wp-color-picker' );
-			}	
+			}
 			if ( ! wp_style_is( 'woo-custom-my-account-page-admin-css', 'enqueued' ) ) {
 				wp_enqueue_style( 'woo-custom-my-account-page-admin-css', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-admin.css', array(), time(), 'all' );
 			}
@@ -97,7 +97,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			}
 			if ( ! wp_script_is( 'jquery-ui', 'enqueued' ) ) {
 				wp_enqueue_script( 'jquery-ui' );
-			}	
+			}
 			if ( ! wp_script_is( 'jquery-ui-accordion', 'enqueued' ) ) {
 				wp_enqueue_script( 'jquery-ui-accordion' );
 			}
@@ -106,25 +106,28 @@ class Woo_Custom_My_Account_Page_Admin {
 			}
 			wp_register_script( 'nestable', plugin_dir_url( __FILE__ ) . 'assets/js/jquery.nestable.js', array( 'jquery' ), time(), true );
 			if ( ! wp_style_is( 'select2-css', 'enqueued' ) ) {
-				wp_enqueue_style( 'select2-css','https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.css' );
+				wp_enqueue_style( 'select2-css', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.css' );
 			}
 			if ( ! wp_script_is( 'select2-js', 'enqueued' ) ) {
-				wp_enqueue_script( 'select2-js','https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.js' );
-			}	
+				wp_enqueue_script( 'select2-js', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.js' );
+			}
 			if ( ! wp_script_is( 'woo-custom-my-account-page-admin-js', 'enqueued' ) ) {
 				wp_enqueue_script( 'woo-custom-my-account-page-admin-js', plugin_dir_url( __FILE__ ) . 'assets/js/woo-custom-my-account-page-admin.js', array( 'jquery', 'wp-color-picker', 'nestable', 'jquery-ui-dialog' ), time(), false );
-				wp_localize_script( 'woo-custom-my-account-page-admin-js', 'wcmp', array(
-					'ajaxurl'  	    => admin_url( 'admin-ajax.php' ),
-					'action_add'    => 'wcmp_add_field',
-					'show_lbl'	    => esc_html__( 'Show', 'woo-custom-my-account-page' ),
-					'hide_lbl'	    => esc_html__( 'Hide', 'woo-custom-my-account-page' ),
-					// 'loading'	    => '<img src="' . yith_wcmap_ASSETS_URL . '/images/wpspin_light.gif' . '">',
-					'checked'	    => '<i class="fa fa-check"></i>',
-					'error_icon'    => '<i class="fa fa-times"></i>',
-					'remove_alert' 	=> esc_html__( 'Are you sure that you want to delete this endpoint?', 'woo-custom-my-account-page' )
-				));
+				wp_localize_script(
+					'woo-custom-my-account-page-admin-js',
+					'wcmp',
+					array(
+						'ajaxurl'      => admin_url( 'admin-ajax.php' ),
+						'action_add'   => 'wcmp_add_field',
+						'show_lbl'     => esc_html__( 'Show', 'woo-custom-my-account-page' ),
+						'hide_lbl'     => esc_html__( 'Hide', 'woo-custom-my-account-page' ),
+						// 'loading'	    => '<img src="' . yith_wcmap_ASSETS_URL . '/images/wpspin_light.gif' . '">',
+						'checked'      => '<i class="fa fa-check"></i>',
+						'error_icon'   => '<i class="fa fa-times"></i>',
+						'remove_alert' => esc_html__( 'Are you sure that you want to delete this endpoint?', 'woo-custom-my-account-page' ),
+					)
+				);
 			}
-
 		}
 
 	}
@@ -256,7 +259,7 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @author Wbcom Designs
 	 * @access public
 	 */
-	public function wcmp_add_field_ajax(){
+	public function wcmp_add_field_ajax() {
 
 		if ( ! ( isset( $_REQUEST['action'] ) && 'wcmp_add_field' == $_REQUEST['action'] ) || ! isset( $_REQUEST['field_name'] ) || ! isset( $_REQUEST['target'] ) ) {
 			die();
@@ -265,87 +268,89 @@ class Woo_Custom_My_Account_Page_Admin {
 		$myaccount_func = instantiate_woo_custom_myaccount_functions();
 
 		// Check if is endpoint.
-		$request          = trim( $_REQUEST['target'] );
+		$request = trim( $_REQUEST['target'] );
 		// Build field key.
-        $field            = $myaccount_func->create_field_key( $_REQUEST['field_name'] );
-        $options_function = "wcmp_get_default_{$request}_options";
-        $print_function   = "wcmp_admin_print_{$request}_field";
+		$field            = $myaccount_func->create_field_key( $_REQUEST['field_name'] );
+		$options_function = "wcmp_get_default_{$request}_options";
+		$print_function   = "wcmp_admin_print_{$request}_field";
 
-        // echo '<pre>options_function: '; print_r( $options_function ); echo '</pre>';
-        // echo '<pre>print_function: '; print_r( $print_function ); echo '</pre>';
+		// echo '<pre>options_function: '; print_r( $options_function ); echo '</pre>';
+		// echo '<pre>print_function: '; print_r( $print_function ); echo '</pre>';
 
-        // if ( ! $field || ! function_exists( $options_function ) || ! function_exists( $print_function ) ) {
-        //     wp_send_json( array(
-        //         'error' => esc_html__( 'An error has occurred or this endpoint field already exists. Please try again.', 'woo-custom-my-account-page' ),
-        //         'field' => false
-        //     ) );
-        // }
+		// if ( ! $field || ! function_exists( $options_function ) || ! function_exists( $print_function ) ) {
+		// wp_send_json( array(
+		// 'error' => esc_html__( 'An error has occurred or this endpoint field already exists. Please try again.', 'woo-custom-my-account-page' ),
+		// 'field' => false
+		// ) );
+		// }
 
-        // Build args array.
-        $args = array(
-            'endpoint'  => $field,
-            'options'   => $myaccount_func->$options_function( $field ),
-            'id'        => 'wcmp_endpoint',
-            'usr_roles' => array()
-        );
+		// Build args array.
+		$args = array(
+			'endpoint'  => $field,
+			'options'   => $myaccount_func->$options_function( $field ),
+			'id'        => 'wcmp_endpoint',
+			'usr_roles' => array(),
+		);
 
-        ob_start();
-        $this->$print_function( $args );
-        $html = ob_get_clean();
+		ob_start();
+		$this->$print_function( $args );
+		$html = ob_get_clean();
 
-        wp_send_json( array(
-            'html'    => $html,
-            'field'   => $field
-        ) );
+		wp_send_json(
+			array(
+				'html'  => $html,
+				'field' => $field,
+			)
+		);
 	}
 
 	/**
 	 * Print endpoint field options.
 	 *
 	 * @since  1.0.0
-	 * @param  array $args Template args array
+	 * @param  array $args Template args array.
 	 * @author Wbcom Designs
 	 * @access public
 	 */
 	public function wcmp_admin_print_endpoint_field( $args ) {
 
-	    // let third part filter template args.
-	    $args = apply_filters( 'wcmp_admin_print_endpoint_field', $args );
-	    extract( $args );
+		// let third part filter template args.
+		$args = apply_filters( 'wcmp_admin_print_endpoint_field', $args );
+		extract( $args );
 
-	    include( WCMP_PLUGIN_PATH . 'admin/partials/endpoint-item.php' );
+		include WCMP_PLUGIN_PATH . 'admin/partials/endpoint-item.php';
 	}
 
 	/**
 	 * Print endpoints group field options.
 	 *
 	 * @since  1.0.0
-	 * @param  array $args Template args array
+	 * @param  array $args Template args array.
 	 * @author Wbcom Designs
 	 * @access public
 	 */
 	public function wcmp_admin_print_group_field( $args ) {
 
-	    // let third part filter template args.
-	    $args = apply_filters( 'wcmp_admin_print_endpoints_group', $args );
-        extract( $args );
-        include( WCMP_PLUGIN_PATH . 'admin/partials/group-item.php' );
+		// let third part filter template args.
+		$args = apply_filters( 'wcmp_admin_print_endpoints_group', $args );
+		extract( $args );
+		include WCMP_PLUGIN_PATH . 'admin/partials/group-item.php';
 	}
 
 	/**
-     * Print endpoints link field options.
-     *
-     * @since  1.0.0
-     * @param  array $args Template args array
-     * @author Wbcom Designs
+	 * Print endpoints link field options.
+	 *
+	 * @since  1.0.0
+	 * @param  array $args Template args array.
+	 * @author Wbcom Designs
 	 * @access public
-     */
-    public function wcmp_admin_print_link_field( $args ) {
-        // let third part filter template args.
-        $args = apply_filters( 'wcmp_admin_print_link_field', $args );
-        extract( $args );
+	 */
+	public function wcmp_admin_print_link_field( $args ) {
+		// let third part filter template args.
+		$args = apply_filters( 'wcmp_admin_print_link_field', $args );
+		extract( $args );
 
-        include( WCMP_PLUGIN_PATH . 'admin/partials/link-item.php' );
-    }
+		include WCMP_PLUGIN_PATH . 'admin/partials/link-item.php';
+	}
 
 }
