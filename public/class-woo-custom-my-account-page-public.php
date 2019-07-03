@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The public-facing functionality of the plugin.
  *
@@ -43,14 +42,14 @@ class Woo_Custom_My_Account_Page_Public {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @since  1.0.0
+	 * @param  string $plugin_name The name of the plugin.
+	 * @param  string $version     The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 
@@ -96,39 +95,48 @@ class Woo_Custom_My_Account_Page_Public {
 		 * class.
 		 */
 
-		// wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/woo-custom-my-account-page-public.js', array( 'jquery' ), $this->version, false );
-
-		$paths          = apply_filters( 'wcmp_stylesheet_paths', array( WC()->template_path() . 'yith-customize-myaccount.css', 'yith-customize-myaccount.css' ) );
-		$located        = locate_template( $paths, false, false );
-		$search         = array( get_stylesheet_directory(), get_template_directory() );
-		$replace        = array( get_stylesheet_directory_uri(), get_template_directory_uri() );
-		$stylesheet     = ! empty( $located ) ? str_replace( $search, $replace, $located ) : plugin_dir_url( __FILE__ ) . 'assets/css/wcmp-frontend.css';
-        $suffix         = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-        $assets_path    = str_replace( array( 'http:', 'https:' ), '', WC()->plugin_url() ) . '/assets/';
+		$paths       = apply_filters( 'wcmp_stylesheet_paths', array( WC()->template_path() . 'yith-customize-myaccount.css', 'yith-customize-myaccount.css' ) );
+		$located     = locate_template( $paths, false, false );
+		$search      = array( get_stylesheet_directory(), get_template_directory() );
+		$replace     = array( get_stylesheet_directory_uri(), get_template_directory_uri() );
+		$stylesheet  = ! empty( $located ) ? str_replace( $search, $replace, $located ) : plugin_dir_url( __FILE__ ) . 'assets/css/wcmp-frontend.css';
+		$suffix      = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		$assets_path = str_replace( array( 'http:', 'https:' ), '', WC()->plugin_url() ) . '/assets/';
 
 		wp_register_style( 'wcmp-frontend', $stylesheet );
-        wp_register_script( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/js/wcmp-frontend.js', array( 'jquery' ), false, true );
+		wp_register_script( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/js/wcmp-frontend.js', array( 'jquery' ), false, true );
 
-		// ENQUEUE STYLE
+		// ENQUEUE STYLE.
 		wp_enqueue_style( 'wcmp-frontend' );
-        wp_enqueue_style( 'font-awesome' );
+		wp_enqueue_style( 'font-awesome' );
 
 		$inline_css = $this->wcmp_get_custom_css();
 		wp_add_inline_style( 'wcmp-frontend', $inline_css );
 
-		// ENQUEUE SCRIPTS
+		// ENQUEUE SCRIPTS.
 		wp_enqueue_script( 'wcmp-frontend' );
-		wp_localize_script( 'wcmp-frontend', 'wcmp', array(
-			'ajaxurl'           => WC_AJAX::get_endpoint( "%%endpoint%%" ),
-			'actionPrint'       => 'wcmp_print_avatar_form'
-		) );
+		wp_localize_script(
+			'wcmp-frontend',
+			'wcmp',
+			array(
+				'ajaxurl'     => WC_AJAX::get_endpoint( '%%endpoint%%' ),
+				'actionPrint' => 'wcmp_print_avatar_form',
+			)
+		);
 	}
 
+	/**
+	 * Add custom css for styling myaccount page.
+	 *
+	 * @access public
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 */
 	public function wcmp_get_custom_css() {
 		$myaccount_func = instantiate_woo_custom_myaccount_functions();
 		$all_settings   = $myaccount_func->wcmp_settings_data();
 		$settings       = $all_settings['style_settings'];
-		$inline_css = '
+		$inline_css     = '
 				#my-account-menu .logout a, #my-account-menu-tab .logout a {
 					color:' . $settings['logout_color'] . ';
 					background-color:' . $settings['logout_background_color'] . ';
@@ -138,12 +146,12 @@ class Woo_Custom_My_Account_Page_Public {
 					background-color:' . $settings['logout_background_hover_color'] . ';
 				}
 				.myaccount-menu li a {
-					color:' . $settings['menu_item_color']. ';
+					color:' . $settings['menu_item_color'] . ';
 				}
 				.myaccount-menu li a:hover, .myaccount-menu li.active > a, .myaccount-menu li.is-active > a {
-					color:' . $settings['menu_item_hover_color']. ';
+					color:' . $settings['menu_item_hover_color'] . ';
 				}';
-		
+
 		return apply_filters( 'wcmp_get_custom_css', $inline_css );
 	}
 
@@ -152,83 +160,93 @@ class Woo_Custom_My_Account_Page_Public {
 	 *
 	 * @access public
 	 * @since  1.0.0
+	 * @author Wbcom Designs
 	 */
 	public function wcmp_add_avatar() {
- 
-		if( ! isset( $_FILES['wcmp_user_avatar'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'wp_handle_upload' ) )
-			return;
 
-		// required file
-		if ( ! function_exists( 'media_handle_upload' )  ) {
-			require_once( ABSPATH . 'wp-admin/includes/media.php' );
+		if ( ! isset( $_FILES['wcmp_user_avatar'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'wp_handle_upload' ) ) {
+			return;
 		}
-		if( ! function_exists( 'wp_handle_upload' ) ) {
-			require_once( ABSPATH . 'wp-admin/includes/file.php' );
+
+		// Required files.
+		if ( ! function_exists( 'media_handle_upload' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/media.php';
 		}
-		if( ! function_exists('wp_generate_attachment_metadata' ) ) {
-			require_once( ABSPATH . 'wp-admin/includes/image.php' );
+		if ( ! function_exists( 'wp_handle_upload' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+		if ( ! function_exists( 'wp_generate_attachment_metadata' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/image.php';
 		}
 
 		$media_id = media_handle_upload( 'wcmp_user_avatar', 0 );
 
-		if( is_wp_error( $media_id ) ) {
+		if ( is_wp_error( $media_id ) ) {
 			return;
 		}
 
-		// save media id for filter query in media library
-		$medias = get_option('wcmp-users-avatar-ids', array() );
+		// Save media id for filter query in media library.
+		$medias   = get_option( 'wcmp-users-avatar-ids', array() );
 		$medias[] = $media_id;
-		// then save
+		// Then save.
 		update_option( 'wcmp-users-avatar-ids', $medias );
 
-
-		// save user meta
+		// Save user meta.
 		$user = get_current_user_id();
 		update_user_meta( $user, 'wb-wcmp-avatar', $media_id );
 
 	}
 
 	/**
-     * Reset standard WordPress avatar for customer.
-     *
-     * @since  1.0.0
-     */
+	 * Reset standard WordPress avatar for customer.
+	 *
+	 * @access public
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 */
 	public function wcmp_reset_default_avatar() {
 
-	    if( ! isset( $_POST['action'] ) || $_POST['action'] != 'wcmp_reset_avatar' ) {
-	        return;
-        }
+		if ( ! isset( $_POST['action'] ) || 'wcmp_reset_avatar' !== $_POST['action'] ) {
+			return;
+		}
 
-        // Get user id.
-        $user     = get_current_user_id();
-        $media_id = get_user_meta( $user, 'wb-wcmp-avatar', true );
+		// Get user id.
+		$user     = get_current_user_id();
+		$media_id = get_user_meta( $user, 'wb-wcmp-avatar', true );
 
-        if( ! $media_id ) {
-            return;
-        }
+		if ( ! $media_id ) {
+			return;
+		}
 
-        // Remove id from global list.
-        $medias = get_option('wcmp-users-avatar-ids', array() );
-        foreach ( $medias as $key => $media ) {
-            if( $media == $media_id ) {
-                unset( $media[ $key ] );
-                continue;
-            }
-        }
+		// Remove id from global list.
+		$medias = get_option( 'wcmp-users-avatar-ids', array() );
+		foreach ( $medias as $key => $media ) {
+			if ( $media === $media_id ) {
+				unset( $media[ $key ] );
+				continue;
+			}
+		}
 
-        // Then save.
-        update_option( 'wcmp-users-avatar-ids', $medias );
+		// Then save.
+		update_option( 'wcmp-users-avatar-ids', $medias );
 
-        // Then delete user meta.
-        delete_user_meta( $user, 'wb-wcmp-avatar' );
+		// Then delete user meta.
+		delete_user_meta( $user, 'wb-wcmp-avatar' );
 
-        // Then delete media attachment.
-        wp_delete_attachment( $media_id );
+		// Then delete media attachment.
+		wp_delete_attachment( $media_id );
 
-    }
+	}
 
+	/**
+	 * Reset standard WordPress avatar for customer.
+	 *
+	 * @access public
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 */
 	public function wcmp_print_avatar_form_ajax() {
-		if( ! is_ajax() ) {
+		if ( ! is_ajax() ) {
 			return;
 		}
 		echo $this->wcmp_get_avatar_form();
@@ -240,18 +258,19 @@ class Woo_Custom_My_Account_Page_Public {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  boolean $print Print or return avatar form
-	 * @param  array $args Array of argument for the template
+	 * @author Wbcom Designs
+	 * @param  boolean $print Print or return avatar form.
+	 * @param  array   $args Array of argument for the template.
 	 * @return string
 	 */
-	public function wcmp_get_avatar_form( $print = false, $args = array() ){
+	public function wcmp_get_avatar_form( $print = false, $args = array() ) {
 		ob_start();
 		wc_get_template( 'wcmp-myaccount-avatar-form.php', $args, '', WCMP_PLUGIN_PATH . 'public/templates/' );
 		$form = ob_get_clean();
 
-		if( $print ) {
+		if ( $print ) {
 			echo $form;
-			return '';
+			return;
 		}
 
 		return $form;
