@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
@@ -193,9 +192,11 @@ class Woo_Custom_My_Account_Page {
 		// Add avatar.
 		$this->loader->add_action( 'init', $plugin_public, 'wcmp_add_avatar' );
 		// Reset default avatar.
-        $this->loader->add_action( 'init', $plugin_public, 'wcmp_reset_default_avatar' );
+		$this->loader->add_action( 'init', $plugin_public, 'wcmp_reset_default_avatar' );
 		// Display 'change avatar' form ajax.
 		$this->loader->add_action( 'wc_ajax_wcmp_print_avatar_form', $plugin_public, 'wcmp_print_avatar_form_ajax' );
+		$this->loader->add_action( 'wp_loaded', $plugin_public, 'wcmp_flush_rewrite_rules' );
+
 	}
 
 	/**

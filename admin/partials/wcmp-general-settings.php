@@ -1,8 +1,9 @@
 <?php
 /**
- *
  * This file is used for rendering and saving plugin general settings.
  *
+ * @since   1.0.0
+ * @package Woo_Custom_My_Account_Page
  */
 
 // Exit if accessed directly.
