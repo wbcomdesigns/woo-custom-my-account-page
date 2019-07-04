@@ -74,8 +74,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 			// Redirect to the default endpoint.
 			add_action( 'template_redirect', array( $this, 'redirect_to_default' ), 150 );
-			// Filter user avatar.
-			add_filter( 'get_avatar', array( $this, 'wcmp_get_avatar' ), 100, 6 );
 
 			// Mem if is my account page.
 			add_action( 'shutdown', array( $this, 'save_is_my_account' ) );
@@ -96,6 +94,8 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			add_action( 'init', array( $this, 'wcmp_init_items' ), 20 );
 			// Register custom endpoints.
 			add_action( 'init', array( $this, 'wcmp_add_custom_endpoints' ), 21 );
+
+			add_action( 'wp_loaded', array( $this, 'wcmp_flush_rewrite_rules' ) );
 		}
 
 		/**
@@ -148,11 +148,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			if ( ! empty( $endpoint[ $key ]['content'] ) ) {
 
 				remove_action( 'woocommerce_account_content', 'woocommerce_account_content' );
-
-				// Add compatibility with WSDesk - WordPress Support Desk.
-				// if( has_shortcode(  $endpoint[$key]['content'] , 'wsdesk_support') ) {
-				// $this->enqueue_wsdesk_scripts();
-				// }
 
 				echo do_shortcode( $endpoint[ $key ]['content'] );
 			}
@@ -565,6 +560,84 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		}
 
 		/**
+		 * Init items.
+		 *
+		 * @since  1.0.0
+		 * @author Francesco Licandro
+		 */
+		public function items_init() {
+
+			// Get saved endpoints order.
+			$fields = get_option( 'wcmp_endpoint', '' );
+			$fields = json_decode( $fields, true );
+
+			// Set empty array is false or null.
+			( ! $fields || is_null( $fields ) ) && $fields = array();
+
+			$this->items = array();
+
+			// Get default endpoints.
+			$defaults = $this->maybe_init_default_items();
+
+			if ( empty( $fields ) ) {
+					$this->items = $defaults;
+			}	else {
+				foreach ( $fields as $id => $field_option ) {
+					// Build return array.
+					$this->_items[ $id ] = array();
+
+					$options = get_option( 'wcmp_endpoint_' . $id, array() );
+					empty( $field_option['type'] ) && $field_option['type'] = 'endpoint';
+					$options_default = call_user_func( "wcmp_get_default_{$field_option['type']}_options", $id );
+					// Is empty check on default endpoint.
+					( empty( $options ) && isset( $defaults[ $id ] ) ) && $options = $defaults[ $id ];
+					// Always merge with default.
+					$myaccount_func = instantiate_woo_custom_myaccount_functions();
+					$options = array_merge( $options_default, $options );
+
+					if ( isset( $field_option[ 'children' ] ) ) {
+
+						$children = array();
+
+						foreach ( $field_option[ 'children' ] as $child_id => $child ) {
+							$child_options   = get_option( 'wcmp_endpoint_' . $child_id, array() );
+							$options_default = call_user_func( "wcmp_get_default_{$child['type']}_options", $child_id );
+							// Is empty check on default endpoint.
+							( empty( $child_options ) && isset( $defaults[ $id ] ) ) && $child_options = $defaults[ $id ];
+							// Always merge with default.
+							$children[ $child_id ] = is_array( $child_options ) ? array_merge( $options_default, $child_options ) : $options_default;
+
+							// Check child on default plugin
+							unset( $defaults[ $child_id ] );
+						}
+
+						$options[ 'children' ] = $children;
+					}
+
+					// Unset on defaults.
+					unset( $defaults[ $id ] );
+
+					$this->_items[ $id ] = $options;
+				}
+
+				// Merge with defaults again.
+				$this->_items = array_merge( $this->_items, $defaults );
+			}
+		}
+
+		/**
+		 * Maybe init default items
+		 *
+		 * @since  1.0.0
+		 * @access protected
+		 * @author Wbcom Designs
+		 */
+		protected function maybe_init_default_items() {
+			$endpoints_settings = get_option( 'wcmp_endpoints_settings' );
+			empty( $endpoints_settings ) && $this->default_endpoint_settings();
+		}
+
+		/**
 		 * Hide field based on current user role.
 		 *
 		 * @access protected
@@ -617,7 +690,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @author Wbcom Designs
 		 */
 		public function wcmp_add_my_account_menu() {
-			if ( apply_filters( 'wcmpmy_account_have_menu', $this->my_account_have_menu ) ) {
+			if ( apply_filters( 'wcmp_my_account_have_menu', $this->my_account_have_menu ) ) {
 				return;
 			}
 
@@ -934,193 +1007,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		}
 
 		/**
-		 * Get customer avatar for user.
-		 *
-		 * @access public
-		 * @since  1.0.0
-		 * @author Wbcom Designs
-		 * @param  string $avatar
-		 * @param  mixed  $id_or_email
-		 * @param  string $size
-		 * @param  string $default
-		 * @param  string $alt
-		 * @param  array  $args
-		 * @return string
-		 */
-		public function wcmp_get_avatar( $avatar, $id_or_email, $size, $default, $alt, $args = array() ) {
-
-			if ( $this->get_avatar_filter() ) {
-				return $avatar;
-			}
-
-			// Prevent filter.
-			remove_all_filters( 'get_avatar' );
-			// Re add filter.
-			add_filter( 'get_avatar', array( $this, 'wcmp_get_avatar' ), 100, 6 );
-
-			if ( empty( $args ) ) {
-				$args['size']       = (int) $size;
-				$args['height']     = $args['size'];
-				$args['width']      = $args['size'];
-				$args['alt']        = $alt;
-				$args['extra_attr'] = '';
-			}
-
-			$user = false;
-
-			if ( is_string( $id_or_email ) && is_email( $id_or_email ) ) {
-				$user = get_user_by( 'email', $id_or_email );
-			} elseif ( $id_or_email instanceof WP_User ) {
-				// User Object.
-				$user = $id_or_email;
-			} elseif ( $id_or_email instanceof WP_Post ) {
-				// Post Object.
-				$user = get_user_by( 'id', (int) $id_or_email->post_author );
-			} elseif ( $id_or_email instanceof WP_Comment ) {
-
-				if ( ! empty( $id_or_email->user_id ) ) {
-					$user = get_user_by( 'id', (int) $id_or_email->user_id );
-				}
-				if ( ( ! $user || is_wp_error( $user ) ) && ! empty( $id_or_email->comment_author_email ) ) {
-					$email = $id_or_email->comment_author_email;
-					$user  = get_user_by( 'email', $email );
-				}
-			}
-
-			// Get the user ID.
-			$user_id = ! $user ? $id_or_email : $user->ID;
-
-			// Get custom avatar.
-			$custom_avatar = get_user_meta( $user_id, 'wb-wcmp-avatar', true );
-
-			if ( ! $custom_avatar ) {
-				return $avatar;
-			}
-
-			// Maybe resize img.
-			$resized = $this->wcmp_resize_avatar_url( $custom_avatar, $size );
-			// If error occurred return.
-			if ( ! $resized ) {
-				return $avatar;
-			}
-
-			$src   = $this->wcmp_generate_avatar_url( $custom_avatar, $size );
-			$class = array( 'avatar', 'avatar-' . (int) $args['size'], 'photo' );
-
-			$avatar = sprintf(
-				"<img alt='%s' src='%s' class='%s' height='%d' width='%d' %s/>",
-				esc_attr( $args['alt'] ),
-				esc_url( $src ),
-				esc_attr( join( ' ', $class ) ),
-				(int) $args['height'],
-				(int) $args['width'],
-				$args['extra_attr']
-			);
-
-			return $avatar;
-		}
-
-		/**
-		 * Prevent get avatar filter.
-		 *
-		 * @access public
-		 * @since  1.0.0
-		 * @author Wbcom Designs
-		 * @return boolean
-		 */
-		public function get_avatar_filter() {
-			return apply_filters( 'wcmp_get_avatar_filter', get_option( 'wb-wcmp-custom-avatar', 'yes' ) !== 'yes' );
-		}
-
-		/**
-		 * Generate avatar path.
-		 *
-		 * @access public
-		 * @since  1.0.0
-		 * @author Wbcom Designs
-		 * @param  int $attachment_id The image attachment id.
-		 * @param  int $size          The image size.
-		 * @return string
-		 */
-		public function wcmp_generate_avatar_path( $attachment_id, $size ) {
-			// Retrieves attached file path based on attachment ID.
-			$filename = get_attached_file( $attachment_id );
-
-			$pathinfo  = pathinfo( $filename );
-			$dirname   = $pathinfo['dirname'];
-			$extension = $pathinfo['extension'];
-
-			// i18n friendly version of basename().
-			$basename = wp_basename( $filename, '.' . $extension );
-
-			$suffix    = $size . 'x' . $size;
-			$dest_path = $dirname . '/' . $basename . '-' . $suffix . '.' . $extension;
-
-			return $dest_path;
-		}
-
-		/**
-		 * Generate avatar url.
-		 *
-		 * @access public
-		 * @since  1.0.0
-		 * @author Wbcom Designs
-		 * @param int $attachment_id The image attachment id.
-		 * @param int $size          The image size.
-		 * @return mixed
-		 */
-		public function wcmp_generate_avatar_url( $attachment_id, $size ) {
-			// Retrieves path information on the currently configured uploads directory.
-			$upload_dir = wp_upload_dir();
-
-			// Generates a file path of an avatar image based on attachment ID and size.
-			$path = $this->wcmp_generate_avatar_path( $attachment_id, $size );
-
-			return str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $path );
-		}
-
-		/**
-		 * Resize avatar.
-		 *
-		 * @access public
-		 * @since  1.0.0
-		 * @author Wbcom Designs
-		 * @param int $attachment_id The image attachment id.
-		 * @param int $size          The image size.
-		 * @return boolean
-		 */
-		public function wcmp_resize_avatar_url( $attachment_id, $size ) {
-
-			$dest_path = $this->wcmp_generate_avatar_path( $attachment_id, $size );
-
-			if ( file_exists( $dest_path ) ) {
-				$resize = true;
-			} else {
-				// Retrieves attached file path based on attachment ID.
-				$path = get_attached_file( $attachment_id );
-
-				// Retrieves a WP_Image_Editor instance and loads a file into it.
-				$image = wp_get_image_editor( $path );
-
-				if ( ! is_wp_error( $image ) ) {
-
-					// Resizes current image.
-					$image->resize( $size, $size, true );
-
-					// Saves current image to file.
-					$image->save( $dest_path );
-
-					$resize = true;
-
-				} else {
-					$resize = false;
-				}
-			}
-
-			return $resize;
-		}
-
-		/**
 		 * Check if is page my-account and set class variable.
 		 *
 		 * @access public
@@ -1176,12 +1062,12 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$mask = WC()->query->get_endpoints_mask();
 
 			foreach ( $slugs as $key => $slug ) {
-					if ( 'dashboard' === $key || isset( WC()->query->query_vars[$key] ) ) {
-							continue;
-					}
+				if ( 'dashboard' === $key || isset( WC()->query->query_vars[$key] ) ) {
+						continue;
+				}
 
-					WC()->query->query_vars[$key] = $slug;
-					add_rewrite_endpoint( $slug, $mask );
+				WC()->query->query_vars[$key] = $slug;
+				add_rewrite_endpoint( $slug, $mask );
 			}
 		}
 
@@ -1202,32 +1088,32 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 			$backup_option = 'wcmp_endpoint_backup_pre_' . WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION;
 			if( ! get_option( $backup_option, false ) ) {
-					$fields = json_decode( $fields, true );
-					$new_fields = array();
-					foreach( $fields as $field ) {
+				$fields = json_decode( $fields, true );
+				$new_fields = array();
+				foreach( $fields as $field ) {
 
-							if( ! isset( $field['id'] ) ) {
-									continue;
-							}
-
-							$field['id'] == 'view-order'    && $field['id'] = 'orders';
-							$field['id'] == 'my-downloads'  && $field['id'] = 'downloads';
-
-							if( isset( $field['children'] ) ) {
-									$new_fields[$field['id']] = array( 'type' => 'group', 'children' => array() );
-									foreach( $field['children'] as $child ) {
-											$child['id'] == 'view-order'    && $child['id'] = 'orders';
-											$child['id'] == 'my-downloads'  && $child['id'] = 'downloads';
-											$new_fields[$field['id']]['children'][$child['id']] = array( 'type' => 'endpoint' );
-									}
-							}
-							else {
-									$new_fields[$field['id']] = array( 'type' => 'endpoint' );
-							}
+					if( ! isset( $field['id'] ) ) {
+							continue;
 					}
 
-					update_option( 'wcmp_endpoint_backup_pre_' . WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION, json_encode( $fields ) );
-					empty( $new_fields ) || update_option( 'wcmp_endpoint', json_encode( $new_fields ) );
+					$field['id'] == 'view-order'    && $field['id'] = 'orders';
+					$field['id'] == 'my-downloads'  && $field['id'] = 'downloads';
+
+					if( isset( $field['children'] ) ) {
+						$new_fields[$field['id']] = array( 'type' => 'group', 'children' => array() );
+						foreach( $field['children'] as $child ) {
+							$child['id'] == 'view-order'    && $child['id'] = 'orders';
+							$child['id'] == 'my-downloads'  && $child['id'] = 'downloads';
+							$new_fields[$field['id']]['children'][$child['id']] = array( 'type' => 'endpoint' );
+						}
+					}
+					else {
+						$new_fields[$field['id']] = array( 'type' => 'endpoint' );
+					}
+				}
+
+				update_option( 'wcmp_endpoint_backup_pre_' . WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION, json_encode( $fields ) );
+				empty( $new_fields ) || update_option( 'wcmp_endpoint', json_encode( $new_fields ) );
 			}
 		}
 
@@ -1239,8 +1125,21 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @author Wbcom Designs
 		 */
 		public function wcmp_init_items() {
-			$this->init(); // Init again items.
+			$this->items_init(); // Init again items.
 		}
+
+		/**
+		 * Flush rewrite rules.
+		 *
+		 * @since  1.0.0
+		 * @author Wbcom Designs
+		 * @access public
+		 */
+		public function wcmp_flush_rewrite_rules() {
+			flush_rewrite_rules();
+		}
+
+
 	}
 }
 

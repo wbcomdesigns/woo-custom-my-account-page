@@ -313,11 +313,9 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access public
 	 */
 	public function wcmp_admin_print_endpoint_field( $args ) {
-
-		// let third part filter template args.
+		// Let third part filter template args.
 		$args = apply_filters( 'wcmp_admin_print_endpoint_field', $args );
 		extract( $args );
-
 		include WCMP_PLUGIN_PATH . 'admin/partials/endpoint-item.php';
 	}
 
@@ -330,7 +328,6 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access public
 	 */
 	public function wcmp_admin_print_group_field( $args ) {
-
 		// let third part filter template args.
 		$args = apply_filters( 'wcmp_admin_print_endpoints_group', $args );
 		extract( $args );

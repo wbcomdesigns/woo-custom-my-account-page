@@ -12,9 +12,9 @@ $myaccount_func            = instantiate_woo_custom_myaccount_functions();
 $default_endpoint_settings = $myaccount_func->default_endpoint_settings();
 ?>
 
-<li class="dd-item endpoint" data-id="<?php echo esc_attr( $options['slug'] ); ?>" data-type="endpoint">
+<li class="dd-item endpoint" data-id="<?php echo esc_attr( $endpoint ); ?>" data-type="endpoint">
 	<label class="on-off-endpoint" for="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_active' ); ?>">
-		<input type="checkbox" class="hide-show-check" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $options['slug'] ); ?>][active]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_active' ); ?>" value="<?php echo esc_attr( $options['slug'] ); ?>" <?php checked( esc_attr( $options['active'] ), $options['slug'] ); ?>>
+		<input type="checkbox" class="hide-show-check" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][active]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_active' ); ?>" value="<?php echo esc_attr( $endpoint ); ?>" <?php checked( esc_attr( $options['active'] ), $endpoint ); ?>>
 		<i class="fa fa-power-off"></i>
 	</label>
 	<div class="open-options field-type">
@@ -48,9 +48,9 @@ $default_endpoint_settings = $myaccount_func->default_endpoint_settings();
 					?>
 
 				</span>
-				<?php if ( ! array_key_exists( $options['slug'], $default_endpoint_settings ) ) { ?>
+				<?php if ( ! array_key_exists( $endpoint, $default_endpoint_settings ) ) { ?>
 					<span class="sep">|</span>
-					<span class="remove-trigger" data-endpoint="<?php echo esc_attr( $options['slug'] ); ?>">
+					<span class="remove-trigger" data-endpoint="<?php echo esc_attr( $endpoint ); ?>">
 						<?php esc_html_e( 'Remove', 'woo-custom-my-account-page' ); ?>
 					</span>
 				<?php } ?>
@@ -59,18 +59,18 @@ $default_endpoint_settings = $myaccount_func->default_endpoint_settings();
 			<table class="options-table form-table">
 				<tbody>
 					<?php
-					if ( 'dashboard' !== $options['slug'] ) {
+					if ( 'dashboard' !== $endpoint ) {
 						?>
 					<tr>
 						<th>
-							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_slug' ); ?>">
+							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_slug' ); ?>">
 								<?php
 								esc_html_e( 'Endpoint slug', 'woo-custom-my-account-page' );
 								?>
 							</label>
 						</th>
 						<td>
-							<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $options['slug'] ); ?>][slug]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_slug' ); ?>" value="<?php echo esc_attr( $options['slug'] ); ?>" required>
+							<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][slug]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_slug' ); ?>" value="<?php echo esc_attr( $options['slug'] ); ?>" required>
 							<p class="description">
 								<?php
 								esc_html_e( 'Text appended to your page URLs to manage new contents in account pages. It must be unique for every page.', 'woo-custom-my-account-page' );
@@ -81,20 +81,20 @@ $default_endpoint_settings = $myaccount_func->default_endpoint_settings();
 						<?php
 					} else {
 						?>
-						<input type="hidden" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $options['slug'] ); ?>][slug]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_slug' ); ?>" value="<?php echo esc_attr( $options['slug'] ); ?>">
+						<input type="hidden" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][slug]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_slug' ); ?>" value="<?php echo esc_attr( $options['slug'] ); ?>">
 						<?php
 					}
 					?>
 					<tr>
 						<th>
-							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_label' ); ?>">
+							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_label' ); ?>">
 								<?php
 								esc_html_e( 'Endpoint label', 'woo-custom-my-account-page' );
 								?>
 							</label>
 						</th>
 						<td>
-							<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $options['slug'] ); ?>][label]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_label' ); ?>" value="<?php echo esc_attr( $options['label'] ); ?>">
+							<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][label]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_label' ); ?>" value="<?php echo esc_attr( $options['label'] ); ?>">
 							<p class="description">
 								<?php
 								esc_html_e( 'Menu item for this endpoint in "My Account".', 'woo-custom-my-account-page' );
@@ -105,10 +105,10 @@ $default_endpoint_settings = $myaccount_func->default_endpoint_settings();
 
 					<tr>
 						<th>
-							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_icon' ); ?>"><?php esc_html_e( 'Endpoint icon', 'woo-custom-my-account-page' ); ?></label>
+							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_icon' ); ?>"><?php esc_html_e( 'Endpoint icon', 'woo-custom-my-account-page' ); ?></label>
 						</th>
 						<td>
-							<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $options['slug'] ); ?>][icon]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_icon' ); ?>" value="<?php echo esc_attr( $options['icon'] ); ?>">
+							<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][icon]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_icon' ); ?>" value="<?php echo esc_attr( $options['icon'] ); ?>">
 							<p class="description">
 								<?php
 								esc_html_e( 'Endpoint icon for "My Account" menu option.', 'woo-custom-my-account-page' );
@@ -119,10 +119,10 @@ $default_endpoint_settings = $myaccount_func->default_endpoint_settings();
 
 					<tr>
 						<th>
-							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_class' ); ?>"><?php esc_html_e( 'Endpoint class', 'woo-custom-my-account-page' ); ?></label>
+							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_class' ); ?>"><?php esc_html_e( 'Endpoint class', 'woo-custom-my-account-page' ); ?></label>
 						</th>
 						<td>
-							<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $options['slug'] ); ?>][class]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_class' ); ?>" value="<?php echo esc_attr( $options['class'] ); ?>">
+							<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][class]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_class' ); ?>" value="<?php echo esc_attr( $options['class'] ); ?>">
 							<p class="description">
 								<?php
 								esc_html_e( 'Add additional classes to endpoint container.', 'woo-custom-my-account-page' );
@@ -133,10 +133,10 @@ $default_endpoint_settings = $myaccount_func->default_endpoint_settings();
 
 					<tr>
 						<th>
-							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_usr_roles' ); ?>"><?php esc_html_e( 'User roles', 'woo-custom-my-account-page' ); ?></label>
+							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_usr_roles' ); ?>"><?php esc_html_e( 'User roles', 'woo-custom-my-account-page' ); ?></label>
 						</th>
 						<td>
-							<select name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $options['slug'] ); ?>][usr_roles][]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_usr_roles' ); ?>" multiple="" tabindex="-1" aria-hidden="true">
+							<select name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][usr_roles][]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_usr_roles' ); ?>" multiple="" tabindex="-1" aria-hidden="true">
 								<?php
 								if ( $user_roles ) {
 									foreach ( $user_roles as $usrrole_slug => $usrrole_arr ) {
@@ -169,7 +169,7 @@ $default_endpoint_settings = $myaccount_func->default_endpoint_settings();
 							</p>
 						</td>
 					</tr>
-					<input type="hidden" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $options['slug'] ); ?>][type]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_type' ); ?>" value="<?php echo esc_attr( $options['type'] ); ?>">
+					<input type="hidden" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][type]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_type' ); ?>" value="<?php echo esc_attr( $options['type'] ); ?>">
 				</tbody>
 			</table>
 		</div>
