@@ -254,7 +254,7 @@ class Woo_Custom_My_Account_Page_Public {
 	}
 
 	/**
-	 * Get avatar upload form
+	 * Get avatar upload form.
 	 *
 	 * @since  1.0.0
 	 * @access public
@@ -277,14 +277,190 @@ class Woo_Custom_My_Account_Page_Public {
 	}
 
 	/**
-	 * Flush rewrite rules.
+	 * Get customer avatar for user.
 	 *
+	 * @access public
 	 * @since  1.0.0
 	 * @author Wbcom Designs
-	 * @access public
+	 * @param  string $avatar
+	 * @param  mixed  $id_or_email
+	 * @param  string $size
+	 * @param  string $default
+	 * @param  string $alt
+	 * @param  array  $args
+	 * @return string
 	 */
-	public function wcmp_flush_rewrite_rules() {
-		flush_rewrite_rules();
+	public function wcmp_get_avatar( $avatar, $id_or_email, $size, $default, $alt, $args = array() ) {
+
+		if ( $this->get_avatar_filter() ) {
+			return $avatar;
+		}
+
+		// Prevent filter.
+		remove_all_filters( 'get_avatar' );
+		// Re add filter.
+		add_filter( 'get_avatar', array( $this, 'wcmp_get_avatar' ), 100, 6 );
+
+		if ( empty( $args ) ) {
+			$args['size']       = (int) $size;
+			$args['height']     = $args['size'];
+			$args['width']      = $args['size'];
+			$args['alt']        = $alt;
+			$args['extra_attr'] = '';
+		}
+
+		$user = false;
+
+		if ( is_string( $id_or_email ) && is_email( $id_or_email ) ) {
+			$user = get_user_by( 'email', $id_or_email );
+		} elseif ( $id_or_email instanceof WP_User ) {
+			// User Object.
+			$user = $id_or_email;
+		} elseif ( $id_or_email instanceof WP_Post ) {
+			// Post Object.
+			$user = get_user_by( 'id', (int) $id_or_email->post_author );
+		} elseif ( $id_or_email instanceof WP_Comment ) {
+
+			if ( ! empty( $id_or_email->user_id ) ) {
+				$user = get_user_by( 'id', (int) $id_or_email->user_id );
+			}
+			if ( ( ! $user || is_wp_error( $user ) ) && ! empty( $id_or_email->comment_author_email ) ) {
+				$email = $id_or_email->comment_author_email;
+				$user  = get_user_by( 'email', $email );
+			}
+		}
+
+		// Get the user ID.
+		$user_id = ! $user ? $id_or_email : $user->ID;
+
+		// Get custom avatar.
+		$custom_avatar = get_user_meta( $user_id, 'wb-wcmp-avatar', true );
+
+		if ( ! $custom_avatar ) {
+			return $avatar;
+		}
+
+		// Maybe resize img.
+		$resized = $this->wcmp_resize_avatar_url( $custom_avatar, $size );
+		// If error occurred return.
+		if ( ! $resized ) {
+			return $avatar;
+		}
+
+		$src   = $this->wcmp_generate_avatar_url( $custom_avatar, $size );
+		$class = array( 'avatar', 'avatar-' . (int) $args['size'], 'photo' );
+
+		$avatar = sprintf(
+			"<img alt='%s' src='%s' class='%s' height='%d' width='%d' %s/>",
+			esc_attr( $args['alt'] ),
+			esc_url( $src ),
+			esc_attr( join( ' ', $class ) ),
+			(int) $args['height'],
+			(int) $args['width'],
+			$args['extra_attr']
+		);
+
+		return $avatar;
+	}
+
+	/**
+	 * Prevent get avatar filter.
+	 *
+	 * @access public
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @return boolean
+	 */
+	public function get_avatar_filter() {
+		return apply_filters( 'wcmp_get_avatar_filter', get_option( 'wb-wcmp-custom-avatar', 'yes' ) !== 'yes' );
+	}
+
+	/**
+	 * Generate avatar path.
+	 *
+	 * @access public
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @param  int $attachment_id The image attachment id.
+	 * @param  int $size          The image size.
+	 * @return string
+	 */
+	public function wcmp_generate_avatar_path( $attachment_id, $size ) {
+		// Retrieves attached file path based on attachment ID.
+		$filename = get_attached_file( $attachment_id );
+
+		$pathinfo  = pathinfo( $filename );
+		$dirname   = $pathinfo['dirname'];
+		$extension = $pathinfo['extension'];
+
+		// i18n friendly version of basename().
+		$basename = wp_basename( $filename, '.' . $extension );
+
+		$suffix    = $size . 'x' . $size;
+		$dest_path = $dirname . '/' . $basename . '-' . $suffix . '.' . $extension;
+
+		return $dest_path;
+	}
+
+	/**
+	 * Generate avatar url.
+	 *
+	 * @access public
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @param int $attachment_id The image attachment id.
+	 * @param int $size          The image size.
+	 * @return mixed
+	 */
+	public function wcmp_generate_avatar_url( $attachment_id, $size ) {
+		// Retrieves path information on the currently configured uploads directory.
+		$upload_dir = wp_upload_dir();
+
+		// Generates a file path of an avatar image based on attachment ID and size.
+		$path = $this->wcmp_generate_avatar_path( $attachment_id, $size );
+
+		return str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $path );
+	}
+
+	/**
+	 * Resize avatar.
+	 *
+	 * @access public
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @param int $attachment_id The image attachment id.
+	 * @param int $size          The image size.
+	 * @return boolean
+	 */
+	public function wcmp_resize_avatar_url( $attachment_id, $size ) {
+
+		$dest_path = $this->wcmp_generate_avatar_path( $attachment_id, $size );
+
+		if ( file_exists( $dest_path ) ) {
+			$resize = true;
+		} else {
+			// Retrieves attached file path based on attachment ID.
+			$path = get_attached_file( $attachment_id );
+
+			// Retrieves a WP_Image_Editor instance and loads a file into it.
+			$image = wp_get_image_editor( $path );
+
+			if ( ! is_wp_error( $image ) ) {
+
+				// Resizes current image.
+				$image->resize( $size, $size, true );
+
+				// Saves current image to file.
+				$image->save( $dest_path );
+
+				$resize = true;
+
+			} else {
+				$resize = false;
+			}
+		}
+
+		return $resize;
 	}
 
 }
