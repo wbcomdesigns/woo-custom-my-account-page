@@ -276,4 +276,15 @@ class Woo_Custom_My_Account_Page_Public {
 		return $form;
 	}
 
+	/**
+	 * Flush rewrite rules.
+	 *
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_flush_rewrite_rules() {
+		flush_rewrite_rules();
+	}
+
 }

@@ -31,245 +31,285 @@
 
 })( jQuery );
 
-jQuery(document).ready(function($) {
-    "use strict";
-    $( '.wcmp-admin-color-picker' ).wpColorPicker();
-    var endpoints_container = $( ".endpoints-container" );
-    var general_container   = $( ".wcmp_general_settings" );
+jQuery( document ).ready(
+	function($) {
+		"use strict";
+		$( '.wcmp-admin-color-picker' ).wpColorPicker();
+		var endpoints_container = $( ".endpoints-container" );
+		var general_container   = $( ".wcmp_general_settings" );
 
-    /*################################
-         SORT AND SAVE ENDPOINTS
-     #################################*/
+		/*################################
+		 SORT AND SAVE ENDPOINTS
+		#################################*/
 
-    if( typeof $.fn.nestable != 'undefined' ) {
-        endpoints_container.nestable({
-            'expandBtnHTML' : '',
-            'collapseBtnHTML' : ''
-        });
-    }
-    
-    /*################################
-        OPEN ENDPOINT OPTIONS
-    #################################*/
+		if ( typeof $.fn.nestable != 'undefined' ) {
+			endpoints_container.nestable(
+				{
+					'expandBtnHTML' : '',
+					'collapseBtnHTML' : ''
+				}
+			);
+		}
 
-    $(document).on('click', '.open-options', function() {
+		/*################################
+		OPEN ENDPOINT OPTIONS
+		#################################*/
 
-        var item = $(this).closest('.endpoint');
+		$( document ).on(
+			'click',
+			'.open-options',
+			function() {
 
-        $(this).find('i').toggleClass( 'fa-chevron-down' ).toggleClass( 'fa-chevron-up' );
+				var item = $( this ).closest( '.endpoint' );
 
-        item.find( '.endpoint-content' ).first().toggleClass('dd-nodrag');
-        item.find( '.endpoint-options' ).first().slideToggle();
-        item.find( '.wp-switch-editor.switch-html').click();
-    });
+				$( this ).find( 'i' ).toggleClass( 'fa-chevron-down' ).toggleClass( 'fa-chevron-up' );
 
-    /*##############################
-        ADD ENDPOINTS
-    ###############################*/
-    
-    $(document).on('click', '.add_new_field', function(ev){
-        ev.stopPropagation();
+				item.find( '.endpoint-content' ).first().toggleClass( 'dd-nodrag' );
+				item.find( '.endpoint-options' ).first().slideToggle();
+				item.find( '.wp-switch-editor.switch-html' ).click();
+			}
+		);
 
-        var t           = $(this),
-            target      = t.data( 'target' ),
-            title       = t.html(),
-            new_field   = $(document).find( '.new-field-form' ).clone();
+		/*##############################
+		ADD ENDPOINTS
+		###############################*/
 
-        // first init and open dialog
-        init_dialog_form( new_field, target, title );
+		$( document ).on(
+			'click',
+			'.add_new_field',
+			function(ev){
+				ev.stopPropagation();
 
-        // then open
-        new_field.dialog('open');
-    });
+				var t     = $( this ),
+				target    = t.data( 'target' ),
+				title     = t.html(),
+				new_field = $( document ).find( '.new-field-form' ).clone();
 
-    var xhr = false,
-        init_dialog_form = function ( content, target, title ) {
+				// first init and open dialog
+				init_dialog_form( new_field, target, title );
 
-            content.dialog({
-                title: title,
-                modal: true,
-                width: 500,
-                resizable: false,
-                autoOpen: false,
-                buttons: [{
-                    text: "Save",
-                    click: function () {
+				// then open
+				new_field.dialog( 'open' );
+			}
+		);
 
-                        $(this).find('.loader').css( 'display', 'inline-block' );
+		var xhr          = false,
+		init_dialog_form = function ( content, target, title ) {
 
-                        // class add field handler.
-                        $(this).add_new_field_handler( target );
+			content.dialog(
+				{
+					title: title,
+					modal: true,
+					width: 500,
+					resizable: false,
+					autoOpen: false,
+					buttons: [{
+						text: "Save",
+						click: function () {
 
-                        $(document).one( 'wcmp_field_added', function() {
-                            content.dialog("close");
-                        });
-                    }
-                }],
-                close: function (event, ui) {
-                    content.dialog("destroy");
-                    content.remove();
-                }
-            });
+							$( this ).find( '.loader' ).css( 'display', 'inline-block' );
 
-        };
+							// class add field handler.
+							$( this ).add_new_field_handler( target );
 
-    $.fn.add_new_field_handler = function( target ){
+							$( document ).one(
+								'wcmp_field_added',
+								function() {
+									content.dialog( "close" );
+								}
+							);
+						}
+					}],
+					close: function (event, ui) {
+						content.dialog( "destroy" );
+						content.remove();
+					}
+				}
+			);
 
-        var t        = $(this),
-            value    = t.find( '#wcmp-new-field' ).val(),
-            error    = t.find( '.error-msg' );
+		};
 
-        // abort prev ajax request
-        if( xhr ) {
-            xhr.abort();
-        }
+		$.fn.add_new_field_handler = function( target ){
 
-        // else check ajax
-        xhr = $.ajax({
-            url: wcmp.ajaxurl,
-            data: {
-                target: target,
-                field_name: value,
-                action: wcmp.action_add
-            },
-            dataType: 'json',
-            beforeSend: function(){},
-            success: function( res ){
+			var t = $( this ),
+			value = t.find( '#wcmp-new-field' ).val(),
+			error = t.find( '.error-msg' );
 
-                t.find('.loader').hide();
+			// abort prev ajax request
+			if ( xhr ) {
+				xhr.abort();
+			}
 
-                // check for error or if field already exists
-                if( res.error || endpoints_container.find( '[data-id="' + res.field + '"]').length ) {
-                    error.html( res.error );
-                    return;
-                }
+			// else check ajax
+			xhr = $.ajax(
+				{
+					url: wcmp.ajaxurl,
+					data: {
+						target: target,
+						field_name: value,
+						action: wcmp.action_add
+					},
+					dataType: 'json',
+					beforeSend: function(){},
+					success: function( res ){
 
-                var new_content = $(res.html);
+						t.find( '.loader' ).hide();
 
-                $( '.endpoints-container > ol.endpoints > li.endpoint' ).last().after( new_content );
+						// check for error or if field already exists
+						if ( res.error || endpoints_container.find( '[data-id="' + res.field + '"]' ).length ) {
+							error.html( res.error );
+							return;
+						}
 
-                // reinit select
-                applySelect2( new_content.find( 'select' ), true );
-               // init_tinyMCE( new_content.find('textarea').attr('id' ) );
+						var new_content = $( res.html );
 
-                $(document).trigger( 'wcmp_field_added' );
-                $(document).trigger( 'wcmp_field_order' );
-            }
-        });
-    };
+						$( '.endpoints-container > ol.endpoints > li.endpoint' ).last().after( new_content );
 
-    /*##############################
-        HIDE / SHOW ENDPOINT
-     ##############################*/
+						// reinit select
+						applySelect2( new_content.find( 'select' ), true );
+						// init_tinyMCE( new_content.find('textarea').attr('id' ) );
 
-    var onoff_field = function( trigger, elem ) {
-        var item        = elem.closest('.endpoint'),
-            all_check   = item.find( '.hide-show-check' ),
-            check       = ( trigger == 'checkbox' ) ? elem : all_check.first(),
-            all_link    = item.find( '.hide-show-trigger' ),
-            label, checked;
+						$( document ).trigger( 'wcmp_field_added' );
+						$( document ).trigger( 'wcmp_field_order' );
+					}
+				}
+			);
+		};
 
-        // set checkbox status
-        checked = ( ( check.is(':checked') && trigger == 'checkbox' ) || ( ! check.is(':checked') && trigger == 'link' ) ) ? true : false;
-        all_check.prop( 'checked', checked );
-        // set label
-        label = ( check.is(':checked') ) ? wcmp.hide_lbl : wcmp.show_lbl;
-        all_link.html( label );
-    };
+		/*##############################
+		HIDE / SHOW ENDPOINT
+		##############################*/
 
-    // event listener
-    $(document).on( 'change', '.hide-show-check', function(){
-        onoff_field( 'checkbox', $(this) );
-    });
+		var onoff_field = function( trigger, elem ) {
+			var item  = elem.closest( '.endpoint' ),
+			all_check = item.find( '.hide-show-check' ),
+			check     = ( trigger == 'checkbox' ) ? elem : all_check.first(),
+			all_link  = item.find( '.hide-show-trigger' ),
+			label, checked;
 
-    $(document).on( 'click', '.hide-show-trigger', function(){
-        onoff_field( 'link', $(this) );
-    });
+			// set checkbox status
+			checked = ( ( check.is( ':checked' ) && trigger == 'checkbox' ) || ( ! check.is( ':checked' ) && trigger == 'link' ) ) ? true : false;
+			all_check.prop( 'checked', checked );
+			// set label
+			label = ( check.is( ':checked' ) ) ? wcmp.hide_lbl : wcmp.show_lbl;
+			all_link.html( label );
+		};
 
-    /*##############################
-        REMOVE ENDPOINT
-     ##############################*/
+		// event listener
+		$( document ).on(
+			'change',
+			'.hide-show-check',
+			function(){
+				onoff_field( 'checkbox', $( this ) );
+			}
+		);
 
-    $(document).on('click', '.remove-trigger', function(){
-        var t = $(this),
-            endpoint = t.data('endpoint'),
-            to_remove = $( 'input.endpoint-to-remove' );
+		$( document ).on(
+			'click',
+			'.hide-show-trigger',
+			function(){
+				onoff_field( 'link', $( this ) );
+			}
+		);
 
-        if( typeof endpoint == 'undefined' || ! to_remove.length ) {
-            return false;
-        }
+		/*##############################
+		REMOVE ENDPOINT
+		##############################*/
 
-        var r = confirm( wcmp.remove_alert );
-        if ( r == true ) {
-            var item = t.closest( '.dd-item' ),
-                is_group = item.find( 'ol.endpoints' ),
-                val_to_remove = to_remove.val(),
-                to_remove_array = val_to_remove.length ? val_to_remove.split(',') : [];
+		$( document ).on(
+			'click',
+			'.remove-trigger',
+			function(){
+				var t     = $( this ),
+				endpoint  = t.data( 'endpoint' ),
+				to_remove = $( 'input.endpoint-to-remove' );
 
-            to_remove_array.push( endpoint );
-            // first set value
-            to_remove.val( to_remove_array.join(',') );
+				if ( typeof endpoint == 'undefined' || ! to_remove.length ) {
+					return false;
+				}
 
-            // if group move child
-            if( is_group.length ) {
-                var child_items = is_group.find( 'li.dd-item' );
-                // move!
-                item.after( child_items );
-            }
-            // then remove field
-            item.remove();
-            $(document).trigger( 'wcmp_field_order' );
-        } else {
-            return false;
-        }
-    });
+				var r = confirm( wcmp.remove_alert );
+				if ( r == true ) {
+					var item        = t.closest( '.dd-item' ),
+					is_group        = item.find( 'ol.endpoints' ),
+					val_to_remove   = to_remove.val(),
+					to_remove_array = val_to_remove.length ? val_to_remove.split( ',' ) : [];
 
-    /*###########################
-        SELECT
-    #############################*/
+					to_remove_array.push( endpoint );
+					// first set value
+					to_remove.val( to_remove_array.join( ',' ) );
 
-    function format(icon) {
-        return $( '<span><i class="fa fa-' + icon.text + '"></i>   ' + icon.text + '</span>' );
-    }
-    function applySelect2( select, is_endpoint ) {
-        if( typeof $.fn.select2 != 'undefined' ) {
-            var data;
-            $.each( select, function () {
-                // Build data.
-                if( $(this).hasClass('icon-select') ) {
-                    data = {
-                        templateResult: format,
-                        templateSelection: format,
-                        width: '100%',
-                        tags: true
-                    };
-                } else if( is_endpoint ) {
-                    data = {
-                        width: '100%'
-                    };
-                } else {
-                    data = {
-                        minimumResultsForSearch: 10
-                    };
-                }
-                $(this).select2(data);
-            });
-        }
-    }
+					// if group move child
+					if ( is_group.length ) {
+						var child_items = is_group.find( 'li.dd-item' );
+						// move!
+						item.after( child_items );
+					}
+					// then remove field
+					item.remove();
+					$( document ).trigger( 'wcmp_field_order' );
+				} else {
+					return false;
+				}
+			}
+		);
 
-    applySelect2( endpoints_container.find( 'select' ), true );
-    applySelect2( general_container.find( 'select' ), true );
-    applySelect2( $( '#yith_wcmap_panel_general' ).find( 'select' ), false );
+		/*###########################
+		SELECT
+		#############################*/
 
-    $( document ).on( 'wcmp_field_order', function(ev) {
-        if( typeof $.fn.nestable != 'undefined' ) {
-            var j = $('.dd').nestable('serialize'),
-                v = JSON.stringify(j);
-            $( 'input.endpoints-order' ).val( v );
-        }
-    });
+		function format(icon) {
+			return $( '<span><i class="fa fa-' + icon.text + '"></i>   ' + icon.text + '</span>' );
+		}
+		function applySelect2( select, is_endpoint ) {
+			if ( typeof $.fn.select2 != 'undefined' ) {
+				var data;
+				$.each(
+					select,
+					function () {
+						// Build data.
+						if ( $( this ).hasClass( 'icon-select' ) ) {
+							data = {
+								templateResult: format,
+								templateSelection: format,
+								width: '100%',
+								tags: true
+							};
+						} else if ( is_endpoint ) {
+							data = {
+								width: '100%'
+							};
+						} else {
+							data = {
+								minimumResultsForSearch: 10
+							};
+						}
+						$( this ).select2( data );
+					}
+				);
+			}
+		}
 
-    $('.dd').nestable().on('change', function() {
-      $(document).trigger( 'wcmp_field_order' );
-    });
-});
+		applySelect2( endpoints_container.find( 'select' ), true );
+		applySelect2( general_container.find( 'select' ), true );
+		applySelect2( $( '#yith_wcmap_panel_general' ).find( 'select' ), false );
+
+		$( document ).on(
+			'wcmp_field_order',
+			function(ev) {
+				if ( typeof $.fn.nestable != 'undefined' ) {
+					var j = $( '.dd' ).nestable( 'serialize' ),
+					v     = JSON.stringify( j );
+					$( 'input.endpoints-order' ).val( v );
+				}
+			}
+		);
+
+		$( '.dd' ).nestable().on(
+			'change',
+			function() {
+				$( document ).trigger( 'wcmp_field_order' );
+			}
+		);
+	}
+);
