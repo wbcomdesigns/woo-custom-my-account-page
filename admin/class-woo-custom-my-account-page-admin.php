@@ -350,4 +350,28 @@ class Woo_Custom_My_Account_Page_Admin {
 		include WCMP_PLUGIN_PATH . 'admin/partials/link-item.php';
 	}
 
+	/**
+	 * Update WooCommerce tab slugs after save endpoint settings.
+	 *
+	 * @since  1.0.0
+	 * @param  array  $old_value   Template args array.
+	 * @param  array  $new_value   Template args array.
+	 * @param  string $option_name The option name.
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_update_woo_endpoints_slug( $old_value, $new_value, $option_name ) {
+		$wcmp_obj          = instantiate_woo_custom_myaccount_functions();
+		$default_endpoints = $wcmp_obj->default_endpoint_settings();
+		if ( array_key_exists( 'endpoints', $new_value ) ) {
+			if ( ! empty( $new_value['endpoints'] ) ) {
+				foreach ( $new_value['endpoints'] as $endpoint => $endpoint_details ) {
+					if ( ( 'dashboard' !== $endpoint ) && array_key_exists( $endpoint, $default_endpoints ) ) {
+						update_option( 'woocommerce_myaccount_'. str_replace( '-', '_', $endpoint ) .'_endpoint', $endpoint_details['slug'] );
+					}
+				}
+			}
+		}
+	}
+
 }
