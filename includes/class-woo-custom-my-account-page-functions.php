@@ -154,6 +154,8 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		}
 
 		/**
+
+		
 		 * Get endpoint by a specified key.
 		 *
 		 * @access public
