@@ -13,7 +13,7 @@ $default_endpoint_settings = $myaccount_func->default_endpoint_settings();
 ?>
 
 <li class="dd-item endpoint" data-id="<?php echo esc_attr( $endpoint ); ?>" data-type="endpoint">
-	<label class="on-off-endpoint" for="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_active' ); ?>">
+	<label class="on-off-endpoint" for="<?php echo esc_attr( 'wcmp_endpoint_' . esc_attr( $endpoint ) . '_active' ); ?>">
 		<input type="checkbox" class="hide-show-check" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][active]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_active' ); ?>" value="<?php echo esc_attr( $endpoint ); ?>" <?php checked( esc_attr( $options['active'] ), $endpoint ); ?>>
 		<i class="fa fa-power-off"></i>
 	</label>

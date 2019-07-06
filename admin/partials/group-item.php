@@ -17,7 +17,7 @@ $myaccount_func = instantiate_woo_custom_myaccount_functions();
 
 <li class="dd-item endpoint group" data-id="<?php echo esc_attr( $endpoint ); ?>" data-type="group">
 
-	<label class="on-off-endpoint" for="<?php echo esc_attr( 'wcmp_endpoint_' . $options['slug'] . '_active' ); ?>">
+	<label class="on-off-endpoint" for="<?php echo esc_attr( 'wcmp_endpoint_' . esc_attr( $endpoint ) . '_active' ); ?>">
 		<input type="checkbox" class="hide-show-check" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][active]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_active' ); ?>" value="<?php echo esc_attr( $endpoint ); ?>" <?php checked( esc_attr( $options['active'] ), $endpoint ); ?>/>
 		<i class="fa fa-power-off"></i>
 	</label>

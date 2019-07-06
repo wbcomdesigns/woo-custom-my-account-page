@@ -264,7 +264,7 @@ div.new-field-form .loader {
 	}
 }
 
-#yith_wcmap_panel_endpoints textarea.wp-editor-area {
+textarea.wp-editor-area {
 	width: 100% !important;
 }
 
