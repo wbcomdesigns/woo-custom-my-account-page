@@ -26,7 +26,7 @@ $logout_url = ( function_exists( 'wc_logout_url' ) ) ? wc_logout_url() : wc_get_
 	<div class="user-info">
 		<p class="username"><?php echo esc_html( $current_user_obj->display_name ); ?></p>
 		<?php if ( isset( $current_user_obj ) && 0 !== $current_user_obj->ID ) : ?>
-			<span class="logout"><a href="<?php echo esc_url( $logout_url ); ?>"><?php esc_html_e( 'Logout', 'wcmp-woocommerce-customize-myaccount-page' ); ?></a></span>
+			<span class="logout"><a href="<?php echo esc_url( $logout_url ); ?>"><?php esc_html_e( 'Logout', 'woo-custom-my-account-page' ); ?></a></span>
 		<?php endif; ?>
 	</div>
 

@@ -60,58 +60,29 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Woo_Custom_My_Account_Page_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Woo_Custom_My_Account_Page_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+		if ( ! is_account_page() ) {
+			return;
+		}
+		
+		wp_register_style( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-public.css' );
+		wp_enqueue_style( 'wcmp-frontend' );
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/woo-custom-my-account-page-public.css', array(), $this->version, 'all' );
-
+		$inline_css = $this->wcmp_get_custom_css();
+		wp_add_inline_style( 'wcmp-frontend', $inline_css );
 	}
 
 	/**
 	 * Register the JavaScript for the public-facing side of the site.
 	 *
-	 * @since    1.0.0
+	 * @since   1.0.0
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Woo_Custom_My_Account_Page_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Woo_Custom_My_Account_Page_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+		if ( ! is_account_page() ) {
+			return;
+		}
 
-		$paths       = apply_filters( 'wcmp_stylesheet_paths', array( WC()->template_path() . 'yith-customize-myaccount.css', 'yith-customize-myaccount.css' ) );
-		$located     = locate_template( $paths, false, false );
-		$search      = array( get_stylesheet_directory(), get_template_directory() );
-		$replace     = array( get_stylesheet_directory_uri(), get_template_directory_uri() );
-		$stylesheet  = ! empty( $located ) ? str_replace( $search, $replace, $located ) : plugin_dir_url( __FILE__ ) . 'assets/css/wcmp-frontend.css';
-		$suffix      = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		$assets_path = str_replace( array( 'http:', 'https:' ), '', WC()->plugin_url() ) . '/assets/';
-
-		wp_register_style( 'wcmp-frontend', $stylesheet );
-		wp_register_script( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/js/wcmp-frontend.js', array( 'jquery' ), false, true );
-
-		// ENQUEUE STYLE.
-		wp_enqueue_style( 'wcmp-frontend' );
-		wp_enqueue_style( 'font-awesome' );
-
-		$inline_css = $this->wcmp_get_custom_css();
-		wp_add_inline_style( 'wcmp-frontend', $inline_css );
+		wp_register_script( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/js/woo-custom-my-account-page-public.js', array( 'jquery' ), false, true );
 
 		// ENQUEUE SCRIPTS.
 		wp_enqueue_script( 'wcmp-frontend' );

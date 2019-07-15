@@ -28,7 +28,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		protected static $instance = null;
 
 		/**
-		 * Page templates
+		 * Page templates.
 		 *
 		 * @var string
 		 * @since 1.0.0
@@ -36,7 +36,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		protected $is_myaccount = false;
 
 		/**
-		 * Boolean to check if account have menu
+		 * Boolean to check if account have menu.
 		 *
 		 * @var string
 		 * @since 1.0.0
@@ -44,7 +44,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		protected $my_account_have_menu = false;
 
 		/**
-		 * My account endpoint
+		 * My account endpoint.
 		 *
 		 * @var string
 		 * @since 1.0.0
@@ -75,6 +75,9 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// Redirect to the default endpoint.
 			add_action( 'template_redirect', array( $this, 'redirect_to_default' ), 150 );
 
+			// change title
+            add_action( 'template_redirect', array( $this, 'manage_account_title' ), 10 );
+
 			// Mem if is my account page.
 			add_action( 'shutdown', array( $this, 'save_is_my_account' ) );
 
@@ -97,6 +100,38 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 			add_action( 'wp_loaded', array( $this, 'wcmp_flush_rewrite_rules' ) );
 		}
+
+        /**
+         * Change my account page title based on endpoint
+         *
+		 * @access public
+		 * @since  1.0.0
+		 * @author Wbcom Designs
+         */
+        public function manage_account_title() {
+
+		    global $wp, $post;
+
+            // search for active endpoints
+            $active     = $this->wcmp_get_current_endpoint();
+            // get active endpoint options by slug
+            $endpoint   = $this->wcmp_get_endpoint_by( $active, 'slug', $this->menu_endpoints );
+
+            if ( empty( $endpoint ) || ! is_array( $endpoint ) ) {
+                return;
+            }
+
+            // get key
+            $key = key( $endpoint );
+
+            // set endpoint title
+            if( isset( $endpoint['view-quote'] ) && ! empty( $wp->query_vars[$active] ) ) {
+                $order_id           = $wp->query_vars[$active];
+                $post->post_title   = sprintf( __( 'Quote #%s', 'yith-woocommerce-request-a-quote' ), $order_id );
+            }  elseif( ! empty( $endpoint[$key]['label'] ) && $active != 'dashboard' ) {
+                $post->post_title = stripslashes( $endpoint[$key]['label'] );
+            }
+        }
 
 		/**
 		 * Print default dashboard content.
@@ -135,7 +170,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		public function manage_account_content() {
 
 			// Search for active endpoints.
-			$active = $this->wcmp_get_current_endpoint();
+			$active   = $this->wcmp_get_current_endpoint();
 			// Get active endpoint options by slug.
 			$endpoint = $this->wcmp_get_endpoint_by( $active, 'key', $this->menu_endpoints );
 			if ( empty( $endpoint ) || ! is_array( $endpoint ) ) {
@@ -804,7 +839,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			}
 			$current_endpoint = $this->wcmp_get_current_endpoint();
 			// If a specific endpoint is required return.
-			if ( 'dashboard' !== $current_endpoint ) {
+			if ( 'dashboard' !== $current_endpoint || apply_filters( 'wcmp_no_redirect_to_default', false ) ) {
 				return;
 			}
 			$all_settings      = $this->wcmp_settings_data();
