@@ -1,12 +1,5 @@
 <?php
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
  * @link              https://wbcomdesigns.com
  * @since             1.0.0
  * @package           Woo_Custom_My_Account_Page
@@ -14,7 +7,7 @@
  * @wordpress-plugin
  * Plugin Name:       WooCommerce Custom My Account Page
  * Plugin URI:        https://wbcomdesigns.com
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       
  * Version:           1.0.0
  * Author:            Wbcom Designs
  * Author URI:        https://wbcomdesigns.com
@@ -31,10 +24,10 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
  */
-define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.0.0' );
+if ( ! defined( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION' ) ) {
+	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.0.0' );
+}	
 
 /**
  * The code that runs during plugin activation.
