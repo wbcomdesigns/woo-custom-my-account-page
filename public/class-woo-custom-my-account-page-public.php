@@ -269,7 +269,7 @@ class Woo_Custom_My_Account_Page_Public {
 
 		// Prevent filter.
 		remove_all_filters( 'get_avatar' );
-		// Re add filter.
+		// Re-add filter.
 		add_filter( 'get_avatar', array( $this, 'wcmp_get_avatar' ), 100, 6 );
 
 		if ( empty( $args ) ) {
@@ -399,8 +399,8 @@ class Woo_Custom_My_Account_Page_Public {
 	 * @access public
 	 * @since  1.0.0
 	 * @author Wbcom Designs
-	 * @param int $attachment_id The image attachment id.
-	 * @param int $size          The image size.
+	 * @param  int $attachment_id The image attachment id.
+	 * @param  int $size          The image size.
 	 * @return boolean
 	 */
 	public function wcmp_resize_avatar_url( $attachment_id, $size ) {
