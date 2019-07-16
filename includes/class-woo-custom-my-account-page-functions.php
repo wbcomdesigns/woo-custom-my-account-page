@@ -30,15 +30,15 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		/**
 		 * Page templates.
 		 *
-		 * @var string
+		 * @var   string
 		 * @since 1.0.0
 		 */
 		protected $is_myaccount = false;
-
+ 
 		/**
 		 * Boolean to check if account have menu.
 		 *
-		 * @var string
+		 * @var   string
 		 * @since 1.0.0
 		 */
 		protected $my_account_have_menu = false;
@@ -46,7 +46,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		/**
 		 * My account endpoint.
 		 *
-		 * @var string
+		 * @var   string
 		 * @since 1.0.0
 		 */
 		protected $menu_endpoints = array();
@@ -56,7 +56,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 *
 		 * Ensures only one instance of Woo_Custom_My_Account_Page_Functions is loaded or can be loaded.
 		 *
-		 * @since 1.0.0
+		 * @since  1.0.0
 		 * @static
 		 */
 		public static function instance() {
@@ -85,7 +85,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			add_action( 'woocommerce_account_navigation', array( $this, 'wcmp_add_my_account_menu' ), 10 );
 
 			// Manage account content.
-			//add_action( 'woocommerce_account_content', array( $this, 'manage_account_content' ), 1 );
+			add_action( 'woocommerce_account_content', array( $this, 'manage_account_content' ), 1 );
 
 			add_action( 'wcmp_print_single_endpoint', array( $this, 'wcmp_print_single_endpoint' ), 10, 2 );
 			add_action( 'wcmp_print_endpoints_group', array( $this, 'wcmp_print_endpoints_group' ), 10, 2 );
@@ -127,7 +127,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
             // set endpoint title
             if( isset( $endpoint['view-quote'] ) && ! empty( $wp->query_vars[$active] ) ) {
                 $order_id           = $wp->query_vars[$active];
-                $post->post_title   = sprintf( __( 'Quote #%s', 'yith-woocommerce-request-a-quote' ), $order_id );
+                $post->post_title   = sprintf( __( 'Quote #%s', 'woo-custom-my-account-page' ), $order_id );
             }  elseif( ! empty( $endpoint[$key]['label'] ) && $active != 'dashboard' ) {
                 $post->post_title = stripslashes( $endpoint[$key]['label'] );
             }
@@ -365,6 +365,13 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 					} else {
 						$default_function = "wcmp_get_default_{$endpoint['type']}_options";
 						$default_values   = $this->$default_function( $key );
+					}
+					if ( ! array_key_exists( $key, $default_endpoints ) ) {
+						if ( array_key_exists( 'content', $endpoint ) ) {
+							$endpoints[ $key ]['content'] = $endpoint['content'];
+						} else {
+							$endpoints[ $key ]['content'] = '';
+						}
 					}
 					if ( array_key_exists( 'active', $endpoint ) ) {
 						$endpoints[ $key ]['active'] = $endpoint['active'];
