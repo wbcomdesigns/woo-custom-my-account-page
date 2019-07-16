@@ -852,6 +852,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 		    // If NOT in My account dashboard page.
 			if ( ! get_option( 'wcmp_is_my_account', true ) && ! isset( $_REQUEST['elementor-preview'] ) && $current_endpoint != $default_endpoint ) {
+                update_option( 'wcmp_is_my_account', false );
                 $default_endpoint != 'dashboard' && $url = wc_get_endpoint_url( $default_endpoint, '', $url );
                 wp_safe_redirect( $url );
 				exit;
