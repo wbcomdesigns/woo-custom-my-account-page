@@ -899,6 +899,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 			$endpoint_name = $this->wcmp_build_label( $endpoint );
 			$icon          = $this->wcmp_get_icon( $endpoint );
+			
 			// Build endpoint options.
 			$options = array(
 				'type'      => 'endpoint',
