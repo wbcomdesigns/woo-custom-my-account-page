@@ -121,7 +121,6 @@ class Woo_Custom_My_Account_Page_Admin {
 						'action_add'   => 'wcmp_add_field',
 						'show_lbl'     => esc_html__( 'Show', 'woo-custom-my-account-page' ),
 						'hide_lbl'     => esc_html__( 'Hide', 'woo-custom-my-account-page' ),
-						// 'loading'	    => '<img src="' . yith_wcmap_ASSETS_URL . '/images/wpspin_light.gif' . '">',
 						'checked'      => '<i class="fa fa-check"></i>',
 						'error_icon'   => '<i class="fa fa-times"></i>',
 						'remove_alert' => esc_html__( 'Are you sure that you want to delete this endpoint?', 'woo-custom-my-account-page' ),
@@ -273,16 +272,6 @@ class Woo_Custom_My_Account_Page_Admin {
 		$field            = $myaccount_func->create_field_key( $_REQUEST['field_name'] );
 		$options_function = "wcmp_get_default_{$request}_options";
 		$print_function   = "wcmp_admin_print_{$request}_field";
-
-		// echo '<pre>options_function: '; print_r( $options_function ); echo '</pre>';
-		// echo '<pre>print_function: '; print_r( $print_function ); echo '</pre>';
-
-		// if ( ! $field || ! function_exists( $options_function ) || ! function_exists( $print_function ) ) {
-		// wp_send_json( array(
-		// 'error' => esc_html__( 'An error has occurred or this endpoint field already exists. Please try again.', 'woo-custom-my-account-page' ),
-		// 'field' => false
-		// ) );
-		// }
 
 		// Build args array.
 		$args = array(
