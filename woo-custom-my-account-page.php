@@ -27,7 +27,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 if ( ! defined( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION' ) ) {
 	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.0.0' );
-}	
+}
 
 /**
  * The code that runs during plugin activation.
@@ -105,7 +105,7 @@ function wcmp_plugins_files() {
 		run_woo_custom_my_account_page();
 	}
 }
-	
+
 function wcmp_admin_notice() {
 	$woo_plugin  = esc_html__( 'WooCommerce', 'woo-custom-my-account-page' );
 	$wcmp_plugin = esc_html__( 'WooCommerce Custom My Account Page', 'woo-custom-my-account-page' );
