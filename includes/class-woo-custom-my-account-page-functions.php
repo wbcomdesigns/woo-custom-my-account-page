@@ -564,10 +564,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 				) {
 					unset( $this->menu_endpoints[ $endpoint ] );
 					continue;
-				} elseif ( isset( $options['usr_roles'] ) && $this->_hide_by_usr_roles( $options['usr_roles'], $user_role ) ) {
-					// check master by user roles.
-					unset( $this->menu_endpoints[ $endpoint ] );
-					continue;
 				}
 
 				// check if child is active.
@@ -577,28 +573,19 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 							unset( $options['children'][ $child_endpoint ] );
 							continue;
 						}
-						if ( isset( $child_options['usr_roles'] ) && $this->_hide_by_usr_roles( $child_options['usr_roles'], $user_role ) &&
-							isset( $child_options['membership_plans'] ) && $this->_hide_by_membership_plan( $child_options['membership_plans'] )
-						) {
-							unset( $options['children'][ $child_endpoint ] );
-							continue;
-						} elseif ( isset( $child_options['usr_roles'] ) && $this->_hide_by_usr_roles( $child_options['usr_roles'], $user_role ) ) {
+						if ( isset( $child_options['usr_roles'] ) && $this->_hide_by_usr_roles( $child_options['usr_roles'], $user_role ) ) {
 							// check master by user roles.
 							unset( $options['children'][ $child_endpoint ] );
 							continue;
 						}
 
 						// Get translated label.
-						$options['children'][ $child_endpoint ]['label']                                 = $this->get_string_translated( $child_endpoint, $child_options['label'] );
-						empty( $child_options['url'] ) || $options['children'][ $child_endpoint ]['url'] = $this->get_string_translated( $child_endpoint . '_url', $child_options['url'] );
-						empty( $child_options['content'] ) || $options['children'][ $child_endpoint ]['content'] = $this->get_string_translated( $child_endpoint . '_content', $child_options['content'] );
+						$options['children'][ $child_endpoint ]['label']                                 = $child_options['label'];
+						empty( $child_options['url'] ) || $options['children'][$child_endpoint]['url'] = $child_options['url'];
+						empty( $child_options['content'] ) || $options['children'][$child_endpoint]['content'] = $child_options['content'];
 					}
 				}
 
-				// get translated label.
-				$options['label']                                   = $this->get_string_translated( $endpoint, $options['label'] );
-				empty( $options['url'] ) || $options['url']         = $this->get_string_translated( $endpoint . '_url', $options['url'] );
-				empty( $options['content'] ) || $options['content'] = $this->get_string_translated( $endpoint . '_content', $options['content'] );
 			}
 
 			// remove standard woocommerce sidebar.
@@ -638,30 +625,10 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// Check if current user can.
 			$intersect = array_intersect( $roles, $current_user_role );
 			if ( ! empty( $intersect ) ) {
-				return false;
+				return true;
 			}
 
 			return true;
-		}
-
-		/**
-		 * Get a translated string.
-		 *
-		 * @access public
-		 * @since  1.0.0
-		 * @author Wbcom Designs
-		 * @param  string $key
-		 * @param  string $value
-		 * @return string
-		 */
-		public function get_string_translated( $key, $value ) {
-			if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
-				$value = apply_filters( 'wpml_translate_single_string', $value, 'yith-woocommerce-customize-myaccount-page', 'plugin_yit_wcmap_' . $key );
-			} elseif ( defined( 'POLYLANG_VERSION' ) && function_exists( 'pll__' ) ) {
-				$value = pll__( $value );
-			}
-
-			return $value;
 		}
 
 		/**
@@ -849,6 +816,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			if ( 'dashboard' !== $current_endpoint || apply_filters( 'wcmp_no_redirect_to_default', false ) ) {
 				return;
 			}
+			$restricted_roles  = array();
 			$all_settings      = $this->wcmp_settings_data();
 			$general_settings  = $all_settings['general_settings'];
 			$endpoint_settings = $all_settings['endpoints_settings'];
@@ -858,12 +826,19 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$url               = wc_get_page_permalink( 'myaccount' );
 
 		    // If NOT in My account dashboard page.
-			if ( ! get_option( 'wcmp_is_my_account', true ) && ! isset( $_REQUEST['elementor-preview'] ) && $current_endpoint != $default_endpoint ) {
-                update_option( 'wcmp_is_my_account', false );
-                $default_endpoint != 'dashboard' && $url = wc_get_endpoint_url( $default_endpoint, '', $url );
-                wp_safe_redirect( $url );
-				exit;
+		    $current_user     = wp_get_current_user();
+			$user_role        = (array) $current_user->roles;
+			if ( array_key_exists( $default_endpoint, $this->menu_endpoints ) ) {
+				$restricted_roles = $this->menu_endpoints[$default_endpoint]['usr_roles'];
 			}
+			if ( is_wc_endpoint_url( $default_endpoint ) ) {
+				if ( ! get_option( 'wcmp_is_my_account', true ) && ! isset( $_REQUEST['elementor-preview'] ) && $current_endpoint != $default_endpoint && $this->_hide_by_usr_roles( $restricted_roles, $user_role ) ) {
+	                update_option( 'wcmp_is_my_account', false );
+	                $default_endpoint != 'dashboard' && $url = wc_get_endpoint_url( $default_endpoint, '', $url );
+	                wp_safe_redirect( $url );
+					exit;
+				}
+			}	
 		}
 
 		/**
