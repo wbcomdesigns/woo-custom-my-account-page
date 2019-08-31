@@ -33,7 +33,7 @@
 
 jQuery( document ).ready(
 	function($) {
-		"use strict";
+		"use strict";		
 		$( '.wcmp-admin-color-picker' ).wpColorPicker();
 		var endpoints_container = $( ".endpoints-container" );
 		var general_container   = $( ".wcmp_general_settings" );
@@ -79,12 +79,11 @@ jQuery( document ).ready(
 			'.add_new_field',
 			function(ev){
 				ev.stopPropagation();
-
-				var t     = $( this ),
+				var t     = $( this ),				
 				target    = t.data( 'target' ),
 				title     = t.html(),
 				new_field = $( document ).find( '.new-field-form' ).clone();
-
+				
 				// first init and open dialog
 				init_dialog_form( new_field, target, title );
 
@@ -107,7 +106,7 @@ jQuery( document ).ready(
 						text: "Save",
 						click: function () {
 
-							$( this ).find( '.loader' ).css( 'display', 'inline-block' );
+							$( this ).find( '.wcmp-loader' ).css( 'display', 'inline-block' );
 
 							// class add field handler.
 							$( this ).add_new_field_handler( target );
@@ -134,46 +133,50 @@ jQuery( document ).ready(
 			var t = $( this ),
 			value = t.find( '#wcmp-new-field' ).val(),
 			error = t.find( '.error-msg' );
-
-			// abort prev ajax request
-			if ( xhr ) {
-				xhr.abort();
-			}
-
-			// else check ajax
-			xhr = $.ajax(
-				{
-					url: wcmp.ajaxurl,
-					data: {
-						target: target,
-						field_name: value,
-						action: wcmp.action_add
-					},
-					dataType: 'json',
-					beforeSend: function(){},
-					success: function( res ){
-
-						t.find( '.loader' ).hide();
-
-						// check for error or if field already exists
-						if ( res.error || endpoints_container.find( '[data-id="' + res.field + '"]' ).length ) {
-							error.html( res.error );
-							return;
-						}
-
-						var new_content = $( res.html );
-
-						$( '.endpoints-container > ol.endpoints > li.endpoint' ).last().after( new_content );
-
-						// reinit select
-						applySelect2( new_content.find( 'select' ), true );
-						// init_tinyMCE( new_content.find('textarea').attr('id' ) );
-
-						$( document ).trigger( 'wcmp_field_added' );
-						$( document ).trigger( 'wcmp_field_order' );
-					}
+			if ( '' !== $.trim( value ) ) {
+				// abort prev ajax request
+				if ( xhr ) {
+					xhr.abort();
 				}
-			);
+
+				// else check ajax
+				xhr = $.ajax(
+					{
+						url: wcmp.ajaxurl,
+						data: {
+							target: target,
+							field_name: value,
+							action: wcmp.action_add
+						},
+						dataType: 'json',
+						beforeSend: function(){},
+						success: function( res ){
+
+							t.find( '.wcmp-loader' ).hide();
+
+							// check for error or if field already exists
+							if ( res.error || endpoints_container.find( '[data-id="' + res.field + '"]' ).length ) {
+								error.html( res.error );
+								return;
+							}
+
+							var new_content = $( res.html );
+
+							$( '.endpoints-container > ol.endpoints > li.endpoint' ).last().after( new_content );
+
+							// reinit select
+							applySelect2( new_content.find( 'select' ), true );
+							// init_tinyMCE( new_content.find('textarea').attr('id' ) );
+
+							$( document ).trigger( 'wcmp_field_added' );
+							$( document ).trigger( 'wcmp_field_order' );
+						}
+					}
+				);
+			} else {
+				t.find( '.wcmp-loader' ).hide();
+				$( '.error-msg' ).html( wcmp.empty_field );
+			}
 		};
 
 		/*##############################

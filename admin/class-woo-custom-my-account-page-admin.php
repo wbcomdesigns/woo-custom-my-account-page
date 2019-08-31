@@ -123,6 +123,7 @@ class Woo_Custom_My_Account_Page_Admin {
 						'hide_lbl'     => esc_html__( 'Hide', 'woo-custom-my-account-page' ),
 						'checked'      => '<i class="fa fa-check"></i>',
 						'error_icon'   => '<i class="fa fa-times"></i>',
+						'empty_field'  => esc_html__( 'This field is required.', 'woo-custom-my-account-page' ),
 						'remove_alert' => esc_html__( 'Are you sure that you want to delete this endpoint?', 'woo-custom-my-account-page' ),
 					)
 				);
