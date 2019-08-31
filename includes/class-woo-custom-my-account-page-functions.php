@@ -831,8 +831,8 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			if ( array_key_exists( $default_endpoint, $this->menu_endpoints ) ) {
 				$restricted_roles = $this->menu_endpoints[$default_endpoint]['usr_roles'];
 			}
-			if ( is_wc_endpoint_url( $default_endpoint ) ) {
-				if ( ! get_option( 'wcmp_is_my_account', true ) && ! isset( $_REQUEST['elementor-preview'] ) && $current_endpoint != $default_endpoint && $this->_hide_by_usr_roles( $restricted_roles, $user_role ) ) {
+			if ( ! is_wc_endpoint_url( $default_endpoint ) ) {
+				if ( ! get_option( 'wcmp_is_my_account', true ) && ! isset( $_REQUEST['elementor-preview'] ) && $current_endpoint != $default_endpoint && ! $this->_hide_by_usr_roles( $restricted_roles, $user_role ) ) {
 	                update_option( 'wcmp_is_my_account', false );
 	                $default_endpoint != 'dashboard' && $url = wc_get_endpoint_url( $default_endpoint, '', $url );
 	                wp_safe_redirect( $url );
