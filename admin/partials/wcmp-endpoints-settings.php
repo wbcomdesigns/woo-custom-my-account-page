@@ -66,7 +66,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<label for="wcmp-new-field"><?php esc_html_x( 'Name', 'Label for new endpoint title', 'woo-custom-my-account-page' ); ?>
 				<input type="text" id="wcmp-new-field" name="wcmp-new-field" value="">
 			</label>
-			<div class="loader"></div>
+			<div class="wcmp-loader"><i class="fa fa-spinner fa-spin"></i></div>
 			<p class="error-msg"></p>
 		</div>
 		<?php submit_button(); ?>
