@@ -79,6 +79,7 @@ jQuery( document ).ready(
 			'.add_new_field',
 			function(ev){
 				ev.stopPropagation();
+				$( document ).find( '.error-msg' ).empty();				
 				var t     = $( this ),				
 				target    = t.data( 'target' ),
 				title     = t.html(),
@@ -133,6 +134,7 @@ jQuery( document ).ready(
 			var t = $( this ),
 			value = t.find( '#wcmp-new-field' ).val(),
 			error = t.find( '.error-msg' );
+			t.find('.error-msg').empty();
 			if ( '' !== $.trim( value ) ) {
 				// abort prev ajax request
 				if ( xhr ) {
@@ -197,6 +199,14 @@ jQuery( document ).ready(
 			label = ( check.is( ':checked' ) ) ? wcmp.hide_lbl : wcmp.show_lbl;
 			all_link.html( label );
 		};
+
+		$( document ).on(
+			'keyup',
+			'#wcmp-new-field',
+			function(){
+				$( this ).parents('.new-field-form').find('.error-msg').empty();
+			}
+		);
 
 		// event listener
 		$( document ).on(
