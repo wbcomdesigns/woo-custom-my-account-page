@@ -134,8 +134,12 @@ class Woo_Custom_My_Account_Page_Public {
 	 * @author Wbcom Designs
 	 */
 	public function wcmp_add_avatar() {
-
-		if ( ! isset( $_FILES['wcmp_user_avatar'] ) || ! wp_verify_nonce( $_POST['_nonce'], 'wp_handle_upload' ) ) {
+		$avatar_data = wp_unslash( $_POST );
+		if ( ! empty( $avatar_data['_nonce'] ) ) {
+			$nonce = sanitize_text_field( $avatar_data['_nonce'] );
+		}
+		
+		if ( ! isset( $_FILES['wcmp_user_avatar'] ) || ! wp_verify_nonce( $nonce, 'wp_handle_upload' ) ) {
 			return;
 		}
 

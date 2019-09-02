@@ -39,8 +39,17 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		 * @access public
 		 */
 		public function wbcom_do_plugin_action() {
-			$action = ! empty( $_POST['plugin_action'] ) ? $_POST['plugin_action'] : false;
-			$slug   = ! empty( $_POST['plugin_slug'] ) ? $_POST['plugin_slug'] : false;
+			$post_data = wp_unslash( $_POST );
+			if ( ! empty( $post_data['plugin_action'] ) ) {
+				$action = sanitize_text_field( $post_data['plugin_action'] );
+			} else {
+				$action = false;
+			}
+			if ( ! empty( $post_data['plugin_slug'] ) ) {
+				$slug = sanitize_text_field( $post_data['plugin_slug'] );
+			} else {
+				$slug = false;
+			}
 
 			if ( 'install_plugin' === $action ) {
 				$this->wbcom_do_plugin_install( $slug );
