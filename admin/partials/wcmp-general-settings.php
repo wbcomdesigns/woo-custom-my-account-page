@@ -20,6 +20,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 		$myaccount_func    = instantiate_woo_custom_myaccount_functions();
 		$all_settings      = $myaccount_func->wcmp_settings_data();
 		$settings          = $all_settings['general_settings'];
+		$hidden_cls        = '';
+		if ( 'tab' === $settings['menu_style'] ) {
+			$hidden_cls = 'wcmp_option_hide';
+		}
 		?>
 		<table class="form-table wcmp_general_settings">
 			<tbody>
@@ -62,7 +66,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<p class="description"><?php esc_html_e( 'Choose the style for the "My Account" page.', 'woo-custom-my-account-page' ); ?></p>
 					</td>
 				</tr>
-				<tr class="wcmp_sidebar_position_wrapper">
+				<tr class="wcmp_sidebar_position_wrapper <?php echo $hidden_cls; ?>">
 					<th scope="row">
 						<label>
 							<?php esc_html_e( 'Sidebar position', 'woo-custom-my-account-page' ); ?>
