@@ -208,16 +208,11 @@ jQuery( document ).ready(
 		);
 
 		var selected = $( ".wcmp_menu_style" );
-		if( 'tab' == selected.val() ) {
-    		$( '.wcmp_sidebar_position_wrapper' ).hide();
-    	} else {
-    		$( '.wcmp_sidebar_position_wrapper' ).show();
-    	}
 	    selected.change(function(){
 	    	if( 'tab' == this.value ) {
-	    		$( '.wcmp_sidebar_position_wrapper' ).hide();
+	    		$( '.wcmp_sidebar_position_wrapper' ).addClass( 'wcmp_option_hide' );
 	    	} else {
-	    		$( '.wcmp_sidebar_position_wrapper' ).show();
+	    		$( '.wcmp_sidebar_position_wrapper' ).removeClass( 'wcmp_option_hide' );	    		
 	    	}
 	    });
 

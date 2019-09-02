@@ -529,6 +529,30 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					if ( ! wp_style_is( 'woo-custom-my-account-page', 'enqueued' ) ) {
 						wp_enqueue_style( 'woo-custom-my-account-page', WCMP_PLUGIN_URL . 'admin/css/buddypress-lock-pro-admin.css', array(), time(), 'all' );
 					}
+
+					if ( ! wp_style_is( 'select2-css', 'enqueued' ) ) {
+						wp_enqueue_style( 'select2-css', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.css' );
+					}
+					if ( ! wp_script_is( 'select2-js', 'enqueued' ) ) {
+						wp_enqueue_script( 'select2-js', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.js' );
+					}
+					if ( ! wp_script_is( 'woo-custom-my-account-page-admin-js', 'enqueued' ) ) {
+						wp_enqueue_script( 'woo-custom-my-account-page-admin-js', plugin_dir_url( __FILE__ ) . 'assets/js/woo-custom-my-account-page-admin.js', array( 'jquery', 'wp-color-picker', 'nestable', 'jquery-ui-dialog' ), time(), false );
+						wp_localize_script(
+							'woo-custom-my-account-page-admin-js',
+							'wcmp',
+							array(
+								'ajaxurl'      => admin_url( 'admin-ajax.php' ),
+								'action_add'   => 'wcmp_add_field',
+								'show_lbl'     => esc_html__( 'Show', 'woo-custom-my-account-page' ),
+								'hide_lbl'     => esc_html__( 'Hide', 'woo-custom-my-account-page' ),
+								'checked'      => '<i class="fa fa-check"></i>',
+								'error_icon'   => '<i class="fa fa-times"></i>',
+								'empty_field'  => esc_html__( 'This field is required.', 'woo-custom-my-account-page' ),
+								'remove_alert' => esc_html__( 'Are you sure that you want to delete this endpoint?', 'woo-custom-my-account-page' ),
+							)
+						);
+					}
 				}
 			}
 		}

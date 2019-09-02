@@ -411,3 +411,7 @@ input:checked + .wcmp-slider:before {
 .wcmp-loader i {
     font-size: 18px;
 }
+
+.wcmp_option_hide {
+    display: none;
+}
