@@ -19,6 +19,8 @@
     width: 75%;
     box-sizing: border-box;
     margin: 0;
+    padding: 0;
+    border: 0;
 }
 .woocommerce-MyAccount-navigation:not( .wc-memberships-for-teams-teams-area-navigation ) {
     display: none;
@@ -35,9 +37,8 @@
     margin: 0;
 }
 #my-account-menu .myaccount-menu {
-    margin: 30px 0;
+    margin: 0;
 }
-
 #my-account-menu .myaccount-menu:before {
     display: block;
     border-bottom: 1px solid #e0e0e0;
@@ -124,6 +125,11 @@
 }
 #my-account-menu .user-profile {
     text-align: center;
+    border-right: 1px solid #e0e0e0;
+}
+#my-account-menu.position-right .user-profile {
+    border-right: 0;
+    border-left: 1px solid #e0e0e0;
 }
 #my-account-menu .user-profile .username {
     text-align: center;
@@ -372,11 +378,19 @@ RESPONSIVE
 }
 
 @media( max-width: 480px ) {
-    #my-account-menu {
+    #my-account-menu,
+    #my-account-menu.position-right {
         width: 100%;
         float: none;
         padding: 0 !important;
     }
+    #my-account-menu .myaccount-menu {
+        margin: 30px 0;
+    }
+    #my-account-menu .user-profile {
+        border: 0;
+    }
+    #my-account-menu ~ .woocommerce-MyAccount-content,
     #my-account-menu ~ #my-account-content {
         width: 100%;
         float: none;
@@ -418,4 +432,4 @@ RESPONSIVE
         padding: 0;
         display: none;
     }
-} 
+}
