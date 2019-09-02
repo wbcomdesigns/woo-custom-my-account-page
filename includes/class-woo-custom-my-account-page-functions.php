@@ -838,7 +838,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 	                wp_safe_redirect( $url );
 					exit;
 				}
-			}	
+			}
 		}
 
 		/**
