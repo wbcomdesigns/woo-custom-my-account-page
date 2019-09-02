@@ -219,9 +219,9 @@ div.new-field-form .loader {
     background: #fff;
     border: 0;
 }
-.ui-button.ui-dialog-titlebar-close:before {
+/*.ui-button.ui-dialog-titlebar-close:before {
     display: none;
-}
+}*/
 .ui-dialog .ui-dialog-buttonpane button {
     display: inline-block;
     text-decoration: none;

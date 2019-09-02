@@ -46,14 +46,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<td>
 						<fieldset>
 							<label>
-								<input type="radio" name="wcmp_general_settings[menu_style]" value="sidebar" <?php checked( esc_attr( $settings['menu_style'] ), 'sidebar' ); ?>>
+								<input class="wcmp_menu_style" type="radio" name="wcmp_general_settings[menu_style]" value="sidebar" <?php checked( esc_attr( $settings['menu_style'] ), 'sidebar' ); ?>>
 								<span>
 									<?php esc_html_e( 'Sidebar', 'woo-custom-my-account-page' ); ?>
 								</span>
 							</label>
 							<br>
 							<label>
-								<input type="radio" name="wcmp_general_settings[menu_style]" value="tab" <?php checked( esc_attr( $settings['menu_style'] ), 'tab' ); ?>>
+								<input class="wcmp_menu_style" type="radio" name="wcmp_general_settings[menu_style]" value="tab" <?php checked( esc_attr( $settings['menu_style'] ), 'tab' ); ?>>
 								<span>
 									<?php esc_html_e( 'Tab', 'woo-custom-my-account-page' ); ?>
 								</span>
@@ -62,7 +62,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<p class="description"><?php esc_html_e( 'Choose the style for the "My Account" page.', 'woo-custom-my-account-page' ); ?></p>
 					</td>
 				</tr>
-				<tr>
+				<tr class="wcmp_sidebar_position_wrapper">
 					<th scope="row">
 						<label>
 							<?php esc_html_e( 'Sidebar position', 'woo-custom-my-account-page' ); ?>

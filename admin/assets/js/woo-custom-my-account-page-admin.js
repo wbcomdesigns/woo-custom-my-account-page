@@ -163,7 +163,6 @@ jQuery( document ).ready(
 							}
 
 							var new_content = $( res.html );
-
 							$( '.endpoints-container > ol.endpoints > li.endpoint' ).last().after( new_content );
 
 							// reinit select
@@ -207,6 +206,20 @@ jQuery( document ).ready(
 				$( this ).parents('.new-field-form').find('.error-msg').empty();
 			}
 		);
+
+		var selected = $( ".wcmp_menu_style" );
+		if( 'tab' == selected.val() ) {
+    		$( '.wcmp_sidebar_position_wrapper' ).hide();
+    	} else {
+    		$( '.wcmp_sidebar_position_wrapper' ).show();
+    	}
+	    selected.change(function(){
+	    	if( 'tab' == this.value ) {
+	    		$( '.wcmp_sidebar_position_wrapper' ).hide();
+	    	} else {
+	    		$( '.wcmp_sidebar_position_wrapper' ).show();
+	    	}
+	    });
 
 		// event listener
 		$( document ).on(
