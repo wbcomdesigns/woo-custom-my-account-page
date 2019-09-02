@@ -92,9 +92,6 @@ class Woo_Custom_My_Account_Page_Admin {
 
 		$screen = get_current_screen();
 		if ( 'wb-plugins_page_woo-custom-myaccount-page' === $screen->base ) {
-			if ( ! wp_script_is( 'jquery', 'enqueued' ) ) {
-				wp_enqueue_script( 'jquery' );
-			}
 			if ( ! wp_script_is( 'jquery-ui', 'enqueued' ) ) {
 				wp_enqueue_script( 'jquery-ui' );
 			}
