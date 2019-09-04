@@ -265,10 +265,21 @@
 #my-account-menu-tab .myaccount-submenu > li:last-child > a {
     border: none;
 }
+#my-account-menu-tab .user-profile {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
 #my-account-menu-tab .user-info {
     display: inline-block;
     vertical-align: top;
     padding-left: 15px;
+}
+#my-account-menu-tab .user-info p.username {
+    margin-bottom: 15px;
 }
 #my-account-menu-tab ~ .woocommerce-MyAccount-content,
 #my-account-menu-tab ~ .woocommerce-MyAccount-content .woocommerce-MyAccount-content {
@@ -291,6 +302,7 @@ AVATAR MODAL
     right: 0;
     bottom: 0;
     background-color: rgba( 0,0,0,0.5 );
+    z-index: 1;
 }
 div#wcmp-avatar-form-overlay.loading:before {
     border: 4px double #f3f3f3;
@@ -322,6 +334,7 @@ div#wcmp-avatar-form-overlay.loading:before {
     padding: 30px;
     position: fixed;
     border: 3px solid #e0e0e0;
+    z-index: 2;
 }
 
 #wcmp-avatar-form h3{
