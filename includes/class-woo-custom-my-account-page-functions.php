@@ -618,7 +618,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 */
 		protected function _hide_by_usr_roles( $roles, $current_user_role ) {
 			// return if $roles is empty.
-			if ( empty( $roles ) || current_user_can( 'administrator' ) ) {
+			if ( empty( $roles ) ) {
 				return false;
 			}
 
