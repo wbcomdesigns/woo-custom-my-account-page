@@ -192,7 +192,7 @@ $editor_options 		   = array(
 							<?php wp_editor( $options['content'], $endpoint . '_content', $editor_options ); ?>
 							<p class="description">
 								<?php
-								esc_html_e( 'Add additional classes to endpoint container.', 'woo-custom-my-account-page' );
+								esc_html_e( 'Custom endpoint content. Leave it black to use default content.', 'woo-custom-my-account-page' );
 								?>
 							</p>
 						</td>
