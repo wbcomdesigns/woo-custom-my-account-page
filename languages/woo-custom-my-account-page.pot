@@ -1,0 +1,897 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Project-Id-Version: WooCommerce Custom My Account Page\n"
+"POT-Creation-Date: 2019-12-27 16:40+0530\n"
+"PO-Revision-Date: 2019-12-27 16:40+0530\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: woo-custom-my-account-page.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: admin/class-woo-custom-my-account-page-admin.php:119
+#: admin/partials/group-item.php:40 admin/partials/link-item.php:51
+#: admin/wbcom/wbcom-admin-settings.php:550
+msgid "Show"
+msgstr ""
+
+#: admin/class-woo-custom-my-account-page-admin.php:120
+#: admin/partials/endpoint-item.php:61 admin/partials/group-item.php:40
+#: admin/partials/link-item.php:51 admin/wbcom/wbcom-admin-settings.php:551
+msgid "Hide"
+msgstr ""
+
+#: admin/class-woo-custom-my-account-page-admin.php:123
+#: admin/wbcom/wbcom-admin-settings.php:554
+msgid "This field is required."
+msgstr ""
+
+#: admin/class-woo-custom-my-account-page-admin.php:124
+#: admin/wbcom/wbcom-admin-settings.php:555
+msgid "Are you sure that you want to delete this endpoint?"
+msgstr ""
+
+#: admin/class-woo-custom-my-account-page-admin.php:141
+msgid "WB Plugins"
+msgstr ""
+
+#: admin/class-woo-custom-my-account-page-admin.php:142
+#: admin/class-woo-custom-my-account-page-admin.php:208
+msgid "General"
+msgstr ""
+
+#: admin/class-woo-custom-my-account-page-admin.php:144
+msgid "Custom My Account Page"
+msgstr ""
+
+#: admin/class-woo-custom-my-account-page-admin.php:144
+msgid "Woo My Account"
+msgstr ""
+
+#: admin/class-woo-custom-my-account-page-admin.php:161
+msgid "WooCommerce Custom My Account Page Settings"
+msgstr ""
+
+#: admin/class-woo-custom-my-account-page-admin.php:211
+msgid "Style Options"
+msgstr ""
+
+#: admin/class-woo-custom-my-account-page-admin.php:214
+msgid "Endpoints"
+msgstr ""
+
+#: admin/partials/endpoint-item.php:37
+msgid "Endpoint"
+msgstr ""
+
+#: admin/partials/endpoint-item.php:49 admin/partials/link-item.php:41
+msgid "sub item"
+msgstr ""
+
+#: admin/partials/endpoint-item.php:68 admin/partials/group-item.php:42
+#: admin/partials/link-item.php:53
+msgid "Remove"
+msgstr ""
+
+#: admin/partials/endpoint-item.php:82
+msgid "Endpoint slug"
+msgstr ""
+
+#: admin/partials/endpoint-item.php:90
+msgid ""
+"Text appended to your page URLs to manage new contents in account pages. It "
+"must be unique for every page."
+msgstr ""
+
+#: admin/partials/endpoint-item.php:106
+msgid "Endpoint label"
+msgstr ""
+
+#: admin/partials/endpoint-item.php:114 admin/partials/group-item.php:60
+msgid "Menu item for this endpoint in \"My Account\"."
+msgstr ""
+
+#: admin/partials/endpoint-item.php:122
+msgid "Endpoint icon"
+msgstr ""
+
+#: admin/partials/endpoint-item.php:128
+msgid "Endpoint icon for \"My Account\" menu option."
+msgstr ""
+
+#: admin/partials/endpoint-item.php:136
+msgid "Endpoint class"
+msgstr ""
+
+#: admin/partials/endpoint-item.php:142
+msgid "Add additional classes to endpoint container."
+msgstr ""
+
+#: admin/partials/endpoint-item.php:150 admin/partials/group-item.php:104
+#: admin/partials/link-item.php:139
+msgid "User roles"
+msgstr ""
+
+#: admin/partials/endpoint-item.php:181 admin/partials/group-item.php:136
+#: admin/partials/link-item.php:173
+msgid "Restrict endpoint visibility to the following user role(s)."
+msgstr ""
+
+#: admin/partials/endpoint-item.php:189
+msgid "Endpoint content"
+msgstr ""
+
+#: admin/partials/endpoint-item.php:195
+msgid "Custom endpoint content. Leave it black to use default content."
+msgstr ""
+
+#: admin/partials/group-item.php:26
+msgid "Group"
+msgstr ""
+
+#: admin/partials/group-item.php:52
+msgid "Group label"
+msgstr ""
+
+#: admin/partials/group-item.php:70
+msgid "Group icon"
+msgstr ""
+
+#: admin/partials/group-item.php:78
+msgid "Group icon for \"My Account\" menu option."
+msgstr ""
+
+#: admin/partials/group-item.php:87
+msgid "Group class"
+msgstr ""
+
+#: admin/partials/group-item.php:94
+msgid "Add additional classes to group container."
+msgstr ""
+
+#: admin/partials/group-item.php:144
+msgid "Show open"
+msgstr ""
+
+#: admin/partials/group-item.php:150
+msgid ""
+"Show the group open by default. (Please note: this option is valid only for "
+"\"Sidebar\" style)."
+msgstr ""
+
+#: admin/partials/link-item.php:27
+msgid "Link"
+msgstr ""
+
+#: admin/partials/link-item.php:64
+msgid "Link url"
+msgstr ""
+
+#: admin/partials/link-item.php:72
+msgid "The url of the menu item."
+msgstr ""
+
+#: admin/partials/link-item.php:83
+msgid "Link label"
+msgstr ""
+
+#: admin/partials/link-item.php:92
+msgid "Menu label for this link in \"My Account\"."
+msgstr ""
+
+#: admin/partials/link-item.php:102
+msgid "Link icon"
+msgstr ""
+
+#: admin/partials/link-item.php:110
+msgid "Link icon for \"My Account\" menu option."
+msgstr ""
+
+#: admin/partials/link-item.php:121
+msgid "Link class"
+msgstr ""
+
+#: admin/partials/link-item.php:129
+msgid "Add additional classes to link container."
+msgstr ""
+
+#: admin/partials/link-item.php:183
+msgid "Open link in a new tab?"
+msgstr ""
+
+#: admin/partials/wcmp-endpoints-settings.php:23
+msgid "Manage Endpoints"
+msgstr ""
+
+#: admin/partials/wcmp-endpoints-settings.php:27
+msgid "Add group"
+msgstr ""
+
+#: admin/partials/wcmp-endpoints-settings.php:30
+msgid "Add endpoint"
+msgstr ""
+
+#: admin/partials/wcmp-endpoints-settings.php:33
+msgid "Add link"
+msgstr ""
+
+#: admin/partials/wcmp-endpoints-settings.php:66
+msgctxt "Label for new endpoint title"
+msgid "Name"
+msgstr ""
+
+#: admin/partials/wcmp-general-settings.php:33
+msgid "Custom Avatar"
+msgstr ""
+
+#: admin/partials/wcmp-general-settings.php:41
+msgid "Let users upload a custom avatar as their profile picture."
+msgstr ""
+
+#: admin/partials/wcmp-general-settings.php:47
+msgid "Menu style"
+msgstr ""
+
+#: admin/partials/wcmp-general-settings.php:55
+msgid "Sidebar"
+msgstr ""
+
+#: admin/partials/wcmp-general-settings.php:62
+msgid "Tab"
+msgstr ""
+
+#: admin/partials/wcmp-general-settings.php:66
+msgid "Choose the style for the \"My Account\" page."
+msgstr ""
+
+#: admin/partials/wcmp-general-settings.php:72
+msgid "Sidebar position"
+msgstr ""
+
+#: admin/partials/wcmp-general-settings.php:77
+msgid "Left"
+msgstr ""
+
+#: admin/partials/wcmp-general-settings.php:78
+msgid "Right"
+msgstr ""
+
+#: admin/partials/wcmp-general-settings.php:80
+msgid ""
+"Choose the position of the menu in \"My Account\" page (only for sidebar "
+"style)."
+msgstr ""
+
+#: admin/partials/wcmp-general-settings.php:85
+msgid "Default endpoint"
+msgstr ""
+
+#: admin/partials/wcmp-general-settings.php:100
+msgid "Choose the default endpoint for \"My account\" page."
+msgstr ""
+
+#: admin/partials/wcmp-style-settings.php:27
+msgid "Menu item color"
+msgstr ""
+
+#: admin/partials/wcmp-style-settings.php:32
+msgid "Choose a color for menu items."
+msgstr ""
+
+#: admin/partials/wcmp-style-settings.php:38
+msgid "Menu item color on hover"
+msgstr ""
+
+#: admin/partials/wcmp-style-settings.php:43
+msgid "Choose colour of menu items on mouse hover."
+msgstr ""
+
+#: admin/partials/wcmp-style-settings.php:49
+msgid "Logout color"
+msgstr ""
+
+#: admin/partials/wcmp-style-settings.php:54
+msgid "Choose the color of the Logout text."
+msgstr ""
+
+#: admin/partials/wcmp-style-settings.php:60
+msgid "Logout color on hover"
+msgstr ""
+
+#: admin/partials/wcmp-style-settings.php:65
+msgid "Choose the color of the Logout text on mouse hover."
+msgstr ""
+
+#: admin/partials/wcmp-style-settings.php:71
+msgid "Logout background color"
+msgstr ""
+
+#: admin/partials/wcmp-style-settings.php:76
+msgid "Choose the color of the Logout background."
+msgstr ""
+
+#: admin/partials/wcmp-style-settings.php:82
+msgid "Logout background color on hover"
+msgstr ""
+
+#: admin/partials/wcmp-style-settings.php:87
+msgid "Choose the color of the Logout background on mouse hover."
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-plugins-page.php:8
+msgid "Free Addons"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-plugins-page.php:14
+msgid "Install"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-plugins-page.php:18
+#: admin/wbcom/wbcom-admin-settings.php:504
+msgid "Activate"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-plugins-page.php:22
+#: admin/wbcom/wbcom-admin-settings.php:505
+msgid "Deactivate"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-plugins-page.php:50
+msgid "Paid Addons"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-plugins-page.php:68
+msgid "View"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-support-page.php:3
+#: admin/wbcom/wbcom-admin-settings.php:588
+#: admin/wbcom/wbcom-admin-settings.php:589
+#: admin/wbcom/wbcom-admin-settings.php:685
+msgid "Support"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-support-page.php:5
+msgid "Having any question or issue ?"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-support-page.php:7
+msgid ""
+"Our team is here to help you out at anytime. If you have any idea about how "
+"we could improve. You can share access to your site on our helpdesk if it "
+"can help getting faster. There are two ways to in touch with us :"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-support-page.php:19
+msgid "Tickets Support"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-support-page.php:20
+msgid ""
+"Open a ticket on our helpdesk, we don't guarantee a fast response but within "
+"a week. Except if you've purchased one of our product we'll reply within 24 "
+"hours."
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-support-page.php:24
+msgid "Open a ticket"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-support-page.php:39
+#: admin/wbcom/templates/wbcom-support-page.php:44
+msgid "Contact Us"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-support-page.php:40
+msgid ""
+"Create a new thread on our plugin page, participation is open to anyone from "
+"all around the world. We'll be there to help as well but can't guarantee any "
+"delay."
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:4
+msgid "Reign BuddyPress"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:12
+msgid "REIGN Community"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:14
+msgid "Multiple Member Directory Layout"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:15
+msgid "Multiple Member Header Layout"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:16
+msgid "Multiple Group Directory Layout"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:17
+msgid "Multiple Group Header Layout"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:18
+msgid "BuddyPress Customization Options"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:19
+msgid "BuddyPress Extra Widgets"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:20
+msgid "Inbuilt Social Profile Module"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:23
+#: admin/wbcom/templates/wbcom-themes-page.php:49
+#: admin/wbcom/templates/wbcom-themes-page.php:73
+#: admin/wbcom/templates/wbcom-themes-page.php:96
+msgid "Purchase"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:24
+#: admin/wbcom/templates/wbcom-themes-page.php:50
+#: admin/wbcom/templates/wbcom-themes-page.php:74
+#: admin/wbcom/templates/wbcom-themes-page.php:97
+msgid "Preview"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:30
+msgid "LearnMate"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:38
+msgid "Learnmate"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:40
+msgid "Add Review to your course"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:41
+msgid "Course Coming Soon"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:42
+#: admin/wbcom/templates/wbcom-themes-page.php:69
+msgid "Grid And List Layout"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:43
+msgid "Learndash/LifterLMS Extra Widgets"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:44
+msgid "Unparalleled Course Layout"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:45
+msgid "Awesome Learndash/LifterLMS Pages"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:46
+msgid "Distraction Free Reading"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:56
+msgid "StoreMate"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:64
+msgid "ShopMate Dokan"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:66
+msgid "Dokan Extra Widgets"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:67
+msgid "Unique Single Product Page Customization"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:68
+msgid "Awesome WooCommerce Pages"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:70
+msgid "Automated Mega Menu Support"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:80
+msgid "Jobmate"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:88
+msgid "Jobmate Theme"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:90
+msgid "Simple live searching and filtering"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:91
+msgid "Unique Job listing Page"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:92
+msgid "Awesome Resume list Page"
+msgstr ""
+
+#: admin/wbcom/templates/wbcom-themes-page.php:93
+msgid "Outstanding all job maanger pagesLayout"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:194
+msgid "Custom Font Uploader"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:196
+msgid ""
+"It also allows you to upload your own custom font to your site and use them "
+"using custom css."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:202
+msgid "BuddyPress Activity Filter"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:204
+msgid ""
+"Admin can set default and customised activities to be listed on front-end."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:210
+msgid "BuddyPress Activity Social Share"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:212
+msgid ""
+"This plugin allows anyone easily share BuddyPress Activites on major social "
+"media (Facebook, Twitter, Google+, Linkedin )."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:218
+msgid "BuddyPress Create Group Type"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:220
+msgid "It will help to create group type for BuddyPress Groups."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:226
+msgid "BuddyPress Member Reviews"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:228
+msgid ""
+"This plugin allows only site members to add reviews to the buddypress "
+"members on the site and even rate the member’s profile out of 5 points with "
+"multiple review criteria."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:234
+msgid "BuddyPress Group Reviews"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:236
+msgid ""
+"This plugin allows the BuddyPress Members to give reviews to the BuddyPress "
+"groups on the site. The review form allows the users to give text review, "
+"even rate the group on the basis of multiple criterias."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:242
+msgid "BuddyPress Favorite Notification"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:244
+msgid ""
+"BuddyPress Favorite Notification adds a notification for BuddyPress activity."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:250
+msgid "Custom Email Options"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:252
+msgid "Override default email options of Worpdress."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:258
+msgid "BuddyPress Checkins"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:260
+msgid ""
+"This plugin allows BuddyPress members to share their location when they are "
+"posting activities, you can add places where you visited, nearby locations "
+"based on google places."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:266
+msgid "BuddyPress Job Manager"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:268
+msgid ""
+"Incorporates BuddyPress with the WP Job Manager plugin by creating specific "
+"tabs in employer’s and candidate’s profiles."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:274
+msgid "BuddyPress user ToDo List"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:276
+msgid ""
+"This plugin allows you to create your personal task list with timestamp. You "
+"can mark them complete when you are done with them. It will also send "
+"reminder when you have any overdue task."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:282
+msgid "Shortcodes for BuddyPress"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:284
+msgid ""
+"This plugin will add an extended feature to the big name “BuddyPress” that "
+"will generate Shortcode for Listing Activity Streams , Members and Groups on "
+"any post/page in website."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:290
+msgid "Woo Open Graph"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:292
+msgid ""
+"This plugin will add an extended feature to the big name “WooCommerce” that "
+"will adds well executed and accurate Open Graph Meta Tags to your site with "
+"title,description and WooCommerce featured image."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:298
+msgid "BuddyPress Lock"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:300
+msgid ""
+"This plugin allows the administrator to lock the certain parts of their "
+"site. It help to create private BuddyPress community by locking certain "
+"BuddyPress Components, WordPress Pages, Custom Post Types for public view "
+"without using any membership plugin."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:306
+msgid "Woo Audio Preview"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:308
+msgid ""
+"This plugin Allows playing the audio files in sample mode to prevent "
+"unauthorized downloading of the audio files. It helps to display sample "
+"files at single product page."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:314
+msgid "WordPress System Log"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:316
+msgid ""
+"This plugin helps administrators of the site see their environment on which "
+"the site is currently running that includes WordPress environment, tha "
+"database it requires, Server Environment and the plugins installed and "
+"activated on the site."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:322
+msgid "BP Post From Anywhere"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:324
+msgid ""
+"This plugin will generate shortcode and widgets for post updates section for "
+"activities so you can post update from anywhere, it might be sidebar, some "
+"page or any template file."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:330
+msgid "Woo Document Preview"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:332
+msgid ""
+"This will allow you to add document preview at single product page. Which "
+"helps to offer more better idea when you are selling ebooks, pdf or some "
+"documents."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:338
+msgid "WordPress Media Category"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:340
+#: admin/wbcom/wbcom-admin-settings.php:356
+msgid ""
+"This plugin helps administrators of the site categorize their wordpress "
+"media."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:346
+msgid "Woo Price Quotes"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:348
+msgid ""
+"This plugin helps in quoting the products that admin wishes to hide its "
+"purchasing details."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:354
+msgid "EDD Service Extended"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:362
+msgid "WB Ads Rotator with Split Test"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:364
+msgid ""
+"This plugin is designed for the SPLIT TESTING, you can check performance of "
+"your ads layout and on the basis of them you can select one of them for your "
+"regular use."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:382
+msgid "BuddyPress Moderation Pro"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:383
+msgid ""
+"BuddyPress Community Moderation offers a solution for site owners to keep "
+"their communities straight. With community policing strategy, members of the "
+"community have an option for moderation sitewide by attaching flags to "
+"content created within the various components."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:388
+msgid "BuddyPress Polls"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:389
+msgid ""
+"Use BuddyPress Polls plugin to create polls inside the activity, let your "
+"user response to your polls. Members can create pools like activities, "
+"easily votes on them."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:394
+msgid "BuddyPress Resume Manager"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:395
+msgid ""
+"BuddyPress Resume Manager adds a separate BuddyPress Resume menu at a user’s "
+"BuddyPress Profile Page to display individual member resume. We have added "
+"predefined fields for the resumes and site admin and enable and disable them."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:400
+msgid "BuddyPress Profanity"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:401
+msgid ""
+"Use BuddyPress Profanity plugin to censor content in your community! Easily "
+"Censor all the unwanted words in activities, private messages contents by "
+"specifying a list of keywords to be filtered."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:406
+msgid "BuddyPress Private Community Pro"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:407
+msgid ""
+"This plugin offers a lockdown for BuddyPress Component and will ask users to "
+"log in go further to check profile or any other protected details."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:412
+msgid "BuddyPress Profile Pro"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:413
+msgid ""
+"This plugin gives you the power to extend BuddyPress Profiles with repeater "
+"fields and groups. You can easily add multiple field groups and display them "
+"at member’s profile."
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:572
+#: admin/wbcom/wbcom-admin-settings.php:573
+#: admin/wbcom/wbcom-admin-settings.php:673
+msgid "Components"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:580
+#: admin/wbcom/wbcom-admin-settings.php:581
+#: admin/wbcom/wbcom-admin-settings.php:679
+msgid "Themes"
+msgstr ""
+
+#: admin/wbcom/wbcom-admin-settings.php:667 woo-custom-my-account-page.php:124
+msgid "Settings"
+msgstr ""
+
+#: includes/class-woo-custom-my-account-page-functions.php:130
+#, php-format
+msgid "Quote #%s"
+msgstr ""
+
+#: public/templates/wcmp-myaccount-avatar-form.php:11
+msgid "Upload your avatar"
+msgstr ""
+
+#: public/templates/wcmp-myaccount-avatar-form.php:18
+msgid "Upload"
+msgstr ""
+
+#: public/templates/wcmp-myaccount-avatar-form.php:25
+msgid "Reset to default"
+msgstr ""
+
+#: public/templates/wcmp-myaccount-menu.php:29
+msgid "Logout"
+msgstr ""
+
+#: woo-custom-my-account-page.php:110
+msgid "WooCommerce"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+#: woo-custom-my-account-page.php:111
+msgid "WooCommerce Custom My Account Page"
+msgstr ""
+
+#. translators: %1$s: WooCommerce plugin, %2$s: WooCommerce Custom My Account Page plugin
+#: woo-custom-my-account-page.php:114
+#, php-format
+msgid "%1$s requires %2$s to be installed and active."
+msgstr ""
+
+#: woo-custom-my-account-page.php:115
+msgid "Dismiss this notice."
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+#. Author URI of the plugin/theme
+msgid "https://wbcomdesigns.com"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"This plugin helps you to customize the layout of the \"My Account\" page, "
+"adds new endpoints, groups, links and manage its content easily."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Wbcom Designs"
+msgstr ""
