@@ -141,7 +141,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			add_menu_page( esc_html__( 'WB Plugins', 'woo-custom-my-account-page' ), esc_html__( 'WB Plugins', 'woo-custom-my-account-page' ), 'manage_options', 'wbcomplugins', array( $this, 'wcmp_admin_settings_page' ), 'dashicons-lightbulb', 59 );
 			add_submenu_page( 'wbcomplugins', esc_html__( 'General', 'woo-custom-my-account-page' ), esc_html__( 'General', 'woo-custom-my-account-page' ), 'manage_options', 'wbcomplugins' );
 		}
-		add_submenu_page( 'wbcomplugins', esc_html__( 'Custom Myaccount Page', 'woo-custom-my-account-page' ), esc_html__( 'Custom Myaccount Page', 'woo-custom-my-account-page' ), 'manage_options', 'woo-custom-myaccount-page', array( $this, 'wcmp_admin_settings_page' ) );
+		add_submenu_page( 'wbcomplugins', esc_html__( 'Custom My Account Page', 'woo-custom-my-account-page' ), esc_html__( 'Woo My Account', 'woo-custom-my-account-page' ), 'manage_options', 'woo-custom-myaccount-page', array( $this, 'wcmp_admin_settings_page' ) );
 	}
 
 	/**
@@ -158,7 +158,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			<div class="wcmp-admin-header">
 				<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 				<h1 class="wbcom-plugin-heading">
-					<?php esc_html_e( 'WooCommerce Custom Myaccount Page Settings', 'woo-custom-myaccount-page' ); ?>
+					<?php esc_html_e( 'WooCommerce Custom My Account Page Settings', 'woo-custom-myaccount-page' ); ?>
 				</h1>
 			</div>
 			<?php settings_errors(); ?>
