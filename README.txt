@@ -38,5 +38,8 @@ e.g.
 
 == Changelog ==
 
+= 1.1.0 =
+* Fix: updated Tabs and Language files
+
 = 1.0.0 =
 * Initial Release 
