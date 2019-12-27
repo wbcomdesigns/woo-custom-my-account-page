@@ -16,9 +16,6 @@ Create custom My Account pages and tabs for WooCommerce with ease.
 
 * Create new my account pages
 * Reorder, disable or rename account tabs
-* Tab Styling (3 layouts, custom text & background color)
-* More than 11 content types
-* Use shortcodes & custom user meta data in tabs
 * Limit tabs to specific user roles
 
 == Installation ==
