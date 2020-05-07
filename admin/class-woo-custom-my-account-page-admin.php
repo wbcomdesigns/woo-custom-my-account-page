@@ -158,7 +158,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			<div class="wcmp-admin-header">
 				<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 				<h1 class="wbcom-plugin-heading">
-					<?php esc_html_e( 'WooCommerce Custom My Account Page Settings', 'woo-custom-myaccount-page' ); ?>
+					<?php esc_html_e( 'WooCommerce Custom My Account Page Settings', 'woo-custom-my-account-page' ); ?>
 				</h1>
 			</div>
 			<?php settings_errors(); ?>
@@ -354,7 +354,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			if ( ! empty( $new_value['endpoints'] ) ) {
 				foreach ( $new_value['endpoints'] as $endpoint => $endpoint_details ) {
 					if ( ( 'dashboard' !== $endpoint ) && array_key_exists( $endpoint, $default_endpoints ) ) {
-						update_option( 'woocommerce_myaccount_'. str_replace( '-', '_', $endpoint ) .'_endpoint', $endpoint_details['slug'] );
+						update_option( 'woocommerce_myaccount_' . str_replace( '-', '_', $endpoint ) . '_endpoint', $endpoint_details['slug'] );
 					}
 				}
 			}
