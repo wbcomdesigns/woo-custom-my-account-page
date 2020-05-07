@@ -89,6 +89,7 @@ function run_woo_custom_my_account_page() {
 
 /**
  * Include needed files if required plugin is active
+ *
  * @since   1.0.0
  * @author  Wbcom Designs
  */
@@ -96,10 +97,12 @@ add_action( 'plugins_loaded', 'wcmp_plugins_files' );
 
 function wcmp_plugins_files() {
 	if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
-		require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+		require_once ABSPATH . '/wp-admin/includes/plugin.php';
 	}
 	if ( ! is_plugin_active_for_network( 'woocommerce/woocommerce.php' ) && ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+		deactivate_plugins( plugin_basename( __FILE__ ) );
 		add_action( 'admin_notices', 'wcmp_admin_notice' );
+
 	} else {
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'wcmp_admin_page_link' );
 		run_woo_custom_my_account_page();
@@ -117,6 +120,7 @@ function wcmp_admin_notice() {
 
 /**
  * Settings link for this plugin.
+ *
  * @since   1.0.0
  * @author  Wbcom Designs
  */
