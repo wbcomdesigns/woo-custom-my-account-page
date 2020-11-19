@@ -7,7 +7,7 @@
  */
 
 ?>
-<li class="<?php echo implode( ' ', esc_attr( $classes ) ); ?>">
+<li class="<?php echo implode( ' ',  $classes ); ?>">
 
 	<a href="#" class="group-opener">
 		<?php
