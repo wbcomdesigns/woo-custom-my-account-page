@@ -572,7 +572,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 							unset( $options['children'][ $child_endpoint ] );
 							continue;
 						}
-						if ( isset( $child_options['usr_roles'] ) && $this->_hide_by_usr_roles( $child_options['usr_roles'], $user_role ) ) {
+						if ( isset( $child_options['usr_roles'] ) && !empty($child_options['usr_roles']) && !$this->_hide_by_usr_roles( $child_options['usr_roles'], $user_role ) ) {
 							// check master by user roles.
 							unset( $options['children'][ $child_endpoint ] );
 							continue;
