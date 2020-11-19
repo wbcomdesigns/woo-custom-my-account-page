@@ -559,9 +559,8 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 					continue;
 				}
 
-				// check master by user role and user membership.
-				if ( isset( $options['usr_roles'] ) && $this->_hide_by_usr_roles( $options['usr_roles'], $user_role )
-				) {
+				// check master by user role and user membership.									
+				if ( isset( $options['usr_roles'] ) && !empty($options['usr_roles']) && !$this->_hide_by_usr_roles( $options['usr_roles'], $user_role ) ) {
 					unset( $this->menu_endpoints[ $endpoint ] );
 					continue;
 				}
@@ -628,7 +627,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 				return true;
 			}
 
-			return true;
+			return false;
 		}
 
 		/**
