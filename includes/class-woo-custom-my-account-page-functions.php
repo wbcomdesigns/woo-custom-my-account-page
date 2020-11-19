@@ -403,12 +403,12 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 					if ( ! empty( $endpoint['icon'] ) ) {
 						$endpoints[ $key ]['icon'] = $endpoint['icon'];
 					} else {
-						$endpoints[ $key ]['icon'] = $default_values['icon'];
+						$endpoints[ $key ]['icon'] = '';
 					}
 					if ( ! empty( $endpoint['class'] ) ) {
 						$endpoints[ $key ]['class'] = $endpoint['class'];
 					} else {
-						$endpoints[ $key ]['class'] = $default_values['class'];
+						$endpoints[ $key ]['class'] = '';
 					}
 					if ( ! empty( $endpoint['usr_roles'] ) ) {
 						$endpoints[ $key ]['usr_roles'] = $endpoint['usr_roles'];
