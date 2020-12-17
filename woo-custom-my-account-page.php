@@ -8,7 +8,7 @@
  * Plugin Name:       WooCommerce Custom My Account Page
  * Plugin URI:        https://wbcomdesigns.com
  * Description:       This plugin helps you to customize the layout of the "My Account" page, adds new endpoints, groups, links and manage its content easily.
- * Version:           1.1.0
+ * Version:           1.0.0
  * Author:            Wbcom Designs
  * Author URI:        https://wbcomdesigns.com
  * License:           GPL-2.0+
@@ -89,6 +89,7 @@ function run_woo_custom_my_account_page() {
 
 /**
  * Include needed files if required plugin is active
+ *
  * @since   1.0.0
  * @author  Wbcom Designs
  */
@@ -96,7 +97,7 @@ add_action( 'plugins_loaded', 'wcmp_plugins_files' );
 
 function wcmp_plugins_files() {
 	if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
-		require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+		require_once ABSPATH . '/wp-admin/includes/plugin.php';
 	}
 	if ( ! is_plugin_active_for_network( 'woocommerce/woocommerce.php' ) && ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 		add_action( 'admin_notices', 'wcmp_admin_notice' );
@@ -117,6 +118,7 @@ function wcmp_admin_notice() {
 
 /**
  * Settings link for this plugin.
+ *
  * @since   1.0.0
  * @author  Wbcom Designs
  */
@@ -124,3 +126,10 @@ function wcmp_admin_page_link( $links ) {
 	$page_link = array( '<a href="' . admin_url( 'admin.php?page=woo-custom-myaccount-page' ) . '">' . esc_html__( 'Settings', 'woo-custom-my-account-page' ) . '</a>' );
 	return array_merge( $links, $page_link );
 }
+
+require plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php';
+$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
+	'https://demos.wbcomdesigns.com/exporter/free-plugins/woo-custom-my-account-page.json',
+	__FILE__, // Full path to the main plugin file or functions.php.
+	'woo-custom-my-account-page'
+);
