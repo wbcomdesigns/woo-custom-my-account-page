@@ -158,7 +158,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			<div class="wcmp-admin-header">
 				<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 				<h1 class="wbcom-plugin-heading">
-					<?php esc_html_e( 'WooCommerce Custom My Account Page Settings', 'woo-custom-myaccount-page' ); ?>
+					<?php esc_html_e( 'WooCommerce Custom My Account Page Settings', 'woo-custom-my-account-page' ); ?>
 				</h1>
 			</div>
 			<?php settings_errors(); ?>
