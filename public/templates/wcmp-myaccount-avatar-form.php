@@ -23,6 +23,7 @@
 	<form enctype="multipart/form-data" method="post">
 		<p class="submit" style="margin-top: 15px;">
 			<input type="submit" class="button" value="<?php esc_html_e( 'Reset to default', 'woo-custom-my-account-page' ); ?>">
+			<?php wp_nonce_field( 'action', 'reset_image' ); ?>
 		</p>
 		<input type="hidden" name="action" value="wcmp_reset_avatar">
 	</form>

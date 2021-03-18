@@ -10,20 +10,20 @@ global $wp_roles;
 $user_roles                = $wp_roles->roles;
 $myaccount_func            = instantiate_woo_custom_myaccount_functions();
 $default_endpoint_settings = $myaccount_func->default_endpoint_settings();
-$editor_options 		   = array(
-								'media_buttons' => true,
-								'textarea_name' => 'wcmp_endpoints_settings[endpoints]['. esc_attr( $endpoint ) .'][content]',
-							    'wpautop'       => true, // use wpautop?
-							    'media_buttons' => true, // show insert/upload button(s)
-							    'textarea_rows' => 15, // rows="..."
-							    'tabindex'      => '',
-							    'editor_css'    => '', // intended for extra styles for both visual and HTML editors buttons, needs to include the <style> tags, can use "scoped".
-							    'editor_class'  => '', // add extra class(es) to the editor textarea
-							    'teeny'         => false, // output the minimal editor config used in Press This
-							    'dfw'           => false, // replace the default fullscreen with DFW (needs specific DOM elements and css)
-							    'tinymce'       => true, // load TinyMCE, can be used to pass settings directly to TinyMCE using an array()
-							    'quicktags'     => true, // load Quicktags, can be used to pass settings directly to Quicktags using an array()
-							);
+$editor_options            = array(
+	'media_buttons' => true,
+	'textarea_name' => 'wcmp_endpoints_settings[endpoints][' . esc_attr( $endpoint ) . '][content]',
+	'wpautop'       => true, // use wpautop.
+	'media_buttons' => true, // show insert/upload button(s).
+	'textarea_rows' => 15, // rows.
+	'tabindex'      => '',
+	'editor_css'    => '', // intended for extra styles for both visual and HTML editors buttons, needs to include the <style> tags, can use "scoped".
+	'editor_class'  => '', // add extra class(es) to the editor textarea.
+	'teeny'         => false, // output the minimal editor config used in Press This.
+	'dfw'           => false, // replace the default fullscreen with DFW (needs specific DOM elements and css).
+	'tinymce'       => true, // load TinyMCE, can be used to pass settings directly to TinyMCE using an array().
+	'quicktags'     => true, // load Quicktags, can be used to pass settings directly to Quicktags using an array().
+);
 ?>
 
 <li class="dd-item endpoint" data-id="<?php echo esc_attr( $endpoint ); ?>" data-type="endpoint">

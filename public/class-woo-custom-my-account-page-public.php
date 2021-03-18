@@ -63,7 +63,7 @@ class Woo_Custom_My_Account_Page_Public {
 		if ( ! is_account_page() ) {
 			return;
 		}
-		
+
 		wp_register_style( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-public.css' );
 		wp_enqueue_style( 'wcmp-frontend' );
 
@@ -138,7 +138,7 @@ class Woo_Custom_My_Account_Page_Public {
 		if ( ! empty( $avatar_data['_nonce'] ) ) {
 			$nonce = sanitize_text_field( $avatar_data['_nonce'] );
 		}
-		
+
 		if ( ! isset( $_FILES['wcmp_user_avatar'] ) || ! wp_verify_nonce( $nonce, 'wp_handle_upload' ) ) {
 			return;
 		}
@@ -181,8 +181,11 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	public function wcmp_reset_default_avatar() {
 
-		if ( ! isset( $_POST['action'] ) || 'wcmp_reset_avatar' !== $_POST['action'] ) {
-			return;
+		if ( ! isset( $_FILES['reset_image'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['action'] ) ), 'reset_image' ) ) {
+
+			if ( ! isset( $_POST['action'] ) || 'wcmp_reset_avatar' !== $_POST['action'] ) {
+				return;
+			}
 		}
 
 		// Get user id.
@@ -224,7 +227,7 @@ class Woo_Custom_My_Account_Page_Public {
 		if ( ! is_ajax() ) {
 			return;
 		}
-		echo $this->wcmp_get_avatar_form();
+		echo __( $this->wcmp_get_avatar_form() );
 		die();
 	}
 
@@ -244,7 +247,7 @@ class Woo_Custom_My_Account_Page_Public {
 		$form = ob_get_clean();
 
 		if ( $print ) {
-			echo $form;
+			echo __( $form );
 			return;
 		}
 
@@ -257,13 +260,12 @@ class Woo_Custom_My_Account_Page_Public {
 	 * @access public
 	 * @since  1.0.0
 	 * @author Wbcom Designs
-	 * @param  string $avatar
-	 * @param  mixed  $id_or_email
-	 * @param  string $size
-	 * @param  string $default
-	 * @param  string $alt
-	 * @param  array  $args
-	 * @return string
+	 * @param  string $avatar Get user avatar image.
+	 * @param  mixed  $id_or_email Get email id of user.
+	 * @param  string $size Get user avatar image size.
+	 * @param  string $default Default.
+	 * @param  string $alt Get user avatar image alt attribute.
+	 * @param  array  $args Arguments.
 	 */
 	public function wcmp_get_avatar( $avatar, $id_or_email, $size, $default, $alt, $args = array() ) {
 
