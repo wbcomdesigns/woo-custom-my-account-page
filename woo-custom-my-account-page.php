@@ -95,6 +95,9 @@ function run_woo_custom_my_account_page() {
  */
 add_action( 'plugins_loaded', 'wcmp_plugins_files' );
 
+/**
+ * WCMP plugin requires files.
+ */
 function wcmp_plugins_files() {
 	if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 		require_once ABSPATH . '/wp-admin/includes/plugin.php';
@@ -107,6 +110,9 @@ function wcmp_plugins_files() {
 	}
 }
 
+/**
+ * Give the notice if plugin is not activated.
+ */
 function wcmp_admin_notice() {
 	$woo_plugin  = esc_html__( 'WooCommerce', 'woo-custom-my-account-page' );
 	$wcmp_plugin = esc_html__( 'WooCommerce Custom My Account Page', 'woo-custom-my-account-page' );

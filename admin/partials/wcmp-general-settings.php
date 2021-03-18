@@ -66,7 +66,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<p class="description"><?php esc_html_e( 'Choose the style for the "My Account" page.', 'woo-custom-my-account-page' ); ?></p>
 					</td>
 				</tr>
-				<tr class="wcmp_sidebar_position_wrapper <?php echo $hidden_cls; ?>">
+				<tr class="wcmp_sidebar_position_wrapper <?php echo esc_attr( $hidden_cls ); ?>">
 					<th scope="row">
 						<label>
 							<?php esc_html_e( 'Sidebar position', 'woo-custom-my-account-page' ); ?>

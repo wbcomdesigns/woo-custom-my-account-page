@@ -148,6 +148,7 @@ jQuery( document ).ready(
 						data: {
 							target: target,
 							field_name: value,
+							nonce: wcmp.nonce,
 							action: wcmp.action_add
 						},
 						dataType: 'json',

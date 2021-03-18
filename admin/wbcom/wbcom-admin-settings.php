@@ -6,6 +6,7 @@
  * @package    Woo_Custom_My_Account_Page
  * @subpackage Woo_Custom_My_Account_Page/admin/wbcom
  */
+
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
@@ -494,8 +495,13 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 			}
 			if ( ! wp_script_is( 'wbcom_admin_setting_js', 'enqueued' ) ) {
 
-				wp_register_script( 'wbcom_admin_setting_js', WCMP_PLUGIN_URL . 'admin/wbcom/assets/js/wbcom-admin-setting.js',
-				array( 'jquery' ), time(), true	);
+				wp_register_script(
+					'wbcom_admin_setting_js',
+					WCMP_PLUGIN_URL . 'admin/wbcom/assets/js/wbcom-admin-setting.js',
+					array( 'jquery' ),
+					time(),
+					true
+				);
 				wp_localize_script(
 					'wbcom_admin_setting_js',
 					'wbcom_plugin_installer_params',

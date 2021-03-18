@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -116,6 +115,7 @@ class Woo_Custom_My_Account_Page_Admin {
 					array(
 						'ajaxurl'      => admin_url( 'admin-ajax.php' ),
 						'action_add'   => 'wcmp_add_field',
+						'nonce'        => wp_create_nonce( 'ajax_nonce' ),
 						'show_lbl'     => esc_html__( 'Show', 'woo-custom-my-account-page' ),
 						'hide_lbl'     => esc_html__( 'Hide', 'woo-custom-my-account-page' ),
 						'checked'      => '<i class="fa fa-check"></i>',
@@ -194,7 +194,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			$tab_html .= '<a id="' . $wss_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $wss_tab . '">' . $wss_name . '</a>';
 		}
 		$tab_html .= '</h2></div>';
-		echo $tab_html;
+		echo wp_kses_post( $tab_html );
 	}
 
 	/**
@@ -257,9 +257,10 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access public
 	 */
 	public function wcmp_add_field_ajax() {
-
-		if ( ! ( isset( $_REQUEST['action'] ) && 'wcmp_add_field' == $_REQUEST['action'] ) || ! isset( $_REQUEST['field_name'] ) || ! isset( $_REQUEST['target'] ) ) {
-			die();
+		if ( ! wp_verify_nonce( $_POST['nonce'], 'ajax_nonce' ) ) {
+			if ( ! ( isset( $_REQUEST['action'] ) && 'wcmp_add_field' === $_REQUEST['action'] ) || ! isset( $_REQUEST['field_name'] ) || ! isset( $_REQUEST['target'] ) ) {
+				die();
+			}
 		}
 
 		$myaccount_func = instantiate_woo_custom_myaccount_functions();
@@ -267,7 +268,7 @@ class Woo_Custom_My_Account_Page_Admin {
 		// Check if is endpoint.
 		$request = trim( $_REQUEST['target'] );
 		// Build field key.
-		$field            = $myaccount_func->create_field_key( $_REQUEST['field_name'] );
+		$field            = $myaccount_func->create_field_key( wp_unslash( $_REQUEST['field_name'] ) );
 		$options_function = "wcmp_get_default_{$request}_options";
 		$print_function   = "wcmp_admin_print_{$request}_field";
 
@@ -354,7 +355,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			if ( ! empty( $new_value['endpoints'] ) ) {
 				foreach ( $new_value['endpoints'] as $endpoint => $endpoint_details ) {
 					if ( ( 'dashboard' !== $endpoint ) && array_key_exists( $endpoint, $default_endpoints ) ) {
-						update_option( 'woocommerce_myaccount_'. str_replace( '-', '_', $endpoint ) .'_endpoint', $endpoint_details['slug'] );
+						update_option( 'woocommerce_myaccount_' . str_replace( '-', '_', $endpoint ) . '_endpoint', $endpoint_details['slug'] );
 					}
 				}
 			}
