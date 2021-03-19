@@ -75,7 +75,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// Redirect to the default endpoint.
 			add_action( 'template_redirect', array( $this, 'redirect_to_default' ), 150 );
 
-			// change title.
+			// change title
 			add_action( 'template_redirect', array( $this, 'manage_account_title' ), 10 );
 
 			// Mem if is my account page.
@@ -102,7 +102,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		}
 
 		/**
-		 * Change my account page title based on endpoint.
+		 * Change my account page title based on endpoint
 		 *
 		 * @access public
 		 * @since  1.0.0
@@ -112,24 +112,23 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 			global $wp, $post;
 
-			// search for active endpoints.
+			// search for active endpoints
 			$active = $this->wcmp_get_current_endpoint();
-			// get active endpoint options by slug.
+			// get active endpoint options by slug
 			$endpoint = $this->wcmp_get_endpoint_by( $active, 'slug', $this->menu_endpoints );
 
 			if ( empty( $endpoint ) || ! is_array( $endpoint ) ) {
 				return;
 			}
 
-			// get key.
+			// get key
 			$key = key( $endpoint );
 
-			// set endpoint title.
+			// set endpoint title
 			if ( isset( $endpoint['view-quote'] ) && ! empty( $wp->query_vars[ $active ] ) ) {
-				$order_id = $wp->query_vars[ $active ];
-				/* Translators: Get a order id */
+				$order_id         = $wp->query_vars[ $active ];
 				$post->post_title = sprintf( __( 'Quote #%s', 'woo-custom-my-account-page' ), $order_id );
-			} elseif ( ! empty( $endpoint[ $key ]['label'] ) && 'dashboard' !== $active ) {
+			} elseif ( ! empty( $endpoint[ $key ]['label'] ) && $active != 'dashboard' ) {
 				$post->post_title = stripslashes( $endpoint[ $key ]['label'] );
 			}
 		}
@@ -649,7 +648,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$endpoints        = $this->menu_endpoints;
 			ob_start();
 			?>
-				<div id="my-account-menu<?php echo esc_attr( $tab ); ?>" class="wcmp-myaccount-template position-<?php echo esc_attr( $position ); ?>">
+				<div id="my-account-menu<?php echo esc_attr( $tab ); ?>" class="wcmp-myaccount-template position-<?php echo $position; ?>">
 					<?php
 						$args = apply_filters(
 							'wcmp_myaccount_menu_template_args',
@@ -664,7 +663,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 				</div>
 			<?php
 
-			return ob_get_clean();
+			echo ob_get_clean();
 
 			// set my account menu variable. This prevent double menu.
 			$this->my_account_have_menu = true;
@@ -831,9 +830,9 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 				$restricted_roles = $this->menu_endpoints[ $default_endpoint ]['usr_roles'];
 			}
 			if ( ! is_wc_endpoint_url( $default_endpoint ) ) {
-				if ( ! get_option( 'wcmp_is_my_account', true ) && ! isset( $_REQUEST['elementor-preview'] ) && $current_endpoint !== $default_endpoint && ! $this->_hide_by_usr_roles( $restricted_roles, $user_role ) ) {
+				if ( ! get_option( 'wcmp_is_my_account', true ) && ! isset( $_REQUEST['elementor-preview'] ) && $current_endpoint != $default_endpoint && ! $this->_hide_by_usr_roles( $restricted_roles, $user_role ) ) {
 					update_option( 'wcmp_is_my_account', false );
-					'dashboard' !== $default_endpoint && $url = wc_get_endpoint_url( $default_endpoint, '', $url );
+					$default_endpoint != 'dashboard' && $url = wc_get_endpoint_url( $default_endpoint, '', $url );
 					wp_safe_redirect( $url );
 					exit;
 				}
@@ -1055,8 +1054,8 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 							continue;
 					}
 
-					'view-order' === $field['id'] && $field['id']   = 'orders';
-					'my-downloads' === $field['id'] && $field['id'] = 'downloads';
+					$field['id'] == 'view-order' && $field['id']   = 'orders';
+					$field['id'] == 'my-downloads' && $field['id'] = 'downloads';
 
 					if ( isset( $field['children'] ) ) {
 						$new_fields[ $field['id'] ] = array(
@@ -1064,8 +1063,8 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 							'children' => array(),
 						);
 						foreach ( $field['children'] as $child ) {
-							'view-order' === $child['id'] && $child['id']           = 'orders';
-							'my-downloads' === $child['id'] && $child['id']         = 'downloads';
+							$child['id'] == 'view-order' && $child['id']            = 'orders';
+							$child['id'] == 'my-downloads' && $child['id']          = 'downloads';
 							$new_fields[ $field['id'] ]['children'][ $child['id'] ] = array( 'type' => 'endpoint' );
 						}
 					} else {
