@@ -70,10 +70,10 @@ $editor_options            = array(
 				<?php } ?>
 			</div>
 
-			<table class="options-table form-table">
+			<table class="options-table form-table gh">
 				<tbody>
 					<?php
-					if ( 'dashboard' !== $endpoint ) {
+					if ( 'dashboard' != $endpoint ) {
 						?>
 					<tr>
 						<th>
@@ -157,7 +157,6 @@ $editor_options            = array(
 										if ( ! empty( $options['usr_roles'] ) ) {
 											if ( in_array( $usrrole_slug, $options['usr_roles'] ) ) {
 												?>
-
 												<option value="<?php echo esc_attr( $usrrole_slug ); ?>" selected = "selected">
 													<?php echo esc_html( $usrrole_arr['name'] ); ?>
 												</option>
