@@ -662,9 +662,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 					?>
 				</div>
 			<?php
-
-			echo ob_get_clean();
-
 			// set my account menu variable. This prevent double menu.
 			$this->my_account_have_menu = true;
 		}
@@ -811,7 +808,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			}
 			$current_endpoint = $this->wcmp_get_current_endpoint();
 			// If a specific endpoint is required return.
-			if ( 'dashboard' !== $current_endpoint || apply_filters( 'wcmp_no_redirect_to_default', false ) ) {
+			if ( 'dashboard' != $current_endpoint || apply_filters( 'wcmp_no_redirect_to_default', false ) ) {
 				return;
 			}
 			$restricted_roles  = array();
