@@ -40,6 +40,9 @@ e.g.
 
 = 1.2.0 =
 * Fix: PHPCS Fixes
+* Fix: (#31) Fixed default endpoint setting issue
+* Fix: (#30) Fixed tabs are not displaying in woo my account page
+* Fix: (#29)Fixed font awesome class issue
 
 = 1.1.0 =
 * Fix: updated Tabs and Language files
