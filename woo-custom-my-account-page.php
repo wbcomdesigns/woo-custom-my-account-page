@@ -139,3 +139,17 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	__FILE__, // Full path to the main plugin file or functions.php.
 	'woo-custom-my-account-page'
 );
+
+
+/**
+ * redirect to plugin settings page after activated
+ */
+
+add_action( 'activated_plugin', 'wcmp_activation_redirect_settings' );
+function wcmp_activation_redirect_settings( $plugin ){
+
+	if( $plugin == plugin_basename( __FILE__ ) ) {
+		wp_redirect( admin_url( 'admin.php?page=woo-custom-myaccount-page' ) ) ;
+		exit;
+	}
+}

@@ -152,7 +152,7 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access public
 	 */
 	public function wcmp_admin_settings_page() {
-		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wcmp-general';
+		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wcmp-welcome';
 		?>
 		<div class="wrap">
 			<div class="wcmp-admin-header">
@@ -182,7 +182,7 @@ class Woo_Custom_My_Account_Page_Admin {
 	 */
 	public function wcmp_plugin_settings_tabs() {
 
-		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wcmp-general';
+		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wcmp-welcome';
 
 		$tab_html = '<div class="wbcom-tabs-section"><h2 class="nav-tab-wrapper">';
 		foreach ( $this->plugin_settings_tabs as $wss_tab => $wss_name ) {
@@ -205,6 +205,9 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access public
 	 */
 	public function wcmp_add_plugin_register_settings() {
+		$this->plugin_settings_tabs['wcmp-welcome'] = esc_html__( 'Welcome', 'woo-custom-my-account-page' );		
+		add_settings_section( 'wcmp-welcome', ' ', array( $this, 'wcmp_welcome_content' ), 'wcmp-welcome' );
+		
 		$this->plugin_settings_tabs['wcmp-general'] = esc_html__( 'General', 'woo-custom-my-account-page' );
 		register_setting( 'wcmp_general_settings', 'wcmp_general_settings' );
 		add_settings_section( 'wcmp-general', ' ', array( $this, 'wcmp_general_settings_content' ), 'wcmp-general' );
@@ -215,7 +218,10 @@ class Woo_Custom_My_Account_Page_Admin {
 		register_setting( 'wcmp_endpoints_settings', 'wcmp_endpoints_settings', array( $this, 'wcmp_endpoints_settings_callback' ) );
 		add_settings_section( 'wcmp-endpoints', ' ', array( $this, 'wcmp_endpoints_settings_content' ), 'wcmp-endpoints' );
 	}
-
+	
+	public function wcmp_welcome_content() {
+		require_once 'partials/wcmp-welcome-page.php';
+	}
 	/**
 	 * General Tab Content.
 	 *
