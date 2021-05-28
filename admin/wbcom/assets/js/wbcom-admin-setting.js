@@ -77,3 +77,40 @@ jQuery( document ).ready(
 
 	}
 );
+
+
+( function( $ ) {
+
+    'use strict';
+
+	$( document ).ready( function () {
+	
+	/**
+        * Responsive Navbar Menu
+        */
+        var wb_panel_tabs = $( '.nav-tab-wrapper > ul' );
+
+        $( '.wb-toggle-btn' ).change( function( e ) {
+                $.initResponsivePanel();
+        });
+
+        $.initResponsivePanel = function () {
+                if ( $( '.wb-toggle-btn' ).is( ':checked' ) ) {
+                        wb_panel_tabs.slideDown();
+                } else {
+                wb_panel_tabs.slideUp();
+                }
+        },
+
+        $( window ).on( 'resize', function ( e ) {
+                e.preventDefault();
+        if ( $( window ).width() > 768 ) {
+                wb_panel_tabs.fadeIn( 1000 );
+        } else {
+                $.initResponsivePanel();
+        }
+        });
+        
+    });
+		
+})( jQuery );

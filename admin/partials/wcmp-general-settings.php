@@ -34,9 +34,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</label>
 					</th>
 					<td>
-						<label class="wcmp-switch">
+						<label class="wb-switch">
 							<input type="checkbox" name="wcmp_general_settings[custom_avatar]" <?php checked( esc_attr( $settings['custom_avatar'] ), 'yes' ); ?> value="yes">
-							<div class="wcmp-slider round"></div>
+							<div class="wb-slider wb-round"></div>
 						</label>
 						<p class="description"><?php esc_html_e( 'Let users upload a custom avatar as their profile picture.', 'woo-custom-my-account-page' ); ?></p>
 					</td>
