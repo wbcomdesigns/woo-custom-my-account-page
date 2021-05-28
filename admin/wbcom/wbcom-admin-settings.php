@@ -490,8 +490,8 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		 * @access public
 		 */
 		public function wbcom_enqueue_admin_scripts() {
-			if ( ! wp_style_is( 'font-awesome', 'enqueued' ) ) {
-				wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.1.0/css/v4-shims.min.css' );
+			if ( !wp_style_is( 'font-awesome', 'enqueued' ) ) {
+				wp_enqueue_style( 'font-awesome', '//use.fontawesome.com/releases/v5.5.0/css/all.css' );
 			}
 			if ( ! wp_script_is( 'wbcom_admin_setting_js', 'enqueued' ) ) {
 
@@ -575,16 +575,16 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		public function wbcom_admin_additional_pages() {
 			add_submenu_page(
 				'wbcomplugins',
-				esc_html__( 'Components', 'woo-custom-my-account-page' ),
-				esc_html__( 'Components', 'woo-custom-my-account-page' ),
+				esc_html__( 'Our Plugins', 'woo-custom-my-account-page' ),
+				esc_html__( 'Our Plugins', 'woo-custom-my-account-page' ),
 				'manage_options',
 				'wbcom-plugins-page',
 				array( $this, 'wbcom_plugins_submenu_page_callback' )
 			);
 			add_submenu_page(
 				'wbcomplugins',
-				esc_html__( 'Themes', 'woo-custom-my-account-page' ),
-				esc_html__( 'Themes', 'woo-custom-my-account-page' ),
+				esc_html__( 'Our Themes', 'woo-custom-my-account-page' ),
+				esc_html__( 'Our Themes', 'woo-custom-my-account-page' ),
 				'manage_options',
 				'wbcom-themes-page',
 				array( $this, 'wbcom_themes_submenu_page_callback' )
@@ -669,20 +669,20 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					<ul>
 						<li class="wb_admin_nav_item <?php echo esc_attr( $settings_active ); ?>">
 							<a href="<?php echo esc_url( get_admin_url() . 'admin.php?page=wbcomplugins' ); ?>" id="wb_admin_nav_trigger_settings">
-								<i class="fa fa-sliders" aria-hidden="true"></i>
+								<i class="fa fa-sliders-h" aria-hidden="true"></i>
 								<h4><?php esc_html_e( 'Settings', 'woo-custom-my-account-page' ); ?></h4>
 							</a>
 						</li>
 						<li class="wb_admin_nav_item <?php echo esc_attr( $plugin_active ); ?>">
 							<a href="<?php echo esc_url( get_admin_url() . 'admin.php?page=wbcom-plugins-page' ); ?>" id="wb_admin_nav_trigger_extensions">
 								<i class="fa fa-th" aria-hidden="true"></i>
-								<h4><?php esc_html_e( 'Components', 'woo-custom-my-account-page' ); ?></h4>
+								<h4><?php esc_html_e( 'Our Plugins', 'woo-custom-my-account-page' ); ?></h4>
 							</a>
 						</li>
 						<li class="wb_admin_nav_item <?php echo esc_attr( $theme_active ); ?>">
 							<a href="<?php echo esc_url( get_admin_url() . 'admin.php?page=wbcom-themes-page' ); ?>" id="wb_admin_nav_trigger_themes">
 								<i class="fa fa-magic" aria-hidden="true"></i>
-								<h4><?php esc_html_e( 'Themes', 'woo-custom-my-account-page' ); ?></h4>
+								<h4><?php esc_html_e( 'Our Themes', 'woo-custom-my-account-page' ); ?></h4>
 							</a>
 						</li>
 						<li class="wb_admin_nav_item <?php echo esc_attr( $support_active ); ?>">

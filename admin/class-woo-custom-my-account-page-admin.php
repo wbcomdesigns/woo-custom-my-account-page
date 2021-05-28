@@ -155,6 +155,8 @@ class Woo_Custom_My_Account_Page_Admin {
 		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wcmp-welcome';
 		?>
 		<div class="wrap">
+                    <hr class="wp-header-end">
+                    <div class="wbcom-wrap">
 			<div class="wcmp-admin-header">
 				<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 				<h1 class="wbcom-plugin-heading">
@@ -169,6 +171,7 @@ class Woo_Custom_My_Account_Page_Admin {
 				do_settings_sections( $current );
 				?>
 			</div>
+                    </div>
 		</div>
 		<?php
 	}
@@ -184,18 +187,18 @@ class Woo_Custom_My_Account_Page_Admin {
 
 		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wcmp-welcome';
 
-		$tab_html = '<div class="wbcom-tabs-section"><h2 class="nav-tab-wrapper">';
+		$tab_html = '<div class="wbcom-tabs-section"><div class="nav-tab-wrapper"><div class="wb-responsive-menu"><span>' . esc_html( 'Menu' ) . '</span><input class="wb-toggle-btn" type="checkbox" id="wb-toggle-btn"><label class="wb-toggle-icon" for="wb-toggle-btn"><span class="wb-icon-bars"></span></label></div><ul>';
 		foreach ( $this->plugin_settings_tabs as $wss_tab => $wss_name ) {
 			$class = ( $wss_tab === $current ) ? 'nav-tab-active' : '';
 			$page  = 'woo-custom-myaccount-page';
 			if ( 'email' === $wss_tab ) {
 				$page = 'wc-settings';
 			}
-			$tab_html .= '<a id="' . $wss_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $wss_tab . '">' . $wss_name . '</a>';
+			$tab_html .= '<li><a id="' . $wss_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $wss_tab . '">' . $wss_name . '</a></li>';
 		}
-		$tab_html .= '</h2></div>';
-		echo wp_kses_post( $tab_html );
-	}
+		$tab_html .= '</div></ul></div>';
+		echo ( $tab_html ); // WPCS: XSS ok.
+	} 
 
 	/**
 	 * Register all settings.
