@@ -177,7 +177,7 @@ $editor_options            = array(
 							</select>
 							<p class="description">
 								<?php
-								esc_html_e( 'Restrict endpoint visibility to the following user role(s).', 'woo-custom-my-account-page' );
+								esc_html_e( 'Select one or many user roles, you want the endpoint to be displayed. Leaving it blank will show the endpoint to all the user roles.', 'woo-custom-my-account-page' );
 								?>
 							</p>
 						</td>
