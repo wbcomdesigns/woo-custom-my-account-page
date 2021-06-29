@@ -13,7 +13,7 @@
     "grunt-jsvalidate": "~0.2.2",
     "grunt-stylelint": "^0.8.0",
     "grunt-wp-i18n": "^1.0.1",
-    "stylelint": "~7.10.1",
+    "stylelint": "^13.13.1",
     "stylelint-config-wordpress": "^11.0.0"
   },
   "engines": {
@@ -25,6 +25,6 @@
   },
   "dependencies": {
     "load-grunt-tasks": "^3.5.2",
-    "npm": "^6.14.11"
+    "npm": "^7.19.0"
   }
 }
