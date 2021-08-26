@@ -14,6 +14,9 @@
     padding-left: 15px;
     float: right;
 }
+#my-account-menu.position-right {
+    order: 2;
+}
 #my-account-menu ~ .woocommerce-MyAccount-content {
     float: left;
     width: 75%;
