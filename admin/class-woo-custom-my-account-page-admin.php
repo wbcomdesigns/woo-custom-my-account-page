@@ -266,7 +266,7 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access public
 	 */
 	public function wcmp_add_field_ajax() {
-		if ( ! wp_verify_nonce( $_POST['nonce'], 'ajax_nonce' ) ) {
+		if (  $_POST && ! wp_verify_nonce( $_POST['nonce'], 'ajax_nonce' ) ) {
 			if ( ! ( isset( $_REQUEST['action'] ) && 'wcmp_add_field' === $_REQUEST['action'] ) || ! isset( $_REQUEST['field_name'] ) || ! isset( $_REQUEST['target'] ) ) {
 				die();
 			}
