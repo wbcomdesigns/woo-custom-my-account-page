@@ -295,20 +295,6 @@
     font-weight: bold;
 }
 
-.fa-file-text-o:before {
-    content: "\f15c";
-}
-.fa-tachometer:before {
-    content: "\f3fd";
-}
-.fa-pencil-square-o:before {
-    content: "\f4ff";
-}
-.fa-sign-out:before {
-    content: "\f2f5";
-}
-
-
 /*###########################
 AVATAR MODAL
 ###########################*/
