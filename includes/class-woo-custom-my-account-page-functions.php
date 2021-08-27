@@ -244,25 +244,25 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		public function wcmp_get_icon( $key ) {
 			switch ( $key ) {
 				case 'dashboard':
-					$icon = 'fa fa-tachometer';
+					$icon = 'fa-tachometer';
 					break;
 				case 'orders':
-					$icon = 'fa fa-file-text-o';
+					$icon = 'fa-file-text';
 					break;
 				case 'downloads':
-					$icon = 'fa fa-download';
+					$icon = 'fa-download';
 					break;
 				case 'edit-address':
-					$icon = 'fa fa-address-card';
+					$icon = 'fa-address-card';
 					break;
 				case 'edit-account':
-					$icon = 'fa fa-pencil-square-o';
+					$icon = 'fa-edit';
 					break;
 				case 'customer-logout':
-					$icon = 'fa fa-sign-out';
+					$icon = 'fa-sign-out';
 					break;
 				default:
-					$icon = 'fa fa-tag';
+					$icon = 'fa-tag';
 					break;
 			}
 
