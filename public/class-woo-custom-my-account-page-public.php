@@ -63,6 +63,10 @@ class Woo_Custom_My_Account_Page_Public {
 		if ( ! is_account_page() ) {
 			return;
 		}
+		
+		if ( ! wp_style_is( 'font-awesome', 'enqueued' ) ) {
+			wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' );
+		}
 
 		wp_register_style( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-public.css' );
 		wp_enqueue_style( 'wcmp-frontend' );

@@ -247,7 +247,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 					$icon = 'fa-tachometer';
 					break;
 				case 'orders':
-					$icon = 'fa-file-text';
+					$icon = 'fa-file-text-o';
 					break;
 				case 'downloads':
 					$icon = 'fa-download';
