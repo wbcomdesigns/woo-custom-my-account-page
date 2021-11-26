@@ -63,7 +63,7 @@ class Woo_Custom_My_Account_Page_Public {
 		if ( ! is_account_page() ) {
 			return;
 		}
-		
+
 		if ( ! wp_style_is( 'font-awesome', 'enqueued' ) ) {
 			wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' );
 		}
@@ -231,7 +231,7 @@ class Woo_Custom_My_Account_Page_Public {
 		if ( ! is_ajax() ) {
 			return;
 		}
-		echo __( $this->wcmp_get_avatar_form() );
+		echo $this->wcmp_get_avatar_form(); //phpcs:ignore
 		die();
 	}
 
@@ -251,7 +251,7 @@ class Woo_Custom_My_Account_Page_Public {
 		$form = ob_get_clean();
 
 		if ( $print ) {
-			echo __( $form );
+			echo $form; //phpcs:ignore
 			return;
 		}
 
