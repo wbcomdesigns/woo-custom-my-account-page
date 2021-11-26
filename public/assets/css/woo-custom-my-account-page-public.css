@@ -376,6 +376,13 @@ div#wcmp-avatar-form-overlay.loading:before {
     color: #000;
     transition: all 0.3s ease;
 }
+
+/* BuddyX */
+.theme-buddyx #my-account-menu ~ .woocommerce-MyAccount-content,
+.theme-buddyx-pro #my-account-menu ~ .woocommerce-MyAccount-content {
+    padding:20px;
+}
+
 /*########################
 RESPONSIVE
 ########################*/
