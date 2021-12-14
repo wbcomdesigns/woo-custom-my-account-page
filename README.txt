@@ -3,8 +3,8 @@ Contributors: wbcomdesigns,vapvarun
 Donate link: https://wbcomdesigns.com
 Tags: comments, spam
 Requires at least: 3.0.1
-Tested up to: 5.7.0
-Stable tag: 1.2.0
+Tested up to: 5.8.2
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,6 +37,10 @@ e.g.
 1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif).
 
 == Changelog ==
+= 1.3.0 =
+* Fix: #48 Managed BuddyX, BuddyX Pro my account spacing
+* Fix: Fix text domain issue
+* Fix: (#44) Fixed icons issue with default themes
 
 = 1.2.0 =
 * Fix: PHPCS Fixes
