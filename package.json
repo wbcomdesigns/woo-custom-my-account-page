@@ -5,11 +5,12 @@
   "license": "GPL-2.0+",
   "description": "woo-custom-my-account-page",
   "devDependencies": {
+    "getobject": ">=1.0.0",
     "grunt": "^1.0.4",
     "grunt-check-dependencies": "~1.0.0",
     "grunt-checktextdomain": "^1.0.1",
     "grunt-wp-i18n": "^1.0.1",
-    "getobject": ">=1.0.0"
+    "path-parse": ">=1.0.7"
   },
   "engines": {
     "node": ">=6.9.1"
@@ -20,6 +21,6 @@
   },
   "dependencies": {
     "load-grunt-tasks": "^3.5.2",
-    "npm": "^7.19.0"
+    "npm": "^6.14.15"
   }
 }
