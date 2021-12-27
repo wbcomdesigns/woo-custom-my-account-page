@@ -456,3 +456,66 @@ RESPONSIVE
         display: none;
     }
 }
+
+/* Buddyx and Pro Theme */
+
+.theme-buddyx #my-account-menu .wcmp-myaccount-template-inner,
+.theme-buddyx-pro #my-account-menu .wcmp-myaccount-template-inner {
+    position: relative;
+    margin: 0 0 30px;
+    padding: 1em;
+    border: 1px solid var(--global-border-color);
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%);
+    border-radius: 8px;
+    background: #fff;
+}
+.theme-buddyx #my-account-menu .myaccount-menu li > a,
+.theme-buddyx-pro #my-account-menu .myaccount-menu li > a {
+    padding: 10px;
+    border-right: none;
+}
+
+.theme-buddyx  #my-account-menu .user-profile,
+.theme-buddyx-pro  #my-account-menu .user-profile{
+    margin-bottom:20px;
+}
+
+.theme-buddyx #my-account-menu .myaccount-menu li:last-child a,
+.theme-buddyx-pro #my-account-menu .myaccount-menu li:last-child a{
+    border-bottom:0px;
+}
+
+
+.theme-buddyx #my-account-menu.position-left .myaccount-menu:before,
+.theme-buddyx #my-account-menu .user-profile,
+.theme-buddyx #my-account-menu.position-left .myaccount-menu li a,
+.theme-buddyx #my-account-menu.position-left .myaccount-menu:after,
+.theme-buddyx-pro #my-account-menu.position-left .myaccount-menu:before,
+.theme-buddyx-pro #my-account-menu .user-profile,
+.theme-buddyx-pro #my-account-menu.position-left .myaccount-menu li a,
+.theme-buddyx-pro #my-account-menu.position-left .myaccount-menu:after{
+    border-right: none;
+}
+
+.theme-buddyx #my-account-menu.position-left .myaccount-menu:after,
+.theme-buddyx #my-account-menu.position-left .myaccount-menu:before,
+.theme-buddyx-pro #my-account-menu.position-left .myaccount-menu:before,
+.theme-buddyx-pro #my-account-menu.position-left .myaccount-menu:after{
+    padding:0px;
+}
+
+
+/* BuddyxBoss Theme */
+
+.theme-buddyboss-theme .wcmp-myaccount-template .user-profile{
+    padding:10px;
+}
+
+.theme-buddyboss-theme #my-account-menu.wcmp-myaccount-template .myaccount-menu li a{
+    padding:8px 15px;   
+}
+
+.theme-buddyboss-theme #my-account-menu ~ .woocommerce-MyAccount-content{
+    padding: 20px;
+    padding-left: 0;
+}
