@@ -54,29 +54,6 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		}
 
 		/**
-		 * Function for install plugin.
-		 *
-		 * @since 1.0.0
-		 * @access public
-		 * @param string $slug Plugin's slug.
-		 */
-		public function wbcom_do_plugin_install( $slug ) {
-			include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-			wp_cache_flush();
-
-			$upgrader   = new Plugin_Upgrader();
-			$plugin_zip = $this->get_download_url( $slug );
-			$installed  = $upgrader->install( $plugin_zip );
-			if ( $installed ) {
-				$response = array( 'status' => 'installed' );
-				echo wp_send_json_success( $response );
-			} else {
-				return false;
-			}
-			exit;
-		}
-
-		/**
 		 * Function for upgrade plugin.
 		 *
 		 * @since 1.0.0
