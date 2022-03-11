@@ -648,7 +648,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$endpoints        = $this->menu_endpoints;
 			ob_start();
 			?>	
-				<div id="my-account-menu<?php echo esc_attr( $tab ); ?>" class="wcmp-myaccount-template position-<?php echo $position; ?>">
+				<div id="my-account-menu<?php echo esc_attr( $tab ); ?>" class="wcmp-myaccount-template position-<?php echo esc_html( $position ); ?>">
 					<div class="wcmp-myaccount-template-inner">
 						<?php
 							$args = apply_filters(
