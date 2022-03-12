@@ -647,19 +647,21 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$tab              = 'tab' === $general_settings['menu_style'] ? '-tab' : '';
 			$endpoints        = $this->menu_endpoints;
 			ob_start();
-			?>
-				<div id="my-account-menu<?php echo esc_attr( $tab ); ?>" class="wcmp-myaccount-template position-<?php echo $position; ?>">
-					<?php
-						$args = apply_filters(
-							'wcmp_myaccount_menu_template_args',
-							array(
-								'endpoints'      => $endpoints,
-								'my_account_url' => get_permalink( wc_get_page_id( 'myaccount' ) ),
-								'avatar'         => 'yes' === $general_settings['custom_avatar'],
-							)
-						);
-					wc_get_template( 'wcmp-myaccount-menu.php', $args, '', WCMP_PLUGIN_PATH . 'public/templates/' );
-					?>
+			?>	
+				<div id="my-account-menu<?php echo esc_attr( $tab ); ?>" class="wcmp-myaccount-template position-<?php echo esc_html( $position ); ?>">
+					<div class="wcmp-myaccount-template-inner">
+						<?php
+							$args = apply_filters(
+								'wcmp_myaccount_menu_template_args',
+								array(
+									'endpoints'      => $endpoints,
+									'my_account_url' => get_permalink( wc_get_page_id( 'myaccount' ) ),
+									'avatar'         => 'yes' === $general_settings['custom_avatar'],
+								)
+							);
+						wc_get_template( 'wcmp-myaccount-menu.php', $args, '', WCMP_PLUGIN_PATH . 'public/templates/' );
+						?>
+					</div>
 				</div>
 			<?php
 			// set my account menu variable. This prevent double menu.
