@@ -11,7 +11,8 @@
     "grunt-checktextdomain": "^1.0.1",
     "grunt-wp-i18n": "^1.0.1",
     "json-schema": ">=0.4.0",
-    "path-parse": ">=1.0.7"
+    "path-parse": ">=1.0.7",
+    "ansi-regex": ">=5.0.1"
   },
   "engines": {
     "node": ">=6.9.1"
