@@ -266,7 +266,7 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access public
 	 */
 	public function wcmp_add_field_ajax() {
-		if (  $_POST && ! wp_verify_nonce( $_POST['nonce'], 'ajax_nonce' ) ) {
+		if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax_nonce' ) ) {
 			if ( ! ( isset( $_REQUEST['action'] ) && 'wcmp_add_field' === $_REQUEST['action'] ) || ! isset( $_REQUEST['field_name'] ) || ! isset( $_REQUEST['target'] ) ) {
 				die();
 			}
@@ -275,9 +275,9 @@ class Woo_Custom_My_Account_Page_Admin {
 		$myaccount_func = instantiate_woo_custom_myaccount_functions();
 
 		// Check if is endpoint.
-		$request = trim( $_REQUEST['target'] );
+		$request = trim( sanitize_text_field( wp_unslash( $_REQUEST['target'] ) ) );
 		// Build field key.
-		$field            = $myaccount_func->create_field_key( wp_unslash( $_REQUEST['field_name'] ) );
+		$field            = $myaccount_func->create_field_key( sanitize_text_field( wp_unslash( $_REQUEST['field_name'] ) ) );
 		$options_function = "wcmp_get_default_{$request}_options";
 		$print_function   = "wcmp_admin_print_{$request}_field";
 

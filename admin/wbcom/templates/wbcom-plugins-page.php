@@ -55,7 +55,7 @@
 								<p class="plugin-description"><?php echo esc_html( $plugin_details['description'] ); ?></p>
 								<input type="hidden" class="plugin-slug" name="plugin-slug" value="<?php echo esc_attr( $plugin_details['slug'] ); ?>">
 								<div class="activation_button_wrap">
-									<a href="<?php echo esc_url( $plugin_details['wp_url'] ); ?>" class="wbcom-plugin-action-button wb_btn wb_btn_default" >
+									<a href="<?php echo esc_url( $plugin_details['wp_url'] ); ?>" class="wbcom-plugin-action-button wb_btn wb_btn_default" target="_blank" >
 										<i class="<?php echo esc_attr( $toggle_class ); ?>"></i>
 										<?php echo esc_html( $plugin_btn_text ); ?>
 									</a>
