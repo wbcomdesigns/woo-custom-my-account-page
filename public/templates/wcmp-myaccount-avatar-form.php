@@ -7,7 +7,7 @@
  */
 
 ?>
-<div id="wcmp-avatar-form" data-width="400" data-height="280">
+<div id="wcmp-avatar-form" data-width="500" data-height="280">
 	<h3><?php esc_html_e( 'Upload your avatar', 'woo-custom-my-account-page' ); ?></h3>
 	<i class="fa fa-times close-form"></i>
 	<form enctype="multipart/form-data" method="post">
