@@ -12,6 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="wbcom-tab-content">
+	<div class="wbcom-welcome-main-wrapper">
+	<div class="wbcom-welcome-head">
+		<h2 class="wbcom-welcome-title"><?php esc_html_e( 'Manage Style Options', 'woo-custom-my-account-page' ); ?></h2>
+	</div><!-- .wbcom-welcome-head -->
+	<div class="wbcom-wrapper-section">	
 	<form method="post" action="options.php">
 		<?php
 		settings_fields( 'wcmp_style_settings' );
