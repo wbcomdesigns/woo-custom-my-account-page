@@ -120,6 +120,9 @@ function wcmp_admin_notice() {
 	/* translators: %1$s: WooCommerce plugin, %2$s: WooCommerce Custom My Account Page plugin */
 	echo '<div class="error notice is-dismissible" id="message"><p>' . sprintf( esc_html__( '%1$s requires %2$s to be installed and active.', 'woo-custom-my-account-page' ), '<strong>' . esc_attr( $wcmp_plugin ) . '</strong>', '<strong>' . esc_attr( $woo_plugin ) . '</strong>' ) . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' .
 	esc_html__( 'Dismiss this notice.', 'woo-custom-my-account-page' ) . '</span></button></div>';
+	if ( isset( $_GET['activate'] ) ) {
+		unset( $_GET['activate'] );
+	}
 }
 
 /**
@@ -146,10 +149,9 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
  */
 
 add_action( 'activated_plugin', 'wcmp_activation_redirect_settings' );
-function wcmp_activation_redirect_settings( $plugin ){
-
-	if( $plugin == plugin_basename( __FILE__ ) ) {
-		wp_redirect( admin_url( 'admin.php?page=woo-custom-myaccount-page' ) ) ;
-		exit;
-	}
+function wcmp_activation_redirect_settings( $plugin ) {	
+		if ( class_exists( 'WooCommerce' ) && $plugin == plugin_basename( __FILE__ ) ) {
+			wp_redirect( admin_url( 'admin.php?page=woo-custom-myaccount-page' ) ) ;
+			exit;
+		}
 }
