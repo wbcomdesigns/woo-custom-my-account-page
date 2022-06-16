@@ -2,6 +2,15 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+/* New Style */
+ .wcmp-myaccount-template-inner {
+    background: #fff;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
 #my-account-menu {
     float: left;
     width: 25%;
@@ -23,7 +32,11 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    border: 0;
+    background: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: none;
+    border: 1px solid #e0e0e0;
 }
 .woocommerce-MyAccount-navigation:not( .wc-memberships-for-teams-teams-area-navigation ) {
     display: none;
@@ -47,12 +60,15 @@
     border-bottom: 1px solid #e0e0e0;
     padding: 10px 0;
     content: '';
+    margin-left: -15px;
+    margin-bottom: 15px;
+    margin-right: -15px;
 }
 #my-account-menu.position-left .myaccount-menu:before {
-    border-right: 1px solid #e0e0e0;
+    /* border-right: 1px solid #e0e0e0; */
 }
 #my-account-menu.position-right .myaccount-menu:before {
-    border-left: 1px solid #e0e0e0;
+    /* border-left: 1px solid #e0e0e0; */
 }
 #my-account-menu .myaccount-menu:after {
     display: block;
@@ -60,25 +76,28 @@
     content: '';
 }
 #my-account-menu.position-left .myaccount-menu:after {
-    border-right: 1px solid #e0e0e0;
+    /* border-right: 1px solid #e0e0e0; */
 }
 #my-account-menu.position-right .myaccount-menu:after {
-    border-left: 1px solid #e0e0e0;
+    /* border-left: 1px solid #e0e0e0; */
 }
 #my-account-menu .myaccount-menu li a {
-    border-bottom: 1px solid #e0e0e0;
+    /* border-bottom: 1px solid #e0e0e0; */
     margin: 0;
     cursor: pointer;
 }
 #my-account-menu.position-left .myaccount-menu li a {
-    border-right: 1px solid #e0e0e0;
+    /* border-right: 1px solid #e0e0e0; */
 }
 #my-account-menu.position-right .myaccount-menu li a {
-    border-left: 1px solid #e0e0e0;
+    /* border-left: 1px solid #e0e0e0; */
 }
 #my-account-menu .myaccount-menu li.active > a,
-#my-account-menu .myaccount-menu li.is-active > a {
+#my-account-menu .myaccount-menu li.is-active > a,
+#my-account-menu .myaccount-menu li > a:hover {
     font-weight: bold;
+    background: #f4f4f4;
+    border-radius: 6px;
 }
 #my-account-menu.position-right .myaccount-menu li.active a,
 #my-account-menu.position-right .myaccount-menu li.is-active a {
@@ -90,20 +109,22 @@
 }
 #my-account-menu .myaccount-menu li > a {
     display: block;
-    padding: 12px 5px 12px 0;
-    font-size: 13px;
+    padding: 12px 15px !important;
+    font-size: 14px;
     font-style: normal;
     font-weight: 400;
     text-align: left;
     text-transform: uppercase;
     box-shadow: none;
+    margin-top: 2px;
+    transition: all 0.3s;
     outline: none;
 }
 #my-account-menu.position-right .myaccount-menu li > a {
     text-align: right;
 }
 #my-account-menu .myaccount-menu li > a > .fa {
-    margin-right: 10px;
+    margin-right: 7px;
 }
 
 #my-account-menu .myaccount-menu a.group-opener {
@@ -128,7 +149,6 @@
 }
 #my-account-menu .user-profile {
     text-align: center;
-    border-right: 1px solid #e0e0e0;
 }
 #my-account-menu.position-right .user-profile {
     border-right: 0;
@@ -149,6 +169,7 @@
     display: inline-block;
     overflow: hidden;
     cursor: pointer;
+    border-radius: 8px;
 }
 .wcmp-myaccount-template .user-image img {
     max-width: 100%;
@@ -294,6 +315,13 @@
 #my-account-menu-tab .myaccount-menu li.is-active > a {
     font-weight: bold;
 }
+#my-account-menu ~ .woocommerce-MyAccount-content p {
+    font-size: 15px;
+}
+#my-account-menu ~ .woocommerce-MyAccount-content .woocommerce-Message--info.woocommerce-info {
+    background: #f3f6f7;
+    padding-right: 20px !important;
+}
 
 /*###########################
 AVATAR MODAL
@@ -305,7 +333,7 @@ AVATAR MODAL
     right: 0;
     bottom: 0;
     background-color: rgba( 0,0,0,0.5 );
-    z-index: 1;
+    z-index: 99999;
 }
 div#wcmp-avatar-form-overlay.loading:before {
     border: 4px double #f3f3f3;
@@ -334,21 +362,27 @@ div#wcmp-avatar-form-overlay.loading:before {
 
 #wcmp-avatar-form {
     background-color: rgba(255,255,255,1);
-    padding: 30px;
+    padding: 25px;
     position: fixed;
     border: 3px solid #e0e0e0;
-    z-index: 2;
+    z-index:9999999;
+    border-radius: 10px;
 }
 
-#wcmp-avatar-form h3{
+#wcmp-avatar-form h3 {
     font-size: 18px;
-    padding-bottom: 5px;
-    margin-bottom: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
     border-bottom: 1px solid #e0e0e0;
+    margin-left: -25px;
+    margin-right: -25px;
+    padding-left: 25px;
+    margin-top: -10px;
 }
 #wcmp-avatar-form input[type='submit']{
     font-size: 14px;
-    padding: 8px 16px;
+    padding: 10px 25px;
+    border-radius: 7px;
     transition: all 0.3s ease;
 }
 #wcmp-avatar-form p.submit{
@@ -363,13 +397,13 @@ div#wcmp-avatar-form-overlay.loading:before {
     width: 30px;
     height: 30px;
     text-align: center;
-    background: #fff;
-    border-radius: 50%;
+    background: #e0292a;
+    border-radius: 8px;
     line-height: 24px;
     font-size: 17px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid #e0292a;
     cursor: pointer;
-    color: #a0a0a0;
+    color: #ffffff;
     transition: all 0.3s ease;
 }
 #wcmp-avatar-form i.close-form:hover {
@@ -465,7 +499,6 @@ RESPONSIVE
     margin: 0 0 30px;
     padding: 1em;
     border: 1px solid var(--global-border-color);
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%);
     border-radius: 8px;
     background: #fff;
 }
@@ -512,10 +545,27 @@ RESPONSIVE
 }
 
 .theme-buddyboss-theme #my-account-menu.wcmp-myaccount-template .myaccount-menu li a{
-    padding:8px 15px;   
+    padding:8px 15px;
 }
 
 .theme-buddyboss-theme #my-account-menu ~ .woocommerce-MyAccount-content{
     padding: 20px;
     padding-left: 0;
+}
+
+
+/* Dark Mode */
+.dark-mode .wcmp-myaccount-template-inner,
+.dark-mode #my-account-menu ~ .woocommerce-MyAccount-content {
+    background: #242526;
+    border-color: #444444;
+}
+.dark-mode #my-account-menu .myaccount-menu:before{
+  border-color: #444444;
+}
+.dark-mode #my-account-menu .myaccount-menu li.active > a,
+.dark-mode #my-account-menu .myaccount-menu li.is-active > a,
+.dark-mode #my-account-menu .myaccount-menu li > a:hover {
+    background: #18191a;
+    color: #fff;
 }

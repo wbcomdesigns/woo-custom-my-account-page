@@ -103,6 +103,8 @@ function wcmp_plugins_files() {
 		require_once ABSPATH . '/wp-admin/includes/plugin.php';
 	}
 	if ( ! is_plugin_active_for_network( 'woocommerce/woocommerce.php' ) && ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+		require_once ABSPATH . '/wp-admin/includes/plugin.php';
+		deactivate_plugins( plugin_basename( __FILE__ ) );
 		add_action( 'admin_notices', 'wcmp_admin_notice' );
 	} else {
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'wcmp_admin_page_link' );
@@ -114,12 +116,27 @@ function wcmp_plugins_files() {
  * Give the notice if plugin is not activated.
  */
 function wcmp_admin_notice() {
-	$woo_plugin  = esc_html__( 'WooCommerce', 'woo-custom-my-account-page' );
-	$wcmp_plugin = esc_html__( 'WooCommerce Custom My Account Page', 'woo-custom-my-account-page' );
-
+	$woo_plugin          = esc_html__( 'WooCommerce', 'woo-custom-my-account-page' );
+	$wcmp_plugin         = esc_html__( 'WooCommerce Custom My Account Page', 'woo-custom-my-account-page' );
+	$action              = 'install-plugin';
+	$slug                = 'woocommerce';
+	$plugin_install_link = '<a href="' . wp_nonce_url(
+		add_query_arg(
+			array(
+				'action' => $action,
+				'plugin' => $slug,
+			),
+			admin_url( 'update.php' )
+		),
+		$action . '_' . $slug
+	) . '">' . $woo_plugin . '</a>';
 	/* translators: %1$s: WooCommerce plugin, %2$s: WooCommerce Custom My Account Page plugin */
-	echo '<div class="error notice is-dismissible" id="message"><p>' . sprintf( esc_html__( '%1$s requires %2$s to be installed and active.', 'woo-custom-my-account-page' ), '<strong>' . esc_attr( $wcmp_plugin ) . '</strong>', '<strong>' . esc_attr( $woo_plugin ) . '</strong>' ) . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' .
+	echo '<div class="error notice is-dismissible" id="message"><p>' . sprintf( esc_html__( '%1$s requires %2$s to be installed and active.', 'woo-custom-my-account-page' ), '<strong>' . esc_attr( $wcmp_plugin ) . '</strong>', '<strong>' . wp_kses_post( $plugin_install_link ) . '</strong>' ) . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' .
 	esc_html__( 'Dismiss this notice.', 'woo-custom-my-account-page' ) . '</span></button></div>';
+	if ( null !== filter_input( INPUT_GET, 'activate' ) ) {
+		$activate = filter_input( INPUT_GET, 'activate' );
+		unset( $activate );
+	}
 }
 
 /**
@@ -127,6 +144,8 @@ function wcmp_admin_notice() {
  *
  * @since   1.0.0
  * @author  Wbcom Designs
+ *
+ * @param string $links Plugin Action Link.
  */
 function wcmp_admin_page_link( $links ) {
 	$page_link = array( '<a href="' . admin_url( 'admin.php?page=woo-custom-myaccount-page' ) . '">' . esc_html__( 'Settings', 'woo-custom-my-account-page' ) . '</a>' );
@@ -140,16 +159,15 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	'woo-custom-my-account-page'
 );
 
-
 /**
- * redirect to plugin settings page after activated
+ * Redirect to plugin settings page after activated.
+ *
+ * @param string $plugin Contains the plugin path.
  */
-
-add_action( 'activated_plugin', 'wcmp_activation_redirect_settings' );
-function wcmp_activation_redirect_settings( $plugin ){
-
-	if( $plugin == plugin_basename( __FILE__ ) ) {
-		wp_redirect( admin_url( 'admin.php?page=woo-custom-myaccount-page' ) ) ;
+function wcmp_activation_redirect_settings( $plugin ) {
+	if ( class_exists( 'WooCommerce' ) && plugin_basename( __FILE__ ) === $plugin ) {
+		wp_safe_redirect( admin_url( 'admin.php?page=woo-custom-myaccount-page' ) );
 		exit;
 	}
 }
+add_action( 'activated_plugin', 'wcmp_activation_redirect_settings' );

@@ -185,7 +185,7 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	public function wcmp_reset_default_avatar() {
 
-		if ( ! isset( $_FILES['reset_image'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['action'] ) ), 'reset_image' ) ) {
+		if ( ! isset( $_FILES['reset_image'] ) || ( ! isset( $_POST['action'] ) ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['action'] ) ), 'reset_image' ) ) {
 
 			if ( ! isset( $_POST['action'] ) || 'wcmp_reset_avatar' !== $_POST['action'] ) {
 				return;

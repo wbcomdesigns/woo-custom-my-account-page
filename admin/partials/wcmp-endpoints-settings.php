@@ -13,15 +13,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 <div class="wbcom-tab-content">
+	<div class="wbcom-welcome-main-wrapper">
+	<div class="wbcom-welcome-head">
+		<h2 class="wbcom-welcome-title"><?php esc_html_e( 'Manage Endpoints', 'woo-custom-my-account-page' ); ?></h2>
+	</div><!-- .wbcom-welcome-head -->
+	<div class="wbcom-wrapper-section">	
 	<form method="post" action="options.php" id="wbwcmp_endpoints_settings">
 		<?php
 		settings_fields( 'wcmp_endpoints_settings' );
 		do_settings_sections( 'wcmp_endpoints_settings' );
 		?>
 		<div class="section-title-container">
-			<h2 class="title">
-				<?php esc_html_e( 'Manage Endpoints', 'woo-custom-my-account-page' ); ?>
-			</h2>
 			<div class="button-container">
 				<button type="button" class="button add_new_field" data-target="group">
 					<?php esc_html_e( 'Add group', 'woo-custom-my-account-page' ); ?>

@@ -12,6 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="wbcom-tab-content">
+	<div class="wbcom-welcome-main-wrapper">
+	<div class="wbcom-welcome-head">
+		<h2 class="wbcom-welcome-title"><?php esc_html_e( 'General Settings', 'woo-custom-my-account-page' ); ?></h2>
+	</div><!-- .wbcom-welcome-head -->
+	<div class="wbcom-wrapper-section">
 	<form method="post" action="options.php">
 		<?php
 		settings_fields( 'wcmp_general_settings' );
@@ -79,6 +84,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</select>
 						<p class="description"><?php esc_html_e( 'Choose the position of the menu in "My Account" page (only for sidebar style).', 'woo-custom-my-account-page' ); ?></p>
 					</td>
+				</tr>
 				<tr>
 					<th scope="row">
 						<label>
@@ -104,4 +110,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</table>
 		<?php submit_button(); ?>
 	</form>
+</div>
+</div>
 </div>
