@@ -46,6 +46,9 @@ class Woo_Custom_My_Account_Page_Admin {
 	 */
 	private $version;
 
+	/**
+	 * Admin Instance.
+	 */
 	public static function instance() {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
@@ -57,8 +60,6 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since  1.0.0
-	 * @param  string $plugin_name The name of this plugin.
-	 * @param  string $version     The version of this plugin.
 	 */
 	public function __construct() {
 	}
@@ -155,8 +156,8 @@ class Woo_Custom_My_Account_Page_Admin {
 		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wcmp-welcome';
 		?>
 		<div class="wrap">
-                    <hr class="wp-header-end">
-                    <div class="wbcom-wrap">
+					<hr class="wp-header-end">
+					<div class="wbcom-wrap">
 			<div class="wcmp-admin-header">
 				<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 				<h1 class="wbcom-plugin-heading">
@@ -171,7 +172,7 @@ class Woo_Custom_My_Account_Page_Admin {
 				do_settings_sections( $current );
 				?>
 			</div>
-                    </div>
+					</div>
 		</div>
 		<?php
 	}
@@ -198,7 +199,7 @@ class Woo_Custom_My_Account_Page_Admin {
 		}
 		$tab_html .= '</div></ul></div>';
 		echo ( $tab_html ); // WPCS: XSS ok.
-	} 
+	}
 
 	/**
 	 * Register all settings.
@@ -208,9 +209,9 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access public
 	 */
 	public function wcmp_add_plugin_register_settings() {
-		$this->plugin_settings_tabs['wcmp-welcome'] = esc_html__( 'Welcome', 'woo-custom-my-account-page' );		
+		$this->plugin_settings_tabs['wcmp-welcome'] = esc_html__( 'Welcome', 'woo-custom-my-account-page' );
 		add_settings_section( 'wcmp-welcome', ' ', array( $this, 'wcmp_welcome_content' ), 'wcmp-welcome' );
-		
+
 		$this->plugin_settings_tabs['wcmp-general'] = esc_html__( 'General', 'woo-custom-my-account-page' );
 		register_setting( 'wcmp_general_settings', 'wcmp_general_settings' );
 		add_settings_section( 'wcmp-general', ' ', array( $this, 'wcmp_general_settings_content' ), 'wcmp-general' );
@@ -221,10 +222,18 @@ class Woo_Custom_My_Account_Page_Admin {
 		register_setting( 'wcmp_endpoints_settings', 'wcmp_endpoints_settings', array( $this, 'wcmp_endpoints_settings_callback' ) );
 		add_settings_section( 'wcmp-endpoints', ' ', array( $this, 'wcmp_endpoints_settings_content' ), 'wcmp-endpoints' );
 	}
-	
+
+	/**
+	 * Welcome Tab Content.
+	 *
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @access public
+	 */
 	public function wcmp_welcome_content() {
 		require_once 'partials/wcmp-welcome-page.php';
 	}
+
 	/**
 	 * General Tab Content.
 	 *
@@ -266,7 +275,7 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access public
 	 */
 	public function wcmp_add_field_ajax() {
-		if (  $_POST && ! wp_verify_nonce( $_POST['nonce'], 'ajax_nonce' ) ) {
+		if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax_nonce' ) ) {
 			if ( ! ( isset( $_REQUEST['action'] ) && 'wcmp_add_field' === $_REQUEST['action'] ) || ! isset( $_REQUEST['field_name'] ) || ! isset( $_REQUEST['target'] ) ) {
 				die();
 			}
@@ -275,9 +284,9 @@ class Woo_Custom_My_Account_Page_Admin {
 		$myaccount_func = instantiate_woo_custom_myaccount_functions();
 
 		// Check if is endpoint.
-		$request = trim( $_REQUEST['target'] );
+		$request = trim( sanitize_text_field( wp_unslash( $_REQUEST['target'] ) ) );
 		// Build field key.
-		$field            = $myaccount_func->create_field_key( wp_unslash( $_REQUEST['field_name'] ) );
+		$field            = $myaccount_func->create_field_key( sanitize_text_field( wp_unslash( $_REQUEST['field_name'] ) ) );
 		$options_function = "wcmp_get_default_{$request}_options";
 		$print_function   = "wcmp_admin_print_{$request}_field";
 
