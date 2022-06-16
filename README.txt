@@ -37,6 +37,13 @@ e.g.
 1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif).
 
 == Changelog ==
+= 1.3.1 =
+* Fix: Managed UI with BuddyX, BuddyX Pro and Buddyboss theme
+* Fix: Fixed WPCS issues
+* Fix: (#53) Fixed improve admin UI
+* Fix: (#55) Fixed update documentation link
+* Fix: (#57) Added plugin activation link in admin notice
+
 = 1.3.0 =
 * Fix: #48 Managed BuddyX, BuddyX Pro my account spacing
 * Fix: Fix text domain issue
