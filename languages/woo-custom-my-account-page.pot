@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-12 11:05:27+00:00\n"
+"POT-Creation-Date: 2022-06-16 07:15:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,58 +24,58 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Generator: grunt-wp-i18n 1.0.3\n"
 
-#: admin/class-woo-custom-my-account-page-admin.php:119
+#: admin/class-woo-custom-my-account-page-admin.php:120
 #: admin/partials/group-item.php:40 admin/partials/link-item.php:51
 #: admin/wbcom/wbcom-admin-settings.php:479
 msgid "Show"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:120
+#: admin/class-woo-custom-my-account-page-admin.php:121
 #: admin/partials/endpoint-item.php:61 admin/partials/group-item.php:40
 #: admin/partials/link-item.php:51 admin/wbcom/wbcom-admin-settings.php:480
 msgid "Hide"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:123
+#: admin/class-woo-custom-my-account-page-admin.php:124
 #: admin/wbcom/wbcom-admin-settings.php:483
 msgid "This field is required."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:124
+#: admin/class-woo-custom-my-account-page-admin.php:125
 #: admin/wbcom/wbcom-admin-settings.php:484
 msgid "Are you sure that you want to delete this endpoint?"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:141
+#: admin/class-woo-custom-my-account-page-admin.php:142
 msgid "WB Plugins"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:142
-#: admin/class-woo-custom-my-account-page-admin.php:214
+#: admin/class-woo-custom-my-account-page-admin.php:143
+#: admin/class-woo-custom-my-account-page-admin.php:215
 msgid "General"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:144
+#: admin/class-woo-custom-my-account-page-admin.php:145
 msgid "Custom My Account Page"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:144
+#: admin/class-woo-custom-my-account-page-admin.php:145
 msgid "Woo My Account"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:163
+#: admin/class-woo-custom-my-account-page-admin.php:164
 msgid "WooCommerce Custom My Account Page Settings"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:211
+#: admin/class-woo-custom-my-account-page-admin.php:212
 msgid "Welcome"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:217
+#: admin/class-woo-custom-my-account-page-admin.php:218
 msgid "Style Options"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:220
+#: admin/class-woo-custom-my-account-page-admin.php:221
 msgid "Endpoints"
 msgstr ""
 
@@ -220,181 +220,189 @@ msgstr ""
 msgid "Open link in a new tab?"
 msgstr ""
 
-#: admin/partials/wcmp-endpoints-settings.php:23
+#: admin/partials/wcmp-endpoints-settings.php:18
 msgid "Manage Endpoints"
 msgstr ""
 
-#: admin/partials/wcmp-endpoints-settings.php:27
+#: admin/partials/wcmp-endpoints-settings.php:29
 msgid "Add group"
 msgstr ""
 
-#: admin/partials/wcmp-endpoints-settings.php:30
+#: admin/partials/wcmp-endpoints-settings.php:32
 msgid "Add endpoint"
 msgstr ""
 
-#: admin/partials/wcmp-endpoints-settings.php:33
+#: admin/partials/wcmp-endpoints-settings.php:35
 msgid "Add link"
 msgstr ""
 
-#: admin/partials/wcmp-general-settings.php:33
+#: admin/partials/wcmp-general-settings.php:17
+msgid "General Settings"
+msgstr ""
+
+#: admin/partials/wcmp-general-settings.php:38
 msgid "Custom Avatar"
 msgstr ""
 
-#: admin/partials/wcmp-general-settings.php:41
+#: admin/partials/wcmp-general-settings.php:46
 msgid "Let users upload a custom avatar as their profile picture."
 msgstr ""
 
-#: admin/partials/wcmp-general-settings.php:47
+#: admin/partials/wcmp-general-settings.php:52
 msgid "Menu style"
 msgstr ""
 
-#: admin/partials/wcmp-general-settings.php:55
+#: admin/partials/wcmp-general-settings.php:60
 msgid "Sidebar"
 msgstr ""
 
-#: admin/partials/wcmp-general-settings.php:62
+#: admin/partials/wcmp-general-settings.php:67
 msgid "Tab"
 msgstr ""
 
-#: admin/partials/wcmp-general-settings.php:66
+#: admin/partials/wcmp-general-settings.php:71
 msgid "Choose the style for the \"My Account\" page."
 msgstr ""
 
-#: admin/partials/wcmp-general-settings.php:72
+#: admin/partials/wcmp-general-settings.php:77
 msgid "Sidebar position"
 msgstr ""
 
-#: admin/partials/wcmp-general-settings.php:77
+#: admin/partials/wcmp-general-settings.php:82
 msgid "Left"
 msgstr ""
 
-#: admin/partials/wcmp-general-settings.php:78
+#: admin/partials/wcmp-general-settings.php:83
 msgid "Right"
 msgstr ""
 
-#: admin/partials/wcmp-general-settings.php:80
+#: admin/partials/wcmp-general-settings.php:85
 msgid ""
 "Choose the position of the menu in \"My Account\" page (only for sidebar "
 "style)."
 msgstr ""
 
-#: admin/partials/wcmp-general-settings.php:85
+#: admin/partials/wcmp-general-settings.php:91
 msgid "Default endpoint"
 msgstr ""
 
-#: admin/partials/wcmp-general-settings.php:100
+#: admin/partials/wcmp-general-settings.php:106
 msgid "Choose the default endpoint for \"My account\" page."
 msgstr ""
 
-#: admin/partials/wcmp-style-settings.php:27
-msgid "Menu item color"
+#: admin/partials/wcmp-style-settings.php:17
+msgid "Manage Style Options"
 msgstr ""
 
 #: admin/partials/wcmp-style-settings.php:32
+msgid "Menu item color"
+msgstr ""
+
+#: admin/partials/wcmp-style-settings.php:37
 msgid "Choose a color for menu items."
 msgstr ""
 
-#: admin/partials/wcmp-style-settings.php:38
+#: admin/partials/wcmp-style-settings.php:43
 msgid "Menu item color on hover"
 msgstr ""
 
-#: admin/partials/wcmp-style-settings.php:43
+#: admin/partials/wcmp-style-settings.php:48
 msgid "Choose colour of menu items on mouse hover."
 msgstr ""
 
-#: admin/partials/wcmp-style-settings.php:49
+#: admin/partials/wcmp-style-settings.php:54
 msgid "Logout color"
 msgstr ""
 
-#: admin/partials/wcmp-style-settings.php:54
+#: admin/partials/wcmp-style-settings.php:59
 msgid "Choose the color of the Logout text."
 msgstr ""
 
-#: admin/partials/wcmp-style-settings.php:60
+#: admin/partials/wcmp-style-settings.php:65
 msgid "Logout color on hover"
 msgstr ""
 
-#: admin/partials/wcmp-style-settings.php:65
+#: admin/partials/wcmp-style-settings.php:70
 msgid "Choose the color of the Logout text on mouse hover."
 msgstr ""
 
-#: admin/partials/wcmp-style-settings.php:71
+#: admin/partials/wcmp-style-settings.php:76
 msgid "Logout background color"
 msgstr ""
 
-#: admin/partials/wcmp-style-settings.php:76
+#: admin/partials/wcmp-style-settings.php:81
 msgid "Choose the color of the Logout background."
 msgstr ""
 
-#: admin/partials/wcmp-style-settings.php:82
+#: admin/partials/wcmp-style-settings.php:87
 msgid "Logout background color on hover"
 msgstr ""
 
-#: admin/partials/wcmp-style-settings.php:87
+#: admin/partials/wcmp-style-settings.php:92
 msgid "Choose the color of the Logout background on mouse hover."
 msgstr ""
 
-#: admin/partials/wcmp-welcome-page.php:15 woo-custom-my-account-page.php:118
+#: admin/partials/wcmp-welcome-page.php:18 woo-custom-my-account-page.php:120
 msgid "WooCommerce Custom My Account Page"
 msgstr ""
 
-#: admin/partials/wcmp-welcome-page.php:16
+#: admin/partials/wcmp-welcome-page.php:19
 msgid ""
 "Navigating multiple pages on the WooCommerce based store to view usable "
 "information is quite frustrating for a customer. Here’s the solution — Woo "
 "Custom My Account Page Plugin."
 msgstr ""
 
-#: admin/partials/wcmp-welcome-page.php:26
+#: admin/partials/wcmp-welcome-page.php:24
 msgid "Help &amp; Support Resources"
 msgstr ""
 
-#: admin/partials/wcmp-welcome-page.php:27
+#: admin/partials/wcmp-welcome-page.php:25
 msgid ""
 "Here are all the resources you may need to get help from us. Documentation "
 "is usually the best place to start. Should you require help anytime, our "
 "customer care team is available to assist you at the support center."
 msgstr ""
 
-#: admin/partials/wcmp-welcome-page.php:33
+#: admin/partials/wcmp-welcome-page.php:31
 msgid "Documentation"
 msgstr ""
 
-#: admin/partials/wcmp-welcome-page.php:34
+#: admin/partials/wcmp-welcome-page.php:32
 msgid ""
 "We have prepared an extensive guide on WooCommerce Custom My Account Page "
 "to learn all aspects of the plugin. You will find most of your answers here."
 msgstr ""
 
-#: admin/partials/wcmp-welcome-page.php:35
+#: admin/partials/wcmp-welcome-page.php:33
 msgid "Read Documentation"
 msgstr ""
 
-#: admin/partials/wcmp-welcome-page.php:39
+#: admin/partials/wcmp-welcome-page.php:37
 msgid "Support Center"
 msgstr ""
 
-#: admin/partials/wcmp-welcome-page.php:40
+#: admin/partials/wcmp-welcome-page.php:38
 msgid ""
 "We strive to offer the best customer care via our support center. Once your "
 "theme is activated, you can ask us for help anytime."
 msgstr ""
 
-#: admin/partials/wcmp-welcome-page.php:41
+#: admin/partials/wcmp-welcome-page.php:39
 msgid "Get Support"
 msgstr ""
 
-#: admin/partials/wcmp-welcome-page.php:45
+#: admin/partials/wcmp-welcome-page.php:43
 msgid "Got Feedback?"
 msgstr ""
 
-#: admin/partials/wcmp-welcome-page.php:46
+#: admin/partials/wcmp-welcome-page.php:44
 msgid ""
 "We want to hear about your experience with the plugin. We would also love "
 "to hear any suggestions you may for future updates."
 msgstr ""
 
-#: admin/partials/wcmp-welcome-page.php:47
+#: admin/partials/wcmp-welcome-page.php:45
 msgid "Send Feedback"
 msgstr ""
 
@@ -929,7 +937,7 @@ msgstr ""
 msgid "Our Themes"
 msgstr ""
 
-#: admin/wbcom/wbcom-admin-settings.php:596 woo-custom-my-account-page.php:132
+#: admin/wbcom/wbcom-admin-settings.php:596 woo-custom-my-account-page.php:151
 msgid "Settings"
 msgstr ""
 
@@ -973,21 +981,21 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: woo-custom-my-account-page.php:117
+#: woo-custom-my-account-page.php:119
 msgid "WooCommerce"
 msgstr ""
 
-#: woo-custom-my-account-page.php:121
+#: woo-custom-my-account-page.php:134
 #. translators: %1$s: WooCommerce plugin, %2$s: WooCommerce Custom My Account
 #. Page plugin
 msgid "%1$s requires %2$s to be installed and active."
 msgstr ""
 
-#: woo-custom-my-account-page.php:122
+#: woo-custom-my-account-page.php:135
 msgid "Dismiss this notice."
 msgstr ""
 
-#: admin/partials/wcmp-endpoints-settings.php:66
+#: admin/partials/wcmp-endpoints-settings.php:68
 msgctxt "Label for new endpoint title"
 msgid "Name"
 msgstr ""
