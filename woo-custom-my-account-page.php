@@ -26,7 +26,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Currently plugin version.
  */
 if ( ! defined( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION' ) ) {
-	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.3.0' );
+	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.3.2' );
 }
 
 /**
