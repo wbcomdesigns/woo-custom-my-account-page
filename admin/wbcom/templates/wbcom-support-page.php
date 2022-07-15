@@ -1,56 +1,58 @@
 <div class="wrap">
-    <hr class="wp-header-end">
-    <div class="wbcom-wrap">
-        <?php echo do_shortcode('[wbcom_admin_setting_header]'); ?>
-        <h4 class="wbcom-plugin-heading"><?php esc_html_e('Support', 'woo-custom-my-account-page'); ?></h4>
-        <div id="wbcom_admin_content_support" class="wbcom_admin_tab_content">
-            <strong><?php esc_html_e('Having any question or issue ?', 'woo-custom-my-account-page'); ?></strong>
-            <p>
-                <?php esc_html_e('Our team is here to help you out at anytime. If you have any idea about how we could improve. You can share access to your site on our helpdesk if it can help getting faster. There are two ways to in touch with us :', 'woo-custom-my-account-page'); ?></p>
+	<div class="wbcom-bb-plugins-offer-wrapper">
+		<div id="wb_admin_logo">
+			<a href="https://wbcomdesigns.com/downloads/buddypress-community-bundle/" target="_blank">
+				<img src="<?php echo esc_url( WCMP_PLUGIN_URL ) . 'admin/wbcom/assets/imgs/wbcom-offer-notice.png'; ?>">
+			</a>
+		</div>
+	</div>
+	<div class="wbcom-wrap wbcom-plugin-wrapper">
+		<div class="wbcom_admin_header-wrapper">
+			<div id="wb_admin_plugin_name">
+				<?php esc_html_e( 'WooCommerce Custom My Account Page', 'woo-custom-my-account-page' ); ?>
+				<span><?php printf( __( 'Version %s', 'woo-custom-my-account-page' ), WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION ); ?></span>
+			</div>
+			<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
+		</div>        
+		<div id="wbcom_admin_content_support" class="wbcom-all-addons-plugins-wrap">
+			<h4 class="wbcom-support-section"><?php esc_html_e( 'How can we help you?', 'woo-custom-my-account-page' ); ?></h4>
+			<p><?php esc_html_e( 'Our team is here to help you out at anytime. If you have any idea about how we could improve. You can share access to your site on our helpdesk if it can help getting faster.', 'woo-custom-my-account-page' ); ?></p>
 
-            <ul id="wbcom_support_list" class="wbcom_boxes_list wp-clearfix">
+			<ul id="wbcom_support_list" class="wbcom_boxes_list">
+				<li class="wbcom_help_support_box">
+					<div class="wbcom_help_support_icon_wrapper">
+						<i class="fa fa-tags"></i>
+					</div>
+					<div class="wbcom_help_support_details">
+						<div class="wbcom_help_support_inner_details">
+							<h4><?php esc_html_e( 'Tickets Support', 'woo-custom-my-account-page' ); ?></h4>
+							<p><?php esc_html_e( 'Open a ticket on our helpdesk, we don\'t guarantee a fast response but within a week. Except if you\'ve purchased one of our product we\'ll reply within 24 hours.', 'woo-custom-my-account-page' ); ?></p>
+							<div class="wbcom_help_support_button">
+								<a href="https://support.wbcomdesigns.com/portal/newticket" class="wb_btn wb_btn_default" target="_blank">
+									<?php esc_html_e( 'Open a ticket', 'woo-custom-my-account-page' ); ?>
+								</a>
+							</div>
+						</div>
+					</div>
+				</li>
 
-                <li class="wbcom_single_box wp-clearfix">
-                    <div class="wbcom_single_left">
-                        <div class="wbcom_single_icon_wrapper">
-                            <i class="fa fa-tags"></i>
-                        </div>
-                    </div>
-                    <div class="wbcom_single_right">
-                        <div class="wbcom_single_inner">
-                            <h4><?php esc_html_e('Tickets Support', 'woo-custom-my-account-page'); ?></h4>
-                            <p><?php esc_html_e('Open a ticket on our helpdesk, we don\'t guarantee a fast response but within a week. Except if you\'ve purchased one of our product we\'ll reply within 24 hours.', 'woo-custom-my-account-page'); ?></p>
-                            <div class="text-right">
-                                <a href="https://support.wbcomdesigns.com/portal/newticket" class="wb_btn wb_btn_default" target="_blank">
-                                    <i class="fa fa-ticket"></i>
-                                    <?php esc_html_e('Open a ticket', 'woo-custom-my-account-page'); ?>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="wbcom_single_box wp-clearfix">
-                    <div class="wbcom_single_left">
-                        <div class="wbcom_single_icon_wrapper">
-                            <i class="fa fa-comments"></i>
-                        </div>
-                    </div>
-                    <div class="wbcom_single_right">
-                        <div class="wbcom_single_inner">
-                            <h4><?php esc_html_e('Contact Us', 'woo-custom-my-account-page'); ?></h4>
-                            <p><?php esc_html_e('Create a new thread on our plugin page, participation is open to anyone from all around the world. We\'ll be there to help as well but can\'t guarantee any delay.', 'woo-custom-my-account-page'); ?></p>
-                            <div class="text-right">
-                                <a href="https://wbcomdesigns.com/contact/" class="wb_btn wb_btn_default" target="_blank">
-                                    <i class="fa fa-phone-square"></i>
-                                    <?php esc_html_e('Contact Us', 'woo-custom-my-account-page'); ?>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-        </div>
-    </div><!-- .wbcom-wrap -->
+				<li class="wbcom_help_support_box">
+						<div class="wbcom_help_support_icon_wrapper">
+							<i class="fa fa-comments"></i>
+						</div>
+					<div class="wbcom_help_support_details">
+						<div class="wbcom_help_support_inner_details">
+							<h4><?php esc_html_e( 'Contact Us', 'woo-custom-my-account-page' ); ?></h4>
+							<p><?php esc_html_e( 'Create a new thread on our plugin page, participation is open to anyone from all around the world. We\'ll be there to help as well but can\'t guarantee any delay.', 'woo-custom-my-account-page' ); ?></p>
+							<div class="wbcom_help_support_button">
+								<a href="https://wbcomdesigns.com/contact/" class="wb_btn wb_btn_default" target="_blank">
+									<?php esc_html_e( 'Contact Us', 'woo-custom-my-account-page' ); ?>
+								</a>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div><!-- .wbcom-wrap -->
 </div><!-- .wrap -->

@@ -2,30 +2,7 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
- .wbcom-welcome-head h2.wbcom-welcome-title {
-     padding: 18px 25px;
-     font-size: 15px;
-     background: #2094f3;
-     color: #fff;
-     margin: 0 -15px 20px;
- }
- .wbcom-welcome-main-wrapper {
-    position: relative;
-    font-size: 15px;
-    background: #f6f6f6;
-    padding: 0 15px 15px;
-    margin: 25px 0;
-}
-.wbcom-welcome-support-info {
-    box-shadow: none;
-    margin-bottom: 0;
-}
-.wbcom-wrapper-section {
-    background: #fff;
-    overflow: hidden;
-    padding: 15px 15px 20px;
-}
-.nav-tab-wrapper ul li a#wcmp-general.nav-tab:before {
+ .nav-tab-wrapper ul li a#wcmp-general.nav-tab:before {
     content: "\f111";
 }
 .nav-tab-wrapper ul li a#wcmp-style.nav-tab:before {

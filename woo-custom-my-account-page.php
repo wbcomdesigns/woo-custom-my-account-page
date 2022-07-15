@@ -50,9 +50,7 @@ function deactivate_woo_custom_my_account_page() {
 register_activation_hook( __FILE__, 'activate_woo_custom_my_account_page' );
 register_deactivation_hook( __FILE__, 'deactivate_woo_custom_my_account_page' );
 
-if ( ! defined( 'WCMP_PLUGIN_VERSION' ) ) {
-	define( 'WCMP_PLUGIN_VERSION', '1.3.0' );
-}
+
 if ( ! defined( 'WCMP_PLUGIN_NAME' ) ) {
 	define( 'WCMP_PLUGIN_NAME', 'woo-custom-my-account-page' );
 }
