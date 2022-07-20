@@ -9,8 +9,7 @@
 	<div class="wbcom-wrap wbcom-plugin-wrapper">    	
 		<div class="wbcom_admin_header-wrapper">
 			<div id="wb_admin_plugin_name">
-				<?php esc_html_e( 'WooCommerce Custom My Account Page', 'woo-custom-my-account-page' ); ?>
-				<span><?php printf( __( 'Version %s', 'woo-custom-my-account-page' ), WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION ); ?></span>
+				<?php esc_html_e( 'Themes & Extension', 'woo-custom-my-account-page' ); ?>
 			</div>
 			<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 		</div>
