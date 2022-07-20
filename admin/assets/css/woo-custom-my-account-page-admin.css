@@ -392,3 +392,17 @@ textarea.wp-editor-area {
 .wb-plugins_page_woo-custom-myaccount-page input#wcmp-new-field {
     width: 100%;
 }
+div#setting-error-settings_updated {
+    position: absolute;
+    right: 50px;
+    z-index: 99;
+    border-radius: 10px;
+    line-height: normal;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: #10ab00;
+}
+button.notice-dismiss:before{
+    color: red !important;
+}

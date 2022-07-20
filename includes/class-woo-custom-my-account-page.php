@@ -175,6 +175,7 @@ class Woo_Custom_My_Account_Page {
 		// Add endpoint ajax.
 		$this->loader->add_action( 'wp_ajax_wcmp_add_field', $plugin_admin, 'wcmp_add_field_ajax' );
 		$this->loader->add_action( 'wp_ajax_nopriv_wcmp_add_field', $plugin_admin, 'wcmp_add_field_ajax' );
+		$this->loader->add_action( 'in_admin_header', $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' );
 
 	}
 
