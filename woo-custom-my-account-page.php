@@ -8,7 +8,7 @@
  * Plugin Name:       WooCommerce Custom My Account Page
  * Plugin URI:        https://wbcomdesigns.com
  * Description:       This plugin helps you to customize the layout of the "My Account" page, adds new endpoints, groups, links and manage its content easily.
- * Version:           1.3.2
+ * Version:           1.3.3
  * Author:            Wbcom Designs
  * Author URI:        https://wbcomdesigns.com
  * License:           GPL-2.0+
@@ -26,7 +26,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Currently plugin version.
  */
 if ( ! defined( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION' ) ) {
-	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.3.2' );
+	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.3.3' );
 }
 
 /**
