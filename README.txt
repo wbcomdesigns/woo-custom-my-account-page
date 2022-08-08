@@ -3,8 +3,8 @@ Contributors: wbcomdesigns,vapvarun
 Donate link: https://wbcomdesigns.com
 Tags: comments, spam
 Requires at least: 3.0.1
-Tested up to: 5.8.2
-Stable tag: 1.3.2
+Tested up to: 6.0.1
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,6 +28,9 @@ e.g.
 3. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
 
 == Changelog ==
+= 1.3.3 =
+* Fix: managed admin UI
+
 = 1.3.2 =
 * Fix: Compatibility with WooCommerce version 6.6.1  
 
