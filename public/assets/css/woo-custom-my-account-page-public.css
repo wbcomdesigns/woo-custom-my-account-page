@@ -569,3 +569,24 @@ RESPONSIVE
     background: #18191a;
     color: #fff;
 }
+
+/*BoddyBoss*/
+.buddyboss-theme #my-account-menu ~ .woocommerce-MyAccount-content .woocommerce-Message--info.woocommerce-info{
+    padding: 20px !important;
+}
+.buddyboss-theme .woocommerce .bsMyAccount{
+    border:none;
+}
+.buddyboss-theme #my-account-menu ~ .woocommerce-MyAccount-content {
+    padding: 20px !important;
+}
+
+.buddyboss-theme .woocommerce .bsMyAccount--dashboard .woocommerce-Address-title {
+    padding-left:5px;
+}
+.buddyboss-theme .woocommerce .wc-MyAccount-sub-heading {
+    padding-left: 0px;
+}
+.buddyboss-theme .woocommerce .woocommerce-MyAccount-content .woocommerce-account-fields{
+    width: 100%;
+}
