@@ -164,8 +164,10 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
  */
 function wcmp_activation_redirect_settings( $plugin ) {
 	if ( class_exists( 'WooCommerce' ) && plugin_basename( __FILE__ ) === $plugin ) {
-		wp_safe_redirect( admin_url( 'admin.php?page=woo-custom-myaccount-page' ) );
-		exit;
+		if ( isset( $_REQUEST['action'] ) && $_REQUEST['action']  == 'activate' && isset( $_REQUEST['plugin'] ) && $_REQUEST['plugin'] == $plugin) {
+			wp_safe_redirect( admin_url( 'admin.php?page=woo-custom-myaccount-page' ) );
+			exit;
+		}
 	}
 }
 add_action( 'activated_plugin', 'wcmp_activation_redirect_settings' );
