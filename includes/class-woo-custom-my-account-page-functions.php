@@ -214,19 +214,20 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 			empty( $items ) && $items = $endpoints;
 			$find                     = array();
-
-			foreach ( $items as $id => $item ) {
-				if ( ( 'key' === $key && $id === $value ) || ( isset( $item[ $key ] ) && $item[ $key ] === $value ) ) {
-					$find[ $id ] = $item;
-					continue;
-				} elseif ( isset( $item['children'] ) ) {
-					foreach ( $item['children'] as $child_id => $child ) {
-						if ( ( 'key' === $key && $child_id === $value ) || ( isset( $child[ $key ] ) && $child[ $key ] === $value ) ) {
-							$find[ $child_id ] = $child;
-							continue;
+			if( ! empty( $items ) ){
+				foreach ( $items as $id => $item ) {
+					if ( ( 'key' === $key && $id === $value ) || ( isset( $item[ $key ] ) && $item[ $key ] === $value ) ) {
+						$find[ $id ] = $item;
+						continue;
+					} elseif ( isset( $item['children'] ) ) {
+						foreach ( $item['children'] as $child_id => $child ) {
+							if ( ( 'key' === $key && $child_id === $value ) || ( isset( $child[ $key ] ) && $child[ $key ] === $value ) ) {
+								$find[ $child_id ] = $child;
+								continue;
+							}
 						}
+						continue;
 					}
-					continue;
 				}
 			}
 			return apply_filters( 'wcmp_get_endpoint_by_result', $find );
