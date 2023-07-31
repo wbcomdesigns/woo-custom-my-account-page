@@ -590,3 +590,20 @@ RESPONSIVE
 .buddyboss-theme .woocommerce .woocommerce-MyAccount-content .woocommerce-account-fields{
     width: 100%;
 }
+
+/* Reign theme */
+.rg-my-account-content-wrapper #my-account-menu {
+    width: 100%;
+}
+
+.rg-my-account-content-wrapper #my-account-menu.position-left {
+    padding-right: 0;
+}
+
+.rg-my-account-content-wrapper #my-account-menu.position-right {
+    padding-left: 0;
+}
+
+.rg-my-account-content-wrapper #my-account-menu.position-right .user-profile {
+    border: 0;
+}
