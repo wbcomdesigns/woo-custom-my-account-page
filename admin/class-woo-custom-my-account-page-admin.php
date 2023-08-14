@@ -45,6 +45,15 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @var      string    $version    The current version of this plugin.
 	 */
 	private $version;
+	
+	/**
+	 * Plugin_settings_tabs
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 * @var mixed      $plugin_settings_tabs      The settings tab.
+	 */
+	public $plugin_settings_tabs;
 
 	/**
 	 * Admin Instance.
