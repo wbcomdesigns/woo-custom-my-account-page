@@ -127,6 +127,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// set endpoint title
 			if ( isset( $endpoint['view-quote'] ) && ! empty( $wp->query_vars[ $active ] ) ) {
 				$order_id         = $wp->query_vars[ $active ];
+				/* translators: %s: */
 				$post->post_title = sprintf( __( 'Quote #%s', 'woo-custom-my-account-page' ), $order_id );
 			} elseif ( ! empty( $endpoint[ $key ]['label'] ) && $active != 'dashboard' ) {
 				$post->post_title = stripslashes( $endpoint[ $key ]['label'] );
