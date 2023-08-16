@@ -193,7 +193,8 @@ class Woo_Custom_My_Account_Page_Admin {
 					<div class="wbcom_admin_header-wrapper">
 						<div id="wb_admin_plugin_name">
 							<?php esc_html_e( 'WooCommerce Custom My Account Page', 'woo-custom-my-account-page' ); ?>
-							<span><?php printf( __( 'Version %s', 'woo-custom-my-account-page' ), WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION ); ?></span>
+							  <?php /* translators: %s: */ ?>
+							<span><?php printf( esc_html__( 'Version %s', 'woo-custom-my-account-page' ), WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION ); //phpcs:ignore ?></span>
 						</div>
 						<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 					</div>
@@ -232,7 +233,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			$tab_html .= '<li><a id="' . $wss_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $wss_tab . '">' . $wss_name . '</a></li>';
 		}
 		$tab_html .= '</div></ul></div>';
-		echo ( $tab_html ); // WPCS: XSS ok.
+		echo wp_kses_post( $tab_html ); // WPCS: XSS ok.
 	}
 
 	/**
