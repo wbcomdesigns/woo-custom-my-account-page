@@ -3,8 +3,8 @@ Contributors: wbcomdesigns,vapvarun
 Donate link: https://wbcomdesigns.com
 Tags: comments, spam
 Requires at least: 3.0.1
-Tested up to: 6.0.1
-Stable tag: 1.3.5
+Tested up to: 6.6.1
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,6 +28,15 @@ e.g.
 3. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
 
 == Changelog ==
+= 1.4.0 =
+* Fix: Resolved issue where the endpoint was not shown in the default option.
+* Update: PHPCS fixes for improved code quality.
+* Fix: Addressed compatibility issues with PHP 8.2.
+* Update: Implemented display name filter for better user experience.
+* Fix: UI improvements for Reign theme integration.
+* Fix: Resolved issue with all endpoints being disabled.
+* Fix: Corrected plugin redirect issue when multiple plugins are activated simultaneously.
+
 = 1.3.5 =
 * Fix: (#60) All endpoints disable issue
 * Fix: Plugin redirect issue when multiple plugins activate at the same time
