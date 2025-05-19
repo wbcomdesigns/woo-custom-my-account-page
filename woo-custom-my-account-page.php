@@ -151,7 +151,8 @@ function wcmp_admin_page_link( $links ) {
 }
 
 require plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php';
-$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+$myUpdateChecker = PucFactory::buildUpdateChecker(
 	'https://demos.wbcomdesigns.com/exporter/free-plugins/woo-custom-my-account-page.json',
 	__FILE__, // Full path to the main plugin file or functions.php.
 	'woo-custom-my-account-page'
