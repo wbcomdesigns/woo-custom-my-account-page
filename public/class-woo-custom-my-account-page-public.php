@@ -60,12 +60,24 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	public function enqueue_styles() {
 
+		// Check if Font Awesome is already loaded
+		global $wp_styles;
+		$font_awesome_loaded = false;
+
 		if ( ! is_account_page() ) {
 			return;
 		}
 
-		if ( ! wp_style_is( 'font-awesome', 'enqueued' ) ) {
-			wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' );
+		foreach ( $wp_styles->registered as $handle => $style ) {
+			if ( strpos( $style->src, 'font-awesome' ) !== false || strpos( $style->src, 'fontawesome' ) !== false ) {
+				$font_awesome_loaded = true;
+				break;
+			}
+		}
+		
+
+		if ( ! $font_awesome_loaded ) {
+			wp_enqueue_style( 'wcmp-font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' );
 		}
 
 		wp_register_style( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-public.css' );
@@ -82,9 +94,9 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	public function enqueue_scripts() {
 
-		if ( ! is_account_page() ) {
+		if ( ! function_exists( 'is_account_page' ) || ! is_account_page() ) {
 			return;
-		}
+		}	
 
 		wp_register_script( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/js/woo-custom-my-account-page-public.js', array( 'jquery' ), false, true );
 
@@ -140,10 +152,23 @@ class Woo_Custom_My_Account_Page_Public {
 	public function wcmp_add_avatar() {
 		$avatar_data = wp_unslash( $_POST );
 		if ( ! empty( $avatar_data['_nonce'] ) ) {
-			$nonce = sanitize_text_field( $avatar_data['_nonce'] );
+			$nonce = filter_input( INPUT_POST, '_nonce', FILTER_SANITIZE_STRING );
 		}
 
 		if ( ! isset( $_FILES['wcmp_user_avatar'] ) || ! wp_verify_nonce( $nonce, 'wp_handle_upload' ) ) {
+			return;
+		}
+
+		// Add user capability check
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
+
+		// Validate file type
+		$allowed_types = array( 'image/jpeg', 'image/png', 'image/gif', 'image/webp' );
+		$file_type = wp_check_filetype( $_FILES['wcmp_user_avatar']['name'] );
+
+		if ( ! in_array( $file_type['type'], $allowed_types, true ) ) {
 			return;
 		}
 
@@ -272,10 +297,13 @@ class Woo_Custom_My_Account_Page_Public {
 	 * @param  array  $args Arguments.
 	 */
 	public function wcmp_get_avatar( $avatar, $id_or_email, $size, $default, $alt, $args = array() ) {
+		static $is_processing = false;
 
-		if ( $this->get_avatar_filter() ) {
+		if ( $is_processing || $this->get_avatar_filter() ) {
 			return $avatar;
 		}
+
+		$is_processing = true;
 
 		// Prevent filter.
 		remove_all_filters( 'get_avatar' );
@@ -340,6 +368,8 @@ class Woo_Custom_My_Account_Page_Public {
 			(int) $args['width'],
 			$args['extra_attr']
 		);
+
+		$is_processing = false;
 
 		return $avatar;
 	}

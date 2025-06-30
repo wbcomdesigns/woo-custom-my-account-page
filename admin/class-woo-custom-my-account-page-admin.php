@@ -35,7 +35,7 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
-	private $plugin_name;
+	private $plugin_name = '';
 
 	/**
 	 * The version of this plugin.
@@ -44,7 +44,7 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
-	private $version;
+	private $version = '';
 	
 	/**
 	 * Plugin_settings_tabs
@@ -53,7 +53,7 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access   public
 	 * @var mixed      $plugin_settings_tabs      The settings tab.
 	 */
-	public $plugin_settings_tabs;
+	public $plugin_settings_tabs = array();
 
 	/**
 	 * Admin Instance.
@@ -71,6 +71,8 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @since  1.0.0
 	 */
 	public function __construct() {
+		$this->plugin_name = 'woo-custom-my-account-page';
+        $this->version = WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION;
 	}
 
 	/**
@@ -81,13 +83,15 @@ class Woo_Custom_My_Account_Page_Admin {
 	public function enqueue_styles() {
 
 		$screen = get_current_screen();
-		if ( 'wb-plugins_page_woo-custom-myaccount-page' === $screen->base ) {
-			if ( ! wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
-				wp_enqueue_style( 'wp-color-picker' );
-			}
-			if ( ! wp_style_is( 'woo-custom-my-account-page-admin-css', 'enqueued' ) ) {
-				wp_enqueue_style( 'woo-custom-my-account-page-admin-css', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-admin.css', array(), time(), 'all' );
-			}
+		if ( ! $screen || 'wb-plugins_page_woo-custom-myaccount-page' !== $screen->base ) {
+			return;
+		}
+		
+		if ( ! wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
+			wp_enqueue_style( 'wp-color-picker' );
+		}
+		if ( ! wp_style_is( 'woo-custom-my-account-page-admin-css', 'enqueued' ) ) {
+			wp_enqueue_style( 'woo-custom-my-account-page-admin-css', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-admin.css', array(), time(), 'all' );
 		}
 
 	}
@@ -310,10 +314,27 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access public
 	 */
 	public function wcmp_add_field_ajax() {
-		if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax_nonce' ) ) {
-			if ( ! ( isset( $_REQUEST['action'] ) && 'wcmp_add_field' === $_REQUEST['action'] ) || ! isset( $_REQUEST['field_name'] ) || ! isset( $_REQUEST['target'] ) ) {
-				die();
-			}
+
+		// Add to beginning of admin AJAX methods
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_die( esc_html__( 'Insufficient permissions', 'woo-custom-my-account-page' ) );
+		}
+		 // Proper nonce verification
+		if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax_nonce' ) ) {		
+			wp_die( esc_html__( 'Security check failed', 'woo-custom-my-account-page' ) );			
+		}
+
+		// Validate request
+		if ( ! isset( $_REQUEST['action'] ) || 'wcmp_add_field' !== $_REQUEST['action'] || ! isset( $_REQUEST['field_name'] ) || ! isset( $_REQUEST['target'] ) ) {
+			wp_die( esc_html__( 'Invalid request', 'woo-custom-my-account-page' ) );
+		}
+
+		// Sanitize and validate target
+		$allowed_targets = array( 'endpoint', 'group', 'link' );
+		$request = sanitize_text_field( wp_unslash( $_REQUEST['target'] ) );
+		
+		if ( ! in_array( $request, $allowed_targets, true ) ) {
+			wp_send_json_error( array( 'error' => esc_html__( 'Invalid target type', 'woo-custom-my-account-page' ) ) );
 		}
 
 		$myaccount_func = instantiate_woo_custom_myaccount_functions();

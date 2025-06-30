@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				$myaccount_func    = instantiate_woo_custom_myaccount_functions();
 				$all_settings      = $myaccount_func->wcmp_settings_data();
 				$settings          = $all_settings['general_settings'];
-				$endpoints = $all_settings['endpoints_settings'];
+				$endpoints 		   = isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
 				$hidden_cls        = '';
 				if ( 'tab' === $settings['menu_style'] ) {
 					$hidden_cls = 'wcmp_option_hide';

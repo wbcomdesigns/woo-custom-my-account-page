@@ -39,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<?php
 				$myaccount_func = instantiate_woo_custom_myaccount_functions();
 				$all_settings   = $myaccount_func->wcmp_settings_data();
-				$endpoints      = $all_settings['endpoints_settings'];
+				$endpoints 		= isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
 				$endpoint_order = $all_settings['endpoint_order'];
 				?>
 				<div class="dd endpoints-container">

@@ -544,7 +544,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		public function init() {
 
 			$all_settings         = $this->wcmp_settings_data();
-			$endpoints            = $all_settings['endpoints_settings'];
+			$endpoints 			  = isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
 			$this->menu_endpoints = $endpoints;
 			$priority             = has_action( 'woocommerce_account_navigation', 'woocommerce_account_navigation' );
 
@@ -818,7 +818,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$restricted_roles  = array();
 			$all_settings      = $this->wcmp_settings_data();
 			$general_settings  = $all_settings['general_settings'];
-			$endpoint_settings = $all_settings['endpoints_settings'];
+			$endpoints 		   = isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
 			$default_endpoint  = $general_settings['default_endpoint'];
 			// Let's third part filter default endpoint.
 			$default_endpoint = apply_filters( 'wcmp_default_endpoint', $default_endpoint );
