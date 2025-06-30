@@ -159,7 +159,7 @@ jQuery( document ).ready(
 
 							// check for error or if field already exists
 							if ( res.error || endpoints_container.find( '[data-id="' + res.field + '"]' ).length ) {
-								error.html( res.error );
+								error.text( res.error );
 								return;
 							}
 
