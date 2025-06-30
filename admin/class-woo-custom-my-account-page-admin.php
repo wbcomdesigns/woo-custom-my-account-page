@@ -436,4 +436,22 @@ class Woo_Custom_My_Account_Page_Admin {
 		}
 	}
 
+
+	/**
+	 * Schedule rewrite rules flush
+	 */
+	public function wcmp_schedule_flush_rewrite_on_endpoint_save() {
+		set_transient( 'wcmp_flush_rewrite_rules', true, 60 );
+	}
+
+	/**
+	 * Maybe flush rewrite rules
+	 */
+	public function wcmp_maybe_flush_rewrite_rules() {
+		if ( get_transient( 'wcmp_flush_rewrite_rules' ) ) {
+			flush_rewrite_rules();
+			delete_transient( 'wcmp_flush_rewrite_rules' );
+		}
+	}
+
 }

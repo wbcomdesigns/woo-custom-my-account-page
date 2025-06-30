@@ -21,7 +21,12 @@ $editor_options            = array(
 	'editor_class'  => '', // add extra class(es) to the editor textarea.
 	'teeny'         => false, // output the minimal editor config used in Press This.
 	'dfw'           => false, // replace the default fullscreen with DFW (needs specific DOM elements and css).
-	'tinymce'       => true, // load TinyMCE, can be used to pass settings directly to TinyMCE using an array().
+	'tinymce'       => array(
+							'theme_advanced_buttons1' => 'formatselect,bold,italic,underline,|,bullist,numlist,|,link,unlink,|,undo,redo',
+							'theme_advanced_buttons2' => '',
+							'theme_advanced_buttons3' => '',
+							'theme_advanced_buttons4' => '',
+						),
 	'quicktags'     => true, // load Quicktags, can be used to pass settings directly to Quicktags using an array().
 );
 ?>

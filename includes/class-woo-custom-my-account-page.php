@@ -177,6 +177,9 @@ class Woo_Custom_My_Account_Page {
 		$this->loader->add_action( 'wp_ajax_nopriv_wcmp_add_field', $plugin_admin, 'wcmp_add_field_ajax' );
 		$this->loader->add_action( 'in_admin_header', $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' );
 
+		$this->loader->add_action( 'update_option_wcmp_endpoints_settings', $plugin_admin, 'wcmp_schedule_flush_rewrite_on_endpoint_save' );
+		$this->loader->add_action( 'init', $plugin_admin, 'wcmp_maybe_flush_rewrite_rules' );
+
 	}
 
 	/**
@@ -196,11 +199,13 @@ class Woo_Custom_My_Account_Page {
 		// Filter user avatar.
 		$this->loader->add_filter( 'get_avatar', $plugin_public, 'wcmp_get_avatar', 100, 6 );
 		// Add avatar.
-		$this->loader->add_action( 'init', $plugin_public, 'wcmp_add_avatar' );
+		$this->loader->add_action( 'template_redirect', $plugin_public, 'wcmp_add_avatar' );
 		// Reset default avatar.
-		$this->loader->add_action( 'init', $plugin_public, 'wcmp_reset_default_avatar' );
+		$this->loader->add_action( 'template_redirect', $plugin_public, 'wcmp_reset_default_avatar' );
 		// Display 'change avatar' form ajax.
 		$this->loader->add_action( 'wc_ajax_wcmp_print_avatar_form', $plugin_public, 'wcmp_print_avatar_form_ajax' );
+
+		$this->loader->add_filter( 'woocommerce_account_menu_item_classes', $plugin_public, 'wcmp_account_menu_item_classes', 999, 2 );		
 
 	}
 

@@ -172,6 +172,13 @@ class Woo_Custom_My_Account_Page_Public {
 			return;
 		}
 
+		 // Check file size (max 2MB)
+		 $max_size = 2 * 1024 * 1024; // 2MB in bytes
+		 if ( $_FILES['wcmp_user_avatar']['size'] > $max_size ) {
+			 wc_add_notice( __( 'Image size must be less than 2MB.', 'woo-custom-my-account-page' ), 'error' );
+			 return;
+		 }
+
 		// Required files.
 		if ( ! function_exists( 'media_handle_upload' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/media.php';
@@ -186,18 +193,31 @@ class Woo_Custom_My_Account_Page_Public {
 		$media_id = media_handle_upload( 'wcmp_user_avatar', 0 );
 
 		if ( is_wp_error( $media_id ) ) {
-			return;
+			wc_add_notice( $media_id->get_error_message(), 'error' );
+        	return;
 		}
 
 		// Save media id for filter query in media library.
 		$medias   = get_option( 'wcmp-users-avatar-ids', array() );
-		$medias[] = $media_id;
-		// Then save.
-		update_option( 'wcmp-users-avatar-ids', $medias );
+		if ( ! is_array( $medias ) ) {
+			$medias = array();
+		}
+		if ( ! in_array( $media_id, $medias ) ) {
+			$medias[] = $media_id;
+			// Then save.
+			update_option( 'wcmp-users-avatar-ids', $medias );
+		}
 
 		// Save user meta.
 		$user = get_current_user_id();
 		update_user_meta( $user, 'wb-wcmp-avatar', $media_id );
+
+		 // Add success message
+		 wc_add_notice( __( 'Avatar updated successfully!', 'woo-custom-my-account-page' ), 'success' );
+    
+		//  // Redirect to prevent resubmission
+		 wp_safe_redirect( wc_get_account_endpoint_url( 'dashboard' ) );
+		 exit;
 
 	}
 
@@ -210,13 +230,19 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	public function wcmp_reset_default_avatar() {
 
-		if ( ! isset( $_FILES['reset_image'] ) || ( ! isset( $_POST['action'] ) ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['action'] ) ), 'reset_image' ) ) {
-
-			if ( ! isset( $_POST['action'] ) || 'wcmp_reset_avatar' !== $_POST['action'] ) {
-				return;
-			}
+		if ( ! isset( $_POST['action'] ) || 'wcmp_reset_avatar' !== $_POST['action'] ) {
+			return;
+		}		
+		
+		if ( ! isset( $_POST['reset_image'] ) || ! wp_verify_nonce( $_POST['reset_image'], 'action' ) ) {
+			return;
 		}
+		
 
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
+	
 		// Get user id.
 		$user     = get_current_user_id();
 		$media_id = get_user_meta( $user, 'wb-wcmp-avatar', true );
@@ -242,6 +268,11 @@ class Woo_Custom_My_Account_Page_Public {
 
 		// Then delete media attachment.
 		wp_delete_attachment( $media_id );
+
+		wc_add_notice( __( 'Avatar removed successfully!', 'woo-custom-my-account-page' ), 'success' );
+		// Redirect
+		wp_safe_redirect( wc_get_account_endpoint_url( 'dashboard' ) );
+		exit;
 
 	}
 
@@ -474,4 +505,22 @@ class Woo_Custom_My_Account_Page_Public {
 		return $resize;
 	}
 
+	/**
+	 * Add custom classes to menu items
+	 *
+	 * @param array  $classes Current classes
+	 * @param string $endpoint Endpoint
+	 * @return array
+	 */
+	public function wcmp_account_menu_item_classes( $classes, $endpoint ) {		
+		$functions = instantiate_woo_custom_myaccount_functions();		
+		$options = $functions->get_menu_items_options();
+		
+		if ( isset( $options[ $endpoint ] ) && ! empty( $options[ $endpoint ]['class'] ) ) {
+			$classes[] = $options[ $endpoint ]['class'];
+		}
+		
+		return $classes;
+	}
+	
 }
