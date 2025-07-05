@@ -152,7 +152,7 @@ class Woo_Custom_My_Account_Page_Public {
 	public function wcmp_add_avatar() {
 		$avatar_data = wp_unslash( $_POST );
 		if ( ! empty( $avatar_data['_nonce'] ) ) {
-			$nonce = filter_input( INPUT_POST, '_nonce', FILTER_SANITIZE_STRING );
+			$nonce = isset( $_POST['_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_nonce'] ) ) : '';
 		}
 
 		if ( ! isset( $_FILES['wcmp_user_avatar'] ) || ! wp_verify_nonce( $nonce, 'wp_handle_upload' ) ) {
@@ -229,51 +229,51 @@ class Woo_Custom_My_Account_Page_Public {
 	 * @author Wbcom Designs
 	 */
 	public function wcmp_reset_default_avatar() {
-
+		// Check if this is our reset action
 		if ( ! isset( $_POST['action'] ) || 'wcmp_reset_avatar' !== $_POST['action'] ) {
 			return;
-		}		
-		
+		}
+	
+		// Verify nonce - FIXED: Proper nonce handling
 		if ( ! isset( $_POST['reset_image'] ) || ! wp_verify_nonce( $_POST['reset_image'], 'action' ) ) {
 			return;
 		}
-		
-
+	
 		if ( ! is_user_logged_in() ) {
 			return;
 		}
 	
 		// Get user id.
-		$user     = get_current_user_id();
+		$user = get_current_user_id();
 		$media_id = get_user_meta( $user, 'wb-wcmp-avatar', true );
-
+	
 		if ( ! $media_id ) {
 			return;
 		}
-
+	
 		// Remove id from global list.
 		$medias = get_option( 'wcmp-users-avatar-ids', array() );
-		foreach ( $medias as $key => $media ) {
-			if ( $media === $media_id ) {
-				unset( $media[ $key ] );
-				continue;
+		if ( is_array( $medias ) ) {
+			$updated_medias = array();
+			foreach ( $medias as $media ) {
+				if ( $media !== $media_id ) {
+					$updated_medias[] = $media;
+				}
 			}
+			update_option( 'wcmp-users-avatar-ids', $updated_medias );
 		}
-
-		// Then save.
-		update_option( 'wcmp-users-avatar-ids', $medias );
-
-		// Then delete user meta.
+	
+		// Delete user meta.
 		delete_user_meta( $user, 'wb-wcmp-avatar' );
-
-		// Then delete media attachment.
+	
+		// Delete media attachment.
 		wp_delete_attachment( $media_id );
-
+	
 		wc_add_notice( __( 'Avatar removed successfully!', 'woo-custom-my-account-page' ), 'success' );
+		
 		// Redirect
 		wp_safe_redirect( wc_get_account_endpoint_url( 'dashboard' ) );
 		exit;
-
 	}
 
 	/**
@@ -305,12 +305,12 @@ class Woo_Custom_My_Account_Page_Public {
 		ob_start();
 		wc_get_template( 'wcmp-myaccount-avatar-form.php', $args, '', WCMP_PLUGIN_PATH . 'public/templates/' );
 		$form = ob_get_clean();
-
+	
 		if ( $print ) {
 			echo $form; //phpcs:ignore
 			return;
 		}
-
+	
 		return $form;
 	}
 
