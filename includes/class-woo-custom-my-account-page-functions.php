@@ -975,10 +975,15 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 */
 		public function wcmp_check_myaccount() {
 			global $post;
-			if ( ! is_null( $post ) && strpos( $post->post_content, 'woocommerce_my_account' ) !== false && is_user_logged_in() ) {
+			
+			// Add null check for PHP 8.1+ compatibility
+			if ( ! is_null( $post ) && 
+				 isset( $post->post_content ) && 
+				 strpos( $post->post_content, 'woocommerce_my_account' ) !== false && 
+				 is_user_logged_in() ) {
 				$this->is_myaccount = true;
 			}
-
+		
 			$this->is_myaccount = apply_filters( 'wcmp_is_my_account_page', $this->is_myaccount );
 		}
 

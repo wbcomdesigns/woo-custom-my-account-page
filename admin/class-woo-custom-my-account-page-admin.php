@@ -314,38 +314,38 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access public
 	 */
 	public function wcmp_add_field_ajax() {
-
 		// Add to beginning of admin AJAX methods
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
 			wp_die( esc_html__( 'Insufficient permissions', 'woo-custom-my-account-page' ) );
 		}
-		 // Proper nonce verification
-		if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax_nonce' ) ) {		
-			wp_die( esc_html__( 'Security check failed', 'woo-custom-my-account-page' ) );			
+		
+		// FIXED: Replace deprecated FILTER_SANITIZE_STRING
+		if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax_nonce' ) ) {
+			wp_die( esc_html__( 'Security check failed', 'woo-custom-my-account-page' ) );
 		}
-
+	
 		// Validate request
 		if ( ! isset( $_REQUEST['action'] ) || 'wcmp_add_field' !== $_REQUEST['action'] || ! isset( $_REQUEST['field_name'] ) || ! isset( $_REQUEST['target'] ) ) {
 			wp_die( esc_html__( 'Invalid request', 'woo-custom-my-account-page' ) );
 		}
-
-		// Sanitize and validate target
+	
+		// FIXED: Replace deprecated filter_input with sanitize_text_field
 		$allowed_targets = array( 'endpoint', 'group', 'link' );
-		$request = sanitize_text_field( wp_unslash( $_REQUEST['target'] ) );
+		$request = isset( $_REQUEST['target'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['target'] ) ) : '';
 		
 		if ( ! in_array( $request, $allowed_targets, true ) ) {
 			wp_send_json_error( array( 'error' => esc_html__( 'Invalid target type', 'woo-custom-my-account-page' ) ) );
 		}
-
+	
 		$myaccount_func = instantiate_woo_custom_myaccount_functions();
-
-		// Check if is endpoint.
-		$request = trim( sanitize_text_field( wp_unslash( $_REQUEST['target'] ) ) );
+	
 		// Build field key.
-		$field            = $myaccount_func->create_field_key( sanitize_text_field( wp_unslash( $_REQUEST['field_name'] ) ) );
+		$field_name = isset( $_REQUEST['field_name'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['field_name'] ) ) : '';
+		$field = $myaccount_func->create_field_key( $field_name );
+		
 		$options_function = "wcmp_get_default_{$request}_options";
 		$print_function   = "wcmp_admin_print_{$request}_field";
-
+	
 		// Build args array.
 		$args = array(
 			'endpoint'  => $field,
@@ -353,11 +353,11 @@ class Woo_Custom_My_Account_Page_Admin {
 			'id'        => 'wcmp_endpoint',
 			'usr_roles' => array(),
 		);
-
+	
 		ob_start();
 		$this->$print_function( $args );
 		$html = ob_get_clean();
-
+	
 		wp_send_json(
 			array(
 				'html'  => $html,
