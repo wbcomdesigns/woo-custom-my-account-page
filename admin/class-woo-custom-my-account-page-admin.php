@@ -468,7 +468,12 @@ class Woo_Custom_My_Account_Page_Admin {
 	public function wcmp_general_settings_callback( $input ) {
 		$sanitized = array();
 
-		// Sanitize show avatar option
+		// Sanitize custom avatar option (matches form field name)
+		if ( isset( $input['custom_avatar'] ) ) {
+			$sanitized['custom_avatar'] = sanitize_text_field( $input['custom_avatar'] );
+		}
+
+		// Sanitize show avatar option (legacy field)
 		if ( isset( $input['show_avatar'] ) ) {
 			$sanitized['show_avatar'] = sanitize_text_field( $input['show_avatar'] );
 		}
@@ -504,7 +509,12 @@ class Woo_Custom_My_Account_Page_Admin {
 			$sanitized['menu_style'] = sanitize_text_field( $input['menu_style'] );
 		}
 
-		// Sanitize menu position (left or right)
+		// Sanitize sidebar position (left or right) - matches form field name
+		if ( isset( $input['sidebar_position'] ) ) {
+			$sanitized['sidebar_position'] = sanitize_text_field( $input['sidebar_position'] );
+		}
+
+		// Sanitize menu position (legacy field name)
 		if ( isset( $input['menu_position'] ) ) {
 			$sanitized['menu_position'] = sanitize_text_field( $input['menu_position'] );
 		}
@@ -521,7 +531,7 @@ class Woo_Custom_My_Account_Page_Admin {
 	public function wcmp_style_settings_callback( $input ) {
 		$sanitized = array();
 
-		// List of color fields that need sanitization
+		// List of color fields that need sanitization (old field names)
 		$color_fields = array(
 			'background-color',
 			'menu-background-color',
@@ -533,6 +543,22 @@ class Woo_Custom_My_Account_Page_Admin {
 
 		// Sanitize each color field
 		foreach ( $color_fields as $field ) {
+			if ( isset( $input[ $field ] ) ) {
+				$sanitized[ $field ] = sanitize_hex_color( $input[ $field ] );
+			}
+		}
+
+		// Sanitize actual form color fields (from wcmp-style-settings.php)
+		$actual_color_fields = array(
+			'menu_item_color',
+			'menu_item_hover_color',
+			'logout_color',
+			'logout_hover_color',
+			'logout_background_color',
+			'logout_background_hover_color'
+		);
+
+		foreach ( $actual_color_fields as $field ) {
 			if ( isset( $input[ $field ] ) ) {
 				$sanitized[ $field ] = sanitize_hex_color( $input[ $field ] );
 			}
