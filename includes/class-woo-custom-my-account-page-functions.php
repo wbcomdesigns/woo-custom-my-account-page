@@ -365,7 +365,8 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 					if ( array_key_exists( $key, $default_endpoints ) ) {
 						$default_values = $default_endpoints[ $key ];
 					} else {
-						$default_function = "wcmp_get_default_{$endpoint['type']}_options";
+						$endpoint_type    = isset( $endpoint['type'] ) ? $endpoint['type'] : 'endpoint';
+						$default_function = "wcmp_get_default_{$endpoint_type}_options";
 						$default_values   = $this->$default_function( $key );
 					}
 					if ( ! array_key_exists( $key, $default_endpoints ) ) {

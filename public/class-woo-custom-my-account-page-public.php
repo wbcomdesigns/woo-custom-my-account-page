@@ -152,7 +152,7 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	public function wcmp_add_avatar() {
 		// Fixed: Proper nonce handling and initialization
-		$nonce = filter_input( INPUT_POST, '_nonce', FILTER_SANITIZE_STRING );
+		$nonce = isset( $_POST['_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_nonce'] ) ) : '';
 
 		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'wp_handle_upload' ) ) {
 			return;
@@ -235,13 +235,13 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	public function wcmp_reset_default_avatar() {
 
-		// Improved: Use filter_input for better validation
-		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+		// Improved: Use sanitize_text_field for validation
+		$action = isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '';
 		if ( ! $action || 'wcmp_reset_avatar' !== $action ) {
 			return;
 		}
 
-		$reset_nonce = filter_input( INPUT_POST, 'reset_image', FILTER_SANITIZE_STRING );
+		$reset_nonce = isset( $_POST['reset_image'] ) ? sanitize_text_field( wp_unslash( $_POST['reset_image'] ) ) : '';
 		if ( ! $reset_nonce || ! wp_verify_nonce( $reset_nonce, 'action' ) ) {
 			return;
 		}
