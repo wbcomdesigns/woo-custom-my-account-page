@@ -570,6 +570,7 @@ class Woo_Custom_My_Account_Page_Admin {
 					'slug' => isset( $endpoint['slug'] ) ? sanitize_title( $endpoint['slug'] ) : '',
 					'class' => isset( $endpoint['class'] ) ? sanitize_html_class( $endpoint['class'] ) : '',
 					'icon' => isset( $endpoint['icon'] ) ? sanitize_text_field( $endpoint['icon'] ) : '',
+					'type' => isset( $endpoint['type'] ) ? sanitize_text_field( $endpoint['type'] ) : 'endpoint',
 					'content' => isset( $endpoint['content'] ) ? wp_kses_post( $endpoint['content'] ) : '',
 					'usr_roles' => isset( $endpoint['usr_roles'] ) && is_array( $endpoint['usr_roles'] ) ? array_map( 'sanitize_text_field', $endpoint['usr_roles'] ) : array(),
 				);
@@ -589,6 +590,7 @@ class Woo_Custom_My_Account_Page_Admin {
 					'label' => isset( $group['label'] ) ? sanitize_text_field( $group['label'] ) : '',
 					'class' => isset( $group['class'] ) ? sanitize_html_class( $group['class'] ) : '',
 					'icon' => isset( $group['icon'] ) ? sanitize_text_field( $group['icon'] ) : '',
+					'type' => isset( $group['type'] ) ? sanitize_text_field( $group['type'] ) : 'group',
 					'usr_roles' => isset( $group['usr_roles'] ) && is_array( $group['usr_roles'] ) ? array_map( 'sanitize_text_field', $group['usr_roles'] ) : array(),
 					'items' => isset( $group['items'] ) && is_array( $group['items'] ) ? array_map( 'sanitize_text_field', $group['items'] ) : array(),
 				);
@@ -609,6 +611,7 @@ class Woo_Custom_My_Account_Page_Admin {
 					'url' => isset( $link['url'] ) ? esc_url_raw( $link['url'] ) : '',
 					'class' => isset( $link['class'] ) ? sanitize_html_class( $link['class'] ) : '',
 					'icon' => isset( $link['icon'] ) ? sanitize_text_field( $link['icon'] ) : '',
+					'type' => isset( $link['type'] ) ? sanitize_text_field( $link['type'] ) : 'link',
 					'usr_roles' => isset( $link['usr_roles'] ) && is_array( $link['usr_roles'] ) ? array_map( 'sanitize_text_field', $link['usr_roles'] ) : array(),
 				);
 			}
