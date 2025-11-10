@@ -427,7 +427,12 @@ class Woo_Custom_My_Account_Page_Public {
 	 * @return boolean
 	 */
 	public function get_avatar_filter() {
-		return apply_filters( 'wcmp_get_avatar_filter', get_option( 'wb-wcmp-custom-avatar', 'yes' ) !== 'yes' );
+		// Get the custom_avatar setting from wcmp_general_settings
+		$general_settings = get_option( 'wcmp_general_settings', array() );
+		$custom_avatar = isset( $general_settings['custom_avatar'] ) ? $general_settings['custom_avatar'] : 'yes';
+
+		// Return true if custom avatar is disabled (filter should prevent custom avatar)
+		return apply_filters( 'wcmp_get_avatar_filter', $custom_avatar !== 'yes' );
 	}
 
 	/**
