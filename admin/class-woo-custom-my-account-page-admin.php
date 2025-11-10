@@ -499,6 +499,16 @@ class Woo_Custom_My_Account_Page_Admin {
 			$sanitized['default_endpoint'] = sanitize_title( $input['default_endpoint'] );
 		}
 
+		// Sanitize menu style (sidebar or tab)
+		if ( isset( $input['menu_style'] ) ) {
+			$sanitized['menu_style'] = sanitize_text_field( $input['menu_style'] );
+		}
+
+		// Sanitize menu position (left or right)
+		if ( isset( $input['menu_position'] ) ) {
+			$sanitized['menu_position'] = sanitize_text_field( $input['menu_position'] );
+		}
+
 		return $sanitized;
 	}
 
