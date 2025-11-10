@@ -469,8 +469,11 @@ class Woo_Custom_My_Account_Page_Admin {
 		$sanitized = array();
 
 		// Sanitize custom avatar option (matches form field name)
-		if ( isset( $input['custom_avatar'] ) ) {
-			$sanitized['custom_avatar'] = sanitize_text_field( $input['custom_avatar'] );
+		// Checkboxes don't send data when unchecked, so we need to explicitly handle both cases
+		if ( isset( $input['custom_avatar'] ) && 'yes' === $input['custom_avatar'] ) {
+			$sanitized['custom_avatar'] = 'yes';
+		} else {
+			$sanitized['custom_avatar'] = 'no';
 		}
 
 		// Sanitize show avatar option (legacy field)
@@ -600,6 +603,7 @@ class Woo_Custom_My_Account_Page_Admin {
 					continue;
 				}
 
+				// Common fields for all types
 				$sanitized['endpoints'][ $key ] = array(
 					'active' => isset( $endpoint['active'] ) ? sanitize_text_field( $endpoint['active'] ) : '',
 					'label' => isset( $endpoint['label'] ) ? sanitize_text_field( $endpoint['label'] ) : '',
@@ -607,9 +611,23 @@ class Woo_Custom_My_Account_Page_Admin {
 					'class' => isset( $endpoint['class'] ) ? sanitize_html_class( $endpoint['class'] ) : '',
 					'icon' => isset( $endpoint['icon'] ) ? sanitize_text_field( $endpoint['icon'] ) : '',
 					'type' => isset( $endpoint['type'] ) ? sanitize_text_field( $endpoint['type'] ) : 'endpoint',
-					'content' => isset( $endpoint['content'] ) ? wp_kses_post( $endpoint['content'] ) : '',
 					'usr_roles' => isset( $endpoint['usr_roles'] ) && is_array( $endpoint['usr_roles'] ) ? array_map( 'sanitize_text_field', $endpoint['usr_roles'] ) : array(),
 				);
+
+				// Type-specific fields
+				$type = isset( $endpoint['type'] ) ? $endpoint['type'] : 'endpoint';
+
+				if ( 'group' === $type ) {
+					// Group-specific fields
+					$sanitized['endpoints'][ $key ]['open'] = isset( $endpoint['open'] ) && 'yes' === $endpoint['open'] ? 'yes' : 'no';
+				} elseif ( 'link' === $type ) {
+					// Link-specific fields
+					$sanitized['endpoints'][ $key ]['url'] = isset( $endpoint['url'] ) ? esc_url_raw( $endpoint['url'] ) : '';
+					$sanitized['endpoints'][ $key ]['target_blank'] = isset( $endpoint['target_blank'] ) && 'yes' === $endpoint['target_blank'] ? 'yes' : 'no';
+				} else {
+					// Endpoint-specific fields
+					$sanitized['endpoints'][ $key ]['content'] = isset( $endpoint['content'] ) ? wp_kses_post( $endpoint['content'] ) : '';
+				}
 			}
 		}
 
@@ -653,9 +671,14 @@ class Woo_Custom_My_Account_Page_Admin {
 			}
 		}
 
-		// Sanitize order array
+		// Sanitize order array (legacy field)
 		if ( isset( $input['order'] ) ) {
 			$sanitized['order'] = sanitize_text_field( $input['order'] );
+		}
+
+		// Sanitize endpoints-order field (actual field used for drag-and-drop ordering)
+		if ( isset( $input['endpoints-order'] ) ) {
+			$sanitized['endpoints-order'] = sanitize_text_field( $input['endpoints-order'] );
 		}
 
 		return $sanitized;
