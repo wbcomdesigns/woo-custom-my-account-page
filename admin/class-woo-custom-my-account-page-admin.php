@@ -132,10 +132,12 @@ class Woo_Custom_My_Account_Page_Admin {
 			}
 			wp_register_script( 'nestable', plugin_dir_url( __FILE__ ) . 'assets/js/jquery.nestable.js', array( 'jquery' ), time(), true );
 			if ( ! wp_style_is( 'select2-css', 'enqueued' ) ) {
-				wp_enqueue_style( 'select2-css', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.css' );
+				// Use local Select2 instead of CDN (WordPress.org requirement)
+				wp_enqueue_style( 'select2-css', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/vendor/select2/select2.min.css', array(), '4.0.7' );
 			}
 			if ( ! wp_script_is( 'select2-js', 'enqueued' ) ) {
-				wp_enqueue_script( 'select2-js', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.js' );
+				// Use local Select2 instead of CDN (WordPress.org requirement)
+				wp_enqueue_script( 'select2-js', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/vendor/select2/select2.min.js', array( 'jquery' ), '4.0.7', true );
 			}
 			if ( ! wp_script_is( 'woo-custom-my-account-page-admin-js', 'enqueued' ) ) {
 				wp_enqueue_script( 'woo-custom-my-account-page-admin-js', plugin_dir_url( __FILE__ ) . 'assets/js/woo-custom-my-account-page-admin.js', array( 'jquery', 'wp-color-picker', 'nestable', 'jquery-ui-dialog' ), time(), false );
@@ -252,7 +254,7 @@ class Woo_Custom_My_Account_Page_Admin {
 		add_settings_section( 'wcmp-welcome', ' ', array( $this, 'wcmp_welcome_content' ), 'wcmp-welcome' );
 
 		$this->plugin_settings_tabs['wcmp-general'] = esc_html__( 'General', 'woo-custom-my-account-page' );
-		register_setting( 'wcmp_general_settings', 'wcmp_general_settings' );
+		register_setting( 'wcmp_general_settings', 'wcmp_general_settings', array( $this, 'wcmp_general_settings_callback' ) );
 		add_settings_section( 'wcmp-general', ' ', array( $this, 'wcmp_general_settings_content' ), 'wcmp-general' );
 		$this->plugin_settings_tabs['wcmp-style'] = esc_html__( 'Style Options', 'woo-custom-my-account-page' );
 		register_setting( 'wcmp_style_settings', 'wcmp_style_settings', array( $this, 'wcmp_style_settings_callback' ) );
@@ -339,23 +341,38 @@ class Woo_Custom_My_Account_Page_Admin {
 
 		$myaccount_func = instantiate_woo_custom_myaccount_functions();
 
-		// Check if is endpoint.
-		$request = trim( sanitize_text_field( wp_unslash( $_REQUEST['target'] ) ) );
-		// Build field key.
-		$field            = $myaccount_func->create_field_key( sanitize_text_field( wp_unslash( $_REQUEST['field_name'] ) ) );
-		$options_function = "wcmp_get_default_{$request}_options";
-		$print_function   = "wcmp_admin_print_{$request}_field";
+		// Build field key safely
+		$field = $myaccount_func->create_field_key( sanitize_text_field( wp_unslash( $_REQUEST['field_name'] ) ) );
 
-		// Build args array.
+		// Use switch for safe function calling instead of dynamic calls
 		$args = array(
 			'endpoint'  => $field,
-			'options'   => $myaccount_func->$options_function( $field ),
+			'options'   => null,
 			'id'        => 'wcmp_endpoint',
 			'usr_roles' => array(),
 		);
 
+		// Safe function calls based on validated target
 		ob_start();
-		$this->$print_function( $args );
+		switch ( $request ) {
+			case 'endpoint':
+				$args['options'] = $myaccount_func->wcmp_get_default_endpoint_options( $field );
+				$this->wcmp_admin_print_endpoint_field( $args );
+				break;
+			case 'group':
+				$args['group'] = $field;
+				$args['options'] = $myaccount_func->wcmp_get_default_group_options( $field );
+				$this->wcmp_admin_print_group_field( $args );
+				break;
+			case 'link':
+				$args['link'] = $field;
+				$args['options'] = $myaccount_func->wcmp_get_default_link_options( $field );
+				$this->wcmp_admin_print_link_field( $args );
+				break;
+			default:
+				wp_send_json_error( array( 'error' => esc_html__( 'Invalid target', 'woo-custom-my-account-page' ) ) );
+				return;
+		}
 		$html = ob_get_clean();
 
 		wp_send_json(
@@ -377,7 +394,9 @@ class Woo_Custom_My_Account_Page_Admin {
 	public function wcmp_admin_print_endpoint_field( $args ) {
 		// Let third part filter template args.
 		$args = apply_filters( 'wcmp_admin_print_endpoint_field', $args );
-		extract( $args );
+		// Replace extract() with explicit variables for stability
+		$endpoint = isset($args['endpoint']) ? $args['endpoint'] : '';
+		$options = isset($args['options']) ? $args['options'] : array();
 		include WCMP_PLUGIN_PATH . 'admin/partials/endpoint-item.php';
 	}
 
@@ -392,7 +411,9 @@ class Woo_Custom_My_Account_Page_Admin {
 	public function wcmp_admin_print_group_field( $args ) {
 		// let third part filter template args.
 		$args = apply_filters( 'wcmp_admin_print_endpoints_group', $args );
-		extract( $args );
+		// Replace extract() with explicit variables for stability
+		$group = isset($args['group']) ? $args['group'] : '';
+		$options = isset($args['options']) ? $args['options'] : array();
 		include WCMP_PLUGIN_PATH . 'admin/partials/group-item.php';
 	}
 
@@ -407,7 +428,9 @@ class Woo_Custom_My_Account_Page_Admin {
 	public function wcmp_admin_print_link_field( $args ) {
 		// let third part filter template args.
 		$args = apply_filters( 'wcmp_admin_print_link_field', $args );
-		extract( $args );
+		// Replace extract() with explicit variables for stability
+		$link = isset($args['link']) ? $args['link'] : '';
+		$options = isset($args['options']) ? $args['options'] : array();
 
 		include WCMP_PLUGIN_PATH . 'admin/partials/link-item.php';
 	}
@@ -436,6 +459,168 @@ class Woo_Custom_My_Account_Page_Admin {
 		}
 	}
 
+	/**
+	 * Sanitization callback for general settings
+	 *
+	 * @param array $input The input array to sanitize
+	 * @return array Sanitized array
+	 */
+	public function wcmp_general_settings_callback( $input ) {
+		$sanitized = array();
+
+		// Sanitize show avatar option
+		if ( isset( $input['show_avatar'] ) ) {
+			$sanitized['show_avatar'] = sanitize_text_field( $input['show_avatar'] );
+		}
+
+		// Sanitize avatar size
+		if ( isset( $input['avatar_size'] ) ) {
+			$sanitized['avatar_size'] = absint( $input['avatar_size'] );
+			// Ensure reasonable size limits (20-500 pixels)
+			if ( $sanitized['avatar_size'] < 20 ) {
+				$sanitized['avatar_size'] = 20;
+			} elseif ( $sanitized['avatar_size'] > 500 ) {
+				$sanitized['avatar_size'] = 500;
+			}
+		}
+
+		// Sanitize show user name option
+		if ( isset( $input['show_user_name'] ) ) {
+			$sanitized['show_user_name'] = sanitize_text_field( $input['show_user_name'] );
+		}
+
+		// Sanitize show logout link option
+		if ( isset( $input['show_logout_link'] ) ) {
+			$sanitized['show_logout_link'] = sanitize_text_field( $input['show_logout_link'] );
+		}
+
+		// Sanitize default endpoint
+		if ( isset( $input['default_endpoint'] ) ) {
+			$sanitized['default_endpoint'] = sanitize_title( $input['default_endpoint'] );
+		}
+
+		return $sanitized;
+	}
+
+	/**
+	 * Sanitization callback for style settings
+	 *
+	 * @param array $input The input array to sanitize
+	 * @return array Sanitized array
+	 */
+	public function wcmp_style_settings_callback( $input ) {
+		$sanitized = array();
+
+		// List of color fields that need sanitization
+		$color_fields = array(
+			'background-color',
+			'menu-background-color',
+			'text-color',
+			'text-hover',
+			'menu-text-color',
+			'menu-text-hover'
+		);
+
+		// Sanitize each color field
+		foreach ( $color_fields as $field ) {
+			if ( isset( $input[ $field ] ) ) {
+				$sanitized[ $field ] = sanitize_hex_color( $input[ $field ] );
+			}
+		}
+
+		// Sanitize other style options
+		if ( isset( $input['menu_position'] ) ) {
+			$sanitized['menu_position'] = sanitize_text_field( $input['menu_position'] );
+		}
+
+		if ( isset( $input['menu_style'] ) ) {
+			$sanitized['menu_style'] = sanitize_text_field( $input['menu_style'] );
+		}
+
+		return $sanitized;
+	}
+
+	/**
+	 * Sanitization callback for endpoints settings
+	 *
+	 * @param array $input The input array to sanitize
+	 * @return array Sanitized array
+	 */
+	public function wcmp_endpoints_settings_callback( $input ) {
+		$sanitized = array();
+
+		// Handle endpoints marked for removal
+		$to_remove = array();
+		if ( isset( $input['to_remove'] ) && ! empty( $input['to_remove'] ) ) {
+			$to_remove = explode( ',', sanitize_text_field( $input['to_remove'] ) );
+			$to_remove = array_map( 'trim', $to_remove );
+		}
+
+		// Sanitize endpoints array
+		if ( isset( $input['endpoints'] ) && is_array( $input['endpoints'] ) ) {
+			foreach ( $input['endpoints'] as $key => $endpoint ) {
+				// Skip if this endpoint is marked for removal
+				if ( in_array( $key, $to_remove, true ) ) {
+					continue;
+				}
+
+				$sanitized['endpoints'][ $key ] = array(
+					'active' => isset( $endpoint['active'] ) ? sanitize_text_field( $endpoint['active'] ) : '',
+					'label' => isset( $endpoint['label'] ) ? sanitize_text_field( $endpoint['label'] ) : '',
+					'slug' => isset( $endpoint['slug'] ) ? sanitize_title( $endpoint['slug'] ) : '',
+					'class' => isset( $endpoint['class'] ) ? sanitize_html_class( $endpoint['class'] ) : '',
+					'icon' => isset( $endpoint['icon'] ) ? sanitize_text_field( $endpoint['icon'] ) : '',
+					'content' => isset( $endpoint['content'] ) ? wp_kses_post( $endpoint['content'] ) : '',
+					'usr_roles' => isset( $endpoint['usr_roles'] ) && is_array( $endpoint['usr_roles'] ) ? array_map( 'sanitize_text_field', $endpoint['usr_roles'] ) : array(),
+				);
+			}
+		}
+
+		// Sanitize groups array
+		if ( isset( $input['groups'] ) && is_array( $input['groups'] ) ) {
+			foreach ( $input['groups'] as $key => $group ) {
+				// Skip if this group is marked for removal
+				if ( in_array( $key, $to_remove, true ) ) {
+					continue;
+				}
+
+				$sanitized['groups'][ $key ] = array(
+					'active' => isset( $group['active'] ) ? sanitize_text_field( $group['active'] ) : '',
+					'label' => isset( $group['label'] ) ? sanitize_text_field( $group['label'] ) : '',
+					'class' => isset( $group['class'] ) ? sanitize_html_class( $group['class'] ) : '',
+					'icon' => isset( $group['icon'] ) ? sanitize_text_field( $group['icon'] ) : '',
+					'usr_roles' => isset( $group['usr_roles'] ) && is_array( $group['usr_roles'] ) ? array_map( 'sanitize_text_field', $group['usr_roles'] ) : array(),
+					'items' => isset( $group['items'] ) && is_array( $group['items'] ) ? array_map( 'sanitize_text_field', $group['items'] ) : array(),
+				);
+			}
+		}
+
+		// Sanitize links array
+		if ( isset( $input['links'] ) && is_array( $input['links'] ) ) {
+			foreach ( $input['links'] as $key => $link ) {
+				// Skip if this link is marked for removal
+				if ( in_array( $key, $to_remove, true ) ) {
+					continue;
+				}
+
+				$sanitized['links'][ $key ] = array(
+					'active' => isset( $link['active'] ) ? sanitize_text_field( $link['active'] ) : '',
+					'label' => isset( $link['label'] ) ? sanitize_text_field( $link['label'] ) : '',
+					'url' => isset( $link['url'] ) ? esc_url_raw( $link['url'] ) : '',
+					'class' => isset( $link['class'] ) ? sanitize_html_class( $link['class'] ) : '',
+					'icon' => isset( $link['icon'] ) ? sanitize_text_field( $link['icon'] ) : '',
+					'usr_roles' => isset( $link['usr_roles'] ) && is_array( $link['usr_roles'] ) ? array_map( 'sanitize_text_field', $link['usr_roles'] ) : array(),
+				);
+			}
+		}
+
+		// Sanitize order array
+		if ( isset( $input['order'] ) ) {
+			$sanitized['order'] = sanitize_text_field( $input['order'] );
+		}
+
+		return $sanitized;
+	}
 
 	/**
 	 * Schedule rewrite rules flush
