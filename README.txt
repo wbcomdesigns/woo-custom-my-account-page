@@ -3,7 +3,7 @@ Contributors: wbcomdesigns,vapvarun
 Donate link: https://wbcomdesigns.com
 Tags: woocommerce, my account, custom pages, endpoints, account customization
 Requires at least: 5.0
-Tested up to: 6.6.1
+Tested up to: 6.8.2
 Stable tag: 1.4.1
 Requires PHP: 7.4
 License: GPLv2 or later

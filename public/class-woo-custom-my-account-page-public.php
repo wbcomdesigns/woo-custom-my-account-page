@@ -81,7 +81,7 @@ class Woo_Custom_My_Account_Page_Public {
 			wp_enqueue_style( 'wcmp-font-awesome', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/vendor/font-awesome/font-awesome.min.css', array(), '4.7.0' );
 		}
 
-		wp_register_style( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-public.css' );
+		wp_register_style( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-public.css', array(), $this->version );
 		wp_enqueue_style( 'wcmp-frontend' );
 
 		$inline_css = $this->wcmp_get_custom_css();
@@ -99,7 +99,7 @@ class Woo_Custom_My_Account_Page_Public {
 			return;
 		}	
 
-		wp_register_script( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/js/woo-custom-my-account-page-public.js', array( 'jquery' ), false, true );
+		wp_register_script( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/js/woo-custom-my-account-page-public.js', array( 'jquery' ), $this->version, true );
 
 		// ENQUEUE SCRIPTS.
 		wp_enqueue_script( 'wcmp-frontend' );
