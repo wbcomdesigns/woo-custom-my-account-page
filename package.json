@@ -4,9 +4,17 @@
   "url": "https://github.com/wbcomdesigns/woo-custom-my-account-page",
   "license": "GPL-2.0+",
   "description": "Custom My Account Page for WooCommerce - Customize WooCommerce My Account page with custom endpoints, groups, and links",
+  "scripts": {
+    "build": "grunt build",
+    "zip": "grunt zip",
+    "i18n": "grunt default"
+  },
   "devDependencies": {
     "grunt": "^1.5.0",
     "grunt-checktextdomain": "^1.0.1",
+    "grunt-contrib-clean": "^2.0.1",
+    "grunt-contrib-compress": "^2.0.0",
+    "grunt-contrib-copy": "^1.0.0",
     "grunt-wp-i18n": "^1.0.1"
   },
   "engines": {
