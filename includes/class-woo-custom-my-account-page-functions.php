@@ -439,14 +439,16 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 			if ( isset( $endpoints_settings['endpoints-order'] ) && ! empty( $endpoints_settings['endpoints-order'] ) ) {
 				$endpoint_orders = json_decode( $endpoints_settings['endpoints-order'], true );
-				foreach ( $endpoint_orders as $key => $endpoint_data ) {
-					if ( 'group' === $endpoint_data['type'] && isset( $endpoint_data['children'] ) ) {
-						if ( ! empty( $endpoint_data['children'] ) ) {
-							foreach ( $endpoint_data['children'] as $index => $child_endpoint ) {
-								$child_data_arr = $endpoints[ $child_endpoint['id'] ];
-								$group_id       = $endpoint_data['id'];
-								$endpoints[ $group_id ]['children'][ $child_endpoint['id'] ] = $child_data_arr;
-								unset( $endpoints[ $child_endpoint['id'] ] );
+				if ( is_array( $endpoint_orders ) ) {
+					foreach ( $endpoint_orders as $key => $endpoint_data ) {
+						if ( 'group' === $endpoint_data['type'] && isset( $endpoint_data['children'] ) ) {
+							if ( ! empty( $endpoint_data['children'] ) ) {
+								foreach ( $endpoint_data['children'] as $index => $child_endpoint ) {
+									$child_data_arr = $endpoints[ $child_endpoint['id'] ];
+									$group_id       = $endpoint_data['id'];
+									$endpoints[ $group_id ]['children'][ $child_endpoint['id'] ] = $child_data_arr;
+									unset( $endpoints[ $child_endpoint['id'] ] );
+								}
 							}
 						}
 					}

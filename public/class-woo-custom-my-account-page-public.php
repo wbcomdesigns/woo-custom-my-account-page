@@ -77,8 +77,8 @@ class Woo_Custom_My_Account_Page_Public {
 		
 
 		if ( ! $font_awesome_loaded ) {
-			// Use local Font Awesome instead of CDN (WordPress.org requirement)
-			wp_enqueue_style( 'wcmp-font-awesome', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/vendor/font-awesome/font-awesome.min.css', array(), '4.7.0' );
+			// Use minimal Font Awesome subset (only 19 icons we actually use)
+			wp_enqueue_style( 'wcmp-font-awesome', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/vendor/font-awesome/css/wcmp-icons.min.css', array(), '6.7.2' );
 		}
 
 		wp_register_style( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-public.css', array(), $this->version );
