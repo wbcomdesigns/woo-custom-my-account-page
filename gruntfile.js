@@ -4,8 +4,72 @@ module.exports = function ( grunt ) {
 	// load all grunt tasks matching the `grunt-*` pattern
 	// Ref. https://npmjs.org/package/load-grunt-tasks
 	require( 'load-grunt-tasks' )( grunt );
+
+	// Get plugin info
+	const pluginSlug = 'woo-custom-my-account-page';
+
 	grunt.initConfig(
 		{
+			// Package info
+			pkg: grunt.file.readJSON('package.json'),
+
+				// Clean dist folder
+			clean: {
+				dist: {
+					src: [ 'dist/**' ]
+				}
+			},
+
+				// Copy files to dist folder
+			copy: {
+				dist: {
+					files: [
+						{
+							expand: true,
+							src: [
+								'**',
+								'!node_modules/**',
+								'!dist/**',
+								'!.git/**',
+								'!.github/**',
+								'!tests/**',
+								'!bin/**',
+								'!.gitignore',
+								'!.gitattributes',
+								'!Gruntfile.js',
+								'!package.json',
+								'!package-lock.json',
+								'!composer.json',
+								'!composer.lock',
+								'!phpcs.xml',
+								'!phpunit.xml',
+								'!README.md',
+								'!claude.md',
+								'!.DS_Store'
+							],
+							dest: 'dist/<%= pkg.name %>/'
+						}
+					]
+				}
+			},
+
+				// Compress to zip
+			compress: {
+				dist: {
+					options: {
+						archive: 'dist/<%= pkg.name %>-<%= pkg.version %>.zip',
+						mode: 'zip'
+					},
+					files: [
+						{
+							expand: true,
+							cwd: 'dist/',
+							src: [ '<%= pkg.name %>/**' ],
+							dest: '/'
+						}
+					]
+				}
+			},
 
 				// Check text domain
 			checktextdomain: {
@@ -66,6 +130,9 @@ module.exports = function ( grunt ) {
 		}
 	);
 
-	// register task  'checktextdomain', 'makepot',
-	grunt.registerTask( 'default', [ 'checktextdomain','makepot' ] );
+	// Register tasks
+	grunt.registerTask( 'default', [ 'checktextdomain', 'makepot' ] );
+	grunt.registerTask( 'build', [ 'clean:dist', 'copy:dist', 'compress:dist' ] );
+	grunt.registerTask( 'zip', [ 'clean:dist', 'copy:dist', 'compress:dist' ] );
+	grunt.registerTask( 'i18n', [ 'checktextdomain', 'makepot' ] );
 };
