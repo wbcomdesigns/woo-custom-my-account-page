@@ -66,7 +66,7 @@ $user_roles = $wp_roles->roles;
 						</label>
 					</th>
 					<td>
-						<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][url]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_url' ); ?>" value="<?php echo esc_attr( $options['url'] ); ?>">
+						<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][url]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_url' ); ?>" value="<?php echo esc_attr( isset( $options['url'] ) ? $options['url'] : '#' ); ?>">
 						<p class="description">
 							<?php
 							esc_html_e( 'The url of the menu item.', 'woo-custom-my-account-page' );
@@ -86,7 +86,7 @@ $user_roles = $wp_roles->roles;
 						</label>
 					</th>
 					<td>
-						<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][label]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_label' ); ?>" value="<?php echo esc_attr( $options['label'] ); ?>">
+						<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][label]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_label' ); ?>" value="<?php echo esc_attr( isset( $options['label'] ) ? $options['label'] : '' ); ?>">
 						<p class="description">
 							<?php
 							esc_html_e( 'Menu label for this link in "My Account".', 'woo-custom-my-account-page' );
