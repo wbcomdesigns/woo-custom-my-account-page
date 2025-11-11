@@ -107,7 +107,7 @@ jQuery( document ).ready(
 						text: "Save",
 						click: function () {
 
-							$( this ).find( '.wcmp-loader' ).css( 'display', 'inline-block' );
+							$( this ).find( '.wcmp-loader' ).css( 'display', 'inline-flex' );
 
 							// class add field handler.
 							$( this ).add_new_field_handler( target );
