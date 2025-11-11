@@ -173,7 +173,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			add_menu_page( esc_html__( 'WB Plugins', 'woo-custom-my-account-page' ), esc_html__( 'WB Plugins', 'woo-custom-my-account-page' ), 'manage_options', 'wbcomplugins', array( $this, 'wcmp_admin_settings_page' ), 'dashicons-lightbulb', 59 );
 			add_submenu_page( 'wbcomplugins', esc_html__( 'General', 'woo-custom-my-account-page' ), esc_html__( 'General', 'woo-custom-my-account-page' ), 'manage_options', 'wbcomplugins' );
 		}
-		add_submenu_page( 'wbcomplugins', esc_html__( 'Custom My Account Page', 'woo-custom-my-account-page' ), esc_html__( 'Woo My Account', 'woo-custom-my-account-page' ), 'manage_options', 'woo-custom-myaccount-page', array( $this, 'wcmp_admin_settings_page' ) );
+		add_submenu_page( 'wbcomplugins', esc_html__( 'My Account', 'woo-custom-my-account-page' ), esc_html__( 'My Account', 'woo-custom-my-account-page' ), 'manage_options', 'woo-custom-myaccount-page', array( $this, 'wcmp_admin_settings_page' ) );
 	}
 
 	/**
@@ -198,7 +198,7 @@ class Woo_Custom_My_Account_Page_Admin {
 				<div class="bupr-header">
 					<div class="wbcom_admin_header-wrapper">
 						<div id="wb_admin_plugin_name">
-							<?php esc_html_e( 'WooCommerce Custom My Account Page', 'woo-custom-my-account-page' ); ?>
+							<?php esc_html_e( 'My Account Page', 'woo-custom-my-account-page' ); ?>
 							  <?php /* translators: %s: */ ?>
 							<span><?php printf( esc_html__( 'Version %s', 'woo-custom-my-account-page' ), WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION ); //phpcs:ignore ?></span>
 						</div>
