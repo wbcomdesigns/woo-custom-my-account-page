@@ -46,18 +46,45 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<ol class="dd-list endpoints">
 						<?php
 						foreach ( $endpoints as $key => $endpoint ) {
-							// Build args array.
+							// Skip if endpoint doesn't have required keys
+							if ( ! isset( $endpoint['type'] ) || ! isset( $endpoint['slug'] ) ) {
+								continue;
+							}
+
+							// Get type
+							$type = $endpoint['type'];
+
+							// Build args array with correct key based on type
 							$args = array(
-								'endpoint'  => $key,
 								'options'   => $endpoint,
-								'usr_roles' => $endpoint['usr_roles'],
+								'usr_roles' => isset( $endpoint['usr_roles'] ) ? $endpoint['usr_roles'] : array(),
 								'slug'      => $endpoint['slug'],
 							);
 
-							// Get type.
+							// Add type-specific key
+							switch ( $type ) {
+								case 'endpoint':
+									$args['endpoint'] = $key;
+									break;
+								case 'group':
+									$args['group'] = $key;
+									break;
+								case 'link':
+									$args['link'] = $key;
+									break;
+								default:
+									// Skip invalid types
+									continue 2;
+							}
+
+							// Get admin instance and print field
 							$admin_obj      = Woo_Custom_My_Account_Page_Admin::instance();
-							$print_function = "wcmp_admin_print_{$endpoint['type']}_field";
-							call_user_func( array( $admin_obj, $print_function ), $args );
+							$print_function = "wcmp_admin_print_{$type}_field";
+
+							// Verify method exists before calling
+							if ( method_exists( $admin_obj, $print_function ) ) {
+								call_user_func( array( $admin_obj, $print_function ), $args );
+							}
 						}
 						?>
 						<input type="hidden" class="endpoints-order" name="wcmp_endpoints_settings[endpoints-order]" id="<?php echo esc_attr( 'wcmp_endpoint_endpoints-order' ); ?>" value="<?php echo esc_attr( $endpoint_order ); ?>">
