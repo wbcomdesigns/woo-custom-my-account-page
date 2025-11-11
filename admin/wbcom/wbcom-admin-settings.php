@@ -174,8 +174,8 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		 */
 		public function wbcom_enqueue_admin_scripts() {
 			if ( ! wp_style_is( 'font-awesome', 'enqueued' ) ) {
-				// Use local Font Awesome instead of CDN (WordPress.org requirement)
-				wp_enqueue_style( 'font-awesome', plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'assets/vendor/font-awesome/font-awesome.min.css', array(), '4.7.0' );
+				// Use minimal Font Awesome subset (only 19 icons we actually use)
+				wp_enqueue_style( 'font-awesome', plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'assets/vendor/font-awesome/css/wcmp-icons.min.css', array(), '6.7.2' );
 			}
 			if ( ! wp_script_is( 'wbcom_admin_setting_js', 'enqueued' ) ) {
 
