@@ -165,17 +165,46 @@ $myaccount_func = instantiate_woo_custom_myaccount_functions();
 		<ol class="dd-list endpoints">
 		<?php
 		foreach ( (array) $options['children'] as $key => $single_options ) {
+			// Skip if child doesn't have required keys
+			if ( ! isset( $single_options['type'] ) || ! isset( $single_options['slug'] ) ) {
+				continue;
+			}
+
+			// Get type
+			$type = $single_options['type'];
+
+			// Build args array with correct key based on type
 			$args = array(
-				'endpoint'  => $key,
 				'options'   => $single_options,
 				'id'        => 'wcmp_endpoint',
-				'usr_roles' => $single_options['usr_roles'],
+				'usr_roles' => isset( $single_options['usr_roles'] ) ? $single_options['usr_roles'] : array(),
+				'slug'      => $single_options['slug'],
 			);
 
-			// Get type.
+			// Add type-specific key
+			switch ( $type ) {
+				case 'endpoint':
+					$args['endpoint'] = $key;
+					break;
+				case 'group':
+					$args['group'] = $key;
+					break;
+				case 'link':
+					$args['link'] = $key;
+					break;
+				default:
+					// Skip invalid types
+					continue 2;
+			}
+
+			// Get admin instance and print field
 			$admin_obj      = Woo_Custom_My_Account_Page_Admin::instance();
-			$print_function = "wcmp_admin_print_{$single_options['type']}_field";
-			call_user_func( array( $admin_obj, $print_function ), $args );
+			$print_function = "wcmp_admin_print_{$type}_field";
+
+			// Verify method exists before calling
+			if ( method_exists( $admin_obj, $print_function ) ) {
+				call_user_func( array( $admin_obj, $print_function ), $args );
+			}
 		}
 		?>
 		</ol>
