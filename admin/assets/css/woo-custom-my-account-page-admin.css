@@ -512,10 +512,38 @@ textarea.wp-editor-area {
     width: 28px !important;
     height: 28px !important;
     border-radius: 4px !important;
+    border: 0 !important;
+    background: transparent !important;
+    text-indent: -9999px !important;
+    overflow: hidden !important;
+    position: relative !important;
 }
 
 .ui-dialog .ui-dialog-titlebar-close:hover {
     background: #f0f0f1 !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:before {
+    content: "\f335" !important;
+    font-family: "dashicons" !important;
+    font-size: 18px !important;
+    color: #50575e !important;
+    display: block !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    text-indent: 0 !important;
+    line-height: 1 !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover:before {
+    color: #1d2327 !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close span {
+    display: none !important;
+    visibility: hidden !important;
 }
 
 .ui-dialog .ui-dialog-content {
