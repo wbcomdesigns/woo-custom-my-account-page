@@ -603,6 +603,21 @@ class Woo_Custom_My_Account_Page_Admin {
 					continue;
 				}
 
+				// Skip empty/invalid endpoints - must have at least a slug or label
+				$has_slug = isset( $endpoint['slug'] ) && ! empty( trim( $endpoint['slug'] ) );
+				$has_label = isset( $endpoint['label'] ) && ! empty( trim( $endpoint['label'] ) );
+				$has_type = isset( $endpoint['type'] ) && ! empty( $endpoint['type'] );
+
+				// Skip if no meaningful data
+				if ( ! $has_slug && ! $has_label ) {
+					continue;
+				}
+
+				// Skip if no type specified
+				if ( ! $has_type ) {
+					continue;
+				}
+
 				// Common fields for all types
 				$sanitized['endpoints'][ $key ] = array(
 					'active' => isset( $endpoint['active'] ) ? sanitize_text_field( $endpoint['active'] ) : '',
