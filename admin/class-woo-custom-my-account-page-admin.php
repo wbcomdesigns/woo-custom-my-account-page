@@ -262,6 +262,8 @@ class Woo_Custom_My_Account_Page_Admin {
 		$this->plugin_settings_tabs['wcmp-endpoints'] = esc_html__( 'Endpoints', 'woo-custom-my-account-page' );
 		register_setting( 'wcmp_endpoints_settings', 'wcmp_endpoints_settings', array( $this, 'wcmp_endpoints_settings_callback' ) );
 		add_settings_section( 'wcmp-endpoints', ' ', array( $this, 'wcmp_endpoints_settings_content' ), 'wcmp-endpoints' );
+		$this->plugin_settings_tabs['wcmp-faq'] = esc_html__( 'FAQ', 'woo-custom-my-account-page' );
+		add_settings_section( 'wcmp-faq', ' ', array( $this, 'wcmp_faq_content' ), 'wcmp-faq' );
 	}
 
 	/**
@@ -306,6 +308,17 @@ class Woo_Custom_My_Account_Page_Admin {
 	 */
 	public function wcmp_endpoints_settings_content() {
 		require_once 'partials/wcmp-endpoints-settings.php';
+	}
+
+	/**
+	 * FAQ Tab Content.
+	 *
+	 * @since  1.4.1
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_faq_content() {
+		require_once 'partials/wcmp-faq.php';
 	}
 
 	/**
