@@ -413,6 +413,149 @@ textarea.wp-editor-area {
 .wb-plugins_page_woo-custom-myaccount-page input#wcmp-new-field {
     width: 100%;
 }
+
+/* ===================================
+   Modal Dialog - Clean & Simple
+   =================================== */
+
+/* Modal Body */
+.wcmp-modal-body {
+    padding: 8px 0;
+}
+
+.wcmp-field-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1d2327;
+    margin-bottom: 6px;
+}
+
+.wcmp-required {
+    color: #d63638;
+}
+
+.wcmp-field-desc {
+    font-size: 12px;
+    color: #646970;
+    margin: 4px 0 8px 0;
+    line-height: 1.4;
+}
+
+.wcmp-field-input {
+    width: 100% !important;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    border: 1px solid #8c8f94 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 0 0 transparent !important;
+    transition: border-color 0.1s ease-in-out, box-shadow 0.1s linear !important;
+}
+
+.wcmp-field-input:focus {
+    border-color: #2271b1 !important;
+    box-shadow: 0 0 0 1px #2271b1 !important;
+    outline: 2px solid transparent !important;
+}
+
+.wcmp-field-input::placeholder {
+    color: #8c8f94;
+}
+
+.wcmp-loader {
+    display: inline-block;
+    margin-top: 8px;
+    color: #2271b1;
+    font-size: 13px;
+}
+
+.wcmp-loader i {
+    margin-right: 6px;
+}
+
+.wcmp-modal-body .error-msg {
+    background: #fcf0f1;
+    border-left: 4px solid #d63638;
+    padding: 8px 12px;
+    margin: 10px 0 0;
+    color: #50575e;
+    font-size: 13px;
+}
+
+.wcmp-modal-body .error-msg:empty {
+    display: none;
+}
+
+/* Dialog Improvements */
+.ui-dialog {
+    border: 1px solid #c3c4c7 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    background: #fff !important;
+    border: 0 !important;
+    border-bottom: 1px solid #dcdcde !important;
+    padding: 12px 16px !important;
+}
+
+.ui-dialog .ui-dialog-title {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #1d2327 !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+    top: 8px !important;
+    right: 8px !important;
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 4px !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover {
+    background: #f0f0f1 !important;
+}
+
+.ui-dialog .ui-dialog-content {
+    padding: 16px !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    background: #f6f7f7;
+    border-top: 1px solid #dcdcde;
+    padding: 12px 16px !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+    background: #2271b1 !important;
+    border: 1px solid #2271b1 !important;
+    border-radius: 4px !important;
+    color: #fff !important;
+    padding: 0 16px !important;
+    height: 32px !important;
+    font-size: 13px !important;
+    line-height: 30px !important;
+    font-weight: 400 !important;
+    box-shadow: none !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane button:hover {
+    background: #135e96 !important;
+    border-color: #135e96 !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane button:active {
+    background: #0a4b78 !important;
+    border-color: #0a4b78 !important;
+}
+
+.ui-widget-overlay {
+    background: #000 !important;
+    opacity: 0.7 !important;
+}
+
 div#setting-error-settings_updated {
     position: absolute;
     right: 50px;
