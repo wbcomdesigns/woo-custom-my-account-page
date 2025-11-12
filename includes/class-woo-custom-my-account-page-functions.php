@@ -185,7 +185,9 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 				remove_action( 'woocommerce_account_content', 'woocommerce_account_content' );
 
-				echo do_shortcode( $endpoint[ $key ]['content'] );
+				// Apply wpautop to preserve line breaks and paragraphs
+				$content = wpautop( $endpoint[ $key ]['content'] );
+				echo do_shortcode( $content );
 			}
 		}
 
@@ -545,6 +547,9 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @author Wbcom Designs
 		 */
 		public function init() {
+
+			// Ensure default endpoints are initialized
+			$this->maybe_init_default_items();
 
 			$all_settings         = $this->wcmp_settings_data();
 			$endpoints 			  = isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();

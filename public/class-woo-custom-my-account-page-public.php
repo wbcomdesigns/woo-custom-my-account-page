@@ -297,9 +297,14 @@ class Woo_Custom_My_Account_Page_Public {
 		if ( ! is_ajax() ) {
 			return;
 		}
-		// Security: Properly escape output to prevent XSS
+		// Get the avatar form HTML
 		$avatar_form = $this->wcmp_get_avatar_form();
-		echo wp_kses_post( $avatar_form );
+
+		// Get allowed HTML tags for form elements
+		$allowed_html = $this->get_form_allowed_html();
+
+		// Output with proper escaping for form elements
+		echo wp_kses( $avatar_form, $allowed_html );
 		die();
 	}
 
@@ -319,8 +324,9 @@ class Woo_Custom_My_Account_Page_Public {
 		$form = ob_get_clean();
 
 		if ( $print ) {
-			// Security: Properly escape form output
-			echo wp_kses_post( $form );
+			// Use the same allowed HTML tags as in wcmp_print_avatar_form_ajax
+			$allowed_html = $this->get_form_allowed_html();
+			echo wp_kses( $form, $allowed_html );
 			return;
 		}
 
@@ -542,5 +548,81 @@ class Woo_Custom_My_Account_Page_Public {
 
 		return $classes;
 	}
-	
+
+	/**
+	 * Get allowed HTML tags for form elements.
+	 *
+	 * @access private
+	 * @since  1.0.0
+	 * @return array Allowed HTML tags and attributes.
+	 */
+	private function get_form_allowed_html() {
+		return array(
+			'form' => array(
+				'action' => array(),
+				'method' => array(),
+				'enctype' => array(),
+				'class' => array(),
+				'id' => array(),
+			),
+			'input' => array(
+				'type' => array(),
+				'name' => array(),
+				'value' => array(),
+				'class' => array(),
+				'id' => array(),
+				'placeholder' => array(),
+				'required' => array(),
+				'checked' => array(),
+				'disabled' => array(),
+				'readonly' => array(),
+				'accept' => array(),
+			),
+			'button' => array(
+				'type' => array(),
+				'class' => array(),
+				'id' => array(),
+				'name' => array(),
+				'value' => array(),
+				'disabled' => array(),
+			),
+			'label' => array(
+				'for' => array(),
+				'class' => array(),
+			),
+			'div' => array(
+				'class' => array(),
+				'id' => array(),
+			),
+			'span' => array(
+				'class' => array(),
+				'id' => array(),
+			),
+			'img' => array(
+				'src' => array(),
+				'alt' => array(),
+				'class' => array(),
+				'id' => array(),
+				'width' => array(),
+				'height' => array(),
+			),
+			'a' => array(
+				'href' => array(),
+				'class' => array(),
+				'id' => array(),
+				'target' => array(),
+				'rel' => array(),
+			),
+			'p' => array(
+				'class' => array(),
+			),
+			'br' => array(),
+			'strong' => array(),
+			'em' => array(),
+			'i' => array(
+				'class' => array(),
+			),
+		);
+	}
+
 }
