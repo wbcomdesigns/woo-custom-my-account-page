@@ -636,7 +636,7 @@ class Woo_Custom_My_Account_Page_Admin {
 					'active' => isset( $endpoint['active'] ) ? sanitize_text_field( $endpoint['active'] ) : '',
 					'label' => isset( $endpoint['label'] ) ? sanitize_text_field( $endpoint['label'] ) : '',
 					'slug' => isset( $endpoint['slug'] ) ? sanitize_title( $endpoint['slug'] ) : '',
-					'class' => isset( $endpoint['class'] ) ? sanitize_html_class( $endpoint['class'] ) : '',
+					'class' => isset( $endpoint['class'] ) ? $this->sanitize_css_classes( $endpoint['class'] ) : '',
 					'icon' => isset( $endpoint['icon'] ) ? sanitize_text_field( $endpoint['icon'] ) : '',
 					'type' => isset( $endpoint['type'] ) ? sanitize_text_field( $endpoint['type'] ) : 'endpoint',
 					'usr_roles' => isset( $endpoint['usr_roles'] ) && is_array( $endpoint['usr_roles'] ) ? array_map( 'sanitize_text_field', $endpoint['usr_roles'] ) : array(),
@@ -670,7 +670,7 @@ class Woo_Custom_My_Account_Page_Admin {
 				$sanitized['groups'][ $key ] = array(
 					'active' => isset( $group['active'] ) ? sanitize_text_field( $group['active'] ) : '',
 					'label' => isset( $group['label'] ) ? sanitize_text_field( $group['label'] ) : '',
-					'class' => isset( $group['class'] ) ? sanitize_html_class( $group['class'] ) : '',
+					'class' => isset( $group['class'] ) ? $this->sanitize_css_classes( $group['class'] ) : '',
 					'icon' => isset( $group['icon'] ) ? sanitize_text_field( $group['icon'] ) : '',
 					'type' => isset( $group['type'] ) ? sanitize_text_field( $group['type'] ) : 'group',
 					'usr_roles' => isset( $group['usr_roles'] ) && is_array( $group['usr_roles'] ) ? array_map( 'sanitize_text_field', $group['usr_roles'] ) : array(),
@@ -691,7 +691,7 @@ class Woo_Custom_My_Account_Page_Admin {
 					'active' => isset( $link['active'] ) ? sanitize_text_field( $link['active'] ) : '',
 					'label' => isset( $link['label'] ) ? sanitize_text_field( $link['label'] ) : '',
 					'url' => isset( $link['url'] ) ? esc_url_raw( $link['url'] ) : '',
-					'class' => isset( $link['class'] ) ? sanitize_html_class( $link['class'] ) : '',
+					'class' => isset( $link['class'] ) ? $this->sanitize_css_classes( $link['class'] ) : '',
 					'icon' => isset( $link['icon'] ) ? sanitize_text_field( $link['icon'] ) : '',
 					'type' => isset( $link['type'] ) ? sanitize_text_field( $link['type'] ) : 'link',
 					'usr_roles' => isset( $link['usr_roles'] ) && is_array( $link['usr_roles'] ) ? array_map( 'sanitize_text_field', $link['usr_roles'] ) : array(),
@@ -727,6 +727,33 @@ class Woo_Custom_My_Account_Page_Admin {
 			flush_rewrite_rules();
 			delete_transient( 'wcmp_flush_rewrite_rules' );
 		}
+	}
+
+	/**
+	 * Sanitize multiple CSS classes preserving spaces.
+	 *
+	 * @param string $classes Space-separated CSS classes.
+	 * @return string Sanitized CSS classes string.
+	 */
+	private function sanitize_css_classes( $classes ) {
+		if ( empty( $classes ) ) {
+			return '';
+		}
+
+		// Split by spaces
+		$class_array = explode( ' ', $classes );
+
+		// Sanitize each class individually
+		$sanitized = array();
+		foreach ( $class_array as $class ) {
+			$class = trim( $class );
+			if ( ! empty( $class ) ) {
+				$sanitized[] = sanitize_html_class( $class );
+			}
+		}
+
+		// Join back with spaces
+		return implode( ' ', $sanitized );
 	}
 
 }
