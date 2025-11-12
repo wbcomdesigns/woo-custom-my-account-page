@@ -7,7 +7,7 @@
  */
 
 is_array( $classes ) && $classes = implode( ' ', $classes );
-$target                          = ( isset( $options['target_blank'] ) && $options['target_blank'] ) ? 'target="_blank"' : '';
+$target                          = ( isset( $options['target_blank'] ) && 'yes' === $options['target_blank'] ) ? 'target="_blank"' : '';
 ?>
 
 <li class="<?php echo esc_attr( $classes ); ?>">
