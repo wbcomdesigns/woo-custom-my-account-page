@@ -11,6 +11,9 @@
 .nav-tab-wrapper ul li a#wcmp-endpoints.nav-tab:before {
     content: "\f109";
 }
+.nav-tab-wrapper ul li a#wcmp-faq.nav-tab:before {
+    content: "\f125";
+}
 .form-table.wcmp_general_settings span.select2-selection,
 .form-table.wcmp_general_settings .select2-container--default .select2-selection__arrow {
     height: 38px;
