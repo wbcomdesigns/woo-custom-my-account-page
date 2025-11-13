@@ -189,9 +189,6 @@ class Woo_Custom_My_Account_Page_Admin {
 		<div class="wrap">
 			<div class="wbcom-bb-plugins-offer-wrapper">
 				<div id="wb_admin_logo">
-					<a href="https://wbcomdesigns.com/downloads/buddypress-community-bundle/" target="_blank">
-						<img src="<?php echo esc_url( WCMP_PLUGIN_URL ) . 'admin/wbcom/assets/imgs/wbcom-offer-notice.png'; ?>">
-					</a>
 				</div>
 			</div>
 			<div class="wbcom-wrap">
