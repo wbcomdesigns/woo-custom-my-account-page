@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-13 06:45:57+00:00\n"
+"POT-Creation-Date: 2025-11-13 07:23:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1761,15 +1761,15 @@ msgstr ""
 msgid "Avatar removed successfully!"
 msgstr ""
 
-#: public/templates/wcmp-myaccount-avatar-form.php:11
+#: public/templates/wcmp-myaccount-avatar-form.php:12
 msgid "Upload your avatar"
 msgstr ""
 
-#: public/templates/wcmp-myaccount-avatar-form.php:18
+#: public/templates/wcmp-myaccount-avatar-form.php:21
 msgid "Upload"
 msgstr ""
 
-#: public/templates/wcmp-myaccount-avatar-form.php:25
+#: public/templates/wcmp-myaccount-avatar-form.php:28
 msgid "Reset to default"
 msgstr ""
 
