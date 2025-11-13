@@ -80,7 +80,7 @@ jQuery( document ).ready(
 			function(ev){
 				ev.stopPropagation();
 				$( document ).find( '.error-msg' ).empty();				
-				var t     = $( this ),				
+				var t     = $( this ),
 				target    = t.data( 'target' ),
 				title     = t.html(),
 				new_field = $( document ).find( '.new-field-form' ).clone();
@@ -126,6 +126,9 @@ jQuery( document ).ready(
 					}
 				}
 			);
+
+			// Update dialog title to include required asterisk
+			content.closest('.ui-dialog').find('.ui-dialog-title').html(title + '<span class="wcmp-required">*</span>');
 
 		};
 

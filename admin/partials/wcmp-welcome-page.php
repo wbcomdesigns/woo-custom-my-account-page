@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</div>
 					<div class="wbcom-support-info-widgets">
 						<div class="wbcom-support-inner">
-							<h3><span class="dashicons dashicons-admin-comments"></span><?php esc_html_e( 'Got Feedback?', 'woo-custom-my-account-page' ); ?></h3>
+							<h3><span class="dashicons dashicons-admin-comments"></span><?php esc_html_e( 'Share Your Feedback', 'woo-custom-my-account-page' ); ?></h3>
 							<p><?php esc_html_e( 'We\'d love to hear about your experience with the plugin. Your feedback and suggestions help us improve future updates.', 'woo-custom-my-account-page' ); ?></p>
 							<a href="<?php echo esc_url( 'https://wbcomdesigns.com/submit-review/ ' ); ?>" class="button button-primary button-welcome-support" target="_blank"><?php esc_html_e( 'Send Feedback', 'woo-custom-my-account-page' ); ?></a>
 						</div>
