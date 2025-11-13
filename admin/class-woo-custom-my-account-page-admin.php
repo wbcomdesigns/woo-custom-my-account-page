@@ -83,7 +83,11 @@ class Woo_Custom_My_Account_Page_Admin {
 	public function enqueue_styles() {
 
 		$screen = get_current_screen();
-		if ( ! $screen || 'wb-plugins_page_woo-custom-myaccount-page' !== $screen->base ) {
+		if ( 
+			! $screen ||
+			( 'wb-plugins_page_woo-custom-myaccount-page' !== $screen->base && 
+			'toplevel_page_wbcomplugins' !== $screen->base ) 
+		) {
 			return;
 		}
 		
