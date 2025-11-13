@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-13 05:13:05+00:00\n"
+"POT-Creation-Date: 2025-11-13 05:27:29+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -869,9 +869,9 @@ msgstr ""
 
 #: admin/partials/wcmp-welcome-page.php:22
 msgid ""
-"Here are all the resources you may need to get help from us. Documentation "
-"is usually the best place to start. Should you require help anytime, our "
-"customer care team is available to assist you at the support center."
+"If you need assistance, here are some helpful resources. Our documentation "
+"is a great place to start, and our support team is available if you require "
+"further help."
 msgstr ""
 
 #: admin/partials/wcmp-welcome-page.php:26
@@ -880,8 +880,8 @@ msgstr ""
 
 #: admin/partials/wcmp-welcome-page.php:27
 msgid ""
-"We have prepared an extensive guide on WooCommerce Custom My Account Page "
-"to learn all aspects of the plugin. You will find most of your answers here."
+"Explore our detailed guide on Custom My Account Page for WooCommerce to "
+"understand all the features and how to make the most of them."
 msgstr ""
 
 #: admin/partials/wcmp-welcome-page.php:28
@@ -890,8 +890,8 @@ msgstr ""
 
 #: admin/partials/wcmp-welcome-page.php:34
 msgid ""
-"We strive to offer the best customer care via our support center. Once your "
-"theme is activated, you can ask us for help anytime."
+"Our support team is here to assist you with any questions or issues. Feel "
+"free to contact us anytime through our support center."
 msgstr ""
 
 #: admin/partials/wcmp-welcome-page.php:35
@@ -904,8 +904,8 @@ msgstr ""
 
 #: admin/partials/wcmp-welcome-page.php:41
 msgid ""
-"We want to hear about your experience with the plugin. We would also love "
-"to hear any suggestions you may for future updates."
+"We'd love to hear about your experience with the plugin. Your feedback and "
+"suggestions help us improve future updates."
 msgstr ""
 
 #: admin/partials/wcmp-welcome-page.php:42
