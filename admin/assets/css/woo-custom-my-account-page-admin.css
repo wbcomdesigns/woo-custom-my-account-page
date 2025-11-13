@@ -513,7 +513,7 @@ textarea.wp-editor-area {
 }
 
 .ui-dialog .ui-dialog-titlebar-close {
-    top: 8px !important;
+    top: 4px !important;
     right: 8px !important;
     width: 28px !important;
     height: 28px !important;
@@ -523,6 +523,7 @@ textarea.wp-editor-area {
     text-indent: -9999px !important;
     overflow: hidden !important;
     position: relative !important;
+    margin: 0 !important;
 }
 
 .ui-dialog .ui-dialog-titlebar-close:hover {
