@@ -46,18 +46,45 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<ol class="dd-list endpoints">
 						<?php
 						foreach ( $endpoints as $key => $endpoint ) {
-							// Build args array.
+							// Skip if endpoint doesn't have required keys
+							if ( ! isset( $endpoint['type'] ) || ! isset( $endpoint['slug'] ) ) {
+								continue;
+							}
+
+							// Get type
+							$type = $endpoint['type'];
+
+							// Build args array with correct key based on type
 							$args = array(
-								'endpoint'  => $key,
 								'options'   => $endpoint,
-								'usr_roles' => $endpoint['usr_roles'],
+								'usr_roles' => isset( $endpoint['usr_roles'] ) ? $endpoint['usr_roles'] : array(),
 								'slug'      => $endpoint['slug'],
 							);
 
-							// Get type.
+							// Add type-specific key
+							switch ( $type ) {
+								case 'endpoint':
+									$args['endpoint'] = $key;
+									break;
+								case 'group':
+									$args['group'] = $key;
+									break;
+								case 'link':
+									$args['link'] = $key;
+									break;
+								default:
+									// Skip invalid types
+									continue 2;
+							}
+
+							// Get admin instance and print field
 							$admin_obj      = Woo_Custom_My_Account_Page_Admin::instance();
-							$print_function = "wcmp_admin_print_{$endpoint['type']}_field";
-							call_user_func( array( $admin_obj, $print_function ), $args );
+							$print_function = "wcmp_admin_print_{$type}_field";
+
+							// Verify method exists before calling
+							if ( method_exists( $admin_obj, $print_function ) ) {
+								call_user_func( array( $admin_obj, $print_function ), $args );
+							}
 						}
 						?>
 						<input type="hidden" class="endpoints-order" name="wcmp_endpoints_settings[endpoints-order]" id="<?php echo esc_attr( 'wcmp_endpoint_endpoints-order' ); ?>" value="<?php echo esc_attr( $endpoint_order ); ?>">
@@ -65,11 +92,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</ol>
 				</div>
 				<div class="new-field-form" style="display: none;">
-					<label for="wcmp-new-field"><?php esc_html_x( 'Name', 'Label for new endpoint title', 'woo-custom-my-account-page' ); ?>
-						<input type="text" id="wcmp-new-field" name="wcmp-new-field" value="">
-					</label>
-					<div class="wcmp-loader"><i class="fa fa-spinner fa-spin"></i></div>
-					<p class="error-msg"></p>
+					<div class="wcmp-modal-body">
+						<label for="wcmp-new-field" class="wcmp-field-label">
+							<?php esc_html_x( 'Name', 'Label for new endpoint title', 'woo-custom-my-account-page' ); ?>
+						</label>
+						<p class="wcmp-field-desc"><?php esc_html_e( 'Enter a name for your new item. This will appear in the My Account menu.', 'woo-custom-my-account-page' ); ?></p>
+						<input type="text" id="wcmp-new-field" name="wcmp-new-field" value="" class="wcmp-field-input" placeholder="<?php esc_attr_e( 'e.g., My Orders', 'woo-custom-my-account-page' ); ?>">
+						<span class="wcmp-loader" style="display: none;"><i class="fa fa-spinner fa-spin"></i></span>
+						<p class="error-msg"></p>
+					</div>
 				</div>
 				<?php submit_button(); ?>
 			</form>
