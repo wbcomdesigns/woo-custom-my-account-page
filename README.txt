@@ -1,14 +1,15 @@
-=== WooCommerce Custom My Account Page ===
+=== Custom My Account Page for WooCommerce ===
 Contributors: wbcomdesigns,vapvarun
 Donate link: https://wbcomdesigns.com
-Tags: comments, spam
-Requires at least: 3.0.1
-Tested up to: 6.6.1
-Stable tag: 1.4.0
+Tags: woocommerce, my account, custom pages, endpoints, account customization
+Requires at least: 5.0
+Tested up to: 6.8.2
+Stable tag: 1.4.1
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Customise My Account page and tabs for WooCommerce with ease. With our plugin you are able to create, rename, reorder or disable custom pages in the my account section of your users.
+Customize My Account page and tabs for WooCommerce with ease. Create, rename, reorder or disable custom pages in the my account section of your users.
 
 == Description ==
 
@@ -28,6 +29,14 @@ e.g.
 3. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
 
 == Changelog ==
+= 1.4.1 =
+* Fix: Fixed endpoint content not saving issue - missing 'type' field in sanitization callbacks
+* Update: Plugin renamed to "Custom My Account Page for WooCommerce" for WordPress.org compliance
+* Fix: Fixed missing method error in public class
+* Fix: Fixed avatar upload security vulnerability
+* Fix: Replaced deprecated extract() function usage
+* Fix: Added missing sanitization callbacks for admin settings
+
 = 1.4.0 =
 * Fix: Resolved issue where the endpoint was not shown in the default option.
 * Update: PHPCS fixes for improved code quality.

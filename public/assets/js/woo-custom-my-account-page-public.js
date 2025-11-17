@@ -14,8 +14,8 @@ jQuery(document).ready(function($) {
 
         var window_w = $(window).width(),
             window_h = $(window).height(),
-            o_width  = p.data('width'),
-            o_height = p.data('height'),
+            o_width  = p.data('width') || 500,  // Default to 500px if data attribute missing
+            o_height = p.data('height') || 280, // Default to 280px if data attribute missing
             width    = ( ( window_w - 60 ) > o_width ) ? o_width : ( window_w - 60 ),
             height   = ( ( window_h - 120 ) > o_height ) ? o_height : ( window_h - 120 );
 

@@ -362,11 +362,26 @@ div#wcmp-avatar-form-overlay.loading:before {
 
 #wcmp-avatar-form {
     background-color: rgba(255,255,255,1);
-    padding: 25px;
+    padding: 0;
     position: fixed;
     border: 3px solid #e0e0e0;
     z-index:9999999;
     border-radius: 10px;
+}
+
+.wcmp-popup-title {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    color: #333;
+}
+
+.wcmp-popup-content {
+    padding: 25px;
 }
 
 #wcmp-avatar-form h3 {

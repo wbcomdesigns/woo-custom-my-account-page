@@ -122,6 +122,11 @@ class Woo_Custom_My_Account_Page {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wbcom/wbcom-admin-settings.php';
 
 		/**
+		 * The error handler class for improved stability.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wcmp-error-handler.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-woo-custom-my-account-page-admin.php';

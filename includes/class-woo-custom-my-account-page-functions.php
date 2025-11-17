@@ -185,7 +185,9 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 				remove_action( 'woocommerce_account_content', 'woocommerce_account_content' );
 
-				echo do_shortcode( $endpoint[ $key ]['content'] );
+				// Apply wpautop to preserve line breaks and paragraphs
+				$content = wpautop( $endpoint[ $key ]['content'] );
+				echo do_shortcode( $content );
 			}
 		}
 
@@ -365,7 +367,8 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 					if ( array_key_exists( $key, $default_endpoints ) ) {
 						$default_values = $default_endpoints[ $key ];
 					} else {
-						$default_function = "wcmp_get_default_{$endpoint['type']}_options";
+						$endpoint_type    = isset( $endpoint['type'] ) ? $endpoint['type'] : 'endpoint';
+						$default_function = "wcmp_get_default_{$endpoint_type}_options";
 						$default_values   = $this->$default_function( $key );
 					}
 					if ( ! array_key_exists( $key, $default_endpoints ) ) {
@@ -438,14 +441,16 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 			if ( isset( $endpoints_settings['endpoints-order'] ) && ! empty( $endpoints_settings['endpoints-order'] ) ) {
 				$endpoint_orders = json_decode( $endpoints_settings['endpoints-order'], true );
-				foreach ( $endpoint_orders as $key => $endpoint_data ) {
-					if ( 'group' === $endpoint_data['type'] && isset( $endpoint_data['children'] ) ) {
-						if ( ! empty( $endpoint_data['children'] ) ) {
-							foreach ( $endpoint_data['children'] as $index => $child_endpoint ) {
-								$child_data_arr = $endpoints[ $child_endpoint['id'] ];
-								$group_id       = $endpoint_data['id'];
-								$endpoints[ $group_id ]['children'][ $child_endpoint['id'] ] = $child_data_arr;
-								unset( $endpoints[ $child_endpoint['id'] ] );
+				if ( is_array( $endpoint_orders ) ) {
+					foreach ( $endpoint_orders as $key => $endpoint_data ) {
+						if ( 'group' === $endpoint_data['type'] && isset( $endpoint_data['children'] ) ) {
+							if ( ! empty( $endpoint_data['children'] ) ) {
+								foreach ( $endpoint_data['children'] as $index => $child_endpoint ) {
+									$child_data_arr = $endpoints[ $child_endpoint['id'] ];
+									$group_id       = $endpoint_data['id'];
+									$endpoints[ $group_id ]['children'][ $child_endpoint['id'] ] = $child_data_arr;
+									unset( $endpoints[ $child_endpoint['id'] ] );
+								}
 							}
 						}
 					}
@@ -542,6 +547,9 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @author Wbcom Designs
 		 */
 		public function init() {
+
+			// Ensure default endpoints are initialized
+			$this->maybe_init_default_items();
 
 			$all_settings         = $this->wcmp_settings_data();
 			$endpoints 			  = isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
