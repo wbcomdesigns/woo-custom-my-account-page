@@ -31,30 +31,38 @@ e.g.
 == Changelog ==
 
 = 1.5.0 =
-**Major Release - Complete Plugin Relaunch**
-
-This is a comprehensive relaunch with significant improvements in user experience, security, reliability, and maintainability.
-
-**Added:**
-* Automatic Updates: Integrated Plugin Update Checker for seamless updates
-* Comprehensive FAQ Tab: Detailed FAQ section in admin settings
-* Enhanced Admin UI: Clean WordPress-style modal dialogs, improved icons, better popup experience
-* Build Process: Distribution zip file generation workflow
-* Comprehensive documentation for users, developers, and QA
-
-**Fixed:**
-* Critical Security Fixes: Avatar upload vulnerabilities, nonce verification, capability checks
-* Fatal Errors: Group creation, rendering child items, undefined variables
-* Data Persistence: Endpoint content saving, settings persistence, duplicate endpoint creation
-* Display Issues: Avatar display, manage icon visibility, link endpoints
-* Dependencies: npm security vulnerabilities
-
-**Changed:**
-* WordPress coding standards compliance
-* PHP 8.2 compatibility improvements
-* Optimized FontAwesome loading
-* Shortened admin menu titles for better UX
-* Updated resource versions for cache busting
+* New: Integrated Plugin Update Checker for automatic updates outside WordPress.org
+* New: Added comprehensive FAQ tab in admin settings for better user guidance
+* New: Enhanced admin UI with clean WordPress-style modal dialogs
+* New: Added icon display on general tab and endpoints
+* New: Cross icon button for modal close instead of text
+* New: Asterisk (*) indicators after required field titles
+* New: Added build process for distribution zip file generation
+* New: Comprehensive user, developer, and QA documentation
+* Fix: Fixed avatar upload security vulnerabilities
+* Fix: Added proper nonce verification across all forms
+* Fix: Fixed capability checks for all admin operations
+* Fix: Replaced deprecated extract() function usage
+* Fix: Added comprehensive sanitization callbacks
+* Fix: Fixed fatal error when creating groups (undefined slug/type)
+* Fix: Fixed fatal error in group-item.php when rendering child items
+* Fix: Fixed undefined variable warnings in link-item.php
+* Fix: Fixed endpoint content not saving issue
+* Fix: Fixed settings not saving issues
+* Fix: Corrected all settings field names to match form inputs
+* Fix: Fixed duplicate endpoints creation on save
+* Fix: Fixed avatar display by correcting get_avatar_filter() option lookup
+* Fix: Fixed manage icon not showing on endpoints
+* Fix: Fixed link endpoints display issues
+* Fix: Fixed 'Open in New Tab' option for link endpoints
+* Fix: Fixed npm security vulnerabilities
+* Update: WordPress coding standards compliance throughout codebase
+* Update: PHP 8.2 compatibility improvements
+* Update: Optimized FontAwesome loading
+* Update: Shortened admin menu and page titles for better UX
+* Update: Updated resource versions for cache busting
+* Update: Tested up to WordPress 6.8.2
+* Update: Removed unwanted files and banner images
 
 = 1.4.1 =
 * Fix: Fixed endpoint content not saving issue - missing 'type' field in sanitization callbacks
