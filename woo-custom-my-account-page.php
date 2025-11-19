@@ -70,6 +70,19 @@ if ( ! defined( 'WCMP_PLUGIN_URL' ) ) {
 require plugin_dir_path( __FILE__ ) . 'includes/class-woo-custom-my-account-page.php';
 
 /**
+ * Plugin Update Checker.
+ * Load the plugin update checker library.
+ */
+require plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php';
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+
+$myUpdateChecker = PucFactory::buildUpdateChecker(
+	'https://demos.wbcomdesigns.com/exporter/free-plugins/woo-custom-my-account-page.json',
+	__FILE__,
+	'woo-custom-my-account-page'
+);
+
+/**
  * Begins execution of the plugin.
  *
  * Since everything within the plugin is registered via hooks,
