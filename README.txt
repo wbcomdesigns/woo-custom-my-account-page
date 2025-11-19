@@ -4,7 +4,7 @@ Donate link: https://wbcomdesigns.com
 Tags: woocommerce, my account, custom pages, endpoints, account customization
 Requires at least: 5.0
 Tested up to: 6.8.2
-Stable tag: 1.4.1
+Stable tag: 1.5.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -29,6 +29,33 @@ e.g.
 3. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
 
 == Changelog ==
+
+= 1.5.0 =
+**Major Release - Complete Plugin Relaunch**
+
+This is a comprehensive relaunch with significant improvements in user experience, security, reliability, and maintainability.
+
+**Added:**
+* Automatic Updates: Integrated Plugin Update Checker for seamless updates
+* Comprehensive FAQ Tab: Detailed FAQ section in admin settings
+* Enhanced Admin UI: Clean WordPress-style modal dialogs, improved icons, better popup experience
+* Build Process: Distribution zip file generation workflow
+* Comprehensive documentation for users, developers, and QA
+
+**Fixed:**
+* Critical Security Fixes: Avatar upload vulnerabilities, nonce verification, capability checks
+* Fatal Errors: Group creation, rendering child items, undefined variables
+* Data Persistence: Endpoint content saving, settings persistence, duplicate endpoint creation
+* Display Issues: Avatar display, manage icon visibility, link endpoints
+* Dependencies: npm security vulnerabilities
+
+**Changed:**
+* WordPress coding standards compliance
+* PHP 8.2 compatibility improvements
+* Optimized FontAwesome loading
+* Shortened admin menu titles for better UX
+* Updated resource versions for cache busting
+
 = 1.4.1 =
 * Fix: Fixed endpoint content not saving issue - missing 'type' field in sanitization callbacks
 * Update: Plugin renamed to "Custom My Account Page for WooCommerce" for WordPress.org compliance
