@@ -94,7 +94,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="new-field-form" style="display: none;">
 					<div class="wcmp-modal-body">
 						<label for="wcmp-new-field" class="wcmp-field-label">
-							<?php esc_html_x( 'Name', 'Label for new endpoint title', 'woo-custom-my-account-page' ); ?>
+							<?php echo esc_html_x( 'Name', 'Label for new endpoint title', 'woo-custom-my-account-page' ); ?>
 						</label>
 						<p class="wcmp-field-desc"><?php esc_html_e( 'Enter a name for your new item. This will appear in the My Account menu.', 'woo-custom-my-account-page' ); ?></p>
 						<input type="text" id="wcmp-new-field" name="wcmp-new-field" value="" class="wcmp-field-input" placeholder="<?php esc_attr_e( 'e.g., My Orders', 'woo-custom-my-account-page' ); ?>">
