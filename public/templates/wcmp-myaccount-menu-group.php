@@ -6,6 +6,11 @@
  * @package Woo_Custom_My_Account_Page
  */
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 <li class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 

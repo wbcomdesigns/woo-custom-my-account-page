@@ -66,6 +66,11 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			return self::$instance;
 		}
 
+		/**
+		 * Constructor.
+		 *
+		 * @since 1.0.0
+		 */
 		public function __construct() {
 			add_action( 'init', array( $this, 'init' ), 100 );
 
@@ -75,7 +80,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// Redirect to the default endpoint.
 			add_action( 'template_redirect', array( $this, 'redirect_to_default' ), 150 );
 
-			// change title
+			// Change title.
 			add_action( 'template_redirect', array( $this, 'manage_account_title' ), 10 );
 
 			// Mem if is my account page.
@@ -112,24 +117,24 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 			global $wp, $post;
 
-			// search for active endpoints
+			// Search for active endpoints.
 			$active = $this->wcmp_get_current_endpoint();
-			// get active endpoint options by slug
+			// Get active endpoint options by slug.
 			$endpoint = $this->wcmp_get_endpoint_by( $active, 'slug', $this->menu_endpoints );
 
 			if ( empty( $endpoint ) || ! is_array( $endpoint ) ) {
 				return;
 			}
 
-			// get key
+			// Get key.
 			$key = key( $endpoint );
 
-			// set endpoint title
+			// Set endpoint title.
 			if ( isset( $endpoint['view-quote'] ) && ! empty( $wp->query_vars[ $active ] ) ) {
-				$order_id         = $wp->query_vars[ $active ];
-				/* translators: %s: */
+				$order_id = $wp->query_vars[ $active ];
+				/* translators: %s: order ID. */
 				$post->post_title = sprintf( __( 'Quote #%s', 'woo-custom-my-account-page' ), $order_id );
-			} elseif ( ! empty( $endpoint[ $key ]['label'] ) && $active != 'dashboard' ) {
+			} elseif ( ! empty( $endpoint[ $key ]['label'] ) && 'dashboard' !== $active ) {
 				$post->post_title = stripslashes( $endpoint[ $key ]['label'] );
 			}
 		}
@@ -140,9 +145,9 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @access public
 		 * @since  1.0.0
 		 * @author Wbcom Designs
-		 * @param array $atts The default dashboard content.
+		 * @return string
 		 */
-		public function wcmp_print_default_dashboard_content( $atts ) {
+		public function wcmp_print_default_dashboard_content() {
 
 			$content       = '';
 			$template_name = 'myaccount/dashboard.php';
@@ -185,7 +190,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 				remove_action( 'woocommerce_account_content', 'woocommerce_account_content' );
 
-				// Apply wpautop to preserve line breaks and paragraphs
+				// Apply wpautop to preserve line breaks and paragraphs.
 				$content = wpautop( $endpoint[ $key ]['content'] );
 				echo do_shortcode( $content );
 			}
@@ -206,7 +211,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 			$accepted = apply_filters( 'wcmp_get_endpoint_by_accepted_key', array( 'key', 'slug' ) );
 
-			if ( ! in_array( $key, $accepted ) ) {
+			if ( ! in_array( $key, $accepted, true ) ) {
 				return array();
 			}
 			$settings  = $this->wcmp_settings_data();
@@ -215,9 +220,11 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 				$endpoints = $settings['endpoints'];
 			}
 
-			empty( $items ) && $items = $endpoints;
-			$find                     = array();
-			if( ! empty( $items ) ){
+			if ( empty( $items ) ) {
+				$items = $endpoints;
+			}
+			$find = array();
+			if ( ! empty( $items ) ) {
 				foreach ( $items as $id => $item ) {
 					if ( ( 'key' === $key && $id === $value ) || ( isset( $item[ $key ] ) && $item[ $key ] === $value ) ) {
 						$find[ $id ] = $item;
@@ -548,62 +555,66 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 */
 		public function init() {
 
-			// Ensure default endpoints are initialized
+			// Ensure default endpoints are initialized.
 			$this->maybe_init_default_items();
 
 			$all_settings         = $this->wcmp_settings_data();
-			$endpoints 			  = isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
+			$endpoints            = isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
 			$this->menu_endpoints = $endpoints;
 			$priority             = has_action( 'woocommerce_account_navigation', 'woocommerce_account_navigation' );
 
-			// get current user and set user role.
+			// Get current user and set user role.
 			$current_user = wp_get_current_user();
 			$user_role    = (array) $current_user->roles;
 
-			// first register string for translations then remove disable.
+			// First register string for translations then remove disable.
 			foreach ( $this->menu_endpoints as $endpoint => &$options ) {
 
-				// check if master is active.
+				// Check if master is active.
 				if ( isset( $options['active'] ) && ! $options['active'] ) {
 					unset( $this->menu_endpoints[ $endpoint ] );
 					continue;
 				}
 
-				// check master by user role and user membership.
-				if ( isset( $options['usr_roles'] ) && ! empty( $options['usr_roles'] ) && ! $this->_hide_by_usr_roles( $options['usr_roles'], $user_role ) ) {
+				// Check master by user role and user membership.
+				if ( isset( $options['usr_roles'] ) && ! empty( $options['usr_roles'] ) && ! $this->hide_by_usr_roles( $options['usr_roles'], $user_role ) ) {
 					unset( $this->menu_endpoints[ $endpoint ] );
 					continue;
 				}
 
-				// check if child is active.
+				// Check if child is active.
 				if ( isset( $options['children'] ) ) {
 					foreach ( $options['children'] as $child_endpoint => $child_options ) {
 						if ( ! $child_options['active'] ) {
 							unset( $options['children'][ $child_endpoint ] );
 							continue;
 						}
-						if ( isset( $child_options['usr_roles'] ) && ! empty( $child_options['usr_roles'] ) && ! $this->_hide_by_usr_roles( $child_options['usr_roles'], $user_role ) ) {
-							// check master by user roles.
+						if ( isset( $child_options['usr_roles'] ) && ! empty( $child_options['usr_roles'] ) && ! $this->hide_by_usr_roles( $child_options['usr_roles'], $user_role ) ) {
+							// Check master by user roles.
 							unset( $options['children'][ $child_endpoint ] );
 							continue;
 						}
 
 						// Get translated label.
-						$options['children'][ $child_endpoint ]['label']                                 = $child_options['label'];
-						empty( $child_options['url'] ) || $options['children'][ $child_endpoint ]['url'] = $child_options['url'];
-						empty( $child_options['content'] ) || $options['children'][ $child_endpoint ]['content'] = $child_options['content'];
+						$options['children'][ $child_endpoint ]['label'] = $child_options['label'];
+						if ( ! empty( $child_options['url'] ) ) {
+							$options['children'][ $child_endpoint ]['url'] = $child_options['url'];
+						}
+						if ( ! empty( $child_options['content'] ) ) {
+							$options['children'][ $child_endpoint ]['content'] = $child_options['content'];
+						}
 					}
 				}
 			}
 
-			// remove standard woocommerce sidebar.
+			// Remove standard woocommerce sidebar.
 			if ( false !== $priority ) {
 				remove_action( 'woocommerce_account_navigation', 'woocommerce_account_navigation', $priority );
 			}
 		}
 
 		/**
-		 * Maybe init default items
+		 * Maybe init default items.
 		 *
 		 * @since  1.0.0
 		 * @access protected
@@ -611,7 +622,9 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 */
 		protected function maybe_init_default_items() {
 			$endpoints_settings = get_option( 'wcmp_endpoints_settings' );
-			empty( $endpoints_settings ) && $this->default_endpoint_settings();
+			if ( empty( $endpoints_settings ) ) {
+				$this->default_endpoint_settings();
+			}
 		}
 
 		/**
@@ -624,8 +637,8 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @param  array $current_user_role The current user role.
 		 * @return boolean
 		 */
-		protected function _hide_by_usr_roles( $roles, $current_user_role ) {
-			// return if $roles is empty.
+		protected function hide_by_usr_roles( $roles, $current_user_role ) {
+			// Return if $roles is empty.
 			if ( empty( $roles ) ) {
 				return false;
 			}
@@ -637,6 +650,20 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			}
 
 			return false;
+		}
+
+		/**
+		 * Hide field based on current user role (deprecated wrapper).
+		 *
+		 * @access protected
+		 * @since  1.0.0
+		 * @author Wbcom Designs
+		 * @param  array $roles WordPress user roles.
+		 * @param  array $current_user_role The current user role.
+		 * @return boolean
+		 */
+		protected function _hide_by_usr_roles( $roles, $current_user_role ) { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+			return $this->hide_by_usr_roles( $roles, $current_user_role );
 		}
 
 		/**
@@ -657,7 +684,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$tab              = 'tab' === $general_settings['menu_style'] ? '-tab' : '';
 			$endpoints        = $this->menu_endpoints;
 			ob_start();
-			?>	
+			?>
 				<div id="my-account-menu<?php echo esc_attr( $tab ); ?>" class="wcmp-myaccount-template position-<?php echo esc_html( $position ); ?>">
 					<div class="wcmp-myaccount-template-inner">
 						<?php
@@ -674,7 +701,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 					</div>
 				</div>
 			<?php
-			// set my account menu variable. This prevent double menu.
+			// Set my account menu variable. This prevent double menu.
 			$this->my_account_have_menu = true;
 		}
 
@@ -690,26 +717,34 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		public function wcmp_print_single_endpoint( $endpoint, $options ) {
 
 			if ( ! isset( $options['url'] ) ) {
-				$url                              = get_permalink( wc_get_page_id( 'myaccount' ) );
-				'dashboard' !== $endpoint && $url = wc_get_endpoint_url( $endpoint, '', $url );
+				$url = get_permalink( wc_get_page_id( 'myaccount' ) );
+				if ( 'dashboard' !== $endpoint ) {
+					$url = wc_get_endpoint_url( $endpoint, '', $url );
+				}
 			} else {
 				$url = esc_url( $options['url'] );
 			}
 
 			// Check if endpoint is active.
-			$current                                   = $this->wcmp_get_current_endpoint();
-			$classes                                   = array();
-			! empty( $options['class'] ) && $classes[] = $options['class'];
-			( $endpoint === $current ) && $classes[]   = 'active';
+			$current = $this->wcmp_get_current_endpoint();
+			$classes = array();
+			if ( ! empty( $options['class'] ) ) {
+				$classes[] = $options['class'];
+			}
+			if ( $endpoint === $current ) {
+				$classes[] = 'active';
+			}
 
 			if ( 'orders' === $endpoint ) {
 				$view_order = get_option( 'woocommerce_myaccount_view_order_endpoint', 'view-order' );
-				( $current === $view_order && ! in_array( 'active', $classes ) ) && $classes[] = 'active';
+				if ( $current === $view_order && ! in_array( 'active', $classes, true ) ) {
+					$classes[] = 'active';
+				}
 			}
 
 			$classes = apply_filters( 'wcmp_endpoint_menu_class', $classes, $endpoint, $options );
 
-			// build args array.
+			// Build args array.
 			$args = apply_filters(
 				'wcmp_print_single_endpoint_args',
 				array(
@@ -758,9 +793,11 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$all_settings     = $this->wcmp_settings_data();
 			$general_settings = $all_settings['general_settings'];
 
-			! empty( $options['class'] ) && $classes[] = $options['class'];
+			if ( ! empty( $options['class'] ) ) {
+				$classes[] = $options['class'];
+			}
 
-			// check in child and add class active.
+			// Check in child and add class active.
 			foreach ( $options['children'] as $child_key => $child ) {
 				if ( isset( $child['slug'] ) && $child_key === $current && '' !== WC()->query->get_current_endpoint() ) {
 					$options['open'] = 'yes';
@@ -771,9 +808,9 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 			$class_icon = 'yes' === $options['open'] ? 'fa-chevron-up' : 'fa-chevron-down';
 			$istab      = 'tab' === $general_settings['menu_style'] ? '-tab' : '';
-			// options for style tab.
+			// Options for style tab.
 			if ( $istab ) {
-				// force option open to true.
+				// Force option open to true.
 				$options['open'] = 'yes';
 				$class_icon      = 'fa-chevron-down';
 				$classes[]       = 'is-tab';
@@ -820,15 +857,15 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			}
 			$current_endpoint = $this->wcmp_get_current_endpoint();
 			// If a specific endpoint is required return.
-			if ( 'dashboard' != $current_endpoint || apply_filters( 'wcmp_no_redirect_to_default', false ) ) {
+			if ( 'dashboard' !== $current_endpoint || apply_filters( 'wcmp_no_redirect_to_default', false ) ) {
 				return;
 			}
-			$restricted_roles  = array();
-			$all_settings      = $this->wcmp_settings_data();
-			$general_settings  = $all_settings['general_settings'];
-			$endpoints 		   = isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
-			$default_endpoint  = $general_settings['default_endpoint'];
-			// Let's third part filter default endpoint.
+			$restricted_roles = array();
+			$all_settings     = $this->wcmp_settings_data();
+			$general_settings = $all_settings['general_settings'];
+			$endpoints        = isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
+			$default_endpoint = $general_settings['default_endpoint'];
+			// Let third party filter default endpoint.
 			$default_endpoint = apply_filters( 'wcmp_default_endpoint', $default_endpoint );
 			$url              = wc_get_page_permalink( 'myaccount' );
 
@@ -839,10 +876,12 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 				$restricted_roles = $this->menu_endpoints[ $default_endpoint ]['usr_roles'];
 			}
 			if ( ! is_wc_endpoint_url( $default_endpoint ) ) {
-				//phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				if ( ! get_option( 'wcmp_is_my_account', true ) && ! isset( $_REQUEST['elementor-preview'] ) && $current_endpoint != $default_endpoint && ! $this->_hide_by_usr_roles( $restricted_roles, $user_role ) ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				if ( ! get_option( 'wcmp_is_my_account', true ) && ! isset( $_REQUEST['elementor-preview'] ) && $current_endpoint !== $default_endpoint && ! $this->hide_by_usr_roles( $restricted_roles, $user_role ) ) {
 					update_option( 'wcmp_is_my_account', false );
-					$default_endpoint != 'dashboard' && $url = wc_get_endpoint_url( $default_endpoint, '', $url );
+					if ( 'dashboard' !== $default_endpoint ) {
+						$url = wc_get_endpoint_url( $default_endpoint, '', $url );
+					}
 					wp_safe_redirect( $url );
 					exit;
 				}
@@ -863,7 +902,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// Build endpoint key.
 			$field_key = strtolower( $key );
 			$field_key = trim( $field_key );
-			// Clear from space and add -.
+			// Clear from space and add dash.
 			$field_key = sanitize_title( $field_key );
 
 			return $field_key;
@@ -983,15 +1022,15 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 */
 		public function wcmp_check_myaccount() {
 			global $post;
-			
-			// Add null check for PHP 8.1+ compatibility
-			if ( ! is_null( $post ) && 
-				 isset( $post->post_content ) && 
-				 strpos( $post->post_content, 'woocommerce_my_account' ) !== false && 
-				 is_user_logged_in() ) {
+
+			// Add null check for PHP 8.1+ compatibility.
+			if ( ! is_null( $post ) &&
+				isset( $post->post_content ) &&
+				false !== strpos( $post->post_content, 'woocommerce_my_account' ) &&
+				is_user_logged_in() ) {
 				$this->is_myaccount = true;
 			}
-		
+
 			$this->is_myaccount = apply_filters( 'wcmp_is_my_account_page', $this->is_myaccount );
 		}
 
@@ -1008,10 +1047,14 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$settings = $this->wcmp_settings_data();
 			if ( isset( $settings['endpoints_settings'] ) && ! empty( $settings['endpoints_settings'] ) ) {
 				foreach ( $settings['endpoints_settings'] as $key => $field ) {
-					isset( $field['slug'] ) && $slugs[ $key ] = $field['slug'];
+					if ( isset( $field['slug'] ) ) {
+						$slugs[ $key ] = $field['slug'];
+					}
 					if ( isset( $field['children'] ) ) {
 						foreach ( $field['children'] as $child_key => $child ) {
-							isset( $child['slug'] ) && $slugs[ $child_key ] = $child['slug'];
+							if ( isset( $child['slug'] ) ) {
+								$slugs[ $child_key ] = $child['slug'];
+							}
 						}
 					}
 				}
@@ -1069,8 +1112,12 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 							continue;
 					}
 
-					$field['id'] == 'view-order' && $field['id']   = 'orders';
-					$field['id'] == 'my-downloads' && $field['id'] = 'downloads';
+					if ( 'view-order' === $field['id'] ) {
+						$field['id'] = 'orders';
+					}
+					if ( 'my-downloads' === $field['id'] ) {
+						$field['id'] = 'downloads';
+					}
 
 					if ( isset( $field['children'] ) ) {
 						$new_fields[ $field['id'] ] = array(
@@ -1078,8 +1125,12 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 							'children' => array(),
 						);
 						foreach ( $field['children'] as $child ) {
-							$child['id'] == 'view-order' && $child['id']            = 'orders';
-							$child['id'] == 'my-downloads' && $child['id']          = 'downloads';
+							if ( 'view-order' === $child['id'] ) {
+								$child['id'] = 'orders';
+							}
+							if ( 'my-downloads' === $child['id'] ) {
+								$child['id'] = 'downloads';
+							}
 							$new_fields[ $field['id'] ]['children'][ $child['id'] ] = array( 'type' => 'endpoint' );
 						}
 					} else {
@@ -1087,8 +1138,10 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 					}
 				}
 
-				update_option( 'wcmp_endpoint_backup_pre_' . WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION, json_encode( $fields ) );
-				empty( $new_fields ) || update_option( 'wcmp_endpoint', json_encode( $new_fields ) );
+				update_option( 'wcmp_endpoint_backup_pre_' . WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION, wp_json_encode( $fields ) );
+				if ( ! empty( $new_fields ) ) {
+					update_option( 'wcmp_endpoint', wp_json_encode( $new_fields ) );
+				}
 			}
 		}
 
@@ -1102,7 +1155,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		public function wcmp_flush_rewrite_rules() {
 			flush_rewrite_rules();
 		}
-
 	}
 }
 
@@ -1114,7 +1166,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
  * @since  1.0.0
  * @return Woo_Custom_My_Account_Page_Functions
  */
-function instantiate_woo_custom_myaccount_functions() {
+function instantiate_woo_custom_myaccount_functions() { // phpcs:ignore Universal.Files.SeparateFunctionsFromOO.Mixed
 	return Woo_Custom_My_Account_Page_Functions::instance();
 }
 

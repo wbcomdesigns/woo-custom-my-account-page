@@ -9,6 +9,11 @@
  * @subpackage Woo_Custom_My_Account_Page/public
  */
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * The public-facing functionality of the plugin.
  *
@@ -50,7 +55,6 @@ class Woo_Custom_My_Account_Page_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-
 	}
 
 	/**
@@ -60,7 +64,7 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	public function enqueue_styles() {
 
-		// Check if Font Awesome is already loaded
+		// Check if Font Awesome is already loaded.
 		global $wp_styles;
 		$font_awesome_loaded = false;
 
@@ -69,16 +73,15 @@ class Woo_Custom_My_Account_Page_Public {
 		}
 
 		foreach ( $wp_styles->registered as $handle => $style ) {
-			if ( strpos( $style->src, 'font-awesome' ) !== false || strpos( $style->src, 'fontawesome' ) !== false ) {
+			if ( false !== strpos( $style->src, 'font-awesome' ) || false !== strpos( $style->src, 'fontawesome' ) ) {
 				$font_awesome_loaded = true;
 				break;
 			}
 		}
-		
 
 		if ( ! $font_awesome_loaded ) {
-			// Use minimal Font Awesome subset (only 19 icons we actually use)
-			wp_enqueue_style( 'wcmp-font-awesome', plugin_dir_url( dirname( __FILE__ ) ) . 'assets/vendor/font-awesome/css/wcmp-icons.min.css', array(), '6.7.2' );
+			// Use minimal Font Awesome subset (only 19 icons we actually use).
+			wp_enqueue_style( 'wcmp-font-awesome', plugin_dir_url( __DIR__ ) . 'assets/vendor/font-awesome/css/wcmp-icons.min.css', array(), '6.7.2' );
 		}
 
 		wp_register_style( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-public.css', array(), $this->version );
@@ -97,11 +100,11 @@ class Woo_Custom_My_Account_Page_Public {
 
 		if ( ! function_exists( 'is_account_page' ) || ! is_account_page() ) {
 			return;
-		}	
+		}
 
 		wp_register_script( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/js/woo-custom-my-account-page-public.js', array( 'jquery' ), $this->version, true );
 
-		// ENQUEUE SCRIPTS.
+		// Enqueue scripts.
 		wp_enqueue_script( 'wcmp-frontend' );
 		wp_localize_script(
 			'wcmp-frontend',
@@ -151,38 +154,46 @@ class Woo_Custom_My_Account_Page_Public {
 	 * @author Wbcom Designs
 	 */
 	public function wcmp_add_avatar() {
-		// Fixed: Proper nonce handling and initialization
+		// Fixed: Proper nonce handling and initialization.
 		$nonce = isset( $_POST['_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_nonce'] ) ) : '';
 
 		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'wp_handle_upload' ) ) {
 			return;
 		}
 
-		// Security: Check user is logged in before any file processing
+		// Security: Check user is logged in before any file processing.
 		if ( ! is_user_logged_in() ) {
 			return;
 		}
 
-		// Security: Validate file upload exists and no upload errors
-		if ( ! isset( $_FILES['wcmp_user_avatar'] ) || $_FILES['wcmp_user_avatar']['error'] !== UPLOAD_ERR_OK ) {
+		// Security: Validate file upload exists and no upload errors.
+		if ( ! isset( $_FILES['wcmp_user_avatar'] ) ) {
 			return;
 		}
 
-		// Security: Enhanced file type validation with MIME check
+		$avatar_file = $_FILES['wcmp_user_avatar']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		if ( ! isset( $avatar_file['error'] ) || UPLOAD_ERR_OK !== $avatar_file['error'] ) {
+			return;
+		}
+
+		// Security: Enhanced file type validation with MIME check.
 		$allowed_types = array( 'image/jpeg', 'image/png', 'image/gif', 'image/webp' );
-		$file_type = wp_check_filetype_and_ext( $_FILES['wcmp_user_avatar']['tmp_name'], $_FILES['wcmp_user_avatar']['name'] );
+		$file_tmp_name = isset( $avatar_file['tmp_name'] ) ? $avatar_file['tmp_name'] : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$file_name     = isset( $avatar_file['name'] ) ? sanitize_file_name( $avatar_file['name'] ) : '';
+		$file_type     = wp_check_filetype_and_ext( $file_tmp_name, $file_name );
 
 		if ( ! $file_type['type'] || ! in_array( $file_type['type'], $allowed_types, true ) ) {
 			wc_add_notice( __( 'Invalid file type. Only JPG, PNG, GIF and WebP images are allowed.', 'woo-custom-my-account-page' ), 'error' );
 			return;
 		}
 
-		 // Check file size (max 2MB)
-		 $max_size = 2 * 1024 * 1024; // 2MB in bytes
-		 if ( $_FILES['wcmp_user_avatar']['size'] > $max_size ) {
-			 wc_add_notice( __( 'Image size must be less than 2MB.', 'woo-custom-my-account-page' ), 'error' );
-			 return;
-		 }
+		// Check file size (max 2MB).
+		$max_size  = 2 * 1024 * 1024;
+		$file_size = isset( $avatar_file['size'] ) ? absint( $avatar_file['size'] ) : 0;
+		if ( $file_size > $max_size ) {
+			wc_add_notice( __( 'Image size must be less than 2MB.', 'woo-custom-my-account-page' ), 'error' );
+			return;
+		}
 
 		// Required files.
 		if ( ! function_exists( 'media_handle_upload' ) ) {
@@ -199,15 +210,15 @@ class Woo_Custom_My_Account_Page_Public {
 
 		if ( is_wp_error( $media_id ) ) {
 			wc_add_notice( $media_id->get_error_message(), 'error' );
-        	return;
+			return;
 		}
 
 		// Save media id for filter query in media library.
-		$medias   = get_option( 'wcmp-users-avatar-ids', array() );
+		$medias = get_option( 'wcmp-users-avatar-ids', array() );
 		if ( ! is_array( $medias ) ) {
 			$medias = array();
 		}
-		if ( ! in_array( $media_id, $medias ) ) {
+		if ( ! in_array( $media_id, $medias, true ) ) {
 			$medias[] = $media_id;
 			// Then save.
 			update_option( 'wcmp-users-avatar-ids', $medias );
@@ -217,13 +228,12 @@ class Woo_Custom_My_Account_Page_Public {
 		$user = get_current_user_id();
 		update_user_meta( $user, 'wb-wcmp-avatar', $media_id );
 
-		 // Add success message
-		 wc_add_notice( __( 'Avatar updated successfully!', 'woo-custom-my-account-page' ), 'success' );
-    
-		//  // Redirect to prevent resubmission
-		 wp_safe_redirect( wc_get_account_endpoint_url( 'dashboard' ) );
-		 exit;
+		// Add success message.
+		wc_add_notice( __( 'Avatar updated successfully!', 'woo-custom-my-account-page' ), 'success' );
 
+		// Redirect to prevent resubmission.
+		wp_safe_redirect( wc_get_account_endpoint_url( 'dashboard' ) );
+		exit;
 	}
 
 	/**
@@ -235,7 +245,7 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	public function wcmp_reset_default_avatar() {
 
-		// Improved: Use sanitize_text_field for validation
+		// Improved: Use sanitize_text_field for validation.
 		$action = isset( $_POST['action'] ) ? sanitize_text_field( wp_unslash( $_POST['action'] ) ) : '';
 		if ( ! $action || 'wcmp_reset_avatar' !== $action ) {
 			return;
@@ -245,12 +255,11 @@ class Woo_Custom_My_Account_Page_Public {
 		if ( ! $reset_nonce || ! wp_verify_nonce( $reset_nonce, 'action' ) ) {
 			return;
 		}
-		
 
 		if ( ! is_user_logged_in() ) {
 			return;
 		}
-	
+
 		// Get user id.
 		$user     = get_current_user_id();
 		$media_id = get_user_meta( $user, 'wb-wcmp-avatar', true );
@@ -259,31 +268,30 @@ class Woo_Custom_My_Account_Page_Public {
 			return;
 		}
 
-		// Remove id from global list - Fixed array unset bug
+		// Remove id from global list.
 		$medias = get_option( 'wcmp-users-avatar-ids', array() );
 		if ( is_array( $medias ) ) {
 			foreach ( $medias as $key => $media ) {
-				if ( $media == $media_id ) {
-					unset( $medias[ $key ] ); // Fixed: was $media[$key] which is wrong
-					break; // Use break instead of continue
+				if ( (int) $media === (int) $media_id ) {
+					unset( $medias[ $key ] );
+					break;
 				}
 			}
-			// Re-index array and save
+			// Re-index array and save.
 			$medias = array_values( $medias );
 			update_option( 'wcmp-users-avatar-ids', $medias );
 		}
 
-		// Then delete user meta
+		// Then delete user meta.
 		delete_user_meta( $user, 'wb-wcmp-avatar' );
 
-		// Delete the attachment file from server to free space
+		// Delete the attachment file from server to free space.
 		wp_delete_attachment( $media_id, true );
 
 		wc_add_notice( __( 'Avatar removed successfully!', 'woo-custom-my-account-page' ), 'success' );
-		// Redirect
+		// Redirect.
 		wp_safe_redirect( wc_get_account_endpoint_url( 'dashboard' ) );
 		exit;
-
 	}
 
 	/**
@@ -297,13 +305,13 @@ class Woo_Custom_My_Account_Page_Public {
 		if ( ! is_ajax() ) {
 			return;
 		}
-		// Get the avatar form HTML
+		// Get the avatar form HTML.
 		$avatar_form = $this->wcmp_get_avatar_form();
 
-		// Get allowed HTML tags for form elements
+		// Get allowed HTML tags for form elements.
 		$allowed_html = $this->get_form_allowed_html();
 
-		// Output with proper escaping for form elements
+		// Output with proper escaping for form elements.
 		echo wp_kses( $avatar_form, $allowed_html );
 		die();
 	}
@@ -314,17 +322,17 @@ class Woo_Custom_My_Account_Page_Public {
 	 * @since  1.0.0
 	 * @access public
 	 * @author Wbcom Designs
-	 * @param  boolean $print Print or return avatar form.
-	 * @param  array   $args Array of argument for the template.
-	 * @return string
+	 * @param  boolean $should_print Whether to print or return avatar form.
+	 * @param  array   $args         Array of argument for the template.
+	 * @return string|void
 	 */
-	public function wcmp_get_avatar_form( $print = false, $args = array() ) {
+	public function wcmp_get_avatar_form( $should_print = false, $args = array() ) {
 		ob_start();
 		wc_get_template( 'wcmp-myaccount-avatar-form.php', $args, '', WCMP_PLUGIN_PATH . 'public/templates/' );
 		$form = ob_get_clean();
 
-		if ( $print ) {
-			// Use the same allowed HTML tags as in wcmp_print_avatar_form_ajax
+		if ( $should_print ) {
+			// Use the same allowed HTML tags as in wcmp_print_avatar_form_ajax.
 			$allowed_html = $this->get_form_allowed_html();
 			echo wp_kses( $form, $allowed_html );
 			return;
@@ -339,14 +347,14 @@ class Woo_Custom_My_Account_Page_Public {
 	 * @access public
 	 * @since  1.0.0
 	 * @author Wbcom Designs
-	 * @param  string $avatar Get user avatar image.
+	 * @param  string $avatar      Get user avatar image.
 	 * @param  mixed  $id_or_email Get email id of user.
-	 * @param  string $size Get user avatar image size.
-	 * @param  string $default Default.
-	 * @param  string $alt Get user avatar image alt attribute.
-	 * @param  array  $args Arguments.
+	 * @param  string $size        Get user avatar image size.
+	 * @param  string $default_val Default value.
+	 * @param  string $alt         Get user avatar image alt attribute.
+	 * @param  array  $args        Arguments.
 	 */
-	public function wcmp_get_avatar( $avatar, $id_or_email, $size, $default, $alt, $args = array() ) {
+	public function wcmp_get_avatar( $avatar, $id_or_email, $size, $default_val, $alt, $args = array() ) {
 		static $is_processing = false;
 
 		if ( $is_processing || $this->get_avatar_filter() ) {
@@ -433,12 +441,12 @@ class Woo_Custom_My_Account_Page_Public {
 	 * @return boolean
 	 */
 	public function get_avatar_filter() {
-		// Get the custom_avatar setting from wcmp_general_settings
+		// Get the custom_avatar setting from wcmp_general_settings.
 		$general_settings = get_option( 'wcmp_general_settings', array() );
-		$custom_avatar = isset( $general_settings['custom_avatar'] ) ? $general_settings['custom_avatar'] : 'yes';
+		$custom_avatar    = isset( $general_settings['custom_avatar'] ) ? $general_settings['custom_avatar'] : 'yes';
 
-		// Return true if custom avatar is disabled (filter should prevent custom avatar)
-		return apply_filters( 'wcmp_get_avatar_filter', $custom_avatar !== 'yes' );
+		// Return true if custom avatar is disabled (filter should prevent custom avatar).
+		return apply_filters( 'wcmp_get_avatar_filter', 'yes' !== $custom_avatar );
 	}
 
 	/**
@@ -530,17 +538,17 @@ class Woo_Custom_My_Account_Page_Public {
 	}
 
 	/**
-	 * Add custom classes to menu items
+	 * Add custom classes to menu items.
 	 *
-	 * @param array  $classes Current classes
-	 * @param string $endpoint Endpoint
+	 * @param array  $classes  Current classes.
+	 * @param string $endpoint Endpoint.
 	 * @return array
 	 */
 	public function wcmp_account_menu_item_classes( $classes, $endpoint ) {
 		$functions = instantiate_woo_custom_myaccount_functions();
-		// Fixed: get_menu_items_options() doesn't exist, using wcmp_settings_data() instead
+		// Fixed: get_menu_items_options() doesn't exist, using wcmp_settings_data() instead.
 		$all_settings = $functions->wcmp_settings_data();
-		$options = isset($all_settings['endpoints']) ? $all_settings['endpoints'] : array();
+		$options      = isset( $all_settings['endpoints'] ) ? $all_settings['endpoints'] : array();
 
 		if ( isset( $options[ $endpoint ] ) && ! empty( $options[ $endpoint ]['class'] ) ) {
 			$classes[] = $options[ $endpoint ]['class'];
@@ -558,71 +566,70 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	private function get_form_allowed_html() {
 		return array(
-			'form' => array(
-				'action' => array(),
-				'method' => array(),
+			'form'   => array(
+				'action'  => array(),
+				'method'  => array(),
 				'enctype' => array(),
-				'class' => array(),
-				'id' => array(),
+				'class'   => array(),
+				'id'      => array(),
 			),
-			'input' => array(
-				'type' => array(),
-				'name' => array(),
-				'value' => array(),
-				'class' => array(),
-				'id' => array(),
+			'input'  => array(
+				'type'        => array(),
+				'name'        => array(),
+				'value'       => array(),
+				'class'       => array(),
+				'id'          => array(),
 				'placeholder' => array(),
-				'required' => array(),
-				'checked' => array(),
-				'disabled' => array(),
-				'readonly' => array(),
-				'accept' => array(),
+				'required'    => array(),
+				'checked'     => array(),
+				'disabled'    => array(),
+				'readonly'    => array(),
+				'accept'      => array(),
 			),
 			'button' => array(
-				'type' => array(),
-				'class' => array(),
-				'id' => array(),
-				'name' => array(),
-				'value' => array(),
+				'type'     => array(),
+				'class'    => array(),
+				'id'       => array(),
+				'name'     => array(),
+				'value'    => array(),
 				'disabled' => array(),
 			),
-			'label' => array(
-				'for' => array(),
+			'label'  => array(
+				'for'   => array(),
 				'class' => array(),
 			),
-			'div' => array(
+			'div'    => array(
 				'class' => array(),
-				'id' => array(),
+				'id'    => array(),
 			),
-			'span' => array(
+			'span'   => array(
 				'class' => array(),
-				'id' => array(),
+				'id'    => array(),
 			),
-			'img' => array(
-				'src' => array(),
-				'alt' => array(),
-				'class' => array(),
-				'id' => array(),
-				'width' => array(),
+			'img'    => array(
+				'src'    => array(),
+				'alt'    => array(),
+				'class'  => array(),
+				'id'     => array(),
+				'width'  => array(),
 				'height' => array(),
 			),
-			'a' => array(
-				'href' => array(),
-				'class' => array(),
-				'id' => array(),
+			'a'      => array(
+				'href'   => array(),
+				'class'  => array(),
+				'id'     => array(),
 				'target' => array(),
-				'rel' => array(),
+				'rel'    => array(),
 			),
-			'p' => array(
+			'p'      => array(
 				'class' => array(),
 			),
-			'br' => array(),
+			'br'     => array(),
 			'strong' => array(),
-			'em' => array(),
-			'i' => array(
+			'em'     => array(),
+			'i'      => array(
 				'class' => array(),
 			),
 		);
 	}
-
 }

@@ -111,7 +111,7 @@ $myaccount_func = instantiate_woo_custom_myaccount_functions();
 							if ( $user_roles ) {
 								foreach ( $user_roles as $usrrole_slug => $usrrole_arr ) {
 									if ( ! empty( $options['usr_roles'] ) ) {
-										if ( in_array( $usrrole_slug, $options['usr_roles'] ) ) {
+										if ( in_array( $usrrole_slug, $options['usr_roles'], true ) ) {
 											?>
 											<option value="<?php echo esc_attr( $usrrole_slug ); ?>" selected = "selected">
 												<?php echo esc_html( $usrrole_arr['name'] ); ?>
@@ -165,15 +165,15 @@ $myaccount_func = instantiate_woo_custom_myaccount_functions();
 		<ol class="dd-list endpoints">
 		<?php
 		foreach ( (array) $options['children'] as $key => $single_options ) {
-			// Skip if child doesn't have required keys
+			// Skip if child doesn't have required keys.
 			if ( ! isset( $single_options['type'] ) || ! isset( $single_options['slug'] ) ) {
 				continue;
 			}
 
-			// Get type
-			$type = $single_options['type'];
+			// Get endpoint type.
+			$endpoint_type = $single_options['type'];
 
-			// Build args array with correct key based on type
+			// Build args array with correct key based on type.
 			$args = array(
 				'options'   => $single_options,
 				'id'        => 'wcmp_endpoint',
@@ -181,8 +181,8 @@ $myaccount_func = instantiate_woo_custom_myaccount_functions();
 				'slug'      => $single_options['slug'],
 			);
 
-			// Add type-specific key
-			switch ( $type ) {
+			// Add type-specific key.
+			switch ( $endpoint_type ) {
 				case 'endpoint':
 					$args['endpoint'] = $key;
 					break;
@@ -193,15 +193,15 @@ $myaccount_func = instantiate_woo_custom_myaccount_functions();
 					$args['link'] = $key;
 					break;
 				default:
-					// Skip invalid types
+					// Skip invalid types.
 					continue 2;
 			}
 
-			// Get admin instance and print field
+			// Get admin instance and print field.
 			$admin_obj      = Woo_Custom_My_Account_Page_Admin::instance();
-			$print_function = "wcmp_admin_print_{$type}_field";
+			$print_function = "wcmp_admin_print_{$endpoint_type}_field";
 
-			// Verify method exists before calling
+			// Verify method exists before calling.
 			if ( method_exists( $admin_obj, $print_function ) ) {
 				call_user_func( array( $admin_obj, $print_function ), $args );
 			}

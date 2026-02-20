@@ -23,7 +23,7 @@
  * @subpackage Woo_Custom_My_Account_Page/includes
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-class Woo_Custom_My_Account_Page_i18n {
+class Woo_Custom_My_Account_Page_I18n {
 
 
 	/**
@@ -32,15 +32,7 @@ class Woo_Custom_My_Account_Page_i18n {
 	 * @since    1.0.0
 	 */
 	public function load_plugin_textdomain() {
-
-		load_plugin_textdomain(
-			'woo-custom-my-account-page',
-			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
-		);
-
+		// Since WordPress 6.7, translations are loaded automatically via
+		// the just-in-time translation loading system. No manual loading needed.
 	}
-
-
-
 }

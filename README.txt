@@ -3,8 +3,8 @@ Contributors: wbcomdesigns,vapvarun
 Donate link: https://wbcomdesigns.com
 Tags: woocommerce, my account, custom pages, endpoints, account customization
 Requires at least: 5.0
-Tested up to: 6.8.2
-Stable tag: 1.5.0
+Tested up to: 6.9
+Stable tag: 1.5.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -29,6 +29,10 @@ e.g.
 3. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
 
 == Changelog ==
+
+= 1.5.1 =
+* Update: Full WordPress Coding Standards (WPCS) compliance
+* Update: Plugin Check compliance fixes
 
 = 1.5.0 =
 * New: Integrated Plugin Update Checker for automatic updates outside WordPress.org

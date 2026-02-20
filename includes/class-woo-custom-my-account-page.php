@@ -12,6 +12,11 @@
  * @subpackage Woo_Custom_My_Account_Page/includes
  */
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * The core plugin class.
  *
@@ -77,7 +82,6 @@ class Woo_Custom_My_Account_Page {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
 	}
 
 	/**
@@ -86,7 +90,7 @@ class Woo_Custom_My_Account_Page {
 	 * Include the following files that make up the plugin:
 	 *
 	 * - Woo_Custom_My_Account_Page_Loader. Orchestrates the hooks of the plugin.
-	 * - Woo_Custom_My_Account_Page_i18n. Defines internationalization functionality.
+	 * - Woo_Custom_My_Account_Page_I18n. Defines internationalization functionality.
 	 * - Woo_Custom_My_Account_Page_Admin. Defines all hooks for the admin area.
 	 * - Woo_Custom_My_Account_Page_Public. Defines all hooks for the public side of the site.
 	 *
@@ -102,49 +106,48 @@ class Woo_Custom_My_Account_Page {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-woo-custom-my-account-page-loader.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-woo-custom-my-account-page-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-woo-custom-my-account-page-i18n.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-woo-custom-my-account-page-i18n.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-woo-custom-my-account-page-functions.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-woo-custom-my-account-page-functions.php';
 
 		/**
 		 * Enqueue wbcom plugin settings file.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wbcom/wbcom-admin-settings.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/wbcom/wbcom-admin-settings.php';
 
 		/**
 		 * The error handler class for improved stability.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wcmp-error-handler.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wcmp-error-handler.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-woo-custom-my-account-page-admin.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-woo-custom-my-account-page-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-woo-custom-my-account-page-public.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-woo-custom-my-account-page-public.php';
 
 		$this->loader = new Woo_Custom_My_Account_Page_Loader();
-
 	}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Woo_Custom_My_Account_Page_i18n class in order to set the domain and to register the hook
+	 * Uses the Woo_Custom_My_Account_Page_I18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -152,10 +155,9 @@ class Woo_Custom_My_Account_Page {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Woo_Custom_My_Account_Page_i18n();
+		$plugin_i18n = new Woo_Custom_My_Account_Page_I18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
 	}
 
 	/**
@@ -184,7 +186,6 @@ class Woo_Custom_My_Account_Page {
 
 		$this->loader->add_action( 'update_option_wcmp_endpoints_settings', $plugin_admin, 'wcmp_schedule_flush_rewrite_on_endpoint_save' );
 		$this->loader->add_action( 'init', $plugin_admin, 'wcmp_maybe_flush_rewrite_rules' );
-
 	}
 
 	/**
@@ -210,8 +211,7 @@ class Woo_Custom_My_Account_Page {
 		// Display 'change avatar' form ajax.
 		$this->loader->add_action( 'wc_ajax_wcmp_print_avatar_form', $plugin_public, 'wcmp_print_avatar_form_ajax' );
 
-		$this->loader->add_filter( 'woocommerce_account_menu_item_classes', $plugin_public, 'wcmp_account_menu_item_classes', 999, 2 );		
-
+		$this->loader->add_filter( 'woocommerce_account_menu_item_classes', $plugin_public, 'wcmp_account_menu_item_classes', 999, 2 );
 	}
 
 	/**
@@ -253,5 +253,4 @@ class Woo_Custom_My_Account_Page {
 	public function get_version() {
 		return $this->version;
 	}
-
 }

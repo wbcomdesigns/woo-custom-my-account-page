@@ -1,5 +1,7 @@
 <?php
 /**
+ * Custom My Account Page for WooCommerce.
+ *
  * @link              https://wbcomdesigns.com
  * @since             1.0.0
  * @package           Woo_Custom_My_Account_Page
@@ -8,7 +10,7 @@
  * Plugin Name:       Custom My Account Page for WooCommerce
  * Plugin URI:        https://wbcomdesigns.com/downloads/custom-my-account-page-for-woocommerce/
  * Description:       This plugin helps you to customize the layout of the "My Account" page, adds new endpoints, groups, links and manage its content easily.
- * Version:           1.5.0
+ * Version:           1.5.1
  * Author:            Wbcom Designs
  * Author URI:        https://wbcomdesigns.com
  * License:           GPL-2.0+
@@ -26,7 +28,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Currently plugin version.
  */
 if ( ! defined( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION' ) ) {
-	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.5.0' );
+	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.5.1' );
 }
 
 /**
@@ -76,7 +78,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-woo-custom-my-account-page
 require plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php';
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
-$myUpdateChecker = PucFactory::buildUpdateChecker(
+$my_update_checker = PucFactory::buildUpdateChecker(
 	'https://demos.wbcomdesigns.com/exporter/free-plugins/woo-custom-my-account-page.json',
 	__FILE__,
 	'woo-custom-my-account-page'
@@ -95,7 +97,6 @@ function run_woo_custom_my_account_page() {
 
 	$plugin = new Woo_Custom_My_Account_Page();
 	$plugin->run();
-
 }
 
 /**
@@ -113,7 +114,7 @@ function wcmp_plugins_files() {
 	if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 		require_once ABSPATH . '/wp-admin/includes/plugin.php';
 	}
-	if ( ! is_plugin_active_for_network( 'woocommerce/woocommerce.php' ) && ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+	if ( ! is_plugin_active_for_network( 'woocommerce/woocommerce.php' ) && ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ), true ) ) {
 		require_once ABSPATH . '/wp-admin/includes/plugin.php';
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 		add_action( 'admin_notices', 'wcmp_admin_notice' );

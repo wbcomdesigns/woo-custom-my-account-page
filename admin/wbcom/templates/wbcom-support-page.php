@@ -1,3 +1,16 @@
+<?php
+/**
+ * Template for Wbcom support page.
+ *
+ * @package Woo_Custom_My_Account_Page
+ */
+
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+?>
 <div class="wrap">
 	<div class="wbcom-bb-plugins-offer-wrapper">
 		<div id="wb_admin_logo">

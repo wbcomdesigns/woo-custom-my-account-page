@@ -39,30 +39,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<?php
 				$myaccount_func = instantiate_woo_custom_myaccount_functions();
 				$all_settings   = $myaccount_func->wcmp_settings_data();
-				$endpoints 		= isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
+				$endpoints      = isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
 				$endpoint_order = $all_settings['endpoint_order'];
 				?>
 				<div class="dd endpoints-container">
 					<ol class="dd-list endpoints">
 						<?php
 						foreach ( $endpoints as $key => $endpoint ) {
-							// Skip if endpoint doesn't have required keys
+							// Skip if endpoint doesn't have required keys.
 							if ( ! isset( $endpoint['type'] ) || ! isset( $endpoint['slug'] ) ) {
 								continue;
 							}
 
-							// Get type
-							$type = $endpoint['type'];
+							// Get endpoint type.
+							$endpoint_type = $endpoint['type'];
 
-							// Build args array with correct key based on type
+							// Build args array with correct key based on type.
 							$args = array(
 								'options'   => $endpoint,
 								'usr_roles' => isset( $endpoint['usr_roles'] ) ? $endpoint['usr_roles'] : array(),
 								'slug'      => $endpoint['slug'],
 							);
 
-							// Add type-specific key
-							switch ( $type ) {
+							// Add type-specific key.
+							switch ( $endpoint_type ) {
 								case 'endpoint':
 									$args['endpoint'] = $key;
 									break;
@@ -73,15 +73,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 									$args['link'] = $key;
 									break;
 								default:
-									// Skip invalid types
+									// Skip invalid types.
 									continue 2;
 							}
 
-							// Get admin instance and print field
+							// Get admin instance and print field.
 							$admin_obj      = Woo_Custom_My_Account_Page_Admin::instance();
-							$print_function = "wcmp_admin_print_{$type}_field";
+							$print_function = "wcmp_admin_print_{$endpoint_type}_field";
 
-							// Verify method exists before calling
+							// Verify method exists before calling.
 							if ( method_exists( $admin_obj, $print_function ) ) {
 								call_user_func( array( $admin_obj, $print_function ), $args );
 							}

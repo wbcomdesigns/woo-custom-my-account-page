@@ -1,9 +1,22 @@
+<?php
+/**
+ * Template for Wbcom plugins page.
+ *
+ * @package Woo_Custom_My_Account_Page
+ */
+
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+?>
 <div class="wrap">
 	<div class="wbcom-bb-plugins-offer-wrapper">
 		<div id="wb_admin_logo">
 		</div>
 	</div>
-	<div class="wbcom-wrap wbcom-plugin-wrapper">    	
+	<div class="wbcom-wrap wbcom-plugin-wrapper">
 		<div class="wbcom_admin_header-wrapper">
 			<div id="wb_admin_plugin_name">
 				<?php esc_html_e( 'Themes & Extensions', 'woo-custom-my-account-page' ); ?>

@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				$myaccount_func    = instantiate_woo_custom_myaccount_functions();
 				$all_settings      = $myaccount_func->wcmp_settings_data();
 				$settings          = $all_settings['general_settings'];
-				$endpoints 		   = isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
+				$endpoints         = isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
 				$hidden_cls        = '';
 				if ( 'tab' === $settings['menu_style'] ) {
 					$hidden_cls = 'wcmp_option_hide';
@@ -95,7 +95,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<div class="wbcom-settings-section-options">
 							<select name="wcmp_general_settings[default_endpoint]" class="wcmp_select_field">
 								<?php
-								if ( !empty($endpoints) ) {
+								if ( ! empty( $endpoints ) ) {
 									foreach ( $endpoints as $slug => $menu_name ) {
 										?>
 										<option value="<?php echo esc_attr( $slug ); ?>" <?php selected( esc_attr( $settings['default_endpoint'] ), esc_attr( $slug ) ); ?>><?php echo esc_html( $menu_name['label'] ); ?></option>

@@ -6,8 +6,15 @@
  * @package Woo_Custom_My_Account_Page
  */
 
-is_array( $classes ) && $classes = implode( ' ', $classes );
-$target                          = ( isset( $options['target_blank'] ) && 'yes' === $options['target_blank'] ) ? 'target="_blank"' : '';
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+if ( is_array( $classes ) ) {
+	$classes = implode( ' ', $classes );
+}
+$target = ( isset( $options['target_blank'] ) && 'yes' === $options['target_blank'] ) ? 'target="_blank"' : '';
 ?>
 
 <li class="<?php echo esc_attr( $classes ); ?>">

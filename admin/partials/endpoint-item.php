@@ -6,15 +6,19 @@
  * @package Woo_Custom_My_Account_Page
  */
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 global $wp_roles;
 $user_roles                = $wp_roles->roles;
 $myaccount_func            = instantiate_woo_custom_myaccount_functions();
 $default_endpoint_settings = $myaccount_func->default_endpoint_settings();
 $editor_options            = array(
-	'media_buttons' => true,
 	'textarea_name' => 'wcmp_endpoints_settings[endpoints][' . esc_attr( $endpoint ) . '][content]',
-	'wpautop'       => true, // use wpautop.
-	'media_buttons' => true, // show insert/upload button(s).
+	'wpautop'       => true, // Use wpautop.
+	'media_buttons' => true, // Show insert/upload button(s).
 	'textarea_rows' => 15, // rows.
 	'tabindex'      => '',
 	'editor_css'    => '', // intended for extra styles for both visual and HTML editors buttons, needs to include the <style> tags, can use "scoped".
@@ -22,11 +26,11 @@ $editor_options            = array(
 	'teeny'         => false, // output the minimal editor config used in Press This.
 	'dfw'           => false, // replace the default fullscreen with DFW (needs specific DOM elements and css).
 	'tinymce'       => array(
-							'theme_advanced_buttons1' => 'formatselect,bold,italic,underline,|,bullist,numlist,|,link,unlink,|,undo,redo',
-							'theme_advanced_buttons2' => '',
-							'theme_advanced_buttons3' => '',
-							'theme_advanced_buttons4' => '',
-						),
+		'theme_advanced_buttons1' => 'formatselect,bold,italic,underline,|,bullist,numlist,|,link,unlink,|,undo,redo',
+		'theme_advanced_buttons2' => '',
+		'theme_advanced_buttons3' => '',
+		'theme_advanced_buttons4' => '',
+	),
 	'quicktags'     => true, // load Quicktags, can be used to pass settings directly to Quicktags using an array().
 );
 ?>
@@ -78,7 +82,7 @@ $editor_options            = array(
 			<table class="options-table form-table gh">
 				<tbody>
 					<?php
-					if ( 'dashboard' != $endpoint ) {
+					if ( 'dashboard' !== $endpoint ) {
 						?>
 					<tr>
 						<th>
@@ -160,7 +164,7 @@ $editor_options            = array(
 								if ( $user_roles ) {
 									foreach ( $user_roles as $usrrole_slug => $usrrole_arr ) {
 										if ( ! empty( $options['usr_roles'] ) ) {
-											if ( in_array( $usrrole_slug, $options['usr_roles'] ) ) {
+											if ( in_array( $usrrole_slug, $options['usr_roles'], true ) ) {
 												?>
 												<option value="<?php echo esc_attr( $usrrole_slug ); ?>" selected = "selected">
 													<?php echo esc_html( $usrrole_arr['name'] ); ?>

@@ -221,8 +221,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<p><?php esc_html_e( 'A: While the plugin doesn\'t have built-in conditional logic beyond user roles, you can use WordPress hooks and filters to add custom conditions. For developers:', 'woo-custom-my-account-page' ); ?></p>
 					<pre style="background: #f5f5f5; padding: 10px; border-radius: 4px; overflow-x: auto;">add_filter( 'woocommerce_account_menu_items', 'custom_menu_logic', 99 );
 function custom_menu_logic( $items ) {
-    // Your custom logic here
-    return $items;
+	// Your custom logic here
+	return $items;
 }</pre>
 				</div>
 

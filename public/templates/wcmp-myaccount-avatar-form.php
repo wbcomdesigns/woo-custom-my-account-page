@@ -6,6 +6,11 @@
  * @package Woo_Custom_My_Account_Page
  */
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 <div id="wcmp-avatar-form" data-width="500" data-height="280">
 	<div class="wcmp-popup-title">

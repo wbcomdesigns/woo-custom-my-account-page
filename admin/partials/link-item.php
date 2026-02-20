@@ -146,7 +146,7 @@ $user_roles = $wp_roles->roles;
 							if ( $user_roles ) {
 								foreach ( $user_roles as $usrrole_slug => $usrrole_arr ) {
 									if ( ! empty( $options['usr_roles'] ) ) {
-										if ( in_array( $usrrole_slug, $options['usr_roles'] ) ) {
+										if ( in_array( $usrrole_slug, $options['usr_roles'], true ) ) {
 											?>
 												<option value="<?php echo esc_attr( $usrrole_slug ); ?>" selected = "selected">
 												<?php echo esc_html( $usrrole_arr['name'] ); ?>
