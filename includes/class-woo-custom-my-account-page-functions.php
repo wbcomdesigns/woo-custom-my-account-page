@@ -103,7 +103,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// Register custom endpoints.
 			add_action( 'init', array( $this, 'wcmp_add_custom_endpoints' ), 21 );
 
-			add_action( 'wp_loaded', array( $this, 'wcmp_flush_rewrite_rules' ) );
 		}
 
 		/**
@@ -1148,11 +1147,13 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		/**
 		 * Flush rewrite rules.
 		 *
-		 * @since  1.0.0
-		 * @author Wbcom Designs
-		 * @access public
+		 * @since      1.0.0
+		 * @deprecated 1.5.2 Moved to activation hook and transient-based flush on settings save.
+		 * @author     Wbcom Designs
+		 * @access     public
 		 */
 		public function wcmp_flush_rewrite_rules() {
+			_deprecated_function( __METHOD__, '1.5.2', 'Woo_Custom_My_Account_Page_Activator::activate() or wcmp_schedule_flush_rewrite_on_endpoint_save()' );
 			flush_rewrite_rules();
 		}
 	}

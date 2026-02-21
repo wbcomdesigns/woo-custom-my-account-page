@@ -71,18 +71,24 @@ if ( ! defined( 'WCMP_PLUGIN_URL' ) ) {
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-woo-custom-my-account-page.php';
 
-/**
- * Plugin Update Checker.
- * Load the plugin update checker library.
- */
-require plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php';
-use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
-
-$my_update_checker = PucFactory::buildUpdateChecker(
-	'https://demos.wbcomdesigns.com/exporter/free-plugins/woo-custom-my-account-page.json',
-	__FILE__,
-	'woo-custom-my-account-page'
+// EDD Software Licensing SDK.
+add_action(
+	'edd_sl_sdk_registry',
+	function ( $registry ) {
+		$registry->register(
+			array(
+				'id'      => 'woo-custom-my-account-page',
+				'url'     => 'https://wbcomdesigns.com',
+				'item_id' => 2, // TODO: Replace with actual EDD download ID.
+				'version' => WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION,
+				'file'    => WCMP_PLUGIN_FILE,
+			)
+		);
+	}
 );
+if ( file_exists( __DIR__ . '/vendor/edd-sl-sdk/edd-sl-sdk.php' ) ) {
+	require_once __DIR__ . '/vendor/edd-sl-sdk/edd-sl-sdk.php';
+}
 
 /**
  * Begins execution of the plugin.

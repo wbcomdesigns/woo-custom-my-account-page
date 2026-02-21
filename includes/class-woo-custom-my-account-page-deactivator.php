@@ -29,5 +29,7 @@ class Woo_Custom_My_Account_Page_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
+		// Flush rewrite rules to remove custom endpoints on deactivation.
+		flush_rewrite_rules();
 	}
 }

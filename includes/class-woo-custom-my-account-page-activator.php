@@ -29,5 +29,8 @@ class Woo_Custom_My_Account_Page_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
+		// Set a transient flag so rewrite rules are flushed on the next page load
+		// (after custom endpoints have been registered via init hook).
+		set_transient( 'wcmp_flush_rewrite_rules', true, 60 );
 	}
 }

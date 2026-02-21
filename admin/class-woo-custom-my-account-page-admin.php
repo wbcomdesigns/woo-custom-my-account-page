@@ -327,13 +327,13 @@ class Woo_Custom_My_Account_Page_Admin {
 	 */
 	public function wcmp_add_field_ajax() {
 
-		// Add to beginning of admin AJAX methods.
+		// Verify nonce first (must be present and valid).
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax_nonce' ) ) {
+			wp_die( esc_html__( 'Security check failed', 'woo-custom-my-account-page' ) );
+		}
+		// Capability check.
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
 			wp_die( esc_html__( 'Insufficient permissions', 'woo-custom-my-account-page' ) );
-		}
-		// Proper nonce verification.
-		if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax_nonce' ) ) {
-			wp_die( esc_html__( 'Security check failed', 'woo-custom-my-account-page' ) );
 		}
 
 		// Validate request.
