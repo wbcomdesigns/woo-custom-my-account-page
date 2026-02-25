@@ -837,7 +837,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @author Wbcom Designs
 		 */
 		public function save_is_my_account() {
-			update_option( 'wcmp_is_my_account', $this->is_myaccount );
+			update_option( 'wcmp_is_my_account', $this->is_myaccount, false );
 		}
 
 		/**
@@ -876,7 +876,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			if ( ! is_wc_endpoint_url( $default_endpoint ) ) {
 				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				if ( ! get_option( 'wcmp_is_my_account', true ) && ! isset( $_REQUEST['elementor-preview'] ) && $current_endpoint !== $default_endpoint && ! $this->hide_by_usr_roles( $restricted_roles, $user_role ) ) {
-					update_option( 'wcmp_is_my_account', false );
+					update_option( 'wcmp_is_my_account', false, false );
 					if ( 'dashboard' !== $default_endpoint ) {
 						$url = wc_get_endpoint_url( $default_endpoint, '', $url );
 					}
