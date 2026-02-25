@@ -1,8 +1,7 @@
 /* Minimal FontAwesome subset for WooCommerce Custom My Account Page */
-/* Only includes the 25 icons actually used by this plugin */
-@font-face{font-family:"Font Awesome 6 Free";font-style:normal;font-weight:900;font-display:block;src:url(../webfonts/fa-solid-900.woff2) format("woff2"),url(../webfonts/fa-solid-900.ttf) format("truetype")}
-.fa,.fas{font-family:"Font Awesome 6 Free";font-weight:900}
-.fa,.fas{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-variant:normal;line-height:1;text-rendering:auto}
+/* Scoped to plugin container to avoid conflicts with theme FA versions */
+@font-face{font-family:"WCMP Icons";font-style:normal;font-weight:900;font-display:block;src:url(../webfonts/fa-solid-900.woff2) format("woff2"),url(../webfonts/fa-solid-900.ttf) format("truetype")}
+.wcmp-myaccount-template .fa,.wcmp-myaccount-template .fas,.wcmp-endpoints-wrap .fa,.wcmp-endpoints-wrap .fas{font-family:"WCMP Icons" !important;font-weight:900;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-variant:normal;line-height:1;text-rendering:auto}
 .fa-address-card:before{content:"\f2bb"}
 .fa-chevron-down:before{content:"\f078"}
 .fa-chevron-up:before{content:"\f077"}

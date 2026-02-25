@@ -64,25 +64,13 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	public function enqueue_styles() {
 
-		// Check if Font Awesome is already loaded.
-		global $wp_styles;
-		$font_awesome_loaded = false;
-
 		if ( ! is_account_page() ) {
 			return;
 		}
 
-		foreach ( $wp_styles->registered as $handle => $style ) {
-			if ( false !== strpos( $style->src, 'font-awesome' ) || false !== strpos( $style->src, 'fontawesome' ) ) {
-				$font_awesome_loaded = true;
-				break;
-			}
-		}
-
-		if ( ! $font_awesome_loaded ) {
-			// Use minimal Font Awesome subset (only 19 icons we actually use).
-			wp_enqueue_style( 'wcmp-font-awesome', plugin_dir_url( __DIR__ ) . 'assets/vendor/font-awesome/css/wcmp-icons.min.css', array(), '6.7.2' );
-		}
+		// Always load our scoped icon font — uses custom "WCMP Icons" font-family
+		// scoped to .wcmp-myaccount-template so it never conflicts with theme FA.
+		wp_enqueue_style( 'wcmp-font-awesome', plugin_dir_url( __DIR__ ) . 'assets/vendor/font-awesome/css/wcmp-icons.min.css', array(), '6.7.2' );
 
 		wp_register_style( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-public.css', array(), $this->version );
 		wp_enqueue_style( 'wcmp-frontend' );
