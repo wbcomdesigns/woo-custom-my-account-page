@@ -1,0 +1,16 @@
+.git
+.gitignore
+.gitattributes
+.editorconfig
+node_modules
+package.json
+package-lock.json
+gruntfile.js
+CLAUDE.md
+claude.md
+CLAUDE.md
+BUGFIX-LOG.md
+CHANGELOG.md
+market-audit.md
+competitive-analysis.md
+docs

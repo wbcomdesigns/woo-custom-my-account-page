@@ -102,7 +102,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 			// Register custom endpoints.
 			add_action( 'init', array( $this, 'wcmp_add_custom_endpoints' ), 21 );
-
 		}
 
 		/**
