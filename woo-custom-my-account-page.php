@@ -79,7 +79,7 @@ add_action(
 			array(
 				'id'      => 'woo-custom-my-account-page',
 				'url'     => 'https://wbcomdesigns.com',
-				'item_id' => 2, // TODO: Replace with actual EDD download ID.
+				'item_id' => 110615,
 				'version' => WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION,
 				'file'    => WCMP_PLUGIN_FILE,
 			)
