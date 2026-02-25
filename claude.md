@@ -8,7 +8,7 @@ This file contains important reminders and context for Claude Code when working 
 
 **Plugin Name:** Custom My Account Page for WooCommerce
 **Slug:** woo-custom-my-account-page
-**Version:** 1.5.2
+**Version:** 1.6.0
 **Prefix:** WCMP / wcmp
 **License:** GPL-2.0+
 **Author:** Wbcom Designs
@@ -112,9 +112,9 @@ The issue has been resolved.<br><br>
 
 | Date | Version | Change |
 |------|---------|--------|
-| 2025-01-19 | 1.5.0 | Major relaunch: security fixes, admin UI overhaul, PUC integration, FAQ tab, comprehensive docs |
+| 2026-02-25 | 1.6.0 | Icon font fix, code flow fixes, dead code removal, EDD SL SDK, market audit |
+| 2025-01-19 | 1.5.0 | Major relaunch: security fixes, admin UI overhaul, FAQ tab, comprehensive docs |
 | 2025-11-11 | 1.4.1 | Fixed groups fatal error, link-item warnings, duplicate endpoints, added FAQ |
-| 2024-11-10 | 1.4.1 | Fixed content saving, security vulnerabilities, deprecated extract() |
 | 2024-10-15 | 1.4.0 | PHP 8.2 compat, default endpoint fix, redirect fix |
 
 ### Pending Issues
@@ -146,4 +146,4 @@ The issue has been resolved.<br><br>
 
 ---
 
-*Last Updated: 2026-02-21*
+*Last Updated: 2026-02-25*
