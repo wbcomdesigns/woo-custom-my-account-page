@@ -184,7 +184,7 @@ class Woo_Custom_My_Account_Page {
 		$this->loader->add_action( 'in_admin_header', $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' );
 
 		$this->loader->add_action( 'update_option_wcmp_endpoints_settings', $plugin_admin, 'wcmp_schedule_flush_rewrite_on_endpoint_save' );
-		$this->loader->add_action( 'init', $plugin_admin, 'wcmp_maybe_flush_rewrite_rules' );
+		$this->loader->add_action( 'init', $plugin_admin, 'wcmp_maybe_flush_rewrite_rules', 30 );
 	}
 
 	/**

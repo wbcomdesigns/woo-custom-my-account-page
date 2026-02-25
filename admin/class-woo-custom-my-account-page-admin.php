@@ -123,6 +123,9 @@ class Woo_Custom_My_Account_Page_Admin {
 	public function enqueue_scripts() {
 
 		$screen = get_current_screen();
+		if ( ! $screen ) {
+			return;
+		}
 		if ( 'wb-plugins_page_woo-custom-myaccount-page' === $screen->base ) {
 			if ( ! wp_script_is( 'jquery-ui', 'enqueued' ) ) {
 				wp_enqueue_script( 'jquery-ui' );

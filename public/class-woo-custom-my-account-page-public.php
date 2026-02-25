@@ -302,7 +302,7 @@ class Woo_Custom_My_Account_Page_Public {
 	 * @author Wbcom Designs
 	 */
 	public function wcmp_print_avatar_form_ajax() {
-		if ( ! is_ajax() ) {
+		if ( ! is_ajax() || ! is_user_logged_in() ) {
 			return;
 		}
 		// Get the avatar form HTML.
@@ -548,7 +548,7 @@ class Woo_Custom_My_Account_Page_Public {
 		$functions = instantiate_woo_custom_myaccount_functions();
 		// Fixed: get_menu_items_options() doesn't exist, using wcmp_settings_data() instead.
 		$all_settings = $functions->wcmp_settings_data();
-		$options      = isset( $all_settings['endpoints'] ) ? $all_settings['endpoints'] : array();
+		$options      = isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
 
 		if ( isset( $options[ $endpoint ] ) && ! empty( $options[ $endpoint ]['class'] ) ) {
 			$classes[] = $options[ $endpoint ]['class'];

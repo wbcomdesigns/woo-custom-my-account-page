@@ -681,7 +681,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$position         = $general_settings['sidebar_position'];
 			$tab              = 'tab' === $general_settings['menu_style'] ? '-tab' : '';
 			$endpoints        = $this->menu_endpoints;
-			ob_start();
 			?>
 				<div id="my-account-menu<?php echo esc_attr( $tab ); ?>" class="wcmp-myaccount-template position-<?php echo esc_html( $position ); ?>">
 					<div class="wcmp-myaccount-template-inner">
@@ -796,7 +795,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			}
 
 			// Check in child and add class active.
-			foreach ( $options['children'] as $child_key => $child ) {
+			foreach ( isset( $options['children'] ) ? $options['children'] : array() as $child_key => $child ) {
 				if ( isset( $child['slug'] ) && $child_key === $current && '' !== WC()->query->get_current_endpoint() ) {
 					$options['open'] = 'yes';
 					$classes[]       = 'active';
