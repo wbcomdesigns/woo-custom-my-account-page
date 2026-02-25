@@ -24,9 +24,8 @@ Customizes the WooCommerce "My Account" page layout. Users can add custom endpoi
 - **Admin Class:** `Woo_Custom_My_Account_Page_Admin` - Settings pages, AJAX handlers, endpoint management
 - **Public Class:** `Woo_Custom_My_Account_Page_Public` - Frontend rendering, avatar upload/display, styles
 - **Functions Class:** `Woo_Custom_My_Account_Page_Functions` (singleton) - Core logic, endpoint registration, menu rendering, WC integration
-- **License Class:** `WCMP_License` - EDD-based license system (prepared but not actively used in free version)
 - **Error Handler:** `WCMP_Error_Handler` - Stability improvements
-- **Update Checker:** Plugin Update Checker (PUC v5p6) pointing to `demos.wbcomdesigns.com`
+- **Updates:** EDD SL SDK v1.0.2 (vendor/edd-sl-sdk/) — free updates without license key, license key support can be added later
 
 ### Admin Settings Tabs
 1. **Welcome** - Help resources, documentation links
@@ -78,7 +77,7 @@ Customizes the WooCommerce "My Account" page layout. Users can add custom endpoi
 | `admin/partials/wcmp-general-settings.php` | General settings form |
 | `admin/partials/wcmp-style-settings.php` | Style settings form |
 | `admin/partials/wcmp-faq.php` | FAQ tab content |
-| `license/class-wcmp-license.php` | EDD license management (prepared for Pro) |
+| `vendor/edd-sl-sdk/` | EDD SL SDK v1.0.2 — handles updates and optional license keys |
 
 ---
 
