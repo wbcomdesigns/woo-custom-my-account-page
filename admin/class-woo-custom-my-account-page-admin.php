@@ -9,6 +9,8 @@
  * @subpackage Woo_Custom_My_Account_Page/admin
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -337,7 +339,7 @@ class Woo_Custom_My_Account_Page_Admin {
 		}
 
 		// Validate request.
-		if ( ! isset( $_REQUEST['action'] ) || 'wcmp_add_field' !== $_REQUEST['action'] || ! isset( $_REQUEST['field_name'] ) || ! isset( $_REQUEST['target'] ) ) {
+		if ( ! isset( $_REQUEST['action'] ) || 'wcmp_add_field' !== sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) || ! isset( $_REQUEST['field_name'] ) || ! isset( $_REQUEST['target'] ) ) {
 			wp_die( esc_html__( 'Invalid request', 'woo-custom-my-account-page' ) );
 		}
 

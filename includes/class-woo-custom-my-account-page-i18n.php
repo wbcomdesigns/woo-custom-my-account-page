@@ -12,6 +12,8 @@
  * @subpackage Woo_Custom_My_Account_Page/includes
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Define the internationalization functionality.
  *

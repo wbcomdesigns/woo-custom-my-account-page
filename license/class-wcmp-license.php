@@ -107,7 +107,7 @@ class WCMP_License {
 	 * Activate license
 	 */
 	public function activate_license() {
-		if ( ! isset( $_POST['wcmp_license_activate'] ) ) {
+		if ( ! isset( $_POST['wcmp_license_activate'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified below.
 			return;
 		}
 
@@ -192,7 +192,7 @@ class WCMP_License {
 	 * Deactivate license
 	 */
 	public function deactivate_license() {
-		if ( ! isset( $_POST['wcmp_license_deactivate'] ) ) {
+		if ( ! isset( $_POST['wcmp_license_deactivate'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified below.
 			return;
 		}
 

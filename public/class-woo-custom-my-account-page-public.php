@@ -221,7 +221,7 @@ class Woo_Custom_My_Account_Page_Public {
 		if ( ! in_array( $media_id, $medias, true ) ) {
 			$medias[] = $media_id;
 			// Then save.
-			update_option( 'wcmp-users-avatar-ids', $medias );
+			update_option( 'wcmp-users-avatar-ids', $medias, false );
 		}
 
 		// Save user meta.
@@ -279,7 +279,7 @@ class Woo_Custom_My_Account_Page_Public {
 			}
 			// Re-index array and save.
 			$medias = array_values( $medias );
-			update_option( 'wcmp-users-avatar-ids', $medias );
+			update_option( 'wcmp-users-avatar-ids', $medias, false );
 		}
 
 		// Then delete user meta.

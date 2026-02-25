@@ -8,7 +8,7 @@ This file contains important reminders and context for Claude Code when working 
 
 **Plugin Name:** Custom My Account Page for WooCommerce
 **Slug:** woo-custom-my-account-page
-**Version:** 1.5.1
+**Version:** 1.5.2
 **Prefix:** WCMP / wcmp
 **License:** GPL-2.0+
 **Author:** Wbcom Designs

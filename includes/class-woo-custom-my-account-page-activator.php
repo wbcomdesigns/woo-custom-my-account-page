@@ -9,6 +9,8 @@
  * @subpackage Woo_Custom_My_Account_Page/includes
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Fired during plugin activation.
  *

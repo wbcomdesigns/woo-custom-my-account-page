@@ -4,7 +4,7 @@ Donate link: https://wbcomdesigns.com
 Tags: woocommerce, my account, custom endpoints, account page, user roles
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -109,6 +109,13 @@ Go to **WB Plugins > Custom My Account > General** settings. Under the **Menu St
 6. Frontend My Account page in tab layout mode with Font Awesome icons on each tab
 
 == Changelog ==
+
+= 1.5.2 =
+* Security: Sanitize all $_REQUEST input in admin AJAX handler and activation redirect
+* Security: Add ABSPATH direct access guards to 4 include files
+* Performance: Disable autoload for wcmp-users-avatar-ids option (grows with users)
+* Fix: Use strict comparison operators in activation redirect
+* Code: Add phpcs ignore annotations for standard isset-before-nonce patterns
 
 = 1.5.1 =
 * Update: Full WordPress Coding Standards (WPCS) compliance
