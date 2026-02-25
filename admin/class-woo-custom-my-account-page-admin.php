@@ -549,24 +549,7 @@ class Woo_Custom_My_Account_Page_Admin {
 	public function wcmp_style_settings_callback( $input ) {
 		$sanitized = array();
 
-		// List of color fields that need sanitization (old field names).
-		$color_fields = array(
-			'background-color',
-			'menu-background-color',
-			'text-color',
-			'text-hover',
-			'menu-text-color',
-			'menu-text-hover',
-		);
-
-		// Sanitize each color field.
-		foreach ( $color_fields as $field ) {
-			if ( isset( $input[ $field ] ) ) {
-				$sanitized[ $field ] = sanitize_hex_color( $input[ $field ] );
-			}
-		}
-
-		// Sanitize actual form color fields (from wcmp-style-settings.php).
+		// Sanitize color fields (from wcmp-style-settings.php).
 		$actual_color_fields = array(
 			'menu_item_color',
 			'menu_item_hover_color',
@@ -661,52 +644,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			}
 		}
 
-		// Sanitize groups array.
-		if ( isset( $input['groups'] ) && is_array( $input['groups'] ) ) {
-			foreach ( $input['groups'] as $key => $group ) {
-				// Skip if this group is marked for removal.
-				if ( in_array( $key, $to_remove, true ) ) {
-					continue;
-				}
-
-				$sanitized['groups'][ $key ] = array(
-					'active'    => isset( $group['active'] ) ? sanitize_text_field( $group['active'] ) : '',
-					'label'     => isset( $group['label'] ) ? sanitize_text_field( $group['label'] ) : '',
-					'class'     => isset( $group['class'] ) ? $this->sanitize_css_classes( $group['class'] ) : '',
-					'icon'      => isset( $group['icon'] ) ? sanitize_text_field( $group['icon'] ) : '',
-					'type'      => isset( $group['type'] ) ? sanitize_text_field( $group['type'] ) : 'group',
-					'usr_roles' => isset( $group['usr_roles'] ) && is_array( $group['usr_roles'] ) ? array_map( 'sanitize_text_field', $group['usr_roles'] ) : array(),
-					'items'     => isset( $group['items'] ) && is_array( $group['items'] ) ? array_map( 'sanitize_text_field', $group['items'] ) : array(),
-				);
-			}
-		}
-
-		// Sanitize links array.
-		if ( isset( $input['links'] ) && is_array( $input['links'] ) ) {
-			foreach ( $input['links'] as $key => $link ) {
-				// Skip if this link is marked for removal.
-				if ( in_array( $key, $to_remove, true ) ) {
-					continue;
-				}
-
-				$sanitized['links'][ $key ] = array(
-					'active'    => isset( $link['active'] ) ? sanitize_text_field( $link['active'] ) : '',
-					'label'     => isset( $link['label'] ) ? sanitize_text_field( $link['label'] ) : '',
-					'url'       => isset( $link['url'] ) ? esc_url_raw( $link['url'] ) : '',
-					'class'     => isset( $link['class'] ) ? $this->sanitize_css_classes( $link['class'] ) : '',
-					'icon'      => isset( $link['icon'] ) ? sanitize_text_field( $link['icon'] ) : '',
-					'type'      => isset( $link['type'] ) ? sanitize_text_field( $link['type'] ) : 'link',
-					'usr_roles' => isset( $link['usr_roles'] ) && is_array( $link['usr_roles'] ) ? array_map( 'sanitize_text_field', $link['usr_roles'] ) : array(),
-				);
-			}
-		}
-
-		// Sanitize order array (legacy field).
-		if ( isset( $input['order'] ) ) {
-			$sanitized['order'] = sanitize_text_field( $input['order'] );
-		}
-
-		// Sanitize endpoints-order field (actual field used for drag-and-drop ordering).
+		// Sanitize endpoints-order field (used for drag-and-drop ordering).
 		if ( isset( $input['endpoints-order'] ) ) {
 			$sanitized['endpoints-order'] = sanitize_text_field( $input['endpoints-order'] );
 		}

@@ -651,20 +651,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		}
 
 		/**
-		 * Hide field based on current user role (deprecated wrapper).
-		 *
-		 * @access protected
-		 * @since  1.0.0
-		 * @author Wbcom Designs
-		 * @param  array $roles WordPress user roles.
-		 * @param  array $current_user_role The current user role.
-		 * @return boolean
-		 */
-		protected function _hide_by_usr_roles( $roles, $current_user_role ) { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-			return $this->hide_by_usr_roles( $roles, $current_user_role );
-		}
-
-		/**
 		 * Add woocommerce menu on frontend woocommerce myaccount page.
 		 *
 		 * @access public
@@ -1142,18 +1128,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			}
 		}
 
-		/**
-		 * Flush rewrite rules.
-		 *
-		 * @since      1.0.0
-		 * @deprecated 1.5.2 Moved to activation hook and transient-based flush on settings save.
-		 * @author     Wbcom Designs
-		 * @access     public
-		 */
-		public function wcmp_flush_rewrite_rules() {
-			_deprecated_function( __METHOD__, '1.5.2', 'Woo_Custom_My_Account_Page_Activator::activate() or wcmp_schedule_flush_rewrite_on_endpoint_save()' );
-			flush_rewrite_rules();
-		}
 	}
 }
 
