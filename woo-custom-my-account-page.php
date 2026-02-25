@@ -8,7 +8,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Custom My Account Page for WooCommerce
- * Plugin URI:        https://wbcomdesigns.com/downloads/custom-my-account-page-for-woocommerce/
+ * Plugin URI:        https://wbcomdesigns.com/downloads/woocommerce-custom-my-account-page/
  * Description:       This plugin helps you to customize the layout of the "My Account" page, adds new endpoints, groups, links and manage its content easily.
  * Version:           1.5.2
  * Author:            Wbcom Designs
