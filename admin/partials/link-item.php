@@ -18,22 +18,27 @@ $user_roles = $wp_roles->roles;
 
 	<label class="on-off-endpoint" for="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_active' ); ?>">
 		<input type="checkbox" class="hide-show-check" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][active]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_active' ); ?>" value="<?php echo esc_attr( $link ); ?>" <?php checked( esc_attr( $options['active'] ), $link ); ?>/>
-		<i class="fa fa-power-off"></i>
+		<span class="dashicons dashicons-visibility"></span>
 	</label>
 
 	<div class="open-options field-type">
-		<span>
+		<span class="wcmp-type-badge wcmp-type-link">
 			<?php
 			esc_html_e( 'Link', 'woo-custom-my-account-page' );
 			?>
 		</span>
-		<i class="fa fa-chevron-down"></i>
+		<span class="dashicons dashicons-arrow-down-alt2"></span>
 	</div>
 
 	<div class="dd-handle endpoint-content">
 
 		<!-- Header -->
 		<div class="endpoint-header">
+			<?php
+			$icon_class = isset( $options['icon'] ) ? $options['icon'] : '';
+			$dashicon   = Woo_Custom_My_Account_Page_Admin::wcmp_fa_to_dashicon( $icon_class );
+			?>
+			<span class="wcmp-icon-preview dashicons dashicons-<?php echo esc_attr( $dashicon ); ?>"></span>
 			<?php echo esc_html( $options['label'] ); ?>
 			<span class="sub-item-label">
 				<i>

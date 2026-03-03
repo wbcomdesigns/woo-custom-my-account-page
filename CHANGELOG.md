@@ -2,6 +2,46 @@
 
 All notable changes to Custom My Account Page for WooCommerce will be documented in this file.
 
+## [1.6.0] - 2026-03-03
+
+### Added
+- **Self-hosted Updates**: Integrated EDD Software Licensing SDK for automatic updates from wbcomdesigns.com
+- **License Tab**: Added license management tab in admin settings
+- **Admin Icon Previews**: Each endpoint row now displays a preview of its assigned icon in the list view
+- **Type Badges**: Color-coded badges distinguish Endpoints (blue), Groups (purple), and Links (green) in the admin list
+- **FA-to-Dashicon Mapping**: Helper method maps 35+ Font Awesome classes to WordPress Dashicons for admin display
+- **Distribution Packaging**: Added .distignore for clean zip file generation
+
+### Fixed
+- **Admin Broken Icons**: Replaced Font Awesome icons with WordPress Dashicons in admin Endpoints tab — FA CSS was only loaded on the frontend, causing icons to render as squares in wp-admin
+- **Dashboard/Logout Icons**: Scoped icon font to plugin container prevents conflicts when themes load Font Awesome 5
+- **Rewrite Rules Timing**: Flush priority changed to run after custom endpoint registration
+- **Custom CSS Classes**: Fixed wrong settings key preventing custom classes from being applied to menu items
+- **Output Buffer Leak**: Removed orphaned ob_start() in menu rendering that was never flushed
+- **Add Endpoint Modal**: Fixed missing "Name" label (esc_html_x not echoed)
+- **Plugin URI**: Corrected to match actual EDD product page URL
+- **Avatar AJAX**: Form endpoint now requires user to be logged in
+- **Admin Script Enqueue**: Added null guard to get_current_screen()
+- **Group Children**: Added isset() guard on children array in group endpoint rendering
+
+### Changed
+- **Admin Endpoints Tab**: Toggle, chevron, spinner, and status icons all use native WordPress Dashicons
+- **Admin JS**: Chevron toggle uses Dashicons classes instead of Font Awesome
+- **Localized Script Icons**: Check and error icons passed to JS now use Dashicons markup
+- **Tested Up To**: WordPress 6.9.1
+
+### Security
+- Sanitize all $_REQUEST input in activation redirect
+- Added ABSPATH direct access guards to all include files
+
+### Removed
+- Dead WCMP_License class (315 lines) replaced by EDD SL SDK
+- 263 lines of unused code from error handler, sanitizers, and deprecated methods
+- Legacy groups/links/order sanitizer blocks that no form submits
+- Deprecated _hide_by_usr_roles() and wcmp_flush_rewrite_rules() methods
+
+---
+
 ## [1.5.0] - 2025-01-19
 
 ### Major Release - Complete Plugin Relaunch

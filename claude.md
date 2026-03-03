@@ -112,7 +112,7 @@ The issue has been resolved.<br><br>
 
 | Date | Version | Change |
 |------|---------|--------|
-| 2026-02-25 | 1.6.0 | Icon font fix, code flow fixes, dead code removal, EDD SL SDK, market audit |
+| 2026-03-03 | 1.6.0 | EDD SL SDK, license tab, admin Dashicons fix, icon previews, type badges, dead code removal |
 | 2025-01-19 | 1.5.0 | Major relaunch: security fixes, admin UI overhaul, FAQ tab, comprehensive docs |
 | 2025-11-11 | 1.4.1 | Fixed groups fatal error, link-item warnings, duplicate endpoints, added FAQ |
 | 2024-10-15 | 1.4.0 | PHP 8.2 compat, default endpoint fix, redirect fix |

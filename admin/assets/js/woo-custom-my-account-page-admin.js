@@ -62,7 +62,7 @@ jQuery( document ).ready(
 
 				var item = $( this ).closest( '.endpoint' );
 
-				$( this ).find( 'i' ).toggleClass( 'fa-chevron-down' ).toggleClass( 'fa-chevron-up' );
+				$( this ).find( '.dashicons' ).toggleClass( 'dashicons-arrow-down-alt2' ).toggleClass( 'dashicons-arrow-up-alt2' );
 
 				item.find( '.endpoint-content' ).first().toggleClass( 'dd-nodrag' );
 				item.find( '.endpoint-options' ).first().slideToggle();

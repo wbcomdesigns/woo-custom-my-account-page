@@ -156,8 +156,8 @@ class Woo_Custom_My_Account_Page_Admin {
 						'nonce'        => wp_create_nonce( 'ajax_nonce' ),
 						'show_lbl'     => esc_html__( 'Show', 'woo-custom-my-account-page' ),
 						'hide_lbl'     => esc_html__( 'Hide', 'woo-custom-my-account-page' ),
-						'checked'      => '<i class="fa fa-check"></i>',
-						'error_icon'   => '<i class="fa fa-times"></i>',
+						'checked'      => '<span class="dashicons dashicons-yes"></span>',
+						'error_icon'   => '<span class="dashicons dashicons-no"></span>',
 						'empty_field'  => esc_html__( 'This field is required.', 'woo-custom-my-account-page' ),
 						'remove_alert' => esc_html__( 'Are you sure that you want to delete this endpoint?', 'woo-custom-my-account-page' ),
 					)
@@ -238,6 +238,10 @@ class Woo_Custom_My_Account_Page_Admin {
 			if ( 'email' === $wss_tab ) {
 				$page = 'wc-settings';
 			}
+			if ( 'wcmp-license' === $wss_tab ) {
+				$tab_html .= '<li><a id="' . esc_attr( $wss_tab ) . '" class="nav-tab ' . esc_attr( $class ) . '" href="' . esc_url( admin_url( 'admin.php?page=woo-custom-myaccount-page&tab=wcmp-license' ) ) . '">' . esc_html( $wss_name ) . '</a></li>';
+				continue;
+			}
 			$tab_html .= '<li><a id="' . $wss_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $wss_tab . '">' . $wss_name . '</a></li>';
 		}
 		$tab_html .= '</div></ul></div>';
@@ -266,6 +270,9 @@ class Woo_Custom_My_Account_Page_Admin {
 		add_settings_section( 'wcmp-endpoints', ' ', array( $this, 'wcmp_endpoints_settings_content' ), 'wcmp-endpoints' );
 		$this->plugin_settings_tabs['wcmp-faq'] = esc_html__( 'FAQ', 'woo-custom-my-account-page' );
 		add_settings_section( 'wcmp-faq', ' ', array( $this, 'wcmp_faq_content' ), 'wcmp-faq' );
+
+		$this->plugin_settings_tabs['wcmp-license'] = esc_html__( 'License', 'woo-custom-my-account-page' );
+		add_settings_section( 'wcmp-license', ' ', array( $this, 'wcmp_license_settings_content' ), 'wcmp-license' );
 	}
 
 	/**
@@ -321,6 +328,20 @@ class Woo_Custom_My_Account_Page_Admin {
 	 */
 	public function wcmp_faq_content() {
 		require_once 'partials/wcmp-faq.php';
+	}
+
+	/**
+	 * License tab content — renders EDD SL SDK license control inline.
+	 *
+	 * @since  1.7.0
+	 * @access public
+	 */
+	public function wcmp_license_settings_content() {
+		if ( ! class_exists( 'EasyDigitalDownloads\Updater\Registry' ) ) {
+			echo '<p>' . esc_html__( 'License system is not available.', 'woo-custom-my-account-page' ) . '</p>';
+			return;
+		}
+		require_once 'partials/wcmp-license-settings.php';
 	}
 
 	/**
@@ -396,6 +417,60 @@ class Woo_Custom_My_Account_Page_Admin {
 				'field' => $field,
 			)
 		);
+	}
+
+	/**
+	 * Map a Font Awesome class name to its Dashicons equivalent for admin preview.
+	 *
+	 * @since  1.7.0
+	 * @param  string $fa_class The Font Awesome icon class (e.g. 'fa-shopping-cart').
+	 * @return string The Dashicons class name (without 'dashicons-' prefix).
+	 */
+	public static function wcmp_fa_to_dashicon( $fa_class ) {
+		$fa_class = str_replace( array( 'fa ', 'fa-' ), '', trim( $fa_class ) );
+
+		$map = array(
+			'tachometer'       => 'dashboard',
+			'dashboard'        => 'dashboard',
+			'shopping-cart'    => 'cart',
+			'tag'              => 'tag',
+			'download'         => 'download',
+			'address-card'     => 'id-alt',
+			'address-card-o'   => 'id-alt',
+			'vcard'            => 'id-alt',
+			'edit'             => 'edit',
+			'pencil-square-o'  => 'edit',
+			'sign-out'         => 'migrate',
+			'link'             => 'admin-links',
+			'cubes'            => 'screenoptions',
+			'heart'            => 'heart',
+			'star'             => 'star-filled',
+			'user'             => 'admin-users',
+			'cog'              => 'admin-generic',
+			'cogs'             => 'admin-generic',
+			'home'             => 'admin-home',
+			'envelope'         => 'email',
+			'bell'             => 'bell',
+			'bookmark'         => 'bookmark',
+			'calendar'         => 'calendar-alt',
+			'credit-card'      => 'money-alt',
+			'file'             => 'media-default',
+			'file-text'        => 'media-text',
+			'gift'             => 'tickets-alt',
+			'list'             => 'editor-ul',
+			'map-marker'       => 'location',
+			'power-off'        => 'visibility',
+			'question-circle'  => 'editor-help',
+			'refresh'          => 'update',
+			'shield'           => 'shield',
+			'shopping-bag'     => 'cart',
+			'thumbs-up'        => 'thumbs-up',
+			'trophy'           => 'awards',
+			'truck'            => 'car',
+			'wrench'           => 'admin-tools',
+		);
+
+		return isset( $map[ $fa_class ] ) ? $map[ $fa_class ] : 'marker';
 	}
 
 	/**

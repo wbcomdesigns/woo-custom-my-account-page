@@ -38,19 +38,24 @@ $editor_options            = array(
 <li class="dd-item endpoint" data-id="<?php echo esc_attr( $endpoint ); ?>" data-type="endpoint">
 	<label class="on-off-endpoint" for="<?php echo esc_attr( 'wcmp_endpoint_' . esc_attr( $endpoint ) . '_active' ); ?>">
 		<input type="checkbox" class="hide-show-check" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][active]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_active' ); ?>" value="<?php echo esc_attr( $endpoint ); ?>" <?php checked( esc_attr( $options['active'] ), $endpoint ); ?>>
-		<i class="fa fa-power-off"></i>
+		<span class="dashicons dashicons-visibility"></span>
 	</label>
 	<div class="open-options field-type">
-		<span>
+		<span class="wcmp-type-badge wcmp-type-endpoint">
 			<?php
 			esc_html_e( 'Endpoint', 'woo-custom-my-account-page' );
 			?>
 		</span>
-		<i class="fa fa-chevron-down"></i>
+		<span class="dashicons dashicons-arrow-down-alt2"></span>
 	</div>
 	<div class="dd-handle endpoint-content">
 		<!-- Header -->
 		<div class="endpoint-header">
+			<?php
+			$icon_class = isset( $options['icon'] ) ? $options['icon'] : '';
+			$dashicon   = Woo_Custom_My_Account_Page_Admin::wcmp_fa_to_dashicon( $icon_class );
+			?>
+			<span class="wcmp-icon-preview dashicons dashicons-<?php echo esc_attr( $dashicon ); ?>"></span>
 			<?php echo esc_html( $options['label'] ); ?>
 			<span class="sub-item-label">
 				<i>

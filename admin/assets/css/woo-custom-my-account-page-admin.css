@@ -14,6 +14,9 @@
 .nav-tab-wrapper ul li a#wcmp-faq.nav-tab:before {
     content: "\f125";
 }
+.nav-tab-wrapper ul li a#wcmp-license.nav-tab:before {
+    content: "\f112";
+}
 .form-table.wcmp_general_settings span.select2-selection,
 .form-table.wcmp_general_settings .select2-container--default .select2-selection__arrow {
     height: 38px;
@@ -209,10 +212,10 @@
     margin-left: -25px;
     opacity: 0;
 }
-.on-off-endpoint input[type="checkbox"] ~ .fa {
+.on-off-endpoint input[type="checkbox"] ~ .dashicons {
     opacity: 0.2;
 }
-.on-off-endpoint input[type="checkbox"]:checked ~ .fa {
+.on-off-endpoint input[type="checkbox"]:checked ~ .dashicons {
     opacity: 1;
 }
 
@@ -604,4 +607,61 @@ div#setting-error-settings_updated {
 }
 button.notice-dismiss:before{
     color: red !important;
+}
+
+/* Endpoint Icon Preview */
+.wcmp-icon-preview {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    vertical-align: middle;
+    margin-right: 6px;
+    color: #646970;
+}
+
+/* Type Badges */
+.wcmp-type-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    padding: 3px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    vertical-align: middle;
+}
+.wcmp-type-endpoint {
+    background: #e7f0f8;
+    color: #2271b1;
+}
+.wcmp-type-group {
+    background: #f0e7f8;
+    color: #8c5fc4;
+}
+.wcmp-type-link {
+    background: #e7f8ea;
+    color: #00a32a;
+}
+
+/* Dashicons alignment in on-off and open-options */
+.on-off-endpoint .dashicons,
+.open-options .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    vertical-align: middle;
+}
+.open-options .dashicons {
+    color: #646970;
+}
+
+/* Spinner animation for loader */
+.wcmp-spin {
+    animation: wcmp-spin 1.5s linear infinite;
+}
+@keyframes wcmp-spin {
+    100% { transform: rotate(360deg); }
 }

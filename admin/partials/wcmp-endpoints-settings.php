@@ -98,7 +98,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</label>
 						<p class="wcmp-field-desc"><?php esc_html_e( 'Enter a name for your new item. This will appear in the My Account menu.', 'woo-custom-my-account-page' ); ?></p>
 						<input type="text" id="wcmp-new-field" name="wcmp-new-field" value="" class="wcmp-field-input" placeholder="<?php esc_attr_e( 'e.g., My Orders', 'woo-custom-my-account-page' ); ?>">
-						<span class="wcmp-loader" style="display: none;"><i class="fa fa-spinner fa-spin"></i></span>
+						<span class="wcmp-loader" style="display: none;"><span class="dashicons dashicons-update wcmp-spin"></span></span>
 						<p class="error-msg"></p>
 					</div>
 				</div>

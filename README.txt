@@ -156,12 +156,16 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 
 = 1.6.0 =
 * New: Self-hosted automatic updates via EDD Software Licensing SDK
-* New: Added missing "Our Themes" admin page template
+* New: License management tab in admin settings
+* New: Icon previews in admin endpoint list rows - see assigned icons without expanding
+* New: Color-coded type badges - Endpoints (blue), Groups (purple), Links (green)
+* New: FA-to-Dashicon mapping helper for 35+ Font Awesome icon classes
 * New: Added .distignore for clean distribution packaging
-* Fix: Dashboard and Log Out icons not showing when theme loads Font Awesome 5 - scoped icon font to plugin container to prevent conflicts
+* Fix: Admin Endpoints tab icons rendered as broken squares - replaced Font Awesome with WordPress Dashicons (FA CSS only loaded on frontend)
+* Fix: Dashboard and Log Out icons not showing when theme loads Font Awesome 5 - scoped icon font to plugin container
 * Fix: Rewrite rules flushed before custom endpoints registered - changed flush priority to run after endpoint registration
-* Fix: Custom CSS classes never applied to menu items - fixed wrong settings key in menu item classes filter
-* Fix: Output buffer leak in menu rendering - removed orphaned ob_start() that was never flushed
+* Fix: Custom CSS classes never applied to menu items - fixed wrong settings key
+* Fix: Output buffer leak in menu rendering - removed orphaned ob_start()
 * Fix: Missing "Name" label in Add Endpoint modal (esc_html_x not echoed)
 * Fix: Plugin URI corrected to match actual EDD product page URL
 * Fix: Avatar form AJAX endpoint now requires user to be logged in
@@ -169,7 +173,6 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 * Fix: isset() guard on children array in group endpoint rendering
 * Security: Sanitize all $_REQUEST input in activation redirect
 * Security: Add ABSPATH direct access guards to all include files
-* Performance: Disable autoload for wcmp_is_my_account option
 * Removed: Dead WCMP_License class (315 lines) - replaced by EDD SL SDK
 * Removed: 263 lines of unused code from error handler, sanitizers, and deprecated methods
 * Removed: Legacy groups/links/order sanitizer blocks that no form submits
