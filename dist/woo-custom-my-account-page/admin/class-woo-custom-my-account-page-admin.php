@@ -1,0 +1,773 @@
+<?php
+/**
+ * The admin-specific functionality of the plugin.
+ *
+ * @link       https://wbcomdesigns.com
+ * @since      1.0.0
+ *
+ * @package    Woo_Custom_My_Account_Page
+ * @subpackage Woo_Custom_My_Account_Page/admin
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * The admin-specific functionality of the plugin.
+ *
+ * Defines the plugin name, version, and two examples hooks for how to
+ * enqueue the admin-specific stylesheet and JavaScript.
+ *
+ * @package    Woo_Custom_My_Account_Page
+ * @subpackage Woo_Custom_My_Account_Page/admin
+ * @author     Wbcom Designs <admin@wbcomdesigns.com>
+ */
+class Woo_Custom_My_Account_Page_Admin {
+	/**
+	 * The single instance of the class.
+	 *
+	 * @var   Woo_Custom_My_Account_Page_Admin
+	 * @since 1.0.0
+	 */
+	protected static $instance = null;
+
+	/**
+	 * The ID of this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string    $plugin_name    The ID of this plugin.
+	 */
+	private $plugin_name = '';
+
+	/**
+	 * The version of this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string    $version    The current version of this plugin.
+	 */
+	private $version = '';
+
+	/**
+	 * Plugin_settings_tabs
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 * @var mixed      $plugin_settings_tabs      The settings tab.
+	 */
+	public $plugin_settings_tabs = array();
+
+	/**
+	 * Admin Instance.
+	 */
+	public static function instance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
+
+	/**
+	 * Initialize the class and set its properties.
+	 *
+	 * @since  1.0.0
+	 */
+	public function __construct() {
+		$this->plugin_name = 'woo-custom-my-account-page';
+		$this->version     = WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION;
+	}
+
+	/**
+	 * Register the stylesheets for the admin area.
+	 *
+	 * @since    1.0.0
+	 */
+	public function enqueue_styles() {
+
+		$screen = get_current_screen();
+		if ( ! $screen ||
+			( 'wb-plugins_page_woo-custom-myaccount-page' !== $screen->base &&
+			'toplevel_page_wbcomplugins' !== $screen->base )
+		) {
+			return;
+		}
+
+		if ( ! wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
+			wp_enqueue_style( 'wp-color-picker' );
+		}
+		if ( ! wp_style_is( 'woo-custom-my-account-page-admin-css', 'enqueued' ) ) {
+			wp_enqueue_style( 'woo-custom-my-account-page-admin-css', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-admin.css', array(), time(), 'all' );
+		}
+	}
+
+	/**
+	 * Hide all notices from the setting page.
+	 *
+	 * @return void
+	 */
+	public function wbcom_hide_all_admin_notices_from_setting_page() {
+		$wbcom_pages_array  = array( 'wbcomplugins', 'wbcom-plugins-page', 'wbcom-support-page', 'woo-custom-myaccount-page' );
+		$wbcom_setting_page = filter_input( INPUT_GET, 'page' ) ? filter_input( INPUT_GET, 'page' ) : '';
+
+		if ( in_array( $wbcom_setting_page, $wbcom_pages_array, true ) ) {
+			remove_all_actions( 'admin_notices' );
+			remove_all_actions( 'all_admin_notices' );
+		}
+	}
+
+	/**
+	 * Register the JavaScript for the admin area.
+	 *
+	 * @since    1.0.0
+	 */
+	public function enqueue_scripts() {
+
+		$screen = get_current_screen();
+		if ( ! $screen ) {
+			return;
+		}
+		if ( 'wb-plugins_page_woo-custom-myaccount-page' === $screen->base ) {
+			if ( ! wp_script_is( 'jquery-ui', 'enqueued' ) ) {
+				wp_enqueue_script( 'jquery-ui' );
+			}
+			if ( ! wp_script_is( 'jquery-ui-accordion', 'enqueued' ) ) {
+				wp_enqueue_script( 'jquery-ui-accordion' );
+			}
+			if ( ! wp_script_is( 'jquery-ui-sortable', 'enqueued' ) ) {
+				wp_enqueue_script( 'jquery-ui-sortable' );
+			}
+			wp_register_script( 'nestable', plugin_dir_url( __FILE__ ) . 'assets/js/jquery.nestable.js', array( 'jquery' ), time(), true );
+			if ( ! wp_style_is( 'select2-css', 'enqueued' ) ) {
+				// Use local Select2 instead of CDN (WordPress.org requirement).
+				wp_enqueue_style( 'select2-css', plugin_dir_url( __DIR__ ) . 'assets/vendor/select2/select2.min.css', array(), '4.0.7' );
+			}
+			if ( ! wp_script_is( 'select2-js', 'enqueued' ) ) {
+				// Use local Select2 instead of CDN (WordPress.org requirement).
+				wp_enqueue_script( 'select2-js', plugin_dir_url( __DIR__ ) . 'assets/vendor/select2/select2.min.js', array( 'jquery' ), '4.0.7', true );
+			}
+			if ( ! wp_script_is( 'woo-custom-my-account-page-admin-js', 'enqueued' ) ) {
+				wp_enqueue_script( 'woo-custom-my-account-page-admin-js', plugin_dir_url( __FILE__ ) . 'assets/js/woo-custom-my-account-page-admin.js', array( 'jquery', 'wp-color-picker', 'nestable', 'jquery-ui-dialog' ), time(), false );
+				wp_localize_script(
+					'woo-custom-my-account-page-admin-js',
+					'wcmp',
+					array(
+						'ajaxurl'      => admin_url( 'admin-ajax.php' ),
+						'action_add'   => 'wcmp_add_field',
+						'nonce'        => wp_create_nonce( 'ajax_nonce' ),
+						'show_lbl'     => esc_html__( 'Show', 'woo-custom-my-account-page' ),
+						'hide_lbl'     => esc_html__( 'Hide', 'woo-custom-my-account-page' ),
+						'checked'      => '<span class="dashicons dashicons-yes"></span>',
+						'error_icon'   => '<span class="dashicons dashicons-no"></span>',
+						'empty_field'  => esc_html__( 'This field is required.', 'woo-custom-my-account-page' ),
+						'remove_alert' => esc_html__( 'Are you sure that you want to delete this endpoint?', 'woo-custom-my-account-page' ),
+					)
+				);
+			}
+		}
+	}
+
+	/**
+	 * Register a submenu in admin area ( In case of other wbcom plugin exists ) or a menu with submenu.
+	 *
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_add_plugin_menu_page() {
+		if ( empty( $GLOBALS['admin_page_hooks']['wbcomplugins'] ) ) {
+			add_menu_page( esc_html__( 'WB Plugins', 'woo-custom-my-account-page' ), esc_html__( 'WB Plugins', 'woo-custom-my-account-page' ), 'manage_options', 'wbcomplugins', array( $this, 'wcmp_admin_settings_page' ), 'dashicons-lightbulb', 59 );
+			add_submenu_page( 'wbcomplugins', esc_html__( 'General', 'woo-custom-my-account-page' ), esc_html__( 'General', 'woo-custom-my-account-page' ), 'manage_options', 'wbcomplugins' );
+		}
+		add_submenu_page( 'wbcomplugins', esc_html__( 'Woo My Account', 'woo-custom-my-account-page' ), esc_html__( 'Woo My Account', 'woo-custom-my-account-page' ), 'manage_options', 'woo-custom-myaccount-page', array( $this, 'wcmp_admin_settings_page' ) );
+	}
+
+	/**
+	 * Actions performed to display submenu page.
+	 *
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_admin_settings_page() {
+		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wcmp-welcome';
+		?>
+		<div class="wrap">
+			<div class="wbcom-bb-plugins-offer-wrapper">
+				<div id="wb_admin_logo">
+				</div>
+			</div>
+			<div class="wbcom-wrap">
+				<div class="bupr-header">
+					<div class="wbcom_admin_header-wrapper">
+						<div id="wb_admin_plugin_name">
+							<?php esc_html_e( 'Woo My Account Page', 'woo-custom-my-account-page' ); ?>
+								<?php /* translators: %s: */ ?>
+							<span><?php printf( esc_html__( 'Version %s', 'woo-custom-my-account-page' ), WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION ); //phpcs:ignore ?></span>
+						</div>
+						<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
+					</div>
+				</div>
+				<?php settings_errors(); ?>
+				<div class="wbcom-admin-settings-page">
+					<?php
+					$this->wcmp_plugin_settings_tabs();
+					settings_fields( $current );
+					do_settings_sections( $current );
+					?>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Actions performed to create tabs on the sub menu page.
+	 *
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_plugin_settings_tabs() {
+
+		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wcmp-welcome';
+
+		$tab_html = '<div class="wbcom-tabs-section"><div class="nav-tab-wrapper"><div class="wb-responsive-menu"><span>' . esc_html( 'Menu' ) . '</span><input class="wb-toggle-btn" type="checkbox" id="wb-toggle-btn"><label class="wb-toggle-icon" for="wb-toggle-btn"><span class="wb-icon-bars"></span></label></div><ul>';
+		foreach ( $this->plugin_settings_tabs as $wss_tab => $wss_name ) {
+			$class = ( $wss_tab === $current ) ? 'nav-tab-active' : '';
+			$page  = 'woo-custom-myaccount-page';
+			if ( 'email' === $wss_tab ) {
+				$page = 'wc-settings';
+			}
+			if ( 'wcmp-license' === $wss_tab ) {
+				$tab_html .= '<li><a id="' . esc_attr( $wss_tab ) . '" class="nav-tab ' . esc_attr( $class ) . '" href="' . esc_url( admin_url( 'admin.php?page=woo-custom-myaccount-page&tab=wcmp-license' ) ) . '">' . esc_html( $wss_name ) . '</a></li>';
+				continue;
+			}
+			$tab_html .= '<li><a id="' . $wss_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $wss_tab . '">' . $wss_name . '</a></li>';
+		}
+		$tab_html .= '</div></ul></div>';
+		echo wp_kses_post( $tab_html ); // WPCS: XSS ok.
+	}
+
+	/**
+	 * Register all settings.
+	 *
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_add_plugin_register_settings() {
+		$this->plugin_settings_tabs['wcmp-welcome'] = esc_html__( 'Welcome', 'woo-custom-my-account-page' );
+		add_settings_section( 'wcmp-welcome', ' ', array( $this, 'wcmp_welcome_content' ), 'wcmp-welcome' );
+
+		$this->plugin_settings_tabs['wcmp-general'] = esc_html__( 'General', 'woo-custom-my-account-page' );
+		register_setting( 'wcmp_general_settings', 'wcmp_general_settings', array( $this, 'wcmp_general_settings_callback' ) );
+		add_settings_section( 'wcmp-general', ' ', array( $this, 'wcmp_general_settings_content' ), 'wcmp-general' );
+		$this->plugin_settings_tabs['wcmp-style'] = esc_html__( 'Style Options', 'woo-custom-my-account-page' );
+		register_setting( 'wcmp_style_settings', 'wcmp_style_settings', array( $this, 'wcmp_style_settings_callback' ) );
+		add_settings_section( 'wcmp-style', ' ', array( $this, 'wcmp_style_settings_content' ), 'wcmp-style' );
+		$this->plugin_settings_tabs['wcmp-endpoints'] = esc_html__( 'Endpoints', 'woo-custom-my-account-page' );
+		register_setting( 'wcmp_endpoints_settings', 'wcmp_endpoints_settings', array( $this, 'wcmp_endpoints_settings_callback' ) );
+		add_settings_section( 'wcmp-endpoints', ' ', array( $this, 'wcmp_endpoints_settings_content' ), 'wcmp-endpoints' );
+		$this->plugin_settings_tabs['wcmp-faq'] = esc_html__( 'FAQ', 'woo-custom-my-account-page' );
+		add_settings_section( 'wcmp-faq', ' ', array( $this, 'wcmp_faq_content' ), 'wcmp-faq' );
+
+		$this->plugin_settings_tabs['wcmp-license'] = esc_html__( 'License', 'woo-custom-my-account-page' );
+		add_settings_section( 'wcmp-license', ' ', array( $this, 'wcmp_license_settings_content' ), 'wcmp-license' );
+	}
+
+	/**
+	 * Welcome Tab Content.
+	 *
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_welcome_content() {
+		require_once 'partials/wcmp-welcome-page.php';
+	}
+
+	/**
+	 * General Tab Content.
+	 *
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_general_settings_content() {
+		require_once 'partials/wcmp-general-settings.php';
+	}
+
+	/**
+	 * Style Options Tab Content.
+	 *
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_style_settings_content() {
+		require_once 'partials/wcmp-style-settings.php';
+	}
+
+	/**
+	 * Endpoints Tab Content.
+	 *
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_endpoints_settings_content() {
+		require_once 'partials/wcmp-endpoints-settings.php';
+	}
+
+	/**
+	 * FAQ Tab Content.
+	 *
+	 * @since  1.4.1
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_faq_content() {
+		require_once 'partials/wcmp-faq.php';
+	}
+
+	/**
+	 * License tab content — renders EDD SL SDK license control inline.
+	 *
+	 * @since  1.7.0
+	 * @access public
+	 */
+	public function wcmp_license_settings_content() {
+		if ( ! class_exists( 'EasyDigitalDownloads\Updater\Registry' ) ) {
+			echo '<p>' . esc_html__( 'License system is not available.', 'woo-custom-my-account-page' ) . '</p>';
+			return;
+		}
+		require_once 'partials/wcmp-license-settings.php';
+	}
+
+	/**
+	 * Add a new field using ajax.
+	 *
+	 * @since  1.0.0
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_add_field_ajax() {
+
+		// Verify nonce first (must be present and valid).
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax_nonce' ) ) {
+			wp_die( esc_html__( 'Security check failed', 'woo-custom-my-account-page' ) );
+		}
+		// Capability check.
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_die( esc_html__( 'Insufficient permissions', 'woo-custom-my-account-page' ) );
+		}
+
+		// Validate request.
+		if ( ! isset( $_REQUEST['action'] ) || 'wcmp_add_field' !== sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) || ! isset( $_REQUEST['field_name'] ) || ! isset( $_REQUEST['target'] ) ) {
+			wp_die( esc_html__( 'Invalid request', 'woo-custom-my-account-page' ) );
+		}
+
+		// Sanitize and validate target.
+		$allowed_targets = array( 'endpoint', 'group', 'link' );
+		$request         = sanitize_text_field( wp_unslash( $_REQUEST['target'] ) );
+
+		if ( ! in_array( $request, $allowed_targets, true ) ) {
+			wp_send_json_error( array( 'error' => esc_html__( 'Invalid target type', 'woo-custom-my-account-page' ) ) );
+		}
+
+		$myaccount_func = instantiate_woo_custom_myaccount_functions();
+
+		// Build field key safely.
+		$field = $myaccount_func->create_field_key( sanitize_text_field( wp_unslash( $_REQUEST['field_name'] ) ) );
+
+		// Use switch for safe function calling instead of dynamic calls.
+		$args = array(
+			'endpoint'  => $field,
+			'options'   => null,
+			'id'        => 'wcmp_endpoint',
+			'usr_roles' => array(),
+		);
+
+		// Safe function calls based on validated target.
+		ob_start();
+		switch ( $request ) {
+			case 'endpoint':
+				$args['options'] = $myaccount_func->wcmp_get_default_endpoint_options( $field );
+				$this->wcmp_admin_print_endpoint_field( $args );
+				break;
+			case 'group':
+				$args['group']   = $field;
+				$args['options'] = $myaccount_func->wcmp_get_default_group_options( $field );
+				$this->wcmp_admin_print_group_field( $args );
+				break;
+			case 'link':
+				$args['link']    = $field;
+				$args['options'] = $myaccount_func->wcmp_get_default_link_options( $field );
+				$this->wcmp_admin_print_link_field( $args );
+				break;
+			default:
+				wp_send_json_error( array( 'error' => esc_html__( 'Invalid target', 'woo-custom-my-account-page' ) ) );
+				return;
+		}
+		$html = ob_get_clean();
+
+		wp_send_json(
+			array(
+				'html'  => $html,
+				'field' => $field,
+			)
+		);
+	}
+
+	/**
+	 * Map a Font Awesome class name to its Dashicons equivalent for admin preview.
+	 *
+	 * @since  1.7.0
+	 * @param  string $fa_class The Font Awesome icon class (e.g. 'fa-shopping-cart').
+	 * @return string The Dashicons class name (without 'dashicons-' prefix).
+	 */
+	public static function wcmp_fa_to_dashicon( $fa_class ) {
+		$fa_class = str_replace( array( 'fa ', 'fa-' ), '', trim( $fa_class ) );
+
+		$map = array(
+			'tachometer'       => 'dashboard',
+			'dashboard'        => 'dashboard',
+			'shopping-cart'    => 'cart',
+			'tag'              => 'tag',
+			'download'         => 'download',
+			'address-card'     => 'id-alt',
+			'address-card-o'   => 'id-alt',
+			'vcard'            => 'id-alt',
+			'edit'             => 'edit',
+			'pencil-square-o'  => 'edit',
+			'sign-out'         => 'migrate',
+			'link'             => 'admin-links',
+			'cubes'            => 'screenoptions',
+			'heart'            => 'heart',
+			'star'             => 'star-filled',
+			'user'             => 'admin-users',
+			'cog'              => 'admin-generic',
+			'cogs'             => 'admin-generic',
+			'home'             => 'admin-home',
+			'envelope'         => 'email',
+			'bell'             => 'bell',
+			'bookmark'         => 'bookmark',
+			'calendar'         => 'calendar-alt',
+			'credit-card'      => 'money-alt',
+			'file'             => 'media-default',
+			'file-text'        => 'media-text',
+			'gift'             => 'tickets-alt',
+			'list'             => 'editor-ul',
+			'map-marker'       => 'location',
+			'power-off'        => 'visibility',
+			'question-circle'  => 'editor-help',
+			'refresh'          => 'update',
+			'shield'           => 'shield',
+			'shopping-bag'     => 'cart',
+			'thumbs-up'        => 'thumbs-up',
+			'trophy'           => 'awards',
+			'truck'            => 'car',
+			'wrench'           => 'admin-tools',
+		);
+
+		return isset( $map[ $fa_class ] ) ? $map[ $fa_class ] : 'marker';
+	}
+
+	/**
+	 * Print endpoint field options.
+	 *
+	 * @since  1.0.0
+	 * @param  array $args Template args array.
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_admin_print_endpoint_field( $args ) {
+		// Let third part filter template args.
+		$args = apply_filters( 'wcmp_admin_print_endpoint_field', $args );
+		// Replace extract() with explicit variables for stability.
+		$endpoint = isset( $args['endpoint'] ) ? $args['endpoint'] : '';
+		$options  = isset( $args['options'] ) ? $args['options'] : array();
+		include WCMP_PLUGIN_PATH . 'admin/partials/endpoint-item.php';
+	}
+
+	/**
+	 * Print endpoints group field options.
+	 *
+	 * @since  1.0.0
+	 * @param  array $args Template args array.
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_admin_print_group_field( $args ) {
+		// let third part filter template args.
+		$args = apply_filters( 'wcmp_admin_print_endpoints_group', $args );
+		// Replace extract() with explicit variables for stability.
+		$group   = isset( $args['group'] ) ? $args['group'] : '';
+		$options = isset( $args['options'] ) ? $args['options'] : array();
+		include WCMP_PLUGIN_PATH . 'admin/partials/group-item.php';
+	}
+
+	/**
+	 * Print endpoints link field options.
+	 *
+	 * @since  1.0.0
+	 * @param  array $args Template args array.
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_admin_print_link_field( $args ) {
+		// let third part filter template args.
+		$args = apply_filters( 'wcmp_admin_print_link_field', $args );
+		// Replace extract() with explicit variables for stability.
+		$link    = isset( $args['link'] ) ? $args['link'] : '';
+		$options = isset( $args['options'] ) ? $args['options'] : array();
+
+		include WCMP_PLUGIN_PATH . 'admin/partials/link-item.php';
+	}
+
+	/**
+	 * Update WooCommerce tab slugs after save endpoint settings.
+	 *
+	 * @since  1.0.0
+	 * @param  array  $old_value   Template args array.
+	 * @param  array  $new_value   Template args array.
+	 * @param  string $option_name The option name.
+	 * @author Wbcom Designs
+	 * @access public
+	 */
+	public function wcmp_update_woo_endpoints_slug( $old_value, $new_value, $option_name ) {
+		$wcmp_obj          = instantiate_woo_custom_myaccount_functions();
+		$default_endpoints = $wcmp_obj->default_endpoint_settings();
+		if ( array_key_exists( 'endpoints', $new_value ) ) {
+			if ( ! empty( $new_value['endpoints'] ) ) {
+				foreach ( $new_value['endpoints'] as $endpoint => $endpoint_details ) {
+					if ( ( 'dashboard' !== $endpoint ) && array_key_exists( $endpoint, $default_endpoints ) ) {
+						update_option( 'woocommerce_myaccount_' . str_replace( '-', '_', $endpoint ) . '_endpoint', $endpoint_details['slug'] );
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Sanitization callback for general settings
+	 *
+	 * @param array $input The input array to sanitize.
+	 * @return array Sanitized array.
+	 */
+	public function wcmp_general_settings_callback( $input ) {
+		$sanitized = array();
+
+		// Sanitize custom avatar option (matches form field name).
+		// Checkboxes don't send data when unchecked, so we need to explicitly handle both cases.
+		if ( isset( $input['custom_avatar'] ) && 'yes' === $input['custom_avatar'] ) {
+			$sanitized['custom_avatar'] = 'yes';
+		} else {
+			$sanitized['custom_avatar'] = 'no';
+		}
+
+		// Sanitize show avatar option (legacy field).
+		if ( isset( $input['show_avatar'] ) ) {
+			$sanitized['show_avatar'] = sanitize_text_field( $input['show_avatar'] );
+		}
+
+		// Sanitize avatar size.
+		if ( isset( $input['avatar_size'] ) ) {
+			$sanitized['avatar_size'] = absint( $input['avatar_size'] );
+			// Ensure reasonable size limits (20-500 pixels).
+			if ( $sanitized['avatar_size'] < 20 ) {
+				$sanitized['avatar_size'] = 20;
+			} elseif ( $sanitized['avatar_size'] > 500 ) {
+				$sanitized['avatar_size'] = 500;
+			}
+		}
+
+		// Sanitize show user name option.
+		if ( isset( $input['show_user_name'] ) ) {
+			$sanitized['show_user_name'] = sanitize_text_field( $input['show_user_name'] );
+		}
+
+		// Sanitize show logout link option.
+		if ( isset( $input['show_logout_link'] ) ) {
+			$sanitized['show_logout_link'] = sanitize_text_field( $input['show_logout_link'] );
+		}
+
+		// Sanitize default endpoint.
+		if ( isset( $input['default_endpoint'] ) ) {
+			$sanitized['default_endpoint'] = sanitize_title( $input['default_endpoint'] );
+		}
+
+		// Sanitize menu style (sidebar or tab).
+		if ( isset( $input['menu_style'] ) ) {
+			$sanitized['menu_style'] = sanitize_text_field( $input['menu_style'] );
+		}
+
+		// Sanitize sidebar position (left or right) - matches form field name.
+		if ( isset( $input['sidebar_position'] ) ) {
+			$sanitized['sidebar_position'] = sanitize_text_field( $input['sidebar_position'] );
+		}
+
+		// Sanitize menu position (legacy field name).
+		if ( isset( $input['menu_position'] ) ) {
+			$sanitized['menu_position'] = sanitize_text_field( $input['menu_position'] );
+		}
+
+		return $sanitized;
+	}
+
+	/**
+	 * Sanitization callback for style settings
+	 *
+	 * @param array $input The input array to sanitize.
+	 * @return array Sanitized array.
+	 */
+	public function wcmp_style_settings_callback( $input ) {
+		$sanitized = array();
+
+		// Sanitize color fields (from wcmp-style-settings.php).
+		$actual_color_fields = array(
+			'menu_item_color',
+			'menu_item_hover_color',
+			'logout_color',
+			'logout_hover_color',
+			'logout_background_color',
+			'logout_background_hover_color',
+		);
+
+		foreach ( $actual_color_fields as $field ) {
+			if ( isset( $input[ $field ] ) ) {
+				$sanitized[ $field ] = sanitize_hex_color( $input[ $field ] );
+			}
+		}
+
+		// Sanitize other style options.
+		if ( isset( $input['menu_position'] ) ) {
+			$sanitized['menu_position'] = sanitize_text_field( $input['menu_position'] );
+		}
+
+		if ( isset( $input['menu_style'] ) ) {
+			$sanitized['menu_style'] = sanitize_text_field( $input['menu_style'] );
+		}
+
+		return $sanitized;
+	}
+
+	/**
+	 * Sanitization callback for endpoints settings
+	 *
+	 * @param array $input The input array to sanitize.
+	 * @return array Sanitized array.
+	 */
+	public function wcmp_endpoints_settings_callback( $input ) {
+		$sanitized = array();
+
+		// Handle endpoints marked for removal.
+		$to_remove = array();
+		if ( isset( $input['to_remove'] ) && ! empty( $input['to_remove'] ) ) {
+			$to_remove = explode( ',', sanitize_text_field( $input['to_remove'] ) );
+			$to_remove = array_map( 'trim', $to_remove );
+		}
+
+		// Sanitize endpoints array.
+		if ( isset( $input['endpoints'] ) && is_array( $input['endpoints'] ) ) {
+			foreach ( $input['endpoints'] as $key => $endpoint ) {
+				// Skip if this endpoint is marked for removal.
+				if ( in_array( $key, $to_remove, true ) ) {
+					continue;
+				}
+
+				// Skip empty/invalid endpoints - must have at least a slug or label.
+				$has_slug  = isset( $endpoint['slug'] ) && ! empty( trim( $endpoint['slug'] ) );
+				$has_label = isset( $endpoint['label'] ) && ! empty( trim( $endpoint['label'] ) );
+				$has_type  = isset( $endpoint['type'] ) && ! empty( $endpoint['type'] );
+
+				// Skip if no meaningful data.
+				if ( ! $has_slug && ! $has_label ) {
+					continue;
+				}
+
+				// Skip if no type specified.
+				if ( ! $has_type ) {
+					continue;
+				}
+
+				// Common fields for all types.
+				$sanitized['endpoints'][ $key ] = array(
+					'active'    => isset( $endpoint['active'] ) ? sanitize_text_field( $endpoint['active'] ) : '',
+					'label'     => isset( $endpoint['label'] ) ? sanitize_text_field( $endpoint['label'] ) : '',
+					'slug'      => isset( $endpoint['slug'] ) ? sanitize_title( $endpoint['slug'] ) : '',
+					'class'     => isset( $endpoint['class'] ) ? $this->sanitize_css_classes( $endpoint['class'] ) : '',
+					'icon'      => isset( $endpoint['icon'] ) ? sanitize_text_field( $endpoint['icon'] ) : '',
+					'type'      => isset( $endpoint['type'] ) ? sanitize_text_field( $endpoint['type'] ) : 'endpoint',
+					'usr_roles' => isset( $endpoint['usr_roles'] ) && is_array( $endpoint['usr_roles'] ) ? array_map( 'sanitize_text_field', $endpoint['usr_roles'] ) : array(),
+				);
+
+				// Type-specific fields.
+				$type = isset( $endpoint['type'] ) ? $endpoint['type'] : 'endpoint';
+
+				if ( 'group' === $type ) {
+					// Group-specific fields.
+					$sanitized['endpoints'][ $key ]['open'] = isset( $endpoint['open'] ) && 'yes' === $endpoint['open'] ? 'yes' : 'no';
+				} elseif ( 'link' === $type ) {
+					// Link-specific fields.
+					$sanitized['endpoints'][ $key ]['url']          = isset( $endpoint['url'] ) ? esc_url_raw( $endpoint['url'] ) : '';
+					$sanitized['endpoints'][ $key ]['target_blank'] = isset( $endpoint['target_blank'] ) && 'yes' === $endpoint['target_blank'] ? 'yes' : 'no';
+				} else {
+					// Endpoint-specific fields.
+					$sanitized['endpoints'][ $key ]['content'] = isset( $endpoint['content'] ) ? wp_kses_post( $endpoint['content'] ) : '';
+				}
+			}
+		}
+
+		// Sanitize endpoints-order field (used for drag-and-drop ordering).
+		if ( isset( $input['endpoints-order'] ) ) {
+			$sanitized['endpoints-order'] = sanitize_text_field( $input['endpoints-order'] );
+		}
+
+		return $sanitized;
+	}
+
+	/**
+	 * Schedule rewrite rules flush
+	 */
+	public function wcmp_schedule_flush_rewrite_on_endpoint_save() {
+		set_transient( 'wcmp_flush_rewrite_rules', true, 60 );
+	}
+
+	/**
+	 * Maybe flush rewrite rules
+	 */
+	public function wcmp_maybe_flush_rewrite_rules() {
+		if ( get_transient( 'wcmp_flush_rewrite_rules' ) ) {
+			flush_rewrite_rules();
+			delete_transient( 'wcmp_flush_rewrite_rules' );
+		}
+	}
+
+	/**
+	 * Sanitize multiple CSS classes preserving spaces.
+	 *
+	 * @param string $classes Space-separated CSS classes.
+	 * @return string Sanitized CSS classes string.
+	 */
+	private function sanitize_css_classes( $classes ) {
+		if ( empty( $classes ) ) {
+			return '';
+		}
+
+		// Split by spaces.
+		$class_array = explode( ' ', $classes );
+
+		// Sanitize each class individually.
+		$sanitized = array();
+		foreach ( $class_array as $class ) {
+			$class = trim( $class );
+			if ( ! empty( $class ) ) {
+				$sanitized[] = sanitize_html_class( $class );
+			}
+		}
+
+		// Join back with spaces.
+		return implode( ' ', $sanitized );
+	}
+}
