@@ -154,6 +154,7 @@ jQuery( document ).ready(
 							nonce: wcmp.nonce,
 							action: wcmp.action_add
 						},
+						type: 'POST',
 						dataType: 'json',
 						beforeSend: function(){},
 						success: function( res ){
