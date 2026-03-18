@@ -4,3 +4,14 @@ npm-debug.log
 .DS_Store
 .ds_store
 nbproject
+package-lock.json
+
+# Dev/internal files — never commit
+claude.md
+CLAUDE.md
+BUGFIX-LOG.md
+CHANGELOG.md
+README.txt
+market-audit.md
+competitive-analysis.md
+docs/
