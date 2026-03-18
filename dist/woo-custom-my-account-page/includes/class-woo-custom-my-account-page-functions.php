@@ -214,8 +214,8 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			}
 			$settings  = $this->wcmp_settings_data();
 			$endpoints = '';
-			if ( isset( $settings['endpoints'] ) ) {
-				$endpoints = $settings['endpoints'];
+			if ( isset( $settings['endpoints_settings'] ) ) {
+				$endpoints = $settings['endpoints_settings'];
 			}
 
 			if ( empty( $items ) ) {

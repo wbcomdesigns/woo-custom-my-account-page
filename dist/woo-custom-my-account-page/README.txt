@@ -4,7 +4,7 @@ Donate link: https://wbcomdesigns.com
 Tags: woocommerce my account, custom endpoints, account page customizer, woocommerce tabs, user role menu
 Requires at least: 5.0
 Tested up to: 6.9.1
-Stable tag: 1.6.0
+Stable tag: 1.6.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -153,6 +153,10 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 6. Frontend My Account page - tab layout with grouped navigation and custom colors
 
 == Changelog ==
+
+= 1.6.2 =
+* Fix: Resolved endpoints AJAX error on My Account page.
+* Fix: wcmp_get_endpoint_by() was using wrong settings key causing incorrect endpoint resolution.
 
 = 1.6.0 =
 * New: Self-hosted automatic updates via EDD Software Licensing SDK
