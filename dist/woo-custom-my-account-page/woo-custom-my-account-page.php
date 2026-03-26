@@ -10,7 +10,9 @@
  * Plugin Name:       Custom My Account Page for WooCommerce
  * Plugin URI:        https://wbcomdesigns.com/downloads/woocommerce-custom-my-account-page/
  * Description:       This plugin helps you to customize the layout of the "My Account" page, adds new endpoints, groups, links and manage its content easily.
- * Version:           1.6.2
+ * Version:           1.6.3
+ * WC tested up to:   9.8
+ * WC requires at least: 6.0
  * Author:            Wbcom Designs
  * Author URI:        https://wbcomdesigns.com
  * License:           GPL-2.0+
@@ -28,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Currently plugin version.
  */
 if ( ! defined( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION' ) ) {
-	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.6.2' );
+	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.6.3' );
 }
 
 /**
@@ -70,6 +72,44 @@ if ( ! defined( 'WCMP_PLUGIN_URL' ) ) {
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-woo-custom-my-account-page.php';
+
+// Declare HPOS compatibility.
+add_action(
+	'before_woocommerce_init',
+	function () {
+		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__ );
+		}
+	}
+);
+
+// Preset free license key for automatic updates (runs once for existing installs).
+add_action(
+	'admin_init',
+	function () {
+		$key_option = 'woo-custom-my-account-page_license_key';
+		if ( ! get_option( $key_option ) ) {
+			update_option( $key_option, 'wbcomfreea4f9c2d8b7e61a3c9d5e0f4b2c8a7e19', false );
+			update_option(
+				'woo-custom-my-account-page_license',
+				(object) array(
+					'success'          => true,
+					'license'          => 'valid',
+					'item_id'          => 110615,
+					'item_name'        => 'Custom My Account Page for WooCommerce',
+					'license_limit'    => 0,
+					'site_count'       => 0,
+					'expires'          => 'lifetime',
+					'activations_left' => 'unlimited',
+					'payment_id'       => 0,
+					'customer_name'    => '',
+					'customer_email'   => '',
+				),
+				false
+			);
+		}
+	}
+);
 
 // EDD Software Licensing SDK.
 add_action(

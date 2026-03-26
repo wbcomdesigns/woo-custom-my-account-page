@@ -240,7 +240,7 @@ class Woo_Custom_My_Account_Page_Public {
 		}
 
 		$reset_nonce = isset( $_POST['reset_image'] ) ? sanitize_text_field( wp_unslash( $_POST['reset_image'] ) ) : '';
-		if ( ! $reset_nonce || ! wp_verify_nonce( $reset_nonce, 'action' ) ) {
+		if ( ! $reset_nonce || ! wp_verify_nonce( $reset_nonce, 'wcmp_reset_avatar' ) ) {
 			return;
 		}
 

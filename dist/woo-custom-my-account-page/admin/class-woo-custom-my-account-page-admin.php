@@ -96,7 +96,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			wp_enqueue_style( 'wp-color-picker' );
 		}
 		if ( ! wp_style_is( 'woo-custom-my-account-page-admin-css', 'enqueued' ) ) {
-			wp_enqueue_style( 'woo-custom-my-account-page-admin-css', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-admin.css', array(), time(), 'all' );
+			wp_enqueue_style( 'woo-custom-my-account-page-admin-css', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-admin.css', array(), $this->version, 'all' );
 		}
 	}
 
@@ -136,7 +136,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			if ( ! wp_script_is( 'jquery-ui-sortable', 'enqueued' ) ) {
 				wp_enqueue_script( 'jquery-ui-sortable' );
 			}
-			wp_register_script( 'nestable', plugin_dir_url( __FILE__ ) . 'assets/js/jquery.nestable.js', array( 'jquery' ), time(), true );
+			wp_register_script( 'nestable', plugin_dir_url( __FILE__ ) . 'assets/js/jquery.nestable.js', array( 'jquery' ), $this->version, true );
 			if ( ! wp_style_is( 'select2-css', 'enqueued' ) ) {
 				// Use local Select2 instead of CDN (WordPress.org requirement).
 				wp_enqueue_style( 'select2-css', plugin_dir_url( __DIR__ ) . 'assets/vendor/select2/select2.min.css', array(), '4.0.7' );
@@ -146,7 +146,7 @@ class Woo_Custom_My_Account_Page_Admin {
 				wp_enqueue_script( 'select2-js', plugin_dir_url( __DIR__ ) . 'assets/vendor/select2/select2.min.js', array( 'jquery' ), '4.0.7', true );
 			}
 			if ( ! wp_script_is( 'woo-custom-my-account-page-admin-js', 'enqueued' ) ) {
-				wp_enqueue_script( 'woo-custom-my-account-page-admin-js', plugin_dir_url( __FILE__ ) . 'assets/js/woo-custom-my-account-page-admin.js', array( 'jquery', 'wp-color-picker', 'nestable', 'jquery-ui-dialog' ), time(), false );
+				wp_enqueue_script( 'woo-custom-my-account-page-admin-js', plugin_dir_url( __FILE__ ) . 'assets/js/woo-custom-my-account-page-admin.js', array( 'jquery', 'wp-color-picker', 'nestable', 'jquery-ui-dialog' ), $this->version, false );
 				wp_localize_script(
 					'woo-custom-my-account-page-admin-js',
 					'wcmp',
@@ -363,13 +363,13 @@ class Woo_Custom_My_Account_Page_Admin {
 		}
 
 		// Validate request.
-		if ( ! isset( $_REQUEST['action'] ) || 'wcmp_add_field' !== sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) || ! isset( $_REQUEST['field_name'] ) || ! isset( $_REQUEST['target'] ) ) {
+		if ( ! isset( $_POST['action'] ) || 'wcmp_add_field' !== sanitize_text_field( wp_unslash( $_POST['action'] ) ) || ! isset( $_POST['field_name'] ) || ! isset( $_POST['target'] ) ) {
 			wp_die( esc_html__( 'Invalid request', 'woo-custom-my-account-page' ) );
 		}
 
 		// Sanitize and validate target.
 		$allowed_targets = array( 'endpoint', 'group', 'link' );
-		$request         = sanitize_text_field( wp_unslash( $_REQUEST['target'] ) );
+		$request         = sanitize_text_field( wp_unslash( $_POST['target'] ) );
 
 		if ( ! in_array( $request, $allowed_targets, true ) ) {
 			wp_send_json_error( array( 'error' => esc_html__( 'Invalid target type', 'woo-custom-my-account-page' ) ) );
@@ -378,7 +378,7 @@ class Woo_Custom_My_Account_Page_Admin {
 		$myaccount_func = instantiate_woo_custom_myaccount_functions();
 
 		// Build field key safely.
-		$field = $myaccount_func->create_field_key( sanitize_text_field( wp_unslash( $_REQUEST['field_name'] ) ) );
+		$field = $myaccount_func->create_field_key( sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) );
 
 		// Use switch for safe function calling instead of dynamic calls.
 		$args = array(

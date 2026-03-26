@@ -133,7 +133,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 				/* translators: %s: order ID. */
 				$post->post_title = sprintf( __( 'Quote #%s', 'woo-custom-my-account-page' ), $order_id );
 			} elseif ( ! empty( $endpoint[ $key ]['label'] ) && 'dashboard' !== $active ) {
-				$post->post_title = stripslashes( $endpoint[ $key ]['label'] );
+				$post->post_title = sanitize_text_field( $endpoint[ $key ]['label'] );
 			}
 		}
 
@@ -190,7 +190,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 				// Apply wpautop to preserve line breaks and paragraphs.
 				$content = wpautop( $endpoint[ $key ]['content'] );
-				echo do_shortcode( $content );
+				echo wp_kses_post( do_shortcode( $content ) );
 			}
 		}
 
@@ -860,7 +860,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			}
 			if ( ! is_wc_endpoint_url( $default_endpoint ) ) {
 				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				if ( ! get_option( 'wcmp_is_my_account', true ) && ! isset( $_REQUEST['elementor-preview'] ) && $current_endpoint !== $default_endpoint && ! $this->hide_by_usr_roles( $restricted_roles, $user_role ) ) {
+				if ( ! get_option( 'wcmp_is_my_account', true ) && ! isset( $_GET['elementor-preview'] ) && $current_endpoint !== $default_endpoint && ! $this->hide_by_usr_roles( $restricted_roles, $user_role ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 					update_option( 'wcmp_is_my_account', false, false );
 					if ( 'dashboard' !== $default_endpoint ) {
 						$url = wc_get_endpoint_url( $default_endpoint, '', $url );

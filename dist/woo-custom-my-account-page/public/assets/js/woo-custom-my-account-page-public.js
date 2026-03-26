@@ -42,6 +42,7 @@ jQuery(document).ready(function($) {
 
         $.ajax({
             url: wcmp.ajaxurl.toString().replace( '%%endpoint%%', wcmp.actionPrint ),
+            type: 'POST',
             data: {},
             dataType: 'html',
             success: function( res ) {
@@ -52,6 +53,9 @@ jQuery(document).ready(function($) {
                 $('#wcmp-avatar-form-overlay, i.close-form').click(function(){
                     close_popup();
                 })
+            },
+            error: function() {
+                $( '#wcmp-avatar-form-overlay' ).remove();
             }
         })
         

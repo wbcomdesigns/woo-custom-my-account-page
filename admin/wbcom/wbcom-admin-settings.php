@@ -182,7 +182,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'wbcom_admin_setting_js',
 					WCMP_PLUGIN_URL . 'admin/wbcom/assets/js/wbcom-admin-setting.js',
 					array( 'jquery' ),
-					time(),
+					WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION,
 					false
 				);
 				wp_localize_script(

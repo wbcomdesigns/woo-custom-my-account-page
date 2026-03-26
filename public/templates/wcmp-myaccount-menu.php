@@ -20,7 +20,7 @@ $logout_url = ( function_exists( 'wc_logout_url' ) ) ? wc_logout_url() : wc_get_
 		<?php
 			$current_user_obj = wp_get_current_user();
 			$user_id          = $current_user_obj->ID;
-			echo get_avatar( $user_id, apply_filters( 'wcmp_filter_avatar_size', 120 ) );
+			echo wp_kses_post( get_avatar( $user_id, apply_filters( 'wcmp_filter_avatar_size', 120 ) ) );
 		?>
 		<?php if ( $avatar ) : ?>
 			<a href="#" id="load-avatar">
