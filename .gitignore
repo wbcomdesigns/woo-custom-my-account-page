@@ -7,8 +7,6 @@ nbproject
 package-lock.json
 
 # Dev/internal files — never commit
-claude.md
-CLAUDE.md
 BUGFIX-LOG.md
 CHANGELOG.md
 market-audit.md
