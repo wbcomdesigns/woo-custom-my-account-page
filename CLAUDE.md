@@ -30,6 +30,20 @@ Every surface this product is known by. When these drift, a site owner reports a
 
 The Basecamp board was called `WooCommerce Custom My Account Page` until August 2026; it was renamed to match the plugin, readme, and store listing, which all say `Custom My Account Page for WooCommerce`.
 
+## Where the work is tracked
+
+Two places, deliberately, and they reconcile:
+
+| | |
+|---|---|
+| **Basecamp board** | [Custom My Account Page for WooCommerce](https://3.basecamp.com/5798509/projects/37614349) |
+| **Cards to work** | **8** — 3 in Bugs, 5 in Scope |
+| **Checklist below** | **21** items on branch `1.6.4` |
+
+**Why the two numbers differ.** A card is the trackable unit a person picks up; a checklist item is one verifiable step inside it. The portfolio-floor items in particular repeat across all 11 plugins — four suite-wide faults, counted once per plugin here.
+
+**To verify progress:** the card is done when every checklist item it names is ticked in this file, on this branch. Neither source is authoritative alone — the board says what is being worked, this file says what "done" means.
+
 ## Current Task List
 
 Ordered by how many store owners are affected, not by how interesting the code is.
