@@ -30,6 +30,33 @@ Every surface this product is known by. When these drift, a site owner reports a
 
 The Basecamp board was called `WooCommerce Custom My Account Page` until August 2026; it was renamed to match the plugin, readme, and store listing, which all say `Custom My Account Page for WooCommerce`.
 
+## Current Task List
+
+Ordered by how many store owners are affected, not by how interesting the code is.
+Derived from a code audit on 2026-08-08 that verified every open Basecamp card against this branch.
+**Work happens on this branch (`1.6.4`).**
+
+### 1. Regression we shipped - fix first
+- [ ] **`wp_kses_post()` strips `<form>` and `<input>` from endpoint content**, silently breaking every embedded form (Contact Form 7, Gravity, Formidable, login). `includes/class-woo-custom-my-account-page-functions.php:193`. **This is self-inflicted:** the line was plain `do_shortcode()` until 1.6.3 added kses (`d62ba2f`, the "security fixes" commit). Content is already kses'd on save at `admin/...-admin.php:717`, so render-time kses is redundant - drop it and gate the save on `unfiltered_html`.
+
+### 2. Dead on the majority of new installs
+- [ ] **Default endpoint does nothing on block themes.** `wcmp_check_myaccount()` (`functions.php:1010-1013`) detects My Account by string-matching the `woocommerce_my_account` **shortcode** in `post_content`; on a block-based My Account that never matches. Also `redirect_to_default()` (`:862`) gates on `wcmp_is_my_account`, a site-wide option used as per-request state and rewritten every shutdown (`:825`) - non-deterministic under concurrent traffic. Replace with `is_account_page()` + block-aware detection and a stateless redirect.
+
+### 3. Cheap wins
+- [ ] **WCFM/Dokan endpoints never appear in the builder** - the registry snapshots `wc_get_account_menu_items()` in whatever context the admin page loads (`functions.php:291`). Add a "rescan endpoints" action. (S)
+- [ ] **No WPML support at all** - zero i18n registration exists; endpoint labels and slugs are untranslatable. (S)
+
+### 4. Icon vocabulary is a mess
+- [ ] The plugin now uses three: Font Awesome 4.7 (frontend, documented to owners), Dashicons (admin preview), and a 25-glyph FA subset (`admin/wbcom/wbcom-admin-settings.php:175-177`) - so any picker entry outside those 25 renders blank, and the Select2 picker still emits `<i class="fa fa-...">` at `admin/assets/js/...-admin.js:288`. Consolidate on Lucide with a migration map for stored `fa fa-*` values. (M)
+
+### Not urgent
+The 8 Dependabot alerts are **build-only** (`scope: development` - grunt/npm toolchain, `node_modules` is not shipped). Batch with the next release; do not let "5 high" drive a hotfix.
+
+### Ground rules for this list
+- A card is a lead, not a spec. Several open cards were found to be already fixed or factually wrong about this tree - re-verify before building.
+- Fix at the seam, not on the screen that reported it. Where a fix has a shared cause, the entry below says so.
+- Most customers do not run our themes. Verify on a generic theme (Storefront or a block theme), not only on Reign/BuddyX.
+
 ## What It Does
 Turns the default WooCommerce My Account area into a configurable customer portal. Site owners add custom endpoints (new account pages), organize tabs into collapsible groups, insert external links, restrict any item by user role, allow custom avatars, and restyle the whole area.
 
