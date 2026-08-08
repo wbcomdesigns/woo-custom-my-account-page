@@ -37,8 +37,8 @@ Two places, deliberately, and they reconcile:
 | | |
 |---|---|
 | **Basecamp board** | [Custom My Account Page for WooCommerce](https://3.basecamp.com/5798509/projects/37614349) |
-| **Cards to work** | **9** — 3 in Bugs, 6 in Scope |
-| **Checklist below** | **30** items on branch `1.6.4` |
+| **Cards to work** | **10** — 3 in Bugs, 7 in Scope |
+| **Checklist below** | **37** items on branch `1.6.4` |
 
 **Why the two numbers differ.** A card is the trackable unit a person picks up; a checklist item is one verifiable step inside it. The portfolio-floor items in particular repeat across all 12 plugins — four suite-wide faults, counted once per plugin here.
 
@@ -87,6 +87,59 @@ The 8 Dependabot alerts are **build-only** (`scope: development` - grunt/npm too
 - [ ] **Three icon vocabularies** - Font Awesome 4.7 (frontend, documented to owners), Dashicons (admin preview), and a 25-glyph FA subset; the Select2 picker still emits `<i class="fa fa-...">`, so any glyph outside those 25 renders blank. Consolidate on Lucide with a migration map.
 - [ ] **No RTL stylesheet** - one of three plugins missing it.
 - [ ] Dead-code leads: 1. Clean on that axis.
+
+### Frontend token bridge - follow the theme, do not repaint it
+
+The store owner sets their brand colour once at theme level and expects every plugin to follow. **Reign and BuddyX each ship a full
+token system, and they are different vocabularies** - Reign defines no `--bx-*`, BuddyX defines no `--reign-*` - so the chain must
+try both before falling back. Verified against reign-theme (112 tokens), buddyx (118) and both `theme.json` palettes.
+
+| Role | BuddyX | Reign | Preset fallback |
+|---|---|---|---|
+| Accent | `--bx-color-accent` | `--reign-accent-color` | `primary` / `accent` |
+| Page background | `--bx-color-bg-page` | `--reign-site-body-bg-color` | `base` |
+| Raised surface | `--bx-color-bg-elevated` | `--reign-site-sections-bg-color` | - |
+| Body text | `--bx-color-text` | `--reign-site-body-text-color` | `contrast` |
+| Muted text | `--bx-color-fg-muted` | `--reign-site-alternate-text-color` | - |
+| Headings | `--bx-color-heading` | `--reign-site-headings-color` | - |
+| Border | `--bx-color-border` | `--reign-site-border-color` | - |
+| Link | `--bx-color-link` | `--reign-site-link-color` | - |
+| Button bg / fg | `--bx-color-button-bg` / `-fg` | `--reign-site-button-bg-color` / `-text-color` | - |
+| Success / error | - | `--reign-color-success` / `--reign-color-error` | - |
+
+**Watch the preset slugs too:** Reign's accent slug is `primary`, BuddyX's is `accent`, so `var(--wp--preset--color--primary)`
+alone resolves to nothing on BuddyX.
+
+```css
+:root,
+.wcmp-app {
+    /* BuddyX token, then Reign token, then both preset slugs, then a literal. */
+    --wcmp-accent: var(--bx-color-accent,
+                  var(--reign-accent-color,
+                  var(--wp--preset--color--primary,
+                  var(--wp--preset--color--accent, #157dfd))));
+
+    --wcmp-bg:     var(--bx-color-bg-page,
+                  var(--reign-site-body-bg-color,
+                  var(--wp--preset--color--base, #ffffff)));
+
+    --wcmp-text:   var(--bx-color-text,
+                  var(--reign-site-body-text-color,
+                  var(--wp--preset--color--contrast, #1a1a1a)));
+
+    --wcmp-border: var(--bx-color-border,
+                  var(--reign-site-border-color,
+                  color-mix(in srgb, var(--wcmp-text) 12%, transparent)));
+}
+```
+
+- [ ] **Build the bridge block** above, with `surface` and `muted` alongside the four shown.
+- [ ] **Components read only `--wcmp-*` tokens.** No component references a theme token, a preset or a hex directly - that single indirection layer is what makes one theme change land everywhere, and what stops a third-party theme falling through to nothing.
+- [ ] **Do not add a plugin-side dark class.** Reign and BuddyX both flip dark mode with the same root attribute, `[data-bx-mode="dark"]`. Because our tokens read from theme tokens, dark mode arrives for free. Forcing our own class produces a dark panel on a light page - a state the product never reaches - and you end up "fixing" bugs that do not exist.
+- [ ] **Scope any standalone dark values so the theme always wins:** `@media (prefers-color-scheme: dark) { :root:not([data-bx-mode]) { ... } }`. Dark mode is a root token override, never a per-component rule.
+- [ ] **Verify on Reign and BuddyX separately** - they resolve through different tokens, so passing on one proves nothing about the other. Change the theme accent, reload, confirm our output moved.
+- [ ] **Toggle dark mode with the theme's own control**, never by hand-adding a class. If the theme chrome stays light while our panel darkens, you are in an artificial state - stop and use the real toggle.
+- [ ] **Check a third-party theme** (Storefront or a block theme). Most customers run neither of ours; the preset and literal fallbacks are what they get and must look deliberate.
 
 ### Rebuild the admin panel to the standard shell
 
