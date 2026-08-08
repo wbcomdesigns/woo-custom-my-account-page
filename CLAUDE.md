@@ -14,6 +14,22 @@
 - **Pro Version:** none (single tier)
 - **Basecamp:** https://3.basecamp.com/5798509/projects/37614349
 
+## Names & Identity
+
+Every surface this product is known by. When these drift, a site owner reports a bug under one name and support searches for another.
+
+| Surface | Value |
+|---|---|
+| Plugin Name (what the site owner sees) | `Custom My Account Page for WooCommerce` |
+| Install slug (`wp-content/plugins/`) | `woo-custom-my-account-page` |
+| Git repo | `woo-custom-my-account-page` |
+| Text domain | `woo-custom-my-account-page` |
+| README.txt title | `Custom My Account Page for WooCommerce` |
+| Basecamp board | `Custom My Account Page for WooCommerce` (37614349) |
+| Basecamp URL | https://3.basecamp.com/5798509/projects/37614349 |
+
+The Basecamp board was called `WooCommerce Custom My Account Page` until August 2026; it was renamed to match the plugin, readme, and store listing, which all say `Custom My Account Page for WooCommerce`.
+
 ## What It Does
 Turns the default WooCommerce My Account area into a configurable customer portal. Site owners add custom endpoints (new account pages), organize tabs into collapsible groups, insert external links, restrict any item by user role, allow custom avatars, and restyle the whole area.
 
@@ -105,4 +121,4 @@ No custom tables, no CPTs.
 - **Role restriction is a security boundary, not just display.** Hiding a menu item is not enough - the endpoint content callback must re-check the role. Verify both layers when touching visibility.
 - **Endpoint slugs are user-visible URLs.** Changing a default slug breaks existing bookmarks and links; migrate rather than rename. Note `wcmp_endpoint_backup_pre_` exists precisely because endpoint edits are destructive.
 - **Test on a generic theme.** The account menu is heavily themed; Storefront and a block theme behave differently from Reign/BuddyX. Check hover/focus/visited states on the nav links - themes override `<a>` styling.
-- This repo has **no `readme.txt`** despite being a free/wp.org-style plugin - packaging and the product index both read plugin headers instead. Confirm the intended distribution channel before adding one.
+- **The readme is `README.txt` (uppercase).** Tooling that globs for lowercase `readme.txt` silently misses it - git is case-sensitive even though macOS is not, so `git show <ref>:readme.txt` reports the file as absent while `open('readme.txt')` succeeds. Version-bump and packaging scripts must match case-insensitively or they will ship a stale `Stable tag`.
