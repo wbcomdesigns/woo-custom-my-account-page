@@ -95,6 +95,10 @@ class Woo_Custom_My_Account_Page_Admin {
 		if ( ! wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
 			wp_enqueue_style( 'wp-color-picker' );
 		}
+		// Same bundled icon set as the frontend, so the builder's icon picker
+		// previews exactly what members will see.
+		wp_enqueue_style( 'wcmp-font-awesome', plugin_dir_url( __DIR__ ) . 'assets/vendor/font-awesome/css/wcmp-icons.min.css', array(), '6.7.2' );
+
 		if ( ! wp_style_is( 'woo-custom-my-account-page-admin-css', 'enqueued' ) ) {
 			wp_enqueue_style( 'woo-custom-my-account-page-admin-css', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-admin.css', array(), $this->version, 'all' );
 		}

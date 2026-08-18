@@ -110,7 +110,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<h4><?php esc_html_e( 'Q: How do I add icons to menu items?', 'woo-custom-my-account-page' ); ?></h4>
 					<p><?php esc_html_e( 'A: This plugin uses FontAwesome 4.7 icons. To add an icon:', 'woo-custom-my-account-page' ); ?></p>
 					<ol>
-						<li><?php esc_html_e( 'Visit FontAwesome icon gallery: https://fontawesome.com/v4/icons/', 'woo-custom-my-account-page' ); ?></li>
+						<li><?php esc_html_e( 'Type an icon name from the bundled set (e.g. fa-tag, fa-heart, fa-user) - the picker previews exactly what members will see', 'woo-custom-my-account-page' ); ?></li>
 						<li><?php esc_html_e( 'Find an icon you like (e.g., "shopping-cart")', 'woo-custom-my-account-page' ); ?></li>
 						<li><?php esc_html_e( 'Copy the class name (e.g., "fa fa-shopping-cart")', 'woo-custom-my-account-page' ); ?></li>
 						<li><?php esc_html_e( 'Paste it into the "Icon" field of your endpoint', 'woo-custom-my-account-page' ); ?></li>

@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div id="wcmp-avatar-form" data-width="500" data-height="280">
 	<div class="wcmp-popup-title">
 		<span><?php esc_html_e( 'Upload your avatar', 'woo-custom-my-account-page' ); ?></span>
-		<i class="fa fa-times close-form"></i>
+		<button type="button" class="close-form"><i class="fa fa-times" aria-hidden="true"></i><span class="screen-reader-text"><?php esc_html_e( 'Close', 'woo-custom-my-account-page' ); ?></span></button>
 	</div>
 	<div class="wcmp-popup-content">
 		<form enctype="multipart/form-data" method="post">

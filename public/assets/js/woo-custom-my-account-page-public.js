@@ -64,14 +64,28 @@ jQuery(document).ready(function($) {
     $(document).on( "click", ".group-opener", function(ev){
         ev.preventDefault();
 
-        var container = $(this).closest('li');
+        var t         = $(this),
+            container = t.closest('li'),
+            expanded  = t.attr('aria-expanded') === 'true';
 
         if( container.hasClass( 'is-tab' ) && $(window).width() >= 480 ) {
             container.toggleClass( 'is-hover' );
+            t.attr( 'aria-expanded', container.hasClass('is-hover') ? 'true' : 'false' );
             return;
         }
 
-        $(this).find('i.opener').toggleClass( 'fa-chevron-down' ).toggleClass( 'fa-chevron-up' );
-        $(this).next('.myaccount-submenu').slideToggle();
+        t.attr( 'aria-expanded', expanded ? 'false' : 'true' );
+        t.find('i.opener').toggleClass( 'fa-chevron-down' ).toggleClass( 'fa-chevron-up' );
+        t.next('.myaccount-submenu').slideToggle();
+    });
+
+    // Mobile: the account menu collapses behind a disclosure button.
+    $(document).on( 'click', '.wcmp-nav-toggle', function(){
+        var t        = $(this),
+            expanded = t.attr('aria-expanded') === 'true',
+            menu     = $( '#' + t.attr('aria-controls') );
+
+        t.attr( 'aria-expanded', expanded ? 'false' : 'true' );
+        menu.toggleClass( 'is-open' );
     });
 });
