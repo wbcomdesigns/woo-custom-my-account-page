@@ -648,6 +648,12 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @param  array $current_user_role The current user role.
 		 * @return boolean
 		 */
+		/*
+		 * Note on semantics: despite the historical name, a non-empty roles
+		 * list is a visibility ALLOWLIST - this returns true when the current
+		 * user's role IS in the list (i.e. the endpoint is visible to them).
+		 * The menu builder keeps endpoints when this returns true.
+		 */
 		protected function hide_by_usr_roles( $roles, $current_user_role ) {
 			// Return if $roles is empty.
 			if ( empty( $roles ) ) {
@@ -871,16 +877,27 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// If NOT in My account dashboard page.
 			$current_user = wp_get_current_user();
 			$user_role    = (array) $current_user->roles;
-			if ( array_key_exists( $default_endpoint, $this->menu_endpoints ) ) {
+			// Read the roles from the RAW settings, not the already
+			// role-filtered menu: for a user outside the allowlist the
+			// endpoint is absent from the menu, which used to leave this
+			// empty and redirect them to an endpoint they cannot see.
+			if ( isset( $endpoints[ $default_endpoint ]['usr_roles'] ) ) {
+				$restricted_roles = (array) $endpoints[ $default_endpoint ]['usr_roles'];
+			} elseif ( array_key_exists( $default_endpoint, $this->menu_endpoints ) ) {
 				$restricted_roles = $this->menu_endpoints[ $default_endpoint ]['usr_roles'];
 			}
+			// Role visibility is an ALLOWLIST (matching the menu): when roles
+			// are selected, only those roles see the endpoint. Never redirect
+			// a member to a default endpoint that is hidden from them.
+			$default_visible = empty( $restricted_roles ) || $this->hide_by_usr_roles( $restricted_roles, $user_role );
+
 			if ( ! is_wc_endpoint_url( $default_endpoint ) ) {
 				// is_myaccount was already confirmed for THIS request at the
 				// top of the method - the legacy wcmp_is_my_account option
 				// (written on shutdown by the PREVIOUS request) made this
 				// redirect non-deterministic and is no longer consulted.
 				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				if ( ! isset( $_GET['elementor-preview'] ) && $current_endpoint !== $default_endpoint && ! $this->hide_by_usr_roles( $restricted_roles, $user_role ) ) {
+				if ( ! isset( $_GET['elementor-preview'] ) && $current_endpoint !== $default_endpoint && $default_visible ) {
 					if ( 'dashboard' !== $default_endpoint ) {
 						$url = wc_get_endpoint_url( $default_endpoint, '', $url );
 					}

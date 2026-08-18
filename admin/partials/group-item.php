@@ -106,7 +106,7 @@ $myaccount_func = instantiate_woo_custom_myaccount_functions();
 					<th>
 						<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $group . '_usr_roles' ); ?>">
 							<?php
-							esc_html_e( 'User roles', 'woo-custom-my-account-page' );
+							esc_html_e( 'Visible to roles (empty = everyone)', 'woo-custom-my-account-page' );
 							?>
 						</label>
 					</th>

@@ -141,7 +141,7 @@ $user_roles = $wp_roles->roles;
 					<th>
 						<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_usr_roles' ); ?>">
 							<?php
-							esc_html_e( 'User roles', 'woo-custom-my-account-page' );
+							esc_html_e( 'Visible to roles (empty = everyone)', 'woo-custom-my-account-page' );
 							?>
 						</label>
 					</th>

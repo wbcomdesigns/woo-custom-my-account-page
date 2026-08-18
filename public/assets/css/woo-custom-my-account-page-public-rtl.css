@@ -529,6 +529,29 @@ div#wcmp-avatar-form-overlay.loading:before {
 .rg-my-account-content-wrapper #my-account-menu {
 	width: 100%;
 }
+/* TAB layout: themes (Reign among them) wrap the Woo navigation in their own
+   column container, so the menu is not a sibling of the content. When the
+   wrapper holds the TAB menu, both columns must go full width. */
+.rg-my-account-content-wrapper:has(#my-account-menu-tab) .woocommerce-MyAccount-content,
+.woocommerce-account .woocommerce:has(#my-account-menu-tab) .woocommerce-MyAccount-content,
+body #my-account-menu-tab ~ .woocommerce-MyAccount-content {
+	float: none !important;
+	width: 100% !important;
+}
+.woocommerce-MyAccount-navigation-wrapper:has(#my-account-menu-tab),
+.rg-my-account-content-wrapper:has(#my-account-menu-tab) {
+	width: 100% !important;
+	float: none !important;
+	display: block !important;
+}
+.rg-my-account-content-wrapper #my-account-menu-tab {
+	width: 100%;
+}
+/* Reign lays the two columns out with flex; honour the plugin's
+   sidebar-position setting there too. */
+.rg-my-account-content-wrapper:has(#my-account-menu.position-right) {
+	flex-direction: row-reverse;
+}
 .rg-my-account-content-wrapper #my-account-menu.position-left {
 	padding-inline-end: 0;
 }
