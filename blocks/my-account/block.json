@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wcmp/my-account",
+	"version": "1.6.4",
+	"title": "Custom My Account",
+	"category": "woocommerce",
+	"icon": "admin-users",
+	"description": "The full My Account portal - custom menu, groups, links and avatar - placeable on any page, including block themes.",
+	"keywords": [ "my account", "account", "portal", "woocommerce" ],
+	"textdomain": "woo-custom-my-account-page",
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"multiple": false
+	},
+	"editorScript": "file:./editor.js",
+	"render": "file:./render.php"
+}

@@ -1,5 +1,12 @@
 # Custom My Account Page for WooCommerce (woo-custom-my-account-page)
 
+> **2026-08-18 status:** the 18-card Bugs program shipped on branch `1.6.4`
+> (P0 kses order + block-aware detection + custom default endpoint,
+> zero-config activation, Pattern A admin on `lib/wbcom-settings/`, portal
+> chrome with token bridge + RTL + a11y + one icon vocabulary, `wcmp/my-account`
+> block + `[wcmp_my_account]` shortcode). The checklist below predates that
+> work - treat it as historical audit context, not open items.
+
 ## Plugin Identity
 - **Plugin Name:** Custom My Account Page for WooCommerce
 - **Main File:** `woo-custom-my-account-page.php`

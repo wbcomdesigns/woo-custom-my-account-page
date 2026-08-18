@@ -58,13 +58,43 @@ class Woo_Custom_My_Account_Page_Public {
 	}
 
 	/**
+	 * Whether the current request can render the portal.
+	 *
+	 * @access public
+	 * @since  1.6.4
+	 * @return bool
+	 */
+	public function wcmp_should_load_assets() {
+		if ( function_exists( 'is_account_page' ) && is_account_page() ) {
+			return true;
+		}
+
+		if ( is_singular() ) {
+			$post = get_post();
+			if ( $post && ( has_block( 'wcmp/my-account', $post )
+				|| has_shortcode( (string) $post->post_content, 'wcmp_my_account' )
+				|| has_shortcode( (string) $post->post_content, 'woocommerce_my_account' ) ) ) {
+				return true;
+			}
+		}
+
+		/**
+		 * Filter whether the portal assets load on this request.
+		 *
+		 * @since 1.6.4
+		 * @param bool $load Whether to load.
+		 */
+		return (bool) apply_filters( 'wcmp_load_public_assets', false );
+	}
+
+	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
 	 * @since 1.0.0
 	 */
 	public function enqueue_styles() {
 
-		if ( ! is_account_page() ) {
+		if ( ! $this->wcmp_should_load_assets() ) {
 			return;
 		}
 
@@ -87,7 +117,7 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	public function enqueue_scripts() {
 
-		if ( ! function_exists( 'is_account_page' ) || ! is_account_page() ) {
+		if ( ! $this->wcmp_should_load_assets() ) {
 			return;
 		}
 

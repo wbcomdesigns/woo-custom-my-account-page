@@ -95,6 +95,12 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// Shortcode to print default dashboard.
 			add_shortcode( 'default_dashboard_content', array( $this, 'wcmp_print_default_dashboard_content' ) );
 
+			// Placement fallbacks for block themes and arbitrary pages: the
+			// portal renders wherever WooCommerce's My Account shortcode
+			// renders, so both delegate to it.
+			add_shortcode( 'wcmp_my_account', array( $this, 'wcmp_render_my_account_shortcode' ) );
+			add_action( 'init', array( $this, 'wcmp_register_block' ), 20 );
+
 			add_action( 'init', array( $this, 'wcmp_update_old_items' ), 0 );
 
 			// Register custom endpoints.
@@ -1000,6 +1006,29 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @param  string $name The endpoint name.
 		 * @return string
 		 */
+		/**
+		 * Render the full My Account portal anywhere.
+		 *
+		 * @access public
+		 * @since  1.6.4
+		 * @return string
+		 */
+		public function wcmp_render_my_account_shortcode() {
+			return do_shortcode( '[woocommerce_my_account]' );
+		}
+
+		/**
+		 * Register the wcmp/my-account block.
+		 *
+		 * @access public
+		 * @since  1.6.4
+		 */
+		public function wcmp_register_block() {
+			if ( function_exists( 'register_block_type' ) ) {
+				register_block_type( WCMP_PLUGIN_PATH . 'blocks/my-account' );
+			}
+		}
+
 		public function wcmp_build_label( $name ) {
 
 			$label = preg_replace( '/[^a-z]/', ' ', $name );
