@@ -169,7 +169,13 @@ Admin rebuilt on the shared Wbcom settings shell, portal chrome modernised, bloc
 * Improve  - One icon vocabulary: the builder's icon picker previews with the same bundled icon set the storefront renders.
 * Fix      - Shortcodes that output forms (for example Formidable) render their input, select and textarea fields in custom endpoint content; content is sanitized before shortcode expansion and the editor respects the unfiltered_html capability.
 * Fix      - Endpoint builder: deleting an item uses an in-admin dialog instead of a browser confirm, the add dialog no longer duplicates field ids, and a script error on repeated saves is gone.
+* Fix      - Users outside a role-restricted default endpoint's allowlist are no longer redirected to an endpoint hidden from them.
+* Fix      - Tab menu style renders full-width on themes that wrap the account navigation (for example Reign) instead of squeezing content into a side column.
+* Fix      - Sidebar position "right" is honoured on themes that lay the account columns out with flex.
+* Fix      - Shared settings hub strings use the plugin text domain so translators can reach them; translation template refreshed.
+* Improve  - The endpoint role field is labelled "Visible to roles (empty = everyone)" so the allowlist behaviour is explicit.
 * Dev      - RTL stylesheet generated and registered; forked admin/wbcom wrapper removed; committed dist/ directory removed from the repo.
+* Compat   - Supported versions updated: WordPress 6.5 to 7.0, PHP 8.0 or newer.
 
 = 1.6.3 =
 * Fix: Avatar form AJAX request now uses POST method preventing potential errors on some server configurations
