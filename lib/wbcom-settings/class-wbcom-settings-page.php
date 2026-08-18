@@ -207,13 +207,13 @@ class Wbcom_Settings_Page {
 			<header class="wbcom-page-header">
 				<span class="wbcom-page-header__icon"><i data-lucide="lightbulb"></i></span>
 				<div>
-					<h1><?php esc_html_e( 'WB Plugins', 'default' ); ?></h1>
+					<h1><?php esc_html_e( 'WB Plugins', 'woo-custom-my-account-page' ); ?></h1>
 					<p class="wbcom-page-header__subtitle">
 						<?php
 						echo esc_html(
 							sprintf(
 								/* translators: %d: number of active Wbcom plugins. */
-								_n( '%d Wbcom plugin active on this site.', '%d Wbcom plugins active on this site.', $count, 'default' ),
+								_n( '%d Wbcom plugin active on this site.', '%d Wbcom plugins active on this site.', $count, 'woo-custom-my-account-page' ),
 								$count
 							)
 						);
@@ -225,8 +225,8 @@ class Wbcom_Settings_Page {
 			<?php if ( 0 === $count ) : ?>
 				<div class="wbcom-empty-state">
 					<i data-lucide="lightbulb"></i>
-					<p class="wbcom-empty-state__title"><?php esc_html_e( 'No Wbcom plugins attached to this hub yet', 'default' ); ?></p>
-					<p class="wbcom-empty-state__desc"><?php esc_html_e( 'Activate one and it will appear here automatically.', 'default' ); ?></p>
+					<p class="wbcom-empty-state__title"><?php esc_html_e( 'No Wbcom plugins attached to this hub yet', 'woo-custom-my-account-page' ); ?></p>
+					<p class="wbcom-empty-state__desc"><?php esc_html_e( 'Activate one and it will appear here automatically.', 'woo-custom-my-account-page' ); ?></p>
 				</div>
 			<?php else : ?>
 				<div class="wbcom-hub-grid">
@@ -238,7 +238,7 @@ class Wbcom_Settings_Page {
 								<span class="wbcom-hub-card__subtitle"><?php echo esc_html( $plugin['subtitle'] ); ?></span>
 							<?php endif; ?>
 							<span class="wbcom-hub-card__cta">
-								<?php esc_html_e( 'Open settings', 'default' ); ?>
+								<?php esc_html_e( 'Open settings', 'woo-custom-my-account-page' ); ?>
 								<i data-lucide="arrow-right"></i>
 							</span>
 						</a>
@@ -247,14 +247,14 @@ class Wbcom_Settings_Page {
 			<?php endif; ?>
 
 			<?php
-			self::card_open( __( 'About WB Plugins', 'default' ) );
+			self::card_open( __( 'About WB Plugins', 'woo-custom-my-account-page' ) );
 			?>
 			<p>
-				<?php esc_html_e( 'This hub is the single entry point for every Wbcom Designs plugin installed on your site. Each plugin lives on its own page under this menu and keeps its own settings, licence, and data.', 'default' ); ?>
+				<?php esc_html_e( 'This hub is the single entry point for every Wbcom Designs plugin installed on your site. Each plugin lives on its own page under this menu and keeps its own settings, licence, and data.', 'woo-custom-my-account-page' ); ?>
 			</p>
 			<p>
 				<a href="https://wbcomdesigns.com/" target="_blank" rel="noopener noreferrer">
-					<?php esc_html_e( 'Visit wbcomdesigns.com for more plugins and themes', 'default' ); ?>
+					<?php esc_html_e( 'Visit wbcomdesigns.com for more plugins and themes', 'woo-custom-my-account-page' ); ?>
 					<i data-lucide="arrow-right"></i>
 				</a>
 			</p>
