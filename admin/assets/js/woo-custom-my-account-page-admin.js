@@ -83,7 +83,11 @@ jQuery( document ).ready(
 				var t     = $( this ),
 				target    = t.data( 'target' ),
 				title     = t.html(),
-				new_field = $( document ).find( '.new-field-form' ).clone();
+				new_field = $( document ).find( '.new-field-form' ).first().clone();
+
+				// The clone must not duplicate the template's input id.
+				new_field.find( '#wcmp-new-field' ).attr( 'id', 'wcmp-new-field-dialog' );
+				new_field.find( 'label[for="wcmp-new-field"]' ).attr( 'for', 'wcmp-new-field-dialog' );
 				
 				// first init and open dialog
 				init_dialog_form( new_field, target, title );
@@ -112,10 +116,12 @@ jQuery( document ).ready(
 							// class add field handler.
 							$( this ).add_new_field_handler( target );
 
-							$( document ).one(
-								'wcmp_field_added',
+							$( document ).off( 'wcmp_field_added.wcmpDialog' ).one(
+								'wcmp_field_added.wcmpDialog',
 								function() {
-									content.dialog( "close" );
+									if ( content.hasClass( 'ui-dialog-content' ) ) {
+										content.dialog( 'close' );
+									}
 								}
 							);
 						}
@@ -135,7 +141,7 @@ jQuery( document ).ready(
 		$.fn.add_new_field_handler = function( target ){
 
 			var t = $( this ),
-			value = t.find( '#wcmp-new-field' ).val(),
+			value = t.find( '.wcmp-field-input' ).first().val(),
 			error = t.find( '.error-msg' );
 			t.find('.error-msg').empty();
 			if ( '' !== $.trim( value ) ) {
@@ -206,7 +212,7 @@ jQuery( document ).ready(
 
 		$( document ).on(
 			'keyup',
-			'#wcmp-new-field',
+			'.new-field-form .wcmp-field-input',
 			function(){
 				$( this ).parents('.new-field-form').find('.error-msg').empty();
 			}
@@ -254,29 +260,51 @@ jQuery( document ).ready(
 					return false;
 				}
 
-				var r = confirm( wcmp.remove_alert );
-				if ( r == true ) {
-					var item        = t.closest( '.dd-item' ),
-					is_group        = item.find( 'ol.endpoints' ),
-					val_to_remove   = to_remove.val(),
-					to_remove_array = val_to_remove.length ? val_to_remove.split( ',' ) : [];
+				// In-admin confirm dialog - never a native browser dialog.
+				var confirm_box = $( '<div class="wcmp-confirm-dialog"><p>' + wcmp.remove_alert + '</p></div>' ).appendTo( 'body' );
+				confirm_box.dialog( {
+					title: wcmp.remove_title,
+					modal: true,
+					width: 420,
+					resizable: false,
+					buttons: [
+						{
+							text: wcmp.remove_confirm,
+							'class': 'button button-primary',
+							click: function() {
+								var item        = t.closest( '.dd-item' ),
+								is_group        = item.find( 'ol.endpoints' ),
+								val_to_remove   = to_remove.val(),
+								to_remove_array = val_to_remove.length ? val_to_remove.split( ',' ) : [];
 
-					to_remove_array.push( endpoint );
-					// first set value
-					to_remove.val( to_remove_array.join( ',' ) );
+								to_remove_array.push( endpoint );
+								// first set value
+								to_remove.val( to_remove_array.join( ',' ) );
 
-					// if group move child
-					if ( is_group.length ) {
-						var child_items = is_group.find( 'li.dd-item' );
-						// move!
-						item.after( child_items );
+								// if group move child
+								if ( is_group.length ) {
+									var child_items = is_group.find( 'li.dd-item' );
+									// move!
+									item.after( child_items );
+								}
+								// then remove field
+								item.remove();
+								$( document ).trigger( 'wcmp_field_order' );
+								$( this ).dialog( 'close' );
+							}
+						},
+						{
+							text: wcmp.remove_cancel,
+							click: function() {
+								$( this ).dialog( 'close' );
+							}
+						}
+					],
+					close: function() {
+						confirm_box.dialog( 'destroy' );
+						confirm_box.remove();
 					}
-					// then remove field
-					item.remove();
-					$( document ).trigger( 'wcmp_field_order' );
-				} else {
-					return false;
-				}
+				} );
 			}
 		);
 

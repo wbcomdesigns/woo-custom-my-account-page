@@ -72,7 +72,7 @@ $editor_options            = array(
 			<div class="options-row">
 				<span class="hide-show-trigger">
 					<?php
-					esc_html_e( 'Hide', 'woo-custom-my-account-page' );
+					esc_html_e( 'Hide from menu', 'woo-custom-my-account-page' );
 					?>
 
 				</span>

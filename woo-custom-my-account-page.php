@@ -67,6 +67,14 @@ if ( ! defined( 'WCMP_PLUGIN_PATH' ) ) {
 if ( ! defined( 'WCMP_PLUGIN_URL' ) ) {
 	define( 'WCMP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }
+// Bundled Wbcom settings screen (Pattern A). Every Wbcom plugin ships a copy;
+// the newest registered copy is the one that loads. Guarded so a stripped
+// install degrades to "no settings screen" instead of fataling.
+if ( file_exists( WCMP_PLUGIN_PATH . 'lib/wbcom-settings/loader.php' ) ) {
+	require_once WCMP_PLUGIN_PATH . 'lib/wbcom-settings/loader.php';
+	wbcom_settings_register( '1.0.0', WCMP_PLUGIN_PATH . 'lib/wbcom-settings/class-wbcom-settings-page.php' );
+}
+
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.

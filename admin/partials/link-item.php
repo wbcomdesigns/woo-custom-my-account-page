@@ -53,7 +53,7 @@ $user_roles = $wp_roles->roles;
 		<div class="endpoint-options" style="display: none;">
 
 			<div class="options-row">
-				<span class="hide-show-trigger"><?php echo $options['active'] ? esc_html__( 'Hide', 'woo-custom-my-account-page' ) : esc_html__( 'Show', 'woo-custom-my-account-page' ); ?></span>
+				<span class="hide-show-trigger"><?php echo $options['active'] ? esc_html__( 'Hide from menu', 'woo-custom-my-account-page' ) : esc_html__( 'Show in menu', 'woo-custom-my-account-page' ); ?></span>
 				<span class="sep">|</span>
 				<span class="remove-trigger" data-endpoint="<?php echo esc_attr( $link ); ?>"><?php esc_html_e( 'Remove', 'woo-custom-my-account-page' ); ?></span>
 			</div>
