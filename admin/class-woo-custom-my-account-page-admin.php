@@ -713,8 +713,11 @@ class Woo_Custom_My_Account_Page_Admin {
 					$sanitized['endpoints'][ $key ]['url']          = isset( $endpoint['url'] ) ? esc_url_raw( $endpoint['url'] ) : '';
 					$sanitized['endpoints'][ $key ]['target_blank'] = isset( $endpoint['target_blank'] ) && 'yes' === $endpoint['target_blank'] ? 'yes' : 'no';
 				} else {
-					// Endpoint-specific fields.
-					$sanitized['endpoints'][ $key ]['content'] = isset( $endpoint['content'] ) ? wp_kses_post( $endpoint['content'] ) : '';
+					// Endpoint-specific fields. Same trust model as post
+					// content: users with unfiltered_html keep their markup,
+					// everyone else goes through wp_kses_post().
+					$raw_content = isset( $endpoint['content'] ) ? $endpoint['content'] : '';
+					$sanitized['endpoints'][ $key ]['content'] = current_user_can( 'unfiltered_html' ) ? $raw_content : wp_kses_post( $raw_content );
 				}
 			}
 		}
