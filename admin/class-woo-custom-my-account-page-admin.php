@@ -95,6 +95,10 @@ class Woo_Custom_My_Account_Page_Admin {
 		if ( ! wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
 			wp_enqueue_style( 'wp-color-picker' );
 		}
+		// Same bundled icon set as the frontend, so the builder's icon picker
+		// previews exactly what members will see.
+		wp_enqueue_style( 'wcmp-font-awesome', plugin_dir_url( __DIR__ ) . 'assets/vendor/font-awesome/css/wcmp-icons.min.css', array(), '6.7.2' );
+
 		if ( ! wp_style_is( 'woo-custom-my-account-page-admin-css', 'enqueued' ) ) {
 			wp_enqueue_style( 'woo-custom-my-account-page-admin-css', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-admin.css', array(), $this->version, 'all' );
 		}
@@ -154,12 +158,15 @@ class Woo_Custom_My_Account_Page_Admin {
 						'ajaxurl'      => admin_url( 'admin-ajax.php' ),
 						'action_add'   => 'wcmp_add_field',
 						'nonce'        => wp_create_nonce( 'ajax_nonce' ),
-						'show_lbl'     => esc_html__( 'Show', 'woo-custom-my-account-page' ),
-						'hide_lbl'     => esc_html__( 'Hide', 'woo-custom-my-account-page' ),
+						'show_lbl'     => esc_html__( 'Show in menu', 'woo-custom-my-account-page' ),
+						'hide_lbl'     => esc_html__( 'Hide from menu', 'woo-custom-my-account-page' ),
 						'checked'      => '<span class="dashicons dashicons-yes"></span>',
 						'error_icon'   => '<span class="dashicons dashicons-no"></span>',
 						'empty_field'  => esc_html__( 'This field is required.', 'woo-custom-my-account-page' ),
-						'remove_alert' => esc_html__( 'Are you sure that you want to delete this endpoint?', 'woo-custom-my-account-page' ),
+						'remove_alert'   => esc_html__( 'Are you sure that you want to delete this item from the menu?', 'woo-custom-my-account-page' ),
+						'remove_title'   => esc_html__( 'Delete menu item', 'woo-custom-my-account-page' ),
+						'remove_confirm' => esc_html__( 'Delete', 'woo-custom-my-account-page' ),
+						'remove_cancel'  => esc_html__( 'Cancel', 'woo-custom-my-account-page' ),
 					)
 				);
 			}
@@ -174,79 +181,362 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access public
 	 */
 	public function wcmp_add_plugin_menu_page() {
-		if ( empty( $GLOBALS['admin_page_hooks']['wbcomplugins'] ) ) {
-			add_menu_page( esc_html__( 'WB Plugins', 'woo-custom-my-account-page' ), esc_html__( 'WB Plugins', 'woo-custom-my-account-page' ), 'manage_options', 'wbcomplugins', array( $this, 'wcmp_admin_settings_page' ), 'dashicons-lightbulb', 59 );
-			add_submenu_page( 'wbcomplugins', esc_html__( 'General', 'woo-custom-my-account-page' ), esc_html__( 'General', 'woo-custom-my-account-page' ), 'manage_options', 'wbcomplugins' );
+		if ( ! empty( $GLOBALS['admin_page_hooks']['wbcomplugins'] ) || ! class_exists( 'Wbcom_Settings_Page' ) ) {
+			return;
 		}
-		add_submenu_page( 'wbcomplugins', esc_html__( 'Woo My Account', 'woo-custom-my-account-page' ), esc_html__( 'Woo My Account', 'woo-custom-my-account-page' ), 'manage_options', 'woo-custom-myaccount-page', array( $this, 'wcmp_admin_settings_page' ) );
+
+		add_menu_page(
+			esc_html__( 'WB Plugins', 'woo-custom-my-account-page' ),
+			esc_html__( 'WB Plugins', 'woo-custom-my-account-page' ),
+			'manage_options',
+			'wbcomplugins',
+			array( 'Wbcom_Settings_Page', 'render_welcome' ),
+			'dashicons-lightbulb',
+			59
+		);
 	}
 
 	/**
-	 * Actions performed to display submenu page.
+	 * Register this plugin's screen on the shared Wbcom settings shell.
 	 *
-	 * @since  1.0.0
-	 * @author Wbcom Designs
-	 * @access public
+	 * @since 1.6.4
 	 */
-	public function wcmp_admin_settings_page() {
-		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wcmp-welcome';
+	public function boot_settings_page() {
+		if ( ! class_exists( 'Wbcom_Settings_Page' ) ) {
+			return;
+		}
+
+		Wbcom_Settings_Page::boot(
+			array(
+				'prefix'     => 'wcmp',
+				'slug'       => 'woo-custom-myaccount-page',
+				'assets_url' => WCMP_PLUGIN_URL,
+				'version'    => WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION,
+				'icon'       => 'circle-user-round',
+				'labels'     => array(
+					'menu_title' => __( 'Woo My Account', 'woo-custom-my-account-page' ),
+					'brand'      => __( 'My Account Page', 'woo-custom-my-account-page' ),
+					'subtitle'   => __( 'Branded customer portal', 'woo-custom-my-account-page' ),
+					'nav_label'  => __( 'My Account settings sections', 'woo-custom-my-account-page' ),
+				),
+			)
+		);
+
+		add_filter( 'wcmp_settings_nav_groups', array( $this, 'settings_nav_groups' ) );
+		add_action( 'wcmp_settings_tab_content', array( $this, 'render_settings_tab' ) );
+	}
+
+	/**
+	 * Declare the settings nav.
+	 *
+	 * @since  1.6.4
+	 * @param  array $groups Groups declared so far.
+	 * @return array
+	 */
+	public function settings_nav_groups( $groups ) {
+		$groups['main'] = array(
+			'label' => __( 'My Account', 'woo-custom-my-account-page' ),
+			'items' => array(
+				'wcmp-overview'  => array(
+					'title' => __( 'Overview', 'woo-custom-my-account-page' ),
+					'icon'  => 'gauge',
+				),
+				'wcmp-endpoints' => array(
+					'title' => __( 'Endpoints', 'woo-custom-my-account-page' ),
+					'icon'  => 'layout-list',
+				),
+				'wcmp-general'   => array(
+					'title' => __( 'General', 'woo-custom-my-account-page' ),
+					'icon'  => 'settings-2',
+				),
+				'wcmp-style'     => array(
+					'title' => __( 'Style', 'woo-custom-my-account-page' ),
+					'icon'  => 'palette',
+				),
+			),
+		);
+
+		$groups['help'] = array(
+			'label' => __( 'Help', 'woo-custom-my-account-page' ),
+			'items' => array(
+				'wcmp-faq' => array(
+					'title' => __( 'FAQ', 'woo-custom-my-account-page' ),
+					'icon'  => 'help-circle',
+				),
+			),
+		);
+
+		return $groups;
+	}
+
+	/**
+	 * Render one settings tab.
+	 *
+	 * @since 1.6.4
+	 * @param string $tab Tab id.
+	 */
+	public function render_settings_tab( $tab ) {
+		switch ( $tab ) {
+			case 'wcmp-overview':
+				$this->render_overview_tab();
+				break;
+			case 'wcmp-endpoints':
+				Wbcom_Settings_Page::card_open(
+					__( 'Endpoints', 'woo-custom-my-account-page' ),
+					__( 'Reorder, rename, group and role-restrict what appears in the My Account menu. WooCommerce defaults work out of the box - custom endpoints are optional.', 'woo-custom-my-account-page' )
+				);
+				include WCMP_PLUGIN_PATH . 'admin/partials/wcmp-endpoints-settings.php';
+				Wbcom_Settings_Page::card_close();
+				break;
+			case 'wcmp-general':
+				$this->render_general_tab();
+				break;
+			case 'wcmp-style':
+				$this->render_style_tab();
+				break;
+			case 'wcmp-faq':
+				Wbcom_Settings_Page::card_open( __( 'Frequently asked questions', 'woo-custom-my-account-page' ) );
+				include WCMP_PLUGIN_PATH . 'admin/partials/wcmp-faq.php';
+				Wbcom_Settings_Page::card_close();
+				break;
+		}
+	}
+
+	/**
+	 * Overview tab - is the portal working, and what is it doing?
+	 *
+	 * @since 1.6.4
+	 */
+	private function render_overview_tab() {
+		$functions = instantiate_woo_custom_myaccount_functions();
+		$settings  = $functions->wcmp_settings_data();
+		$endpoints = isset( $settings['endpoints_settings'] ) ? $settings['endpoints_settings'] : array();
+		$general   = isset( $settings['general_settings'] ) ? $settings['general_settings'] : array();
+
+		$custom     = 0;
+		$restricted = 0;
+		$defaults   = $functions->default_endpoint_settings();
+		foreach ( $endpoints as $key => $endpoint ) {
+			if ( ! array_key_exists( $key, $defaults ) ) {
+				$custom++;
+			}
+			if ( ! empty( $endpoint['usr_roles'] ) ) {
+				$restricted++;
+			}
+		}
+
+		$account_page_id = function_exists( 'wc_get_page_id' ) ? wc_get_page_id( 'myaccount' ) : 0;
+		$account_page    = $account_page_id ? get_post( $account_page_id ) : null;
+		$page_mode       = __( 'Not set', 'woo-custom-my-account-page' );
+		if ( $account_page ) {
+			$page_mode = has_shortcode( (string) $account_page->post_content, 'woocommerce_my_account' )
+				? __( 'Classic shortcode', 'woo-custom-my-account-page' )
+				: __( 'Block based', 'woo-custom-my-account-page' );
+		}
+
+		Wbcom_Settings_Page::card_open(
+			__( 'Portal status', 'woo-custom-my-account-page' ),
+			__( 'What this plugin is doing on your store right now.', 'woo-custom-my-account-page' )
+		);
 		?>
-		<div class="wrap">
-			<div class="wbcom-bb-plugins-offer-wrapper">
-				<div id="wb_admin_logo">
-				</div>
+		<div class="wbcom-field wbcom-field-group">
+			<div class="wbcom-field-info">
+				<label><?php esc_html_e( 'My Account page', 'woo-custom-my-account-page' ); ?></label>
+				<p class="description"><?php esc_html_e( 'How the WooCommerce account page renders. Both modes are supported.', 'woo-custom-my-account-page' ); ?></p>
 			</div>
-			<div class="wbcom-wrap">
-				<div class="bupr-header">
-					<div class="wbcom_admin_header-wrapper">
-						<div id="wb_admin_plugin_name">
-							<?php esc_html_e( 'Woo My Account Page', 'woo-custom-my-account-page' ); ?>
-								<?php /* translators: %s: */ ?>
-							<span><?php printf( esc_html__( 'Version %s', 'woo-custom-my-account-page' ), WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION ); //phpcs:ignore ?></span>
-						</div>
-						<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
-					</div>
-				</div>
-				<?php settings_errors(); ?>
-				<div class="wbcom-admin-settings-page">
+			<div class="wbcom-field-control">
+				<span class="wbcom-badge <?php echo $account_page ? 'wbcom-badge--success' : 'wbcom-badge--danger'; ?>"><?php echo esc_html( $page_mode ); ?></span>
+			</div>
+		</div>
+		<div class="wbcom-field wbcom-field-group">
+			<div class="wbcom-field-info">
+				<label><?php esc_html_e( 'Menu entries', 'woo-custom-my-account-page' ); ?></label>
+				<p class="description">
 					<?php
-					$this->wcmp_plugin_settings_tabs();
-					settings_fields( $current );
-					do_settings_sections( $current );
+					printf(
+						/* translators: 1: total menu entries, 2: custom entries, 3: role-restricted entries. */
+						esc_html__( '%1$d entries in the My Account menu - %2$d custom, %3$d role-restricted.', 'woo-custom-my-account-page' ),
+						(int) count( $endpoints ),
+						(int) $custom,
+						(int) $restricted
+					);
 					?>
-				</div>
+				</p>
+			</div>
+			<div class="wbcom-field-control">
+				<a class="wbcom-btn" href="<?php echo esc_url( Wbcom_Settings_Page::tab_url( 'woo-custom-myaccount-page', 'wcmp-endpoints' ) ); ?>">
+					<i data-lucide="layout-list"></i><?php esc_html_e( 'Manage endpoints', 'woo-custom-my-account-page' ); ?>
+				</a>
+			</div>
+		</div>
+		<div class="wbcom-field wbcom-field-group">
+			<div class="wbcom-field-info">
+				<label><?php esc_html_e( 'Default endpoint', 'woo-custom-my-account-page' ); ?></label>
+				<p class="description"><?php esc_html_e( 'Where members land when they open My Account.', 'woo-custom-my-account-page' ); ?></p>
+			</div>
+			<div class="wbcom-field-control">
+				<code><?php echo esc_html( isset( $general['default_endpoint'] ) ? $general['default_endpoint'] : 'dashboard' ); ?></code>
+			</div>
+		</div>
+		<div class="wbcom-field wbcom-field-group">
+			<div class="wbcom-field-info">
+				<label><?php esc_html_e( 'Updates', 'woo-custom-my-account-page' ); ?></label>
+				<p class="description"><?php esc_html_e( 'Automatic updates are active - a free license key is preset on activation. Nothing to configure.', 'woo-custom-my-account-page' ); ?></p>
+			</div>
+			<div class="wbcom-field-control">
+				<span class="wbcom-badge wbcom-badge--success"><?php esc_html_e( 'Active', 'woo-custom-my-account-page' ); ?></span>
 			</div>
 		</div>
 		<?php
+		Wbcom_Settings_Page::card_close();
+
+		Wbcom_Settings_Page::card_open(
+			__( 'Support & resources', 'woo-custom-my-account-page' ),
+			__( 'Documentation and help.', 'woo-custom-my-account-page' )
+		);
+		?>
+		<ul class="wbcom-feature-list">
+			<li><i data-lucide="book-open"></i><a href="https://docs.wbcomdesigns.com/doc_category/custom-my-account-page-for-woocommerce/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Documentation', 'woo-custom-my-account-page' ); ?></a></li>
+			<li><i data-lucide="life-buoy"></i><a href="https://wbcomdesigns.com/support/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Support center', 'woo-custom-my-account-page' ); ?></a></li>
+			<li><i data-lucide="message-square"></i><a href="https://wbcomdesigns.com/submit-review/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Share your feedback', 'woo-custom-my-account-page' ); ?></a></li>
+		</ul>
+		<?php
+		Wbcom_Settings_Page::card_close();
 	}
 
 	/**
-	 * Actions performed to create tabs on the sub menu page.
+	 * General tab - the four controls that shape the portal.
 	 *
-	 * @since  1.0.0
-	 * @author Wbcom Designs
-	 * @access public
+	 * @since 1.6.4
 	 */
-	public function wcmp_plugin_settings_tabs() {
+	private function render_general_tab() {
+		$functions = instantiate_woo_custom_myaccount_functions();
+		$settings  = $functions->wcmp_settings_data();
+		$general   = isset( $settings['general_settings'] ) ? $settings['general_settings'] : array();
+		$endpoints = isset( $settings['endpoints_settings'] ) ? $settings['endpoints_settings'] : array();
 
-		$current = ( filter_input( INPUT_GET, 'tab' ) !== null ) ? filter_input( INPUT_GET, 'tab' ) : 'wcmp-welcome';
+		Wbcom_Settings_Page::card_open(
+			__( 'General', 'woo-custom-my-account-page' ),
+			__( 'Layout and behaviour of the My Account portal.', 'woo-custom-my-account-page' )
+		);
+		?>
+		<form method="post" action="options.php">
+			<?php settings_fields( 'wcmp_general_settings' ); ?>
 
-		$tab_html = '<div class="wbcom-tabs-section"><div class="nav-tab-wrapper"><div class="wb-responsive-menu"><span>' . esc_html( 'Menu' ) . '</span><input class="wb-toggle-btn" type="checkbox" id="wb-toggle-btn"><label class="wb-toggle-icon" for="wb-toggle-btn"><span class="wb-icon-bars"></span></label></div><ul>';
-		foreach ( $this->plugin_settings_tabs as $wss_tab => $wss_name ) {
-			$class = ( $wss_tab === $current ) ? 'nav-tab-active' : '';
-			$page  = 'woo-custom-myaccount-page';
-			if ( 'email' === $wss_tab ) {
-				$page = 'wc-settings';
-			}
-			if ( 'wcmp-license' === $wss_tab ) {
-				$tab_html .= '<li><a id="' . esc_attr( $wss_tab ) . '" class="nav-tab ' . esc_attr( $class ) . '" href="' . esc_url( admin_url( 'admin.php?page=woo-custom-myaccount-page&tab=wcmp-license' ) ) . '">' . esc_html( $wss_name ) . '</a></li>';
-				continue;
-			}
-			$tab_html .= '<li><a id="' . $wss_tab . '" class="nav-tab ' . $class . '" href="admin.php?page=' . $page . '&tab=' . $wss_tab . '">' . $wss_name . '</a></li>';
-		}
-		$tab_html .= '</div></ul></div>';
-		echo wp_kses_post( $tab_html ); // WPCS: XSS ok.
+			<div class="wbcom-field wbcom-field-group">
+				<div class="wbcom-field-info">
+					<label for="wcmp-custom-avatar"><?php esc_html_e( 'Member avatar upload', 'woo-custom-my-account-page' ); ?></label>
+					<p class="description"><?php esc_html_e( 'Let members upload their own photo from the account menu header.', 'woo-custom-my-account-page' ); ?></p>
+				</div>
+				<div class="wbcom-field-control">
+					<label class="wbcom-toggle">
+						<input type="checkbox" id="wcmp-custom-avatar" name="wcmp_general_settings[custom_avatar]" value="yes" <?php checked( isset( $general['custom_avatar'] ) ? $general['custom_avatar'] : 'yes', 'yes' ); ?>>
+						<span class="wbcom-toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+
+			<div class="wbcom-field wbcom-field-group">
+				<div class="wbcom-field-info">
+					<label for="wcmp-menu-style"><?php esc_html_e( 'Menu layout', 'woo-custom-my-account-page' ); ?></label>
+					<p class="description"><?php esc_html_e( 'Sidebar keeps the menu beside the content; Tab places it above.', 'woo-custom-my-account-page' ); ?></p>
+				</div>
+				<div class="wbcom-field-control">
+					<select id="wcmp-menu-style" class="wbcom-select" name="wcmp_general_settings[menu_style]">
+						<option value="sidebar" <?php selected( isset( $general['menu_style'] ) ? $general['menu_style'] : 'sidebar', 'sidebar' ); ?>><?php esc_html_e( 'Sidebar', 'woo-custom-my-account-page' ); ?></option>
+						<option value="tab" <?php selected( isset( $general['menu_style'] ) ? $general['menu_style'] : 'sidebar', 'tab' ); ?>><?php esc_html_e( 'Tab', 'woo-custom-my-account-page' ); ?></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="wbcom-field wbcom-field-group">
+				<div class="wbcom-field-info">
+					<label for="wcmp-sidebar-position"><?php esc_html_e( 'Sidebar position', 'woo-custom-my-account-page' ); ?></label>
+					<p class="description"><?php esc_html_e( 'Which side the menu sits on when using the sidebar layout.', 'woo-custom-my-account-page' ); ?></p>
+				</div>
+				<div class="wbcom-field-control">
+					<select id="wcmp-sidebar-position" class="wbcom-select" name="wcmp_general_settings[sidebar_position]">
+						<option value="left" <?php selected( isset( $general['sidebar_position'] ) ? $general['sidebar_position'] : 'left', 'left' ); ?>><?php esc_html_e( 'Left', 'woo-custom-my-account-page' ); ?></option>
+						<option value="right" <?php selected( isset( $general['sidebar_position'] ) ? $general['sidebar_position'] : 'left', 'right' ); ?>><?php esc_html_e( 'Right', 'woo-custom-my-account-page' ); ?></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="wbcom-field wbcom-field-group">
+				<div class="wbcom-field-info">
+					<label for="wcmp-default-endpoint"><?php esc_html_e( 'Default endpoint', 'woo-custom-my-account-page' ); ?></label>
+					<p class="description"><?php esc_html_e( 'Members land here when they open My Account. Custom endpoints can be the default too.', 'woo-custom-my-account-page' ); ?></p>
+				</div>
+				<div class="wbcom-field-control">
+					<select id="wcmp-default-endpoint" class="wbcom-select" name="wcmp_general_settings[default_endpoint]">
+						<?php foreach ( $endpoints as $wcmp_slug => $wcmp_endpoint ) : ?>
+							<?php
+							if ( ( isset( $wcmp_endpoint['type'] ) && 'endpoint' !== $wcmp_endpoint['type'] ) || 'customer-logout' === $wcmp_slug ) {
+								continue;
+							}
+							$wcmp_label = isset( $wcmp_endpoint['label'] ) ? $wcmp_endpoint['label'] : $wcmp_slug;
+							?>
+							<option value="<?php echo esc_attr( $wcmp_slug ); ?>" <?php selected( isset( $general['default_endpoint'] ) ? $general['default_endpoint'] : 'dashboard', $wcmp_slug ); ?>><?php echo esc_html( $wcmp_label ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				</div>
+			</div>
+
+			<div class="wbcom-save-bar">
+				<?php submit_button( __( 'Save Changes', 'woo-custom-my-account-page' ), 'wbcom-btn wbcom-btn--primary', 'submit', false ); ?>
+			</div>
+		</form>
+		<?php
+		Wbcom_Settings_Page::card_close();
 	}
+
+	/**
+	 * Style tab - colour overrides on top of the theme-following defaults.
+	 *
+	 * @since 1.6.4
+	 */
+	private function render_style_tab() {
+		$functions = instantiate_woo_custom_myaccount_functions();
+		$settings  = $functions->wcmp_settings_data();
+		$style     = isset( $settings['style_settings'] ) ? $settings['style_settings'] : array();
+
+		$fields = array(
+			'menu_item_color'               => __( 'Menu item colour', 'woo-custom-my-account-page' ),
+			'menu_item_hover_color'         => __( 'Menu item hover colour', 'woo-custom-my-account-page' ),
+			'logout_color'                  => __( 'Log out text colour', 'woo-custom-my-account-page' ),
+			'logout_hover_color'            => __( 'Log out hover text colour', 'woo-custom-my-account-page' ),
+			'logout_background_color'       => __( 'Log out background', 'woo-custom-my-account-page' ),
+			'logout_background_hover_color' => __( 'Log out hover background', 'woo-custom-my-account-page' ),
+		);
+
+		Wbcom_Settings_Page::card_open(
+			__( 'Style', 'woo-custom-my-account-page' ),
+			__( 'Colour overrides. Leave untouched to follow your theme.', 'woo-custom-my-account-page' )
+		);
+		?>
+		<form method="post" action="options.php">
+			<?php settings_fields( 'wcmp_style_settings' ); ?>
+
+			<?php foreach ( $fields as $wcmp_key => $wcmp_label ) : ?>
+				<div class="wbcom-field wbcom-field-group">
+					<div class="wbcom-field-info">
+						<label for="wcmp-style-<?php echo esc_attr( $wcmp_key ); ?>"><?php echo esc_html( $wcmp_label ); ?></label>
+					</div>
+					<div class="wbcom-field-control">
+						<input type="color" id="wcmp-style-<?php echo esc_attr( $wcmp_key ); ?>" name="wcmp_style_settings[<?php echo esc_attr( $wcmp_key ); ?>]" value="<?php echo esc_attr( isset( $style[ $wcmp_key ] ) ? $style[ $wcmp_key ] : '#777777' ); ?>">
+					</div>
+				</div>
+			<?php endforeach; ?>
+
+			<div class="wbcom-save-bar">
+				<?php submit_button( __( 'Save Changes', 'woo-custom-my-account-page' ), 'wbcom-btn wbcom-btn--primary', 'submit', false ); ?>
+			</div>
+		</form>
+		<?php
+		Wbcom_Settings_Page::card_close();
+	}
+
+
 
 	/**
 	 * Register all settings.
@@ -256,35 +546,11 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @access public
 	 */
 	public function wcmp_add_plugin_register_settings() {
-		$this->plugin_settings_tabs['wcmp-welcome'] = esc_html__( 'Welcome', 'woo-custom-my-account-page' );
-		add_settings_section( 'wcmp-welcome', ' ', array( $this, 'wcmp_welcome_content' ), 'wcmp-welcome' );
-
-		$this->plugin_settings_tabs['wcmp-general'] = esc_html__( 'General', 'woo-custom-my-account-page' );
 		register_setting( 'wcmp_general_settings', 'wcmp_general_settings', array( $this, 'wcmp_general_settings_callback' ) );
-		add_settings_section( 'wcmp-general', ' ', array( $this, 'wcmp_general_settings_content' ), 'wcmp-general' );
-		$this->plugin_settings_tabs['wcmp-style'] = esc_html__( 'Style Options', 'woo-custom-my-account-page' );
 		register_setting( 'wcmp_style_settings', 'wcmp_style_settings', array( $this, 'wcmp_style_settings_callback' ) );
-		add_settings_section( 'wcmp-style', ' ', array( $this, 'wcmp_style_settings_content' ), 'wcmp-style' );
-		$this->plugin_settings_tabs['wcmp-endpoints'] = esc_html__( 'Endpoints', 'woo-custom-my-account-page' );
 		register_setting( 'wcmp_endpoints_settings', 'wcmp_endpoints_settings', array( $this, 'wcmp_endpoints_settings_callback' ) );
-		add_settings_section( 'wcmp-endpoints', ' ', array( $this, 'wcmp_endpoints_settings_content' ), 'wcmp-endpoints' );
-		$this->plugin_settings_tabs['wcmp-faq'] = esc_html__( 'FAQ', 'woo-custom-my-account-page' );
-		add_settings_section( 'wcmp-faq', ' ', array( $this, 'wcmp_faq_content' ), 'wcmp-faq' );
-
-		$this->plugin_settings_tabs['wcmp-license'] = esc_html__( 'License', 'woo-custom-my-account-page' );
-		add_settings_section( 'wcmp-license', ' ', array( $this, 'wcmp_license_settings_content' ), 'wcmp-license' );
 	}
 
-	/**
-	 * Welcome Tab Content.
-	 *
-	 * @since  1.0.0
-	 * @author Wbcom Designs
-	 * @access public
-	 */
-	public function wcmp_welcome_content() {
-		require_once 'partials/wcmp-welcome-page.php';
-	}
 
 	/**
 	 * General Tab Content.
@@ -330,19 +596,6 @@ class Woo_Custom_My_Account_Page_Admin {
 		require_once 'partials/wcmp-faq.php';
 	}
 
-	/**
-	 * License tab content — renders EDD SL SDK license control inline.
-	 *
-	 * @since  1.7.0
-	 * @access public
-	 */
-	public function wcmp_license_settings_content() {
-		if ( ! class_exists( 'EasyDigitalDownloads\Updater\Registry' ) ) {
-			echo '<p>' . esc_html__( 'License system is not available.', 'woo-custom-my-account-page' ) . '</p>';
-			return;
-		}
-		require_once 'partials/wcmp-license-settings.php';
-	}
 
 	/**
 	 * Add a new field using ajax.
@@ -713,8 +966,11 @@ class Woo_Custom_My_Account_Page_Admin {
 					$sanitized['endpoints'][ $key ]['url']          = isset( $endpoint['url'] ) ? esc_url_raw( $endpoint['url'] ) : '';
 					$sanitized['endpoints'][ $key ]['target_blank'] = isset( $endpoint['target_blank'] ) && 'yes' === $endpoint['target_blank'] ? 'yes' : 'no';
 				} else {
-					// Endpoint-specific fields.
-					$sanitized['endpoints'][ $key ]['content'] = isset( $endpoint['content'] ) ? wp_kses_post( $endpoint['content'] ) : '';
+					// Endpoint-specific fields. Same trust model as post
+					// content: users with unfiltered_html keep their markup,
+					// everyone else goes through wp_kses_post().
+					$raw_content = isset( $endpoint['content'] ) ? $endpoint['content'] : '';
+					$sanitized['endpoints'][ $key ]['content'] = current_user_can( 'unfiltered_html' ) ? $raw_content : wp_kses_post( $raw_content );
 				}
 			}
 		}

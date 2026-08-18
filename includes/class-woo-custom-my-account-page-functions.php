@@ -83,9 +83,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// Change title.
 			add_action( 'template_redirect', array( $this, 'manage_account_title' ), 10 );
 
-			// Mem if is my account page.
-			add_action( 'shutdown', array( $this, 'save_is_my_account' ) );
-
 			// Add new navigation.
 			add_action( 'woocommerce_account_navigation', array( $this, 'wcmp_add_my_account_menu' ), 10 );
 
@@ -97,6 +94,12 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 			// Shortcode to print default dashboard.
 			add_shortcode( 'default_dashboard_content', array( $this, 'wcmp_print_default_dashboard_content' ) );
+
+			// Placement fallbacks for block themes and arbitrary pages: the
+			// portal renders wherever WooCommerce's My Account shortcode
+			// renders, so both delegate to it.
+			add_shortcode( 'wcmp_my_account', array( $this, 'wcmp_render_my_account_shortcode' ) );
+			add_action( 'init', array( $this, 'wcmp_register_block' ), 20 );
 
 			add_action( 'init', array( $this, 'wcmp_update_old_items' ), 0 );
 
@@ -190,7 +193,17 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 				// Apply wpautop to preserve line breaks and paragraphs.
 				$content = wpautop( $endpoint[ $key ]['content'] );
-				echo wp_kses_post( do_shortcode( $content ) );
+
+				/*
+				 * Sanitize the STORED content first, then expand shortcodes.
+				 * The old order (kses after do_shortcode) stripped the form
+				 * controls (<input>, <select>, <option>, <textarea>) that
+				 * form-plugin shortcodes such as Formidable output, because
+				 * the post kses context does not allow them. Shortcode output
+				 * is the registering plugin's responsibility - the same trust
+				 * model core uses for post_content.
+				 */
+				echo do_shortcode( wp_kses_post( $content ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Stored content is kses-sanitized before shortcode expansion, matching core post rendering.
 			}
 		}
 
@@ -635,6 +648,12 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @param  array $current_user_role The current user role.
 		 * @return boolean
 		 */
+		/*
+		 * Note on semantics: despite the historical name, a non-empty roles
+		 * list is a visibility ALLOWLIST - this returns true when the current
+		 * user's role IS in the list (i.e. the endpoint is visible to them).
+		 * The menu builder keeps endpoints when this returns true.
+		 */
 		protected function hide_by_usr_roles( $roles, $current_user_role ) {
 			// Return if $roles is empty.
 			if ( empty( $roles ) ) {
@@ -817,12 +836,15 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		/**
 		 * Save an option to check if the page is myaccount.
 		 *
-		 * @access public
-		 * @since  1.0.0
-		 * @author Wbcom Designs
+		 * @access     public
+		 * @since      1.0.0
+		 * @deprecated 1.6.4 Detection is per-request via is_account_page();
+		 *             a site-wide option written on shutdown was
+		 *             non-deterministic request state. No longer hooked.
+		 * @author     Wbcom Designs
 		 */
 		public function save_is_my_account() {
-			update_option( 'wcmp_is_my_account', $this->is_myaccount, false );
+			_deprecated_function( __METHOD__, '1.6.4' );
 		}
 
 		/**
@@ -855,13 +877,27 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// If NOT in My account dashboard page.
 			$current_user = wp_get_current_user();
 			$user_role    = (array) $current_user->roles;
-			if ( array_key_exists( $default_endpoint, $this->menu_endpoints ) ) {
+			// Read the roles from the RAW settings, not the already
+			// role-filtered menu: for a user outside the allowlist the
+			// endpoint is absent from the menu, which used to leave this
+			// empty and redirect them to an endpoint they cannot see.
+			if ( isset( $endpoints[ $default_endpoint ]['usr_roles'] ) ) {
+				$restricted_roles = (array) $endpoints[ $default_endpoint ]['usr_roles'];
+			} elseif ( array_key_exists( $default_endpoint, $this->menu_endpoints ) ) {
 				$restricted_roles = $this->menu_endpoints[ $default_endpoint ]['usr_roles'];
 			}
+			// Role visibility is an ALLOWLIST (matching the menu): when roles
+			// are selected, only those roles see the endpoint. Never redirect
+			// a member to a default endpoint that is hidden from them.
+			$default_visible = empty( $restricted_roles ) || $this->hide_by_usr_roles( $restricted_roles, $user_role );
+
 			if ( ! is_wc_endpoint_url( $default_endpoint ) ) {
+				// is_myaccount was already confirmed for THIS request at the
+				// top of the method - the legacy wcmp_is_my_account option
+				// (written on shutdown by the PREVIOUS request) made this
+				// redirect non-deterministic and is no longer consulted.
 				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				if ( ! get_option( 'wcmp_is_my_account', true ) && ! isset( $_GET['elementor-preview'] ) && $current_endpoint !== $default_endpoint && ! $this->hide_by_usr_roles( $restricted_roles, $user_role ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-					update_option( 'wcmp_is_my_account', false, false );
+				if ( ! isset( $_GET['elementor-preview'] ) && $current_endpoint !== $default_endpoint && $default_visible ) {
 					if ( 'dashboard' !== $default_endpoint ) {
 						$url = wc_get_endpoint_url( $default_endpoint, '', $url );
 					}
@@ -987,6 +1023,29 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @param  string $name The endpoint name.
 		 * @return string
 		 */
+		/**
+		 * Render the full My Account portal anywhere.
+		 *
+		 * @access public
+		 * @since  1.6.4
+		 * @return string
+		 */
+		public function wcmp_render_my_account_shortcode() {
+			return do_shortcode( '[woocommerce_my_account]' );
+		}
+
+		/**
+		 * Register the wcmp/my-account block.
+		 *
+		 * @access public
+		 * @since  1.6.4
+		 */
+		public function wcmp_register_block() {
+			if ( function_exists( 'register_block_type' ) ) {
+				register_block_type( WCMP_PLUGIN_PATH . 'blocks/my-account' );
+			}
+		}
+
 		public function wcmp_build_label( $name ) {
 
 			$label = preg_replace( '/[^a-z]/', ' ', $name );
@@ -1006,12 +1065,19 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		public function wcmp_check_myaccount() {
 			global $post;
 
-			// Add null check for PHP 8.1+ compatibility.
-			if ( ! is_null( $post ) &&
-				isset( $post->post_content ) &&
-				false !== strpos( $post->post_content, 'woocommerce_my_account' ) &&
-				is_user_logged_in() ) {
-				$this->is_myaccount = true;
+			if ( is_user_logged_in() ) {
+				if ( function_exists( 'is_account_page' ) && is_account_page() ) {
+					// WooCommerce's own conditional covers the classic
+					// shortcode, the classic-shortcode block and block-based
+					// My Account pages alike.
+					$this->is_myaccount = true;
+				} elseif ( ! is_null( $post ) &&
+					isset( $post->post_content ) &&
+					false !== strpos( $post->post_content, 'woocommerce_my_account' ) ) {
+					// Legacy fallback for setups where is_account_page() is
+					// unavailable or the page is not registered with Woo.
+					$this->is_myaccount = true;
+				}
 			}
 
 			$this->is_myaccount = apply_filters( 'wcmp_is_my_account_page', $this->is_myaccount );

@@ -72,7 +72,7 @@ $editor_options            = array(
 			<div class="options-row">
 				<span class="hide-show-trigger">
 					<?php
-					esc_html_e( 'Hide', 'woo-custom-my-account-page' );
+					esc_html_e( 'Hide from menu', 'woo-custom-my-account-page' );
 					?>
 
 				</span>
@@ -161,7 +161,7 @@ $editor_options            = array(
 
 					<tr>
 						<th>
-							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_usr_roles' ); ?>"><?php esc_html_e( 'User roles', 'woo-custom-my-account-page' ); ?></label>
+							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_usr_roles' ); ?>"><?php esc_html_e( 'Visible to roles (empty = everyone)', 'woo-custom-my-account-page' ); ?></label>
 						</th>
 						<td>
 							<select name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][usr_roles][]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_usr_roles' ); ?>" multiple="" tabindex="-1" aria-hidden="true">

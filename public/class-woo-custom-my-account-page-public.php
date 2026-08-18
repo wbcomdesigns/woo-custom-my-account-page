@@ -58,13 +58,43 @@ class Woo_Custom_My_Account_Page_Public {
 	}
 
 	/**
+	 * Whether the current request can render the portal.
+	 *
+	 * @access public
+	 * @since  1.6.4
+	 * @return bool
+	 */
+	public function wcmp_should_load_assets() {
+		if ( function_exists( 'is_account_page' ) && is_account_page() ) {
+			return true;
+		}
+
+		if ( is_singular() ) {
+			$post = get_post();
+			if ( $post && ( has_block( 'wcmp/my-account', $post )
+				|| has_shortcode( (string) $post->post_content, 'wcmp_my_account' )
+				|| has_shortcode( (string) $post->post_content, 'woocommerce_my_account' ) ) ) {
+				return true;
+			}
+		}
+
+		/**
+		 * Filter whether the portal assets load on this request.
+		 *
+		 * @since 1.6.4
+		 * @param bool $load Whether to load.
+		 */
+		return (bool) apply_filters( 'wcmp_load_public_assets', false );
+	}
+
+	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
 	 * @since 1.0.0
 	 */
 	public function enqueue_styles() {
 
-		if ( ! is_account_page() ) {
+		if ( ! $this->wcmp_should_load_assets() ) {
 			return;
 		}
 
@@ -73,6 +103,7 @@ class Woo_Custom_My_Account_Page_Public {
 		wp_enqueue_style( 'wcmp-font-awesome', plugin_dir_url( __DIR__ ) . 'assets/vendor/font-awesome/css/wcmp-icons.min.css', array(), '6.7.2' );
 
 		wp_register_style( 'wcmp-frontend', plugin_dir_url( __FILE__ ) . 'assets/css/woo-custom-my-account-page-public.css', array(), $this->version );
+		wp_style_add_data( 'wcmp-frontend', 'rtl', 'replace' );
 		wp_enqueue_style( 'wcmp-frontend' );
 
 		$inline_css = $this->wcmp_get_custom_css();
@@ -86,7 +117,7 @@ class Woo_Custom_My_Account_Page_Public {
 	 */
 	public function enqueue_scripts() {
 
-		if ( ! function_exists( 'is_account_page' ) || ! is_account_page() ) {
+		if ( ! $this->wcmp_should_load_assets() ) {
 			return;
 		}
 
@@ -115,21 +146,24 @@ class Woo_Custom_My_Account_Page_Public {
 		$myaccount_func = instantiate_woo_custom_myaccount_functions();
 		$all_settings   = $myaccount_func->wcmp_settings_data();
 		$settings       = $all_settings['style_settings'];
-		$inline_css     = '
-				#my-account-menu .logout a, #my-account-menu-tab .logout a {
-					color:' . $settings['logout_color'] . ';
-					background-color:' . $settings['logout_background_color'] . ';
-				}
-				#my-account-menu .logout:hover a, #my-account-menu-tab .logout:hover a {
-					color:' . $settings['logout_hover_color'] . ';
-					background-color:' . $settings['logout_background_hover_color'] . ';
-				}
-				.myaccount-menu li a {
-					color:' . $settings['menu_item_color'] . ';
-				}
-				.myaccount-menu li a:hover, .myaccount-menu li.active > a, .myaccount-menu li.is-active > a {
-					color:' . $settings['menu_item_hover_color'] . ';
-				}';
+		$defaults       = $myaccount_func->default_style_settings();
+
+		// Colour pickers override the theme-following tokens - but only the
+		// values the owner actually changed, so an untouched Style tab keeps
+		// the portal on the theme's own palette.
+		$token_map = array(
+			'menu_item_color'       => '--wcmp-menu-item-color',
+			'menu_item_hover_color' => '--wcmp-menu-item-hover-color',
+		);
+
+		$overrides = '';
+		foreach ( $token_map as $key => $token ) {
+			if ( isset( $settings[ $key ], $defaults[ $key ] ) && strtolower( $settings[ $key ] ) !== strtolower( $defaults[ $key ] ) ) {
+				$overrides .= $token . ':' . sanitize_hex_color( $settings[ $key ] ) . ';';
+			}
+		}
+
+		$inline_css = $overrides ? ':root{' . $overrides . '}' : '';
 
 		return apply_filters( 'wcmp_get_custom_css', $inline_css );
 	}

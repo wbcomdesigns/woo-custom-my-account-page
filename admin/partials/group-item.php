@@ -42,7 +42,7 @@ $myaccount_func = instantiate_woo_custom_myaccount_functions();
 		<div class="endpoint-options" style="display: none;">
 
 			<div class="options-row">
-				<span class="hide-show-trigger"><?php echo $options['active'] ? esc_html__( 'Hide', 'woo-custom-my-account-page' ) : esc_html__( 'Show', 'woo-custom-my-account-page' ); ?></span>
+				<span class="hide-show-trigger"><?php echo $options['active'] ? esc_html__( 'Hide from menu', 'woo-custom-my-account-page' ) : esc_html__( 'Show in menu', 'woo-custom-my-account-page' ); ?></span>
 				<span class="sep">|</span>
 				<span class="remove-trigger" data-endpoint="<?php echo esc_attr( $group ); ?>"><?php esc_html_e( 'Remove', 'woo-custom-my-account-page' ); ?></span>
 			</div>
@@ -106,7 +106,7 @@ $myaccount_func = instantiate_woo_custom_myaccount_functions();
 					<th>
 						<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $group . '_usr_roles' ); ?>">
 							<?php
-							esc_html_e( 'User roles', 'woo-custom-my-account-page' );
+							esc_html_e( 'Visible to roles (empty = everyone)', 'woo-custom-my-account-page' );
 							?>
 						</label>
 					</th>

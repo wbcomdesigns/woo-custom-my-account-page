@@ -4,7 +4,7 @@ Donate link: https://wbcomdesigns.com
 Tags: woocommerce my account, custom endpoints, account page customizer, woocommerce tabs, user role menu
 Requires at least: 5.0
 Tested up to: 6.9.1
-Stable tag: 1.6.3
+Stable tag: 1.6.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -153,6 +153,29 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 6. Frontend My Account page - tab layout with grouped navigation and custom colors
 
 == Changelog ==
+
+= 1.6.4 - August 2026 =
+
+Admin rebuilt on the shared Wbcom settings shell, portal chrome modernised, block placement, and the endpoint-content form fix.
+
+* New      - Gutenberg block (Custom My Account) and [wcmp_my_account] shortcode place the full portal on any page, including block themes.
+* New      - Settings rebuilt on the shared Wbcom Pattern A shell with an Overview tab showing portal status: account-page mode, menu entry counts, default endpoint and update state.
+* New      - Sensible defaults are seeded on activation, so My Account looks intentional before any configuration; activation lands on the Endpoints builder.
+* Improve  - My Account detection uses is_account_page(), so block-based account pages get the default-endpoint redirect and related features; the redirect is now deterministic instead of depending on a value saved by the previous visit.
+* Improve  - A custom endpoint can be the default endpoint.
+* Improve  - Portal chrome: sentence-case menu labels, one Log out control, a visible change-photo button on the avatar, carded content column, and a collapsible Account menu on phones.
+* Improve  - Frontend colours follow the active theme through a token bridge (BuddyX, Reign, block themes) including dark mode; Style pickers act as overrides only when changed.
+* Improve  - Accessibility pass: visible focus styles, 40px tap targets, keyboard-accessible group collapse with aria-expanded, new-tab links marked visibly and for screen readers, no native browser dialogs.
+* Improve  - One icon vocabulary: the builder's icon picker previews with the same bundled icon set the storefront renders.
+* Fix      - Shortcodes that output forms (for example Formidable) render their input, select and textarea fields in custom endpoint content; content is sanitized before shortcode expansion and the editor respects the unfiltered_html capability.
+* Fix      - Endpoint builder: deleting an item uses an in-admin dialog instead of a browser confirm, the add dialog no longer duplicates field ids, and a script error on repeated saves is gone.
+* Fix      - Users outside a role-restricted default endpoint's allowlist are no longer redirected to an endpoint hidden from them.
+* Fix      - Tab menu style renders full-width on themes that wrap the account navigation (for example Reign) instead of squeezing content into a side column.
+* Fix      - Sidebar position "right" is honoured on themes that lay the account columns out with flex.
+* Fix      - Shared settings hub strings use the plugin text domain so translators can reach them; translation template refreshed.
+* Improve  - The endpoint role field is labelled "Visible to roles (empty = everyone)" so the allowlist behaviour is explicit.
+* Dev      - RTL stylesheet generated and registered; forked admin/wbcom wrapper removed; committed dist/ directory removed from the repo.
+* Compat   - Supported versions updated: WordPress 6.5 to 7.0, PHP 8.0 or newer.
 
 = 1.6.3 =
 * Fix: Avatar form AJAX request now uses POST method preventing potential errors on some server configurations

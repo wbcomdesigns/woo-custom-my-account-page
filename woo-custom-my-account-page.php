@@ -10,7 +10,9 @@
  * Plugin Name:       Custom My Account Page for WooCommerce
  * Plugin URI:        https://wbcomdesigns.com/downloads/woocommerce-custom-my-account-page/
  * Description:       This plugin helps you to customize the layout of the "My Account" page, adds new endpoints, groups, links and manage its content easily.
- * Version:           1.6.3
+ * Version:           1.6.4
+ * Requires at least: 6.5
+ * Requires PHP:      8.0
  * WC tested up to:   9.8
  * WC requires at least: 6.0
  * Author:            Wbcom Designs
@@ -30,7 +32,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Currently plugin version.
  */
 if ( ! defined( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION' ) ) {
-	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.6.3' );
+	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.6.4' );
 }
 
 /**
@@ -67,6 +69,14 @@ if ( ! defined( 'WCMP_PLUGIN_PATH' ) ) {
 if ( ! defined( 'WCMP_PLUGIN_URL' ) ) {
 	define( 'WCMP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 }
+// Bundled Wbcom settings screen (Pattern A). Every Wbcom plugin ships a copy;
+// the newest registered copy is the one that loads. Guarded so a stripped
+// install degrades to "no settings screen" instead of fataling.
+if ( file_exists( WCMP_PLUGIN_PATH . 'lib/wbcom-settings/loader.php' ) ) {
+	require_once WCMP_PLUGIN_PATH . 'lib/wbcom-settings/loader.php';
+	wbcom_settings_register( '1.0.0', WCMP_PLUGIN_PATH . 'lib/wbcom-settings/class-wbcom-settings-page.php' );
+}
+
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
@@ -218,7 +228,7 @@ function wcmp_admin_page_link( $links ) {
 function wcmp_activation_redirect_settings( $plugin ) {
 	if ( class_exists( 'WooCommerce' ) && plugin_basename( __FILE__ ) === $plugin ) {
 		if ( isset( $_REQUEST['action'] ) && 'activate' === sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) && isset( $_REQUEST['plugin'] ) && sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) === $plugin ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			wp_safe_redirect( admin_url( 'admin.php?page=woo-custom-myaccount-page' ) );
+			wp_safe_redirect( admin_url( 'admin.php?page=woo-custom-myaccount-page&tab=wcmp-endpoints' ) );
 			exit;
 		}
 	}

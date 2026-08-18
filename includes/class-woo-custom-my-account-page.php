@@ -123,7 +123,6 @@ class Woo_Custom_My_Account_Page {
 		/**
 		 * Enqueue wbcom plugin settings file.
 		 */
-		require_once plugin_dir_path( __DIR__ ) . 'admin/wbcom/wbcom-admin-settings.php';
 
 		/**
 		 * The error handler class for improved stability.
@@ -173,7 +172,8 @@ class Woo_Custom_My_Account_Page {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'wcmp_add_plugin_menu_page', 100 );
+		$this->loader->add_action( 'init', $plugin_admin, 'boot_settings_page', 1 );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'wcmp_add_plugin_menu_page', 5 );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wcmp_add_plugin_register_settings' );
 
 		// Update WooCommerce tab slugs after save endpoint settings.

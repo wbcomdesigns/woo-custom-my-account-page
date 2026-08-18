@@ -1,0 +1,45 @@
+{
+ "generated": "2026-08-18T07:10:51+00:00",
+ "suppressions": [
+  {
+   "id": "option-written-never-read:wcmp_endpoint_order",
+   "reason": "TODO: justify or fix",
+   "severity": "warning"
+  },
+  {
+   "id": "option-written-never-read:wcmp_is_my_account",
+   "reason": "TODO: justify or fix",
+   "severity": "warning"
+  },
+  {
+   "id": "option-possible-dual-key:wcmp_endpoint <> wcmp_endpoint_order",
+   "reason": "TODO: justify or fix",
+   "severity": "info"
+  },
+  {
+   "id": "hook-consumed-never-fired:wcmp_settings_nav_groups",
+   "reason": "TODO: justify or fix",
+   "severity": "error"
+  },
+  {
+   "id": "hook-consumed-never-fired:wcmp_settings_tab_content",
+   "reason": "TODO: justify or fix",
+   "severity": "error"
+  },
+  {
+   "id": "ajax-action-no-handler:wcmp_reset_avatar",
+   "reason": "TODO: justify or fix",
+   "severity": "error"
+  },
+  {
+   "id": "ajax-handler-unreferenced:wcmp_add_field",
+   "reason": "TODO: justify or fix",
+   "severity": "warning"
+  },
+  {
+   "id": "dom-action-no-handler:delete",
+   "reason": "TODO: justify or fix",
+   "severity": "info"
+  }
+ ]
+}
