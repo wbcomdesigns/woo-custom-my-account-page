@@ -218,7 +218,7 @@ function wcmp_admin_page_link( $links ) {
 function wcmp_activation_redirect_settings( $plugin ) {
 	if ( class_exists( 'WooCommerce' ) && plugin_basename( __FILE__ ) === $plugin ) {
 		if ( isset( $_REQUEST['action'] ) && 'activate' === sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) && isset( $_REQUEST['plugin'] ) && sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) === $plugin ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			wp_safe_redirect( admin_url( 'admin.php?page=woo-custom-myaccount-page' ) );
+			wp_safe_redirect( admin_url( 'admin.php?page=woo-custom-myaccount-page&tab=wcmp-endpoints' ) );
 			exit;
 		}
 	}
