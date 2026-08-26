@@ -1,16 +1,46 @@
+# Files that must never reach the customer zip. bin/build-release.sh reads this.
+
+# Version control
 .git
 .gitignore
 .gitattributes
-.editorconfig
+.github
+
+# Build + dependency tooling
 node_modules
 package.json
 package-lock.json
+Gruntfile.js
 gruntfile.js
-CLAUDE.md
-claude.md
-CLAUDE.md
-BUGFIX-LOG.md
-CHANGELOG.md
-market-audit.md
-competitive-analysis.md
+webpack.config.js
+composer.json
+composer.lock
+.editorconfig
+
+# Coding-standard + test config
+phpcs.xml
+phpcs.xml.dist
+.phpcs.xml.dist
+phpunit.xml
+phpunit.xml.dist
+.phpunit.result.cache
+tests
+
+# Documentation and working notes (readme.txt is the customer changelog and ships)
+*.md
 docs
+plan
+
+# IDE
+.vscode
+.idea
+*.code-workspace
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Release tooling + output
+bin
+.distignore
+dist
