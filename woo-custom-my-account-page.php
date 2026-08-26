@@ -74,7 +74,7 @@ if ( ! defined( 'WCMP_PLUGIN_URL' ) ) {
 // install degrades to "no settings screen" instead of fataling.
 if ( file_exists( WCMP_PLUGIN_PATH . 'lib/wbcom-settings/loader.php' ) ) {
 	require_once WCMP_PLUGIN_PATH . 'lib/wbcom-settings/loader.php';
-	wbcom_settings_register( '1.0.0', WCMP_PLUGIN_PATH . 'lib/wbcom-settings/class-wbcom-settings-page.php' );
+	wbcom_settings_register( '1.0.2', WCMP_PLUGIN_PATH . 'lib/wbcom-settings/class-wbcom-settings-page.php' );
 }
 
 /**
