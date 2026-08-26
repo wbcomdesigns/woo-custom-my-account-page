@@ -42,7 +42,7 @@ class Wbcom_Settings_Page {
 	 * @since 1.0.0
 	 * @var   string
 	 */
-	const VERSION = '1.0.0';
+	const VERSION = '1.0.2';
 
 	/**
 	 * Parent menu slug shared by every Wbcom plugin.
@@ -468,6 +468,23 @@ class Wbcom_Settings_Page {
 		$current   = in_array( $requested, $ids, true ) ? $requested : $ids[0];
 		?>
 		<div class="wrap wbcom-admin">
+			<?php
+			/*
+			 * Anchor for core's notice relocation.
+			 *
+			 * wp-admin/js/common.js moves every .notice to sit just above
+			 * `.wp-header-end`, and when that marker is absent it falls back to
+			 * the first h1/h2 it finds in .wrap. This screen renders every tab
+			 * section into the DOM at once, so that fallback dropped the
+			 * "Settings saved" banner inside whichever tab section owned the
+			 * first heading instead of at the top of the page the owner is on.
+			 * A real header with the marker after it keeps the notice where it
+			 * belongs, on every tab.
+			 */
+			?>
+			<h1 class="screen-reader-text"><?php echo esc_html( $page['labels']['brand'] ); ?></h1>
+			<hr class="wp-header-end">
+
 			<?php settings_errors(); ?>
 
 			<div class="wbcom-settings-wrap">
