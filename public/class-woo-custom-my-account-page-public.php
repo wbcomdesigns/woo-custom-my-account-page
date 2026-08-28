@@ -383,12 +383,12 @@ class Woo_Custom_My_Account_Page_Public {
 			return $avatar;
 		}
 
+		// Re-entrancy guard. The method never calls get_avatar() itself, but this
+		// keeps it safe if a helper ever does. We do NOT touch other callbacks on
+		// the filter - a previous remove_all_filters( 'get_avatar' ) here wiped
+		// every other plugin's avatar customization (BuddyPress, local-avatar
+		// plugins) for the rest of the request after the first avatar rendered.
 		$is_processing = true;
-
-		// Prevent filter.
-		remove_all_filters( 'get_avatar' );
-		// Re-add filter.
-		add_filter( 'get_avatar', array( $this, 'wcmp_get_avatar' ), 100, 6 );
 
 		if ( empty( $args ) ) {
 			$args['size']       = (int) $size;
@@ -426,6 +426,7 @@ class Woo_Custom_My_Account_Page_Public {
 		$custom_avatar = get_user_meta( $user_id, 'wb-wcmp-avatar', true );
 
 		if ( ! $custom_avatar ) {
+			$is_processing = false;
 			return $avatar;
 		}
 
@@ -433,6 +434,7 @@ class Woo_Custom_My_Account_Page_Public {
 		$resized = $this->wcmp_resize_avatar_url( $custom_avatar, $size );
 		// If error occurred return.
 		if ( ! $resized ) {
+			$is_processing = false;
 			return $avatar;
 		}
 
