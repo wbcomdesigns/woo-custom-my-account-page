@@ -553,51 +553,6 @@ class Woo_Custom_My_Account_Page_Admin {
 
 
 	/**
-	 * General Tab Content.
-	 *
-	 * @since  1.0.0
-	 * @author Wbcom Designs
-	 * @access public
-	 */
-	public function wcmp_general_settings_content() {
-		require_once 'partials/wcmp-general-settings.php';
-	}
-
-	/**
-	 * Style Options Tab Content.
-	 *
-	 * @since  1.0.0
-	 * @author Wbcom Designs
-	 * @access public
-	 */
-	public function wcmp_style_settings_content() {
-		require_once 'partials/wcmp-style-settings.php';
-	}
-
-	/**
-	 * Endpoints Tab Content.
-	 *
-	 * @since  1.0.0
-	 * @author Wbcom Designs
-	 * @access public
-	 */
-	public function wcmp_endpoints_settings_content() {
-		require_once 'partials/wcmp-endpoints-settings.php';
-	}
-
-	/**
-	 * FAQ Tab Content.
-	 *
-	 * @since  1.4.1
-	 * @author Wbcom Designs
-	 * @access public
-	 */
-	public function wcmp_faq_content() {
-		require_once 'partials/wcmp-faq.php';
-	}
-
-
-	/**
 	 * Add a new field using ajax.
 	 *
 	 * @since  1.0.0
@@ -819,32 +774,6 @@ class Woo_Custom_My_Account_Page_Admin {
 			$sanitized['custom_avatar'] = 'no';
 		}
 
-		// Sanitize show avatar option (legacy field).
-		if ( isset( $input['show_avatar'] ) ) {
-			$sanitized['show_avatar'] = sanitize_text_field( $input['show_avatar'] );
-		}
-
-		// Sanitize avatar size.
-		if ( isset( $input['avatar_size'] ) ) {
-			$sanitized['avatar_size'] = absint( $input['avatar_size'] );
-			// Ensure reasonable size limits (20-500 pixels).
-			if ( $sanitized['avatar_size'] < 20 ) {
-				$sanitized['avatar_size'] = 20;
-			} elseif ( $sanitized['avatar_size'] > 500 ) {
-				$sanitized['avatar_size'] = 500;
-			}
-		}
-
-		// Sanitize show user name option.
-		if ( isset( $input['show_user_name'] ) ) {
-			$sanitized['show_user_name'] = sanitize_text_field( $input['show_user_name'] );
-		}
-
-		// Sanitize show logout link option.
-		if ( isset( $input['show_logout_link'] ) ) {
-			$sanitized['show_logout_link'] = sanitize_text_field( $input['show_logout_link'] );
-		}
-
 		// Sanitize default endpoint.
 		if ( isset( $input['default_endpoint'] ) ) {
 			$sanitized['default_endpoint'] = sanitize_title( $input['default_endpoint'] );
@@ -858,11 +787,6 @@ class Woo_Custom_My_Account_Page_Admin {
 		// Sanitize sidebar position (left or right) - matches form field name.
 		if ( isset( $input['sidebar_position'] ) ) {
 			$sanitized['sidebar_position'] = sanitize_text_field( $input['sidebar_position'] );
-		}
-
-		// Sanitize menu position (legacy field name).
-		if ( isset( $input['menu_position'] ) ) {
-			$sanitized['menu_position'] = sanitize_text_field( $input['menu_position'] );
 		}
 
 		return $sanitized;
@@ -891,15 +815,6 @@ class Woo_Custom_My_Account_Page_Admin {
 			if ( isset( $input[ $field ] ) ) {
 				$sanitized[ $field ] = sanitize_hex_color( $input[ $field ] );
 			}
-		}
-
-		// Sanitize other style options.
-		if ( isset( $input['menu_position'] ) ) {
-			$sanitized['menu_position'] = sanitize_text_field( $input['menu_position'] );
-		}
-
-		if ( isset( $input['menu_style'] ) ) {
-			$sanitized['menu_style'] = sanitize_text_field( $input['menu_style'] );
 		}
 
 		return $sanitized;
