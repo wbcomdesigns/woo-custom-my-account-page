@@ -405,14 +405,16 @@
 	gap: 10px;
 }
 
+/*
+ * Steps are flat rows inside the card, NOT boxes. The numbered circle is the
+ * only visual anchor each row needs; wrapping every step in its own border on
+ * top of the card that already frames them reads as a box-in-a-box.
+ */
 .wbcom-step {
 	display: flex;
 	gap: 12px;
 	align-items: flex-start;
-	padding: 12px 14px;
-	border: 1px solid var(--wbcom-border);
-	border-radius: 6px;
-	background: #fbfbfc;
+	padding: 4px 0;
 }
 
 .wbcom-step__num {
@@ -429,9 +431,46 @@
 	flex: 0 0 auto;
 }
 
+.wbcom-step__body {
+	min-width: 0;
+}
+
+.wbcom-step__body h3,
+.wbcom-step__body h4 {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--wbcom-text);
+}
+
 .wbcom-step p {
 	margin: 2px 0 0;
 	color: var(--wbcom-muted);
+}
+
+/* Info grid - flat columns of heading + copy (features, tips), no inner boxes. */
+.wbcom-info-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 18px 28px;
+}
+
+.wbcom-info-grid > div {
+	min-width: 0;
+}
+
+.wbcom-info-grid h4 {
+	margin: 0 0 4px;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--wbcom-text);
+}
+
+.wbcom-info-grid p {
+	margin: 0;
+	color: var(--wbcom-muted);
+	font-size: 13px;
+	line-height: 1.5;
 }
 
 /* FAQ ------------------------------------------------------------------------------------ */
