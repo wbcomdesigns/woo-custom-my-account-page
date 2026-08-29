@@ -226,12 +226,116 @@
 
 .wbcom-card__desc {
 	font-size: 13px;
-	color: #757575;
+	color: var(--wbcom-muted);
 	margin: 0;
 }
 
 .wbcom-card__body {
-	padding: 4px 20px;
+	padding: 6px 20px 16px;
+}
+
+/* Comparison table (Free vs Pro and the like) - row dividers only; the card
+ * frames it, so it carries no outer border of its own. */
+.wbcom-compare {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 14px;
+}
+
+.wbcom-compare th,
+.wbcom-compare td {
+	padding: 12px 16px;
+	text-align: start;
+	border-bottom: 1px solid var(--wbcom-border);
+}
+
+.wbcom-compare thead th {
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--wbcom-muted);
+}
+
+.wbcom-compare tbody tr:last-child th,
+.wbcom-compare tbody tr:last-child td {
+	border-bottom: 0;
+}
+
+.wbcom-compare__opt {
+	width: 150px;
+	text-align: center;
+}
+
+.wbcom-compare td.wbcom-compare__opt {
+	color: var(--wbcom-muted);
+}
+
+.wbcom-compare td.wbcom-compare__opt--pro {
+	color: var(--wbcom-text);
+	font-weight: 600;
+}
+
+/* Upgrade CTA - benefits and the price/button sit flat inside their card, one
+ * aligned row, NOT two mismatched boxes floating next to each other. */
+.wbcom-cta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px 40px;
+}
+
+.wbcom-cta__benefits {
+	flex: 1 1 320px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	gap: 10px;
+}
+
+.wbcom-cta__benefits li {
+	position: relative;
+	padding-inline-start: 26px;
+	color: var(--wbcom-text);
+}
+
+.wbcom-cta__benefits li::before {
+	content: "";
+	position: absolute;
+	inset-inline-start: 2px;
+	top: 3px;
+	width: 12px;
+	height: 7px;
+	border-inline-start: 2px solid var(--wbcom-accent);
+	border-bottom: 2px solid var(--wbcom-accent);
+	transform: rotate(-45deg);
+}
+
+.wbcom-cta__action {
+	flex: 0 0 auto;
+	min-width: 200px;
+	text-align: center;
+}
+
+.wbcom-cta__price {
+	margin: 0 0 12px;
+	font-size: 14px;
+	color: var(--wbcom-muted);
+}
+
+.wbcom-cta__price strong {
+	display: block;
+	margin-top: 2px;
+	font-size: 28px;
+	color: var(--wbcom-text);
+}
+
+.wbcom-cta__guarantee {
+	margin: 12px 0 0;
+	font-size: 12px;
+	color: var(--wbcom-muted);
 }
 
 .wbcom-card__body .form-table th {
