@@ -45,14 +45,75 @@
     border-color: #e2e2e2;
     border-radius: 8px;
 }
-.wbcom-admin-option-wrap.wbcom-admin-option-wrap-view .section-title-container button.button.add_new_field {
-    padding: 6px 20px;
-    color: #fff;
-    margin-left: 5px;
-    border: none !important;
-    border-radius: 10px;
-    background: #2a32ef;
-    font-weight: 500;
+.wbcom-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+/* Endpoint builder fields - give every control a shared column width so text
+   inputs and the select2 role picker line up instead of collapsing. */
+.wcmp-endpoint-fields .wbcom-field-group .wbcom-field-control {
+    flex: 0 0 280px;
+    max-width: 280px;
+}
+.wcmp-endpoint-fields .wbcom-field-control .select2-container {
+    width: 100% !important;
+}
+.wcmp-endpoint-fields .wbcom-field-control .wbcom-input {
+    max-width: 100%;
+}
+/* On small screens stack the label above a full-width control instead of
+   letting the fixed 280px column overflow the card. */
+@media screen and (max-width: 600px) {
+    .wbcom-settings-body .wcmp-endpoint-fields .wbcom-field-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .wcmp-endpoint-fields .wbcom-field-group .wbcom-field-control {
+        flex: 1 1 auto;
+        max-width: 100%;
+    }
+}
+/* FAQ tab - items render inside shared settings cards, tokens only. */
+.wcmp-faq-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--wbcom-border, #e2e8f0);
+}
+.wcmp-faq-item:first-child {
+    padding-top: 0;
+}
+.wcmp-faq-item:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+.wcmp-faq-item h4 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--wbcom-text, #1e293b);
+}
+.wcmp-faq-item p {
+    margin: 8px 0;
+    line-height: 1.6;
+}
+.wcmp-faq-item ul,
+.wcmp-faq-item ol {
+    margin: 8px 0 8px 20px;
+    line-height: 1.7;
+}
+.wcmp-faq-item ul {
+    list-style: disc;
+}
+.wcmp-faq-code {
+    background: var(--wbcom-surface, #fff);
+    border: 1px solid var(--wbcom-border, #e2e8f0);
+    border-radius: 6px;
+    padding: 12px;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 1.5;
+    overflow-x: auto;
 }
 .wbcom-wrap .notice.notice-error.is-dismissible.learndash-license-is-dismissible {
     display: none !important;

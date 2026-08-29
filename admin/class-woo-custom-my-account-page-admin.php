@@ -92,9 +92,6 @@ class Woo_Custom_My_Account_Page_Admin {
 			return;
 		}
 
-		if ( ! wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
-			wp_enqueue_style( 'wp-color-picker' );
-		}
 		// Same bundled icon set as the frontend, so the builder's icon picker
 		// previews exactly what members will see.
 		wp_enqueue_style( 'wcmp-font-awesome', plugin_dir_url( __DIR__ ) . 'assets/vendor/font-awesome/css/wcmp-icons.min.css', array(), '6.7.2' );
@@ -150,7 +147,7 @@ class Woo_Custom_My_Account_Page_Admin {
 				wp_enqueue_script( 'select2-js', plugin_dir_url( __DIR__ ) . 'assets/vendor/select2/select2.min.js', array( 'jquery' ), '4.0.7', true );
 			}
 			if ( ! wp_script_is( 'woo-custom-my-account-page-admin-js', 'enqueued' ) ) {
-				wp_enqueue_script( 'woo-custom-my-account-page-admin-js', plugin_dir_url( __FILE__ ) . 'assets/js/woo-custom-my-account-page-admin.js', array( 'jquery', 'wp-color-picker', 'nestable', 'jquery-ui-dialog' ), $this->version, false );
+				wp_enqueue_script( 'woo-custom-my-account-page-admin-js', plugin_dir_url( __FILE__ ) . 'assets/js/woo-custom-my-account-page-admin.js', array( 'jquery', 'nestable', 'jquery-ui-dialog' ), $this->version, false );
 				wp_localize_script(
 					'woo-custom-my-account-page-admin-js',
 					'wcmp',
@@ -295,9 +292,8 @@ class Woo_Custom_My_Account_Page_Admin {
 				$this->render_style_tab();
 				break;
 			case 'wcmp-faq':
-				Wbcom_Settings_Page::card_open( __( 'Frequently asked questions', 'woo-custom-my-account-page' ) );
+				// The partial emits one shared card per FAQ section.
 				include WCMP_PLUGIN_PATH . 'admin/partials/wcmp-faq.php';
-				Wbcom_Settings_Page::card_close();
 				break;
 		}
 	}

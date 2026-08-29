@@ -84,136 +84,98 @@ $editor_options            = array(
 				<?php } ?>
 			</div>
 
-			<table class="options-table form-table gh">
-				<tbody>
-					<?php
-					if ( 'dashboard' !== $endpoint ) {
-						?>
-					<tr>
-						<th>
-							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_slug' ); ?>">
-								<?php
-								esc_html_e( 'Endpoint slug', 'woo-custom-my-account-page' );
-								?>
-							</label>
-						</th>
-						<td>
-							<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][slug]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_slug' ); ?>" value="<?php echo esc_attr( $options['slug'] ); ?>" required>
-							<p class="description">
-								<?php
-								esc_html_e( 'Text appended to your page URLs to manage new contents in account pages. It must be unique for every page.', 'woo-custom-my-account-page' );
-								?>
-							</p>
-						</td>
-					</tr>
-						<?php
-					} else {
-						?>
-						<input type="hidden" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][slug]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_slug' ); ?>" value="<?php echo esc_attr( $options['slug'] ); ?>">
-						<?php
-					}
+			<div class="wcmp-endpoint-fields">
+				<?php
+				if ( 'dashboard' !== $endpoint ) {
 					?>
-					<tr>
-						<th>
-							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_label' ); ?>">
-								<?php
-								esc_html_e( 'Endpoint label', 'woo-custom-my-account-page' );
-								?>
-							</label>
-						</th>
-						<td>
-							<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][label]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_label' ); ?>" value="<?php echo esc_attr( $options['label'] ); ?>">
-							<p class="description">
-								<?php
-								esc_html_e( 'Menu item for this endpoint in "My Account".', 'woo-custom-my-account-page' );
-								?>
-							</p>
-						</td>
-					</tr>
+				<div class="wbcom-field wbcom-field-group">
+					<div class="wbcom-field-info">
+						<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_slug' ); ?>"><?php esc_html_e( 'Endpoint slug', 'woo-custom-my-account-page' ); ?></label>
+						<p class="description"><?php esc_html_e( 'Text appended to your page URLs to manage new contents in account pages. It must be unique for every page.', 'woo-custom-my-account-page' ); ?></p>
+					</div>
+					<div class="wbcom-field-control">
+						<input type="text" class="wbcom-input" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][slug]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_slug' ); ?>" value="<?php echo esc_attr( $options['slug'] ); ?>" required>
+					</div>
+				</div>
+					<?php
+				} else {
+					?>
+					<input type="hidden" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][slug]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_slug' ); ?>" value="<?php echo esc_attr( $options['slug'] ); ?>">
+					<?php
+				}
+				?>
+				<div class="wbcom-field wbcom-field-group">
+					<div class="wbcom-field-info">
+						<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_label' ); ?>"><?php esc_html_e( 'Endpoint label', 'woo-custom-my-account-page' ); ?></label>
+						<p class="description"><?php esc_html_e( 'Menu item for this endpoint in "My Account".', 'woo-custom-my-account-page' ); ?></p>
+					</div>
+					<div class="wbcom-field-control">
+						<input type="text" class="wbcom-input" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][label]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_label' ); ?>" value="<?php echo esc_attr( $options['label'] ); ?>">
+					</div>
+				</div>
 
-					<tr>
-						<th>
-							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_icon' ); ?>"><?php esc_html_e( 'Endpoint icon', 'woo-custom-my-account-page' ); ?></label>
-						</th>
-						<td>
-							<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][icon]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_icon' ); ?>" value="<?php echo esc_attr( $options['icon'] ); ?>">
-							<p class="description">
-								<?php
-								esc_html_e( 'Endpoint icon for "My Account" menu option.', 'woo-custom-my-account-page' );
-								?>
-							</p>
-						</td>
-					</tr>
+				<div class="wbcom-field wbcom-field-group">
+					<div class="wbcom-field-info">
+						<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_icon' ); ?>"><?php esc_html_e( 'Endpoint icon', 'woo-custom-my-account-page' ); ?></label>
+						<p class="description"><?php esc_html_e( 'Endpoint icon for "My Account" menu option.', 'woo-custom-my-account-page' ); ?></p>
+					</div>
+					<div class="wbcom-field-control">
+						<input type="text" class="wbcom-input" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][icon]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_icon' ); ?>" value="<?php echo esc_attr( $options['icon'] ); ?>">
+					</div>
+				</div>
 
-					<tr>
-						<th>
-							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_class' ); ?>"><?php esc_html_e( 'Endpoint class', 'woo-custom-my-account-page' ); ?></label>
-						</th>
-						<td>
-							<input type="text" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][class]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_class' ); ?>" value="<?php echo esc_attr( $options['class'] ); ?>">
-							<p class="description">
-								<?php
-								esc_html_e( 'Add additional classes to endpoint container.', 'woo-custom-my-account-page' );
-								?>
-							</p>
-						</td>
-					</tr>
+				<div class="wbcom-field wbcom-field-group">
+					<div class="wbcom-field-info">
+						<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_class' ); ?>"><?php esc_html_e( 'Endpoint class', 'woo-custom-my-account-page' ); ?></label>
+						<p class="description"><?php esc_html_e( 'Add additional classes to endpoint container.', 'woo-custom-my-account-page' ); ?></p>
+					</div>
+					<div class="wbcom-field-control">
+						<input type="text" class="wbcom-input" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][class]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_class' ); ?>" value="<?php echo esc_attr( $options['class'] ); ?>">
+					</div>
+				</div>
 
-					<tr>
-						<th>
-							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_usr_roles' ); ?>"><?php esc_html_e( 'Visible to roles (empty = everyone)', 'woo-custom-my-account-page' ); ?></label>
-						</th>
-						<td>
-							<select name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][usr_roles][]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_usr_roles' ); ?>" multiple="" tabindex="-1" aria-hidden="true">
-								<?php
-								if ( $user_roles ) {
-									foreach ( $user_roles as $usrrole_slug => $usrrole_arr ) {
-										if ( ! empty( $options['usr_roles'] ) ) {
-											if ( in_array( $usrrole_slug, $options['usr_roles'], true ) ) {
-												?>
-												<option value="<?php echo esc_attr( $usrrole_slug ); ?>" selected = "selected">
-													<?php echo esc_html( $usrrole_arr['name'] ); ?>
-												</option>
-											<?php } else { ?>
-												<option value="<?php echo esc_attr( $usrrole_slug ); ?>">
-													<?php echo esc_html( $usrrole_arr['name'] ); ?>
-												</option>
-												<?php
-											}
-										} else {
+				<div class="wbcom-field wbcom-field-group">
+					<div class="wbcom-field-info">
+						<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_usr_roles' ); ?>"><?php esc_html_e( 'Visible to roles (empty = everyone)', 'woo-custom-my-account-page' ); ?></label>
+						<p class="description"><?php esc_html_e( 'Select one or many user roles, you want the endpoint to be displayed. Leaving it blank will show the endpoint to all the user roles.', 'woo-custom-my-account-page' ); ?></p>
+					</div>
+					<div class="wbcom-field-control">
+						<select class="wbcom-select" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][usr_roles][]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_usr_roles' ); ?>" multiple="" tabindex="-1" aria-hidden="true">
+							<?php
+							if ( $user_roles ) {
+								foreach ( $user_roles as $usrrole_slug => $usrrole_arr ) {
+									if ( ! empty( $options['usr_roles'] ) ) {
+										if ( in_array( $usrrole_slug, $options['usr_roles'], true ) ) {
 											?>
-										<option value="<?php echo esc_attr( $usrrole_slug ); ?>"><?php echo esc_html( $usrrole_arr['name'] ); ?></option>
+											<option value="<?php echo esc_attr( $usrrole_slug ); ?>" selected = "selected">
+												<?php echo esc_html( $usrrole_arr['name'] ); ?>
+											</option>
+										<?php } else { ?>
+											<option value="<?php echo esc_attr( $usrrole_slug ); ?>">
+												<?php echo esc_html( $usrrole_arr['name'] ); ?>
+											</option>
 											<?php
 										}
+									} else {
+										?>
+									<option value="<?php echo esc_attr( $usrrole_slug ); ?>"><?php echo esc_html( $usrrole_arr['name'] ); ?></option>
+										<?php
 									}
 								}
-								?>
-							</select>
-							<p class="description">
-								<?php
-								esc_html_e( 'Select one or many user roles, you want the endpoint to be displayed. Leaving it blank will show the endpoint to all the user roles.', 'woo-custom-my-account-page' );
-								?>
-							</p>
-						</td>
-					</tr>
-					<?php if ( ! array_key_exists( $endpoint, $default_endpoint_settings ) ) { ?>
-					<tr>
-						<th>
-							<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_content' ); ?>"><?php esc_html_e( 'Endpoint content', 'woo-custom-my-account-page' ); ?></label>
-						</th>
-						<td>
-							<?php wp_editor( $options['content'], $endpoint . '_content', $editor_options ); ?>
-							<p class="description">
-								<?php
-								esc_html_e( 'Custom endpoint content. Leave it black to use default content.', 'woo-custom-my-account-page' );
-								?>
-							</p>
-						</td>
-					</tr>
-					<?php } ?>	
-					<input type="hidden" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][type]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_type' ); ?>" value="<?php echo esc_attr( $options['type'] ); ?>">
-				</tbody>
-			</table>
+							}
+							?>
+						</select>
+					</div>
+				</div>
+				<?php if ( ! array_key_exists( $endpoint, $default_endpoint_settings ) ) { ?>
+				<div class="wbcom-field">
+					<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_content' ); ?>"><?php esc_html_e( 'Endpoint content', 'woo-custom-my-account-page' ); ?></label>
+					<p class="description"><?php esc_html_e( 'Custom endpoint content. Leave it black to use default content.', 'woo-custom-my-account-page' ); ?></p>
+					<?php wp_editor( $options['content'], $endpoint . '_content', $editor_options ); ?>
+				</div>
+				<?php } ?>
+				<input type="hidden" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][type]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_type' ); ?>" value="<?php echo esc_attr( $options['type'] ); ?>">
+			</div>
 		</div>
 	</div>
 </li>
