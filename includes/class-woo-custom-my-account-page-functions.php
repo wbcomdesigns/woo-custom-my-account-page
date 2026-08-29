@@ -511,38 +511,13 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 				$general = $default_general;
 			}
 
-			/* Style settings */
-			if ( ! empty( $style_settings ) ) {
-				if ( ! empty( $style_settings['menu_item_color'] ) ) {
-					$styles['menu_item_color'] = $style_settings['menu_item_color'];
-				} else {
-					$styles['menu_item_color'] = $default_styles['menu_item_color'];
-				}
-				if ( ! empty( $style_settings['menu_item_hover_color'] ) ) {
-					$styles['menu_item_hover_color'] = $style_settings['menu_item_hover_color'];
-				} else {
-					$styles['menu_item_hover_color'] = $default_styles['menu_item_hover_color'];
-				}
-				if ( ! empty( $style_settings['logout_color'] ) ) {
-					$styles['logout_color'] = $style_settings['logout_color'];
-				} else {
-					$styles['logout_color'] = $default_styles['logout_color'];
-				}
-				if ( ! empty( $style_settings['logout_hover_color'] ) ) {
-					$styles['logout_hover_color'] = $style_settings['logout_hover_color'];
-				} else {
-					$styles['logout_hover_color'] = $default_styles['logout_hover_color'];
-				}
-				if ( ! empty( $style_settings['logout_background_color'] ) ) {
-					$styles['logout_background_color'] = $style_settings['logout_background_color'];
-				} else {
-					$styles['logout_background_color'] = $default_styles['logout_background_color'];
-				}
-				if ( ! empty( $style_settings['logout_background_hover_color'] ) ) {
-					$styles['logout_background_hover_color'] = $style_settings['logout_background_hover_color'];
-				} else {
-					$styles['logout_background_hover_color'] = $default_styles['logout_background_hover_color'];
-				}
+			/*
+			 * Style settings: every key falls back to its default when the saved
+			 * value is empty. array_filter() (no callback) drops exactly the falsy
+			 * values !empty() would, so the merge is identical to the per-key ladder.
+			 */
+			if ( ! empty( $style_settings ) && is_array( $style_settings ) ) {
+				$styles = array_merge( $default_styles, array_filter( $style_settings ) );
 			} else {
 				$styles = $default_styles;
 			}
@@ -565,9 +540,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @author Wbcom Designs
 		 */
 		public function init() {
-
-			// Ensure default endpoints are initialized.
-			$this->maybe_init_default_items();
 
 			$all_settings         = $this->wcmp_settings_data();
 			$endpoints            = isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
@@ -621,20 +593,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// Remove standard woocommerce sidebar.
 			if ( false !== $priority ) {
 				remove_action( 'woocommerce_account_navigation', 'woocommerce_account_navigation', $priority );
-			}
-		}
-
-		/**
-		 * Maybe init default items.
-		 *
-		 * @since  1.0.0
-		 * @access protected
-		 * @author Wbcom Designs
-		 */
-		protected function maybe_init_default_items() {
-			$endpoints_settings = get_option( 'wcmp_endpoints_settings' );
-			if ( empty( $endpoints_settings ) ) {
-				$this->default_endpoint_settings();
 			}
 		}
 
@@ -832,20 +790,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			);
 
 			wc_get_template( 'wcmp-myaccount-menu-group.php', $args, '', WCMP_PLUGIN_PATH . 'public/templates/' );
-		}
-
-		/**
-		 * Save an option to check if the page is myaccount.
-		 *
-		 * @access     public
-		 * @since      1.0.0
-		 * @deprecated 1.6.4 Detection is per-request via is_account_page();
-		 *             a site-wide option written on shutdown was
-		 *             non-deterministic request state. No longer hooked.
-		 * @author     Wbcom Designs
-		 */
-		public function save_is_my_account() {
-			_deprecated_function( __METHOD__, '1.6.4' );
 		}
 
 		/**

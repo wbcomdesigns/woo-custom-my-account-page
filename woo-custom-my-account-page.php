@@ -93,33 +93,38 @@ add_action(
 	}
 );
 
-// Preset free license key for automatic updates (runs once for existing installs).
-add_action(
-	'admin_init',
-	function () {
-		$key_option = 'woo-custom-my-account-page_license_key';
-		if ( ! get_option( $key_option ) ) {
-			update_option( $key_option, 'wbcomfreea4f9c2d8b7e61a3c9d5e0f4b2c8a7e19', false );
-			update_option(
-				'woo-custom-my-account-page_license',
-				(object) array(
-					'success'          => true,
-					'license'          => 'valid',
-					'item_id'          => 110615,
-					'item_name'        => 'Custom My Account Page for WooCommerce',
-					'license_limit'    => 0,
-					'site_count'       => 0,
-					'expires'          => 'lifetime',
-					'activations_left' => 'unlimited',
-					'payment_id'       => 0,
-					'customer_name'    => '',
-					'customer_email'   => '',
-				),
-				false
-			);
-		}
+/**
+ * Preset the free license key so installs receive automatic updates without
+ * activation. Runs once - a no-op when the key already exists. Shared by the
+ * admin_init hook (existing installs) and the activation hook (new installs).
+ */
+function wcmp_preset_free_license() {
+	$key_option = 'woo-custom-my-account-page_license_key';
+	if ( get_option( $key_option ) ) {
+		return;
 	}
-);
+	update_option( $key_option, 'wbcomfreea4f9c2d8b7e61a3c9d5e0f4b2c8a7e19', false );
+	update_option(
+		'woo-custom-my-account-page_license',
+		(object) array(
+			'success'          => true,
+			'license'          => 'valid',
+			'item_id'          => 110615,
+			'item_name'        => 'Custom My Account Page for WooCommerce',
+			'license_limit'    => 0,
+			'site_count'       => 0,
+			'expires'          => 'lifetime',
+			'activations_left' => 'unlimited',
+			'payment_id'       => 0,
+			'customer_name'    => '',
+			'customer_email'   => '',
+		),
+		false
+	);
+}
+
+// Preset free license key for automatic updates (runs once for existing installs).
+add_action( 'admin_init', 'wcmp_preset_free_license' );
 
 // EDD Software Licensing SDK.
 add_action(

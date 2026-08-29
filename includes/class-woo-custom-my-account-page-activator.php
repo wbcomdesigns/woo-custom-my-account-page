@@ -38,28 +38,8 @@ class Woo_Custom_My_Account_Page_Activator {
 		self::seed_default_settings();
 
 		// Preset free license key so users receive automatic updates without activation.
-		$key_option    = 'woo-custom-my-account-page_license_key';
-		$status_option = 'woo-custom-my-account-page_license';
-
-		if ( ! get_option( $key_option ) ) {
-			update_option( $key_option, 'wbcomfreea4f9c2d8b7e61a3c9d5e0f4b2c8a7e19', false );
-			update_option(
-				$status_option,
-				(object) array(
-					'success'          => true,
-					'license'          => 'valid',
-					'item_id'          => 110615,
-					'item_name'        => 'Custom My Account Page for WooCommerce',
-					'license_limit'    => 0,
-					'site_count'       => 0,
-					'expires'          => 'lifetime',
-					'activations_left' => 'unlimited',
-					'payment_id'       => 0,
-					'customer_name'    => '',
-					'customer_email'   => '',
-				),
-				false
-			);
+		if ( function_exists( 'wcmp_preset_free_license' ) ) {
+			wcmp_preset_free_license();
 		}
 	}
 
