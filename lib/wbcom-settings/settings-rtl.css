@@ -721,6 +721,15 @@
 	border-bottom: 0;
 }
 
+/*
+ * A save bar carries its own top border as the divider. When it follows the
+ * fields directly, drop the last field's bottom border so the field divider and
+ * the save-bar divider do not stack into a double line above the button.
+ */
+.wbcom-settings-body .wbcom-field:has(+ .wbcom-save-bar) {
+	border-bottom: 0;
+}
+
 .wbcom-settings-body .wbcom-field > label,
 .wbcom-settings-body .wbcom-field-info > label {
 	font-weight: 600;
