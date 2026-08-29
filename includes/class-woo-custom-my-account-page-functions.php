@@ -824,6 +824,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$args = apply_filters(
 				'wcmp_print_endpoints_group_group',
 				array(
+					'endpoint'   => $endpoint,
 					'options'    => $options,
 					'classes'    => $classes,
 					'class_icon' => $class_icon,
