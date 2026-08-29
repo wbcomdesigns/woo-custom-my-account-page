@@ -1,0 +1,170 @@
+{
+  "$schema": "https://wpmediaverse.com/schemas/wp-plugin-manifest-v2.json",
+  "generated": "2026-08-29",
+  "generated_from": "source read of master @ 8b8c3be (v1.6.5)",
+  "plugin": {
+    "slug": "woo-custom-my-account-page",
+    "name": "Custom My Account Page for WooCommerce",
+    "version": "1.6.5",
+    "namespace": null,
+    "class_prefix": "Woo_Custom_My_Account_Page_",
+    "main_file": "woo-custom-my-account-page.php",
+    "text_domain": "woo-custom-my-account-page",
+    "requires_wp": "6.5",
+    "requires_php": "8.0",
+    "requires_plugins": "woocommerce",
+    "extends": null,
+    "extension_hook_consumed": null,
+    "extension_hook_fired": null,
+    "description": "Turns the WooCommerce My Account page into a branded customer portal: reorder/rename/disable default endpoints, add custom endpoints, collapsible groups and external links, restrict items by user role, upload a per-member avatar, and override menu colours. Admin runs on the shared Wbcom settings shell; no REST, no custom tables."
+  },
+  "rest": {
+    "namespace": null,
+    "endpoints": []
+  },
+  "ajax": [
+    { "action": "wcmp_add_field",             "surface": "admin-ajax (wp_ajax_ only, no nopriv)", "handler": "Woo_Custom_My_Account_Page_Admin::wcmp_add_field_ajax", "nonce": "ajax_nonce", "capability": "manage_woocommerce", "purpose": "Endpoint builder: render the HTML for a newly added endpoint / group / link row. Target validated against allowlist [endpoint, group, link]." },
+    { "action": "wcmp_print_avatar_form",     "surface": "WC AJAX (wc_ajax_)",                     "handler": "Woo_Custom_My_Account_Page_Public::wcmp_print_avatar_form_ajax", "nonce": "—", "capability": "is_ajax + is_user_logged_in", "purpose": "Return the avatar upload/reset form markup for the change-photo popup on My Account." }
+  ],
+  "form_post_handlers": [
+    { "trigger": "template_redirect", "handler": "Woo_Custom_My_Account_Page_Public::wcmp_add_avatar",          "nonce": "wp_handle_upload (field _nonce)",  "capability": "is_user_logged_in", "purpose": "Handle the member avatar upload (media_handle_upload), validate MIME [jpeg/png/gif/webp] + 2MB cap, store attachment id in user meta wb-wcmp-avatar, then redirect." },
+    { "trigger": "template_redirect", "handler": "Woo_Custom_My_Account_Page_Public::wcmp_reset_default_avatar", "nonce": "wcmp_reset_avatar (field reset_image)", "capability": "is_user_logged_in", "purpose": "Delete the custom avatar attachment + user meta and fall back to Gravatar." }
+  ],
+  "admin_pages": [
+    { "title": "WB Plugins",     "slug": "wbcomplugins",             "parent": null,           "capability": "manage_options", "source": "admin/class-woo-custom-my-account-page-admin.php::wcmp_add_plugin_menu_page (only when no other Wbcom plugin already registered the shared top-level menu and Wbcom_Settings_Page exists)" },
+    { "title": "Woo My Account", "slug": "woo-custom-myaccount-page", "parent": "wbcomplugins", "capability": "manage_options", "source": "admin/class-woo-custom-my-account-page-admin.php::boot_settings_page via Wbcom_Settings_Page::boot (shared Wbcom Pattern A shell; prefix wcmp)" }
+  ],
+  "settings_tabs": [
+    { "id": "wcmp-overview",  "group": "main", "title": "Overview",  "renders": "render_overview_tab — portal status (account-page mode, menu entry counts, custom/role-restricted counts, default endpoint, update state) + support links. Read-only." },
+    { "id": "wcmp-endpoints", "group": "main", "title": "Endpoints", "renders": "admin/partials/wcmp-endpoints-settings.php — drag-and-drop builder (nestable) for reorder/rename/disable/add of endpoints, groups, links; per-item icon, css class, user-role allowlist." },
+    { "id": "wcmp-general",   "group": "main", "title": "General",   "renders": "render_general_tab — avatar toggle, menu layout (sidebar|tab), sidebar position (left|right), default endpoint." },
+    { "id": "wcmp-style",     "group": "main", "title": "Style",     "renders": "render_style_tab — six colour pickers (menu item, menu hover, logout text/hover, logout bg/hover)." },
+    { "id": "wcmp-faq",       "group": "help", "title": "FAQ",       "renders": "admin/partials/wcmp-faq.php — static help content." }
+  ],
+  "settings": [
+    { "key": "wcmp_general_settings",   "group": "wcmp_general_settings",   "type": "array", "sanitize_callback": "Woo_Custom_My_Account_Page_Admin::wcmp_general_settings_callback",   "keys": ["custom_avatar (yes|no)", "menu_style (sidebar|tab)", "sidebar_position (left|right)", "default_endpoint (endpoint slug)"] },
+    { "key": "wcmp_style_settings",     "group": "wcmp_style_settings",     "type": "array", "sanitize_callback": "Woo_Custom_My_Account_Page_Admin::wcmp_style_settings_callback",     "keys": ["menu_item_color", "menu_item_hover_color", "logout_color", "logout_hover_color", "logout_background_color", "logout_background_hover_color"], "note": "Only menu_item_color + menu_item_hover_color are bridged to frontend CSS custom properties in wcmp_get_custom_css; the four logout_* keys are persisted and rendered in the Style tab but are not emitted as inline overrides in the current public CSS bridge." },
+    { "key": "wcmp_endpoints_settings", "group": "wcmp_endpoints_settings", "type": "array", "sanitize_callback": "Woo_Custom_My_Account_Page_Admin::wcmp_endpoints_settings_callback", "keys": ["endpoints[key] => {active, label, slug, class, icon, type (endpoint|group|link), usr_roles[], + content|open|url,target_blank per type}", "endpoints-order (JSON drag order)"], "note": "Endpoint content is trust-modelled like post_content: unfiltered_html users keep raw markup, others go through wp_kses_post." }
+  ],
+  "options": [
+    { "key": "wcmp_general_settings",   "autoload": "yes", "purpose": "General tab values.", "read": "Woo_Custom_My_Account_Page_Functions::wcmp_settings_data, get_avatar_filter", "written": "Settings API" },
+    { "key": "wcmp_style_settings",     "autoload": "yes", "purpose": "Style tab colours.", "read": "wcmp_settings_data / wcmp_get_custom_css", "written": "Settings API" },
+    { "key": "wcmp_endpoints_settings", "autoload": "yes", "purpose": "Endpoint/group/link definitions + order.", "read": "wcmp_settings_data", "written": "Settings API + update_option_wcmp_endpoints_settings hook mirrors slugs to WC core options" },
+    { "key": "wcmp-users-avatar-ids",   "autoload": "no",  "purpose": "Flat list of uploaded avatar attachment ids (for a media-library filter scope).", "read": "wcmp_add_avatar / wcmp_reset_default_avatar", "written": "same" },
+    { "key": "wcmp_endpoint",           "autoload": "yes", "purpose": "LEGACY pre-1.x endpoint store; migrated in-place by wcmp_update_old_items on init.", "read": "wcmp_update_old_items", "written": "wcmp_update_old_items (migration)" },
+    { "key": "wcmp_endpoint_backup_pre_1.6.5", "autoload": "yes", "purpose": "One-time backup of wcmp_endpoint before migration (version-suffixed).", "read": "wcmp_update_old_items (existence guard)", "written": "wcmp_update_old_items" },
+    { "key": "woocommerce_myaccount_{endpoint}_endpoint", "autoload": "yes", "purpose": "WC core endpoint slug — kept in sync when a default endpoint is renamed.", "read": "WooCommerce", "written": "wcmp_update_woo_endpoints_slug on update_option_wcmp_endpoints_settings" },
+    { "key": "woo-custom-my-account-page_license_key",   "autoload": "yes", "purpose": "Preset free EDD license key (auto-seeded once on admin_init).", "read": "EDD SL SDK", "written": "main file admin_init seeder" },
+    { "key": "woo-custom-my-account-page_license",       "autoload": "yes", "purpose": "Preset valid/lifetime license object.", "read": "EDD SL SDK", "written": "main file admin_init seeder" },
+    { "key": "wcmp_endpoint_order",     "autoload": "yes", "purpose": "Deleted on uninstall; flagged in contract-audit baseline as written-never-read (suppressed, warning).", "read": "—", "written": "—" },
+    { "key": "wcmp_is_my_account",      "autoload": "yes", "purpose": "Legacy request-state flag; deleted on uninstall, no longer written (save_is_my_account deprecated 1.6.4). Baseline-suppressed.", "read": "—", "written": "—" }
+  ],
+  "transients": [
+    { "key": "wcmp_flush_rewrite_rules", "ttl": "60s", "purpose": "Set when endpoint settings save; wcmp_maybe_flush_rewrite_rules flushes on next init then deletes." }
+  ],
+  "user_meta": [
+    { "key": "wb-wcmp-avatar", "value": "attachment id", "written": "wcmp_add_avatar", "deleted": "wcmp_reset_default_avatar", "read": "wcmp_get_avatar (get_avatar filter)", "purpose": "The member's uploaded avatar; overrides Gravatar site-wide when custom_avatar is enabled." }
+  ],
+  "shortcodes": [
+    { "tag": "wcmp_my_account",             "handler": "Woo_Custom_My_Account_Page_Functions::wcmp_render_my_account_shortcode", "attrs": [], "purpose": "Place the full portal on any page — delegates to [woocommerce_my_account] so the navigation takeover applies." },
+    { "tag": "default_dashboard_content",   "handler": "Woo_Custom_My_Account_Page_Functions::wcmp_print_default_dashboard_content", "attrs": [], "purpose": "Render WooCommerce's default dashboard template, for embedding inside a custom endpoint's content." }
+  ],
+  "blocks": [
+    { "name": "wcmp/my-account", "api_version": 3, "path": "blocks/my-account", "render": "blocks/my-account/render.php (server-render → do_shortcode('[woocommerce_my_account]'))", "editor_script": "blocks/my-account/editor.js", "supports": { "html": false, "align": ["wide", "full"], "multiple": false }, "purpose": "Drop the full My Account portal on any page including block themes." }
+  ],
+  "wc_endpoints": {
+    "registered_at": "Woo_Custom_My_Account_Page_Functions::wcmp_add_custom_endpoints (init:21)",
+    "mechanism": "add_rewrite_endpoint(slug, WC()->query->get_endpoints_mask()) + injects slug into WC()->query->query_vars for each custom endpoint; rewrite flush deferred via the wcmp_flush_rewrite_rules transient.",
+    "note": "No custom DB tables — custom endpoints are WordPress rewrite endpoints layered on the WC My Account query."
+  },
+  "post_types": [],
+  "taxonomies": [],
+  "tables": [],
+  "cron": [],
+  "capabilities": [
+    { "cap": "manage_options",      "enforced_at": ["admin menu registration", "settings screen (shared shell)"], "meta": false },
+    { "cap": "manage_woocommerce",  "enforced_at": ["wcmp_add_field_ajax"], "meta": false },
+    { "cap": "unfiltered_html",     "enforced_at": ["wcmp_endpoints_settings_callback (endpoint content markup trust)"], "meta": false },
+    { "cap": "is_user_logged_in",   "enforced_at": ["wcmp_add_avatar", "wcmp_reset_default_avatar", "wcmp_print_avatar_form_ajax"], "meta": false, "notes": "Not a capability — logged-in gate on the member-facing avatar flows." }
+  ],
+  "services": [
+    { "key": "core",         "class": "Woo_Custom_My_Account_Page",          "file": "includes/class-woo-custom-my-account-page.php",          "purpose": "Bootstraps loader, i18n, admin + public hooks. Single run() from plugins_loaded (after WooCommerce active check)." },
+    { "key": "loader",       "class": "Woo_Custom_My_Account_Page_Loader",   "file": "includes/class-woo-custom-my-account-page-loader.php",   "purpose": "Standard boilerplate hook registry (add_action/add_filter collectors + run())." },
+    { "key": "i18n",         "class": "Woo_Custom_My_Account_Page_I18n",     "file": "includes/class-woo-custom-my-account-page-i18n.php",     "purpose": "Text domain loader on plugins_loaded." },
+    { "key": "functions",    "class": "Woo_Custom_My_Account_Page_Functions","file": "includes/class-woo-custom-my-account-page-functions.php","purpose": "Singleton. Owns the frontend portal: menu takeover, endpoint content, settings-data assembly + defaults, endpoint registration, role visibility, legacy migration, shortcodes, block registration." },
+    { "key": "admin",        "class": "Woo_Custom_My_Account_Page_Admin",    "file": "admin/class-woo-custom-my-account-page-admin.php",       "purpose": "Settings screen (Overview/Endpoints/General/Style/FAQ), sanitizers, endpoint-builder AJAX, WC slug sync, rewrite-flush scheduling, FA-to-Dashicon admin preview map." },
+    { "key": "public",       "class": "Woo_Custom_My_Account_Page_Public",   "file": "public/class-woo-custom-my-account-page-public.php",     "purpose": "Frontend assets (conditional), get_avatar filter, avatar upload/reset/form, menu-item classes, style token bridge." },
+    { "key": "error_handler","class": "WCMP_Error_Handler",                  "file": "includes/class-wcmp-error-handler.php",                 "purpose": "Stability helper." },
+    { "key": "activator",    "class": "Woo_Custom_My_Account_Page_Activator","file": "includes/class-woo-custom-my-account-page-activator.php","purpose": "Activation hook (seeds defaults / rewrite)." },
+    { "key": "deactivator",  "class": "Woo_Custom_My_Account_Page_Deactivator","file": "includes/class-woo-custom-my-account-page-deactivator.php","purpose": "Deactivation hook." },
+    { "key": "settings_shell","class": "Wbcom_Settings_Page",                "file": "lib/wbcom-settings/ (bundled, registered v1.0.2)",      "purpose": "Shared Wbcom Pattern A admin shell — highest bundled version across active Wbcom plugins wins." }
+  ],
+  "frontend_hooks": [
+    { "hook": "woocommerce_account_navigation",         "type": "action", "callback": "Woo_Custom_My_Account_Page_Functions::wcmp_add_my_account_menu (10)", "purpose": "Render the custom menu; core woocommerce_account_navigation is removed in Functions::init." },
+    { "hook": "woocommerce_account_content",            "type": "action", "callback": "Woo_Custom_My_Account_Page_Functions::manage_account_content (1)", "purpose": "Output a custom endpoint's stored content (kses then do_shortcode)." },
+    { "hook": "woocommerce_account_menu_item_classes",  "type": "filter", "callback": "Woo_Custom_My_Account_Page_Public::wcmp_account_menu_item_classes (999,2)", "purpose": "Append per-endpoint custom CSS classes." },
+    { "hook": "get_avatar",                             "type": "filter", "callback": "Woo_Custom_My_Account_Page_Public::wcmp_get_avatar (100,6)", "purpose": "Swap in the member's uploaded avatar. Uses a static re-entrancy guard; does NOT strip other get_avatar filters." },
+    { "hook": "template_redirect",                      "type": "action", "callback": "wcmp_check_myaccount (1), manage_account_title (10), redirect_to_default (150), wcmp_add_avatar, wcmp_reset_default_avatar", "purpose": "Account-page detection, endpoint title, default-endpoint redirect (role-aware), avatar upload/reset." },
+    { "hook": "wp_enqueue_scripts",                     "type": "action", "callback": "Public::enqueue_styles / enqueue_scripts", "purpose": "Conditional asset load — only on account page / portal shortcode / block (wcmp_should_load_assets, filterable via wcmp_load_public_assets)." },
+    { "hook": "init",                                   "type": "action", "callback": "Functions::init(100), wcmp_add_custom_endpoints(21), wcmp_register_block(20), wcmp_update_old_items(0)", "purpose": "Menu assembly, endpoint rewrite registration, block registration, legacy migration." }
+  ],
+  "admin_hooks": [
+    { "hook": "init",                                   "callback": "Admin::boot_settings_page(1) — Wbcom_Settings_Page::boot + nav-group filter + tab-content action" },
+    { "hook": "admin_menu",                             "callback": "Admin::wcmp_add_plugin_menu_page(5)" },
+    { "hook": "admin_init",                             "callback": "Admin::wcmp_add_plugin_register_settings + license seeder" },
+    { "hook": "admin_enqueue_scripts",                  "callback": "Admin::enqueue_styles / enqueue_scripts (screen-gated to the settings page)" },
+    { "hook": "update_option_wcmp_endpoints_settings",  "callback": "Admin::wcmp_update_woo_endpoints_slug(10,3) + wcmp_schedule_flush_rewrite_on_endpoint_save" },
+    { "hook": "in_admin_header",                        "callback": "Admin::wbcom_hide_all_admin_notices_from_setting_page (only on Wbcom setting pages)" },
+    { "hook": "activated_plugin",                       "callback": "wcmp_activation_redirect_settings — lands on Endpoints builder after activation" },
+    { "hook": "before_woocommerce_init",                "callback": "declare custom_order_tables (HPOS) compatibility" }
+  ],
+  "extension_seams": [
+    { "hook": "wcmp_get_avatar_filter",          "type": "filter", "purpose": "Return true to suppress the custom avatar for this request (default: mirrors the custom_avatar setting). Primary seam for coexisting with other avatar sources." },
+    { "hook": "wcmp_load_public_assets",         "type": "filter", "purpose": "Force portal assets to load on a surface wcmp_should_load_assets does not auto-detect." },
+    { "hook": "wcmp_get_custom_css",             "type": "filter", "purpose": "Amend the inline style-token overrides." },
+    { "hook": "wcmp_default_endpoint",           "type": "filter", "purpose": "Override the resolved default endpoint at redirect time." },
+    { "hook": "wcmp_no_redirect_to_default",     "type": "filter", "purpose": "Disable the default-endpoint redirect." },
+    { "hook": "wcmp_is_my_account_page",         "type": "filter", "purpose": "Override account-page detection." },
+    { "hook": "wcmp_get_current_endpoint",       "type": "filter", "purpose": "Override the current endpoint resolution." },
+    { "hook": "wcmp_default_general_settings / wcmp_default_style_settings / wcmp_default_endpoints_settings", "type": "filter", "purpose": "Amend seeded defaults." },
+    { "hook": "wcmp_get_default_endpoint_options / _group_options / _link_options", "type": "filter", "purpose": "Amend the option shape for a new builder item." },
+    { "hook": "wcmp_myaccount_menu_template_args + wcmp_print_single_endpoint_args + wcmp_print_endpoints_group_group + wcmp_endpoint_menu_class + wcmp_endpoints_group_class", "type": "filter", "purpose": "Template arg / class hooks for the frontend menu." },
+    { "hook": "wcmp_admin_print_endpoint_field / _endpoints_group / _link_field", "type": "filter", "purpose": "Amend builder-row template args in admin." },
+    { "hook": "wcmp_dashboard_shortcode_template", "type": "filter", "purpose": "Override the dashboard template used by default_dashboard_content." }
+  ],
+  "templates": {
+    "root": "public/templates/",
+    "override_dir": "yourtheme/woocommerce/ (via wc_get_template)",
+    "files": [
+      "wcmp-myaccount-menu.php",
+      "wcmp-myaccount-menu-item.php",
+      "wcmp-myaccount-menu-group.php",
+      "wcmp-myaccount-avatar-form.php"
+    ]
+  },
+  "bundled_libraries": [
+    { "name": "EDD Software Licensing SDK", "path": "vendor/edd-sl-sdk/edd-sl-sdk.php", "runtime": true, "purpose": "Self-hosted automatic updates (item_id 110615)." },
+    { "name": "Wbcom Settings shell",        "path": "lib/wbcom-settings/",              "runtime": true, "version": "1.0.2", "purpose": "Shared Pattern A admin shell + assets (settings.css/js, RTL)." },
+    { "name": "Scoped icon font",            "path": "assets/vendor/font-awesome/",      "runtime": true, "purpose": "Custom 'WCMP Icons' font scoped to .wcmp-myaccount-template so it never clashes with a theme's own Font Awesome." },
+    { "name": "Select2",                     "path": "assets/vendor/select2/",           "runtime": true, "purpose": "Role multiselect in the endpoint builder (local, not CDN)." },
+    { "name": "Lucide",                      "path": "assets/vendor/lucide.min.js",      "runtime": true, "purpose": "Icons in the shared settings shell." },
+    { "name": "jQuery Nestable",             "path": "admin/assets/js/jquery.nestable.js","runtime": true, "purpose": "Drag-and-drop endpoint ordering." }
+  ],
+  "third_party_integrations": [
+    { "plugin": "WooCommerce",            "detection": "is_plugin_active / class_exists('WooCommerce')", "status": "required", "purpose": "Host — My Account page, endpoints, account menu, HPOS compat declared." },
+    { "plugin": "Other get_avatar sources (BuddyPress, Simple Local Avatars, etc.)", "detection": "n/a", "status": "coexists", "purpose": "1.6.5 fix: the get_avatar filter no longer calls remove_all_filters('get_avatar'); a static re-entrancy guard replaces it so other avatar plugins keep working after the first avatar renders." },
+    { "plugin": "Themes (Storefront, BuddyX, Reign, BuddyBoss, block themes)", "detection": "n/a", "status": "compatible", "purpose": "Frontend colours follow the active theme via CSS-custom-property token bridge; Style pickers override only when changed." },
+    { "plugin": "Form plugins (e.g. Formidable) in endpoint content", "detection": "n/a", "status": "compatible", "purpose": "Endpoint content is kses-sanitized then shortcode-expanded so form controls survive." }
+  ],
+  "data_lifecycle": {
+    "activation": "activate_woo_custom_my_account_page → Activator::activate (seed defaults / rewrite).",
+    "uninstall": "uninstall.php deletes wcmp_general_settings, wcmp_endpoints_settings, wcmp_style_settings, wcmp_endpoint_order, wcmp_is_my_account, wcmp-users-avatar-ids, the three license options, the wcmp_flush_rewrite_rules transient, then flush_rewrite_rules(). NOTE: does not delete wcmp_endpoint (legacy) or the wcmp_endpoint_backup_pre_* backup, and does not remove wb-wcmp-avatar user meta or uploaded avatar attachments."
+  },
+  "security": {
+    "avatar_upload": "MIME allowlist [image/jpeg,png,gif,webp] via wp_check_filetype_and_ext, 2MB size cap, logged-in gate, wp_handle_upload nonce, media_handle_upload. PRG redirect after handling.",
+    "ajax_gate": "wcmp_add_field_ajax: nonce ajax_nonce + manage_woocommerce + target allowlist. wcmp_print_avatar_form_ajax: is_ajax + is_user_logged_in.",
+    "endpoint_content": "kses_post for non-unfiltered_html users, raw for unfiltered_html — same trust model as post_content.",
+    "notes": "No custom tables, no REST surface — attack surface is the two AJAX actions, two avatar POST flows, and the Settings API screens."
+  },
+  "known_contract_baseline": "See .contract-audit-baseline.json: eight suppressions (wcmp_endpoint_order / wcmp_is_my_account written-never-read; wcmp_endpoint dual-key; wcmp_settings_nav_groups / wcmp_settings_tab_content consumed-never-fired — these are fired by the bundled Wbcom_Settings_Page shell, not this plugin's own code, so the static audit cannot see the producer; ajax-action-no-handler:wcmp_reset_avatar — actually a template_redirect POST form, not admin-ajax; ajax-handler-unreferenced:wcmp_add_field — referenced via JS localize action_add; dom-action-no-handler:delete). All carry TODO 'justify or fix' reasons and should be resolved before the next release."
+}
