@@ -40,7 +40,7 @@
 .wbcom-admin .notice.settings-error {
 	position: relative;
 	margin: 0 0 16px;
-	padding: 12px 40px 12px 16px;
+	padding: 12px 16px 12px 40px;
 	background: var(--wbcom-surface);
 	border: 1px solid var(--wbcom-border);
 	border-inline-start: 4px solid var(--wbcom-success);
@@ -463,26 +463,76 @@
 	color: var(--wbcom-muted);
 }
 
+/*
+ * Rich answers - lists, nested lists - read as part of the same muted answer
+ * body as the paragraphs, indented under the summary rather than flush to the
+ * accordion border. Kept in the shell so every plugin's FAQ renders identically
+ * however long the answer runs.
+ */
+.wbcom-faq__item ul,
+.wbcom-faq__item ol {
+	margin: 0 0 12px;
+	padding: 0 34px 0 14px;
+	color: var(--wbcom-muted);
+}
+
+.wbcom-faq__item ul ul,
+.wbcom-faq__item ol ul,
+.wbcom-faq__item li > ul {
+	margin: 6px 0 0;
+	padding-bottom: 0;
+}
+
+.wbcom-faq__item li {
+	margin-bottom: 4px;
+}
+
 /* Feature list (Pro tabs seen from free) --------------------------------------------------- */
 
 .wbcom-feature-list {
 	list-style: none;
-	margin: 0 0 16px;
+	margin: 0;
 	padding: 0;
 	display: grid;
-	gap: 8px;
+	gap: 2px;
 }
 
 .wbcom-feature-list li {
 	display: flex;
-	align-items: flex-start;
-	gap: 8px;
+	align-items: center;
+	gap: 10px;
 	margin: 0;
+	padding: 8px 10px;
+	border-radius: 6px;
+	transition: background 0.15s ease;
 }
 
+.wbcom-feature-list li:hover {
+	background: var(--wbcom-hover, rgba(0, 0, 0, 0.03));
+}
+
+/*
+ * Icons are a quiet wayfinding glyph, subordinate to the link they precede:
+ * a muted token, not the accent (and never a third hard-coded hue - the raw
+ * green here used to fight the blue link text on every resource card).
+ */
 .wbcom-feature-list [data-lucide] {
-	color: #1a7c3b;
-	margin-top: 2px;
+	width: 18px;
+	height: 18px;
+	flex-shrink: 0;
+	color: var(--wbcom-muted);
+}
+
+.wbcom-feature-list li a {
+	color: var(--wbcom-accent);
+	font-weight: 500;
+	text-decoration: none;
+}
+
+.wbcom-feature-list li a:hover,
+.wbcom-feature-list li a:focus {
+	color: var(--wbcom-accent-strong);
+	text-decoration: underline;
 }
 
 /* Settings sections ---------------------------------------------------------------------- */
@@ -551,6 +601,21 @@
 	align-items: center;
 }
 
+/*
+ * Stacked group - label on its own line above a full-width control. For controls
+ * too wide for the right-hand column (multi-swatch colour groups, builders and
+ * the like); sitting them beside the label overflows and overlaps the column.
+ */
+.wbcom-settings-body .wbcom-field-group.wbcom-field--stacked {
+	flex-direction: column;
+	align-items: stretch;
+}
+
+.wbcom-settings-body .wbcom-field-group.wbcom-field--stacked .wbcom-field-control {
+	flex: 1 1 auto;
+	width: 100%;
+}
+
 .wbcom-settings-body .wbcom-field-info {
 	flex: 1 1 auto;
 }
@@ -575,6 +640,60 @@
 	.wbcom-settings-body .wbcom-field-group {
 		flex-direction: row;
 		align-items: flex-start;
+	}
+}
+
+/*
+ * Grid table - a shared repeatable-row layout for settings that manage several
+ * columns per item (labels/slugs/positions, endpoint rows, and the like). Column
+ * headers render once; each row aligns its controls to those columns. This keeps
+ * multi-input settings dense and uniform instead of floating controls with a
+ * dead gap between the item name and its fields.
+ */
+.wbcom-settings-body .wbcom-grid-table__head,
+.wbcom-settings-body .wbcom-grid-table__row {
+	display: grid;
+	grid-template-columns: minmax(120px, 1fr) minmax(150px, 1.7fr) minmax(150px, 1.7fr) 110px;
+	gap: 16px;
+	align-items: center;
+}
+
+.wbcom-settings-body .wbcom-grid-table__head {
+	padding: 4px 0 10px;
+}
+
+.wbcom-settings-body .wbcom-grid-table__head span {
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--wbcom-muted);
+}
+
+.wbcom-settings-body .wbcom-grid-table__row {
+	padding: 12px 0;
+	border-top: 1px solid var(--wbcom-border);
+}
+
+.wbcom-settings-body .wbcom-grid-table__label {
+	font-weight: 600;
+	color: var(--wbcom-text);
+}
+
+.wbcom-settings-body .wbcom-grid-table__row .wbcom-input {
+	max-width: none;
+	margin: 0;
+}
+
+@media screen and (max-width: 782px) {
+	.wbcom-settings-body .wbcom-grid-table__head {
+		display: none;
+	}
+
+	.wbcom-settings-body .wbcom-grid-table__row {
+		grid-template-columns: 1fr;
+		gap: 8px;
+		padding: 14px 0;
 	}
 }
 
@@ -731,6 +850,17 @@
 .wbcom-badge--danger {
 	background: rgba(224, 62, 62, 0.12);
 	color: #991b1b;
+}
+
+/*
+ * Neutral state - "not set", "none yet", an unconfigured value on a fresh
+ * install. A calm grey, NOT a warning: an install that has not been configured
+ * yet is normal, not a problem, and painting every empty row amber makes a
+ * clean setup read as broken.
+ */
+.wbcom-badge--muted {
+	background: rgba(100, 105, 112, 0.12);
+	color: var(--wbcom-muted);
 }
 
 .wbcom-save-bar {
