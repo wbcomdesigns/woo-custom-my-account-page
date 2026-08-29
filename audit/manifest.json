@@ -88,8 +88,7 @@
     { "cap": "is_user_logged_in",   "enforced_at": ["wcmp_add_avatar", "wcmp_reset_default_avatar", "wcmp_print_avatar_form_ajax"], "meta": false, "notes": "Not a capability — logged-in gate on the member-facing avatar flows." }
   ],
   "services": [
-    { "key": "core",         "class": "Woo_Custom_My_Account_Page",          "file": "includes/class-woo-custom-my-account-page.php",          "purpose": "Bootstraps loader, i18n, admin + public hooks. Single run() from plugins_loaded (after WooCommerce active check)." },
-    { "key": "loader",       "class": "Woo_Custom_My_Account_Page_Loader",   "file": "includes/class-woo-custom-my-account-page-loader.php",   "purpose": "Standard boilerplate hook registry (add_action/add_filter collectors + run())." },
+    { "key": "core",         "class": "Woo_Custom_My_Account_Page",          "file": "includes/class-woo-custom-my-account-page.php",          "purpose": "Loads dependencies and registers admin + public hooks directly (add_action/add_filter) in its constructor, invoked once from plugins_loaded after the WooCommerce active check." },
     { "key": "i18n",         "class": "Woo_Custom_My_Account_Page_I18n",     "file": "includes/class-woo-custom-my-account-page-i18n.php",     "purpose": "Text domain loader on plugins_loaded." },
     { "key": "functions",    "class": "Woo_Custom_My_Account_Page_Functions","file": "includes/class-woo-custom-my-account-page-functions.php","purpose": "Singleton. Owns the frontend portal: menu takeover, endpoint content, settings-data assembly + defaults, endpoint registration, role visibility, legacy migration, shortcodes, block registration." },
     { "key": "admin",        "class": "Woo_Custom_My_Account_Page_Admin",    "file": "admin/class-woo-custom-my-account-page-admin.php",       "purpose": "Settings screen (Overview/Endpoints/General/Style/FAQ), sanitizers, endpoint-builder AJAX, WC slug sync, rewrite-flush scheduling, FA-to-Dashicon admin preview map." },

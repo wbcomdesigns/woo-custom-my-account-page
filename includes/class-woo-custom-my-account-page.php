@@ -34,16 +34,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Woo_Custom_My_Account_Page {
 
 	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      Woo_Custom_My_Account_Page_Loader    $loader    Maintains and registers all hooks for the plugin.
-	 */
-	protected $loader;
-
-	/**
 	 * The unique identifier of this plugin.
 	 *
 	 * @since    1.0.0
@@ -88,23 +78,13 @@ class Woo_Custom_My_Account_Page {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - Woo_Custom_My_Account_Page_Loader. Orchestrates the hooks of the plugin.
 	 * - Woo_Custom_My_Account_Page_Admin. Defines all hooks for the admin area.
 	 * - Woo_Custom_My_Account_Page_Public. Defines all hooks for the public side of the site.
-	 *
-	 * Create an instance of the loader which will be used to register the hooks
-	 * with WordPress.
 	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
 	private function load_dependencies() {
-
-		/**
-		 * The class responsible for orchestrating the actions and filters of the
-		 * core plugin.
-		 */
-		require_once plugin_dir_path( __DIR__ ) . 'includes/class-woo-custom-my-account-page-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
@@ -131,8 +111,6 @@ class Woo_Custom_My_Account_Page {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( __DIR__ ) . 'public/class-woo-custom-my-account-page-public.php';
-
-		$this->loader = new Woo_Custom_My_Account_Page_Loader();
 	}
 
 	/**
@@ -146,21 +124,21 @@ class Woo_Custom_My_Account_Page {
 
 		$plugin_admin = new Woo_Custom_My_Account_Page_Admin();
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_action( 'init', $plugin_admin, 'boot_settings_page', 1 );
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'wcmp_add_plugin_menu_page', 5 );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'wcmp_add_plugin_register_settings' );
+		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
+		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
+		add_action( 'init', array( $plugin_admin, 'boot_settings_page' ), 1 );
+		add_action( 'admin_menu', array( $plugin_admin, 'wcmp_add_plugin_menu_page' ), 5 );
+		add_action( 'admin_init', array( $plugin_admin, 'wcmp_add_plugin_register_settings' ) );
 
 		// Update WooCommerce tab slugs after save endpoint settings.
-		$this->loader->add_action( 'update_option_wcmp_endpoints_settings', $plugin_admin, 'wcmp_update_woo_endpoints_slug', 10, 3 );
+		add_action( 'update_option_wcmp_endpoints_settings', array( $plugin_admin, 'wcmp_update_woo_endpoints_slug' ), 10, 3 );
 
 		// Add endpoint ajax (admin-only, no nopriv handler needed).
-		$this->loader->add_action( 'wp_ajax_wcmp_add_field', $plugin_admin, 'wcmp_add_field_ajax' );
-		$this->loader->add_action( 'in_admin_header', $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' );
+		add_action( 'wp_ajax_wcmp_add_field', array( $plugin_admin, 'wcmp_add_field_ajax' ) );
+		add_action( 'in_admin_header', array( $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' ) );
 
-		$this->loader->add_action( 'update_option_wcmp_endpoints_settings', $plugin_admin, 'wcmp_schedule_flush_rewrite_on_endpoint_save' );
-		$this->loader->add_action( 'init', $plugin_admin, 'wcmp_maybe_flush_rewrite_rules', 30 );
+		add_action( 'update_option_wcmp_endpoints_settings', array( $plugin_admin, 'wcmp_schedule_flush_rewrite_on_endpoint_save' ) );
+		add_action( 'init', array( $plugin_admin, 'wcmp_maybe_flush_rewrite_rules' ), 30 );
 	}
 
 	/**
@@ -174,28 +152,19 @@ class Woo_Custom_My_Account_Page {
 
 		$plugin_public = new Woo_Custom_My_Account_Page_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_styles' ) );
+		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_scripts' ) );
 
 		// Filter user avatar.
-		$this->loader->add_filter( 'get_avatar', $plugin_public, 'wcmp_get_avatar', 100, 6 );
+		add_filter( 'get_avatar', array( $plugin_public, 'wcmp_get_avatar' ), 100, 6 );
 		// Add avatar.
-		$this->loader->add_action( 'template_redirect', $plugin_public, 'wcmp_add_avatar' );
+		add_action( 'template_redirect', array( $plugin_public, 'wcmp_add_avatar' ) );
 		// Reset default avatar.
-		$this->loader->add_action( 'template_redirect', $plugin_public, 'wcmp_reset_default_avatar' );
+		add_action( 'template_redirect', array( $plugin_public, 'wcmp_reset_default_avatar' ) );
 		// Display 'change avatar' form ajax.
-		$this->loader->add_action( 'wc_ajax_wcmp_print_avatar_form', $plugin_public, 'wcmp_print_avatar_form_ajax' );
+		add_action( 'wc_ajax_wcmp_print_avatar_form', array( $plugin_public, 'wcmp_print_avatar_form_ajax' ) );
 
-		$this->loader->add_filter( 'woocommerce_account_menu_item_classes', $plugin_public, 'wcmp_account_menu_item_classes', 999, 2 );
-	}
-
-	/**
-	 * Run the loader to execute all of the hooks with WordPress.
-	 *
-	 * @since    1.0.0
-	 */
-	public function run() {
-		$this->loader->run();
+		add_filter( 'woocommerce_account_menu_item_classes', array( $plugin_public, 'wcmp_account_menu_item_classes' ), 999, 2 );
 	}
 
 	/**
@@ -207,16 +176,6 @@ class Woo_Custom_My_Account_Page {
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
-	}
-
-	/**
-	 * The reference to the class that orchestrates the hooks with the plugin.
-	 *
-	 * @since     1.0.0
-	 * @return    Woo_Custom_My_Account_Page_Loader    Orchestrates the hooks of the plugin.
-	 */
-	public function get_loader() {
-		return $this->loader;
 	}
 
 	/**

@@ -156,8 +156,8 @@ if ( file_exists( __DIR__ . '/vendor/edd-sl-sdk/edd-sl-sdk.php' ) ) {
  */
 function run_woo_custom_my_account_page() {
 
-	$plugin = new Woo_Custom_My_Account_Page();
-	$plugin->run();
+	// The constructor wires every admin and public hook directly with WordPress.
+	new Woo_Custom_My_Account_Page();
 }
 
 /**
