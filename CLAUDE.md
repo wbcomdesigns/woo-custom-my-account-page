@@ -264,15 +264,14 @@ Turns the default WooCommerce My Account area into a configurable customer porta
 ## Architecture
 
 ### Pattern
-WordPress Plugin Boilerplate (loader pattern). `Woo_Custom_My_Account_Page_Loader` registers hooks; `Woo_Custom_My_Account_Page::run()` executes them.
+WordPress Plugin Boilerplate. `Woo_Custom_My_Account_Page` registers every admin and public hook directly with `add_action()`/`add_filter()` in its constructor (invoked once from `plugins_loaded`, after the WooCommerce-active check).
 
 ### Key Files
 
 | File | Purpose |
 |------|---------|
 | `woo-custom-my-account-page.php` | Bootstrap, WooCommerce guard, constants |
-| `includes/class-woo-custom-my-account-page.php` | Core class, dependency loading, hook definitions |
-| `includes/class-woo-custom-my-account-page-loader.php` | Hook registration system |
+| `includes/class-woo-custom-my-account-page.php` | Core class, dependency loading, direct hook registration |
 | `includes/class-woo-custom-my-account-page-functions.php` | Shared helpers (endpoint resolution, ordering) |
 | `includes/class-wcmp-error-handler.php` | Centralized error handling |
 | `includes/class-woo-custom-my-account-page-activator.php` | Activation (endpoint registration, rewrite flush) |
