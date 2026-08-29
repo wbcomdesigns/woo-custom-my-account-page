@@ -33,8 +33,7 @@
 
 jQuery( document ).ready(
 	function($) {
-		"use strict";		
-		$( '.wcmp-admin-color-picker' ).wpColorPicker();
+		"use strict";
 		var endpoints_container = $( ".endpoints-container" );
 		var general_container   = $( ".wcmp_general_settings" );
 
