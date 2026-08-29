@@ -65,8 +65,8 @@ class Woo_Custom_My_Account_Page {
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
-	 * Load the dependencies, define the locale, and set the hooks for the admin area and
-	 * the public-facing side of the site.
+	 * Load the dependencies and set the hooks for the admin area and the public-facing
+	 * side of the site.
 	 *
 	 * @since    1.0.0
 	 */
@@ -79,7 +79,6 @@ class Woo_Custom_My_Account_Page {
 		$this->plugin_name = 'woo-custom-my-account-page';
 
 		$this->load_dependencies();
-		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 	}
@@ -90,7 +89,6 @@ class Woo_Custom_My_Account_Page {
 	 * Include the following files that make up the plugin:
 	 *
 	 * - Woo_Custom_My_Account_Page_Loader. Orchestrates the hooks of the plugin.
-	 * - Woo_Custom_My_Account_Page_I18n. Defines internationalization functionality.
 	 * - Woo_Custom_My_Account_Page_Admin. Defines all hooks for the admin area.
 	 * - Woo_Custom_My_Account_Page_Public. Defines all hooks for the public side of the site.
 	 *
@@ -107,12 +105,6 @@ class Woo_Custom_My_Account_Page {
 		 * core plugin.
 		 */
 		require_once plugin_dir_path( __DIR__ ) . 'includes/class-woo-custom-my-account-page-loader.php';
-
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once plugin_dir_path( __DIR__ ) . 'includes/class-woo-custom-my-account-page-i18n.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
@@ -141,22 +133,6 @@ class Woo_Custom_My_Account_Page {
 		require_once plugin_dir_path( __DIR__ ) . 'public/class-woo-custom-my-account-page-public.php';
 
 		$this->loader = new Woo_Custom_My_Account_Page_Loader();
-	}
-
-	/**
-	 * Define the locale for this plugin for internationalization.
-	 *
-	 * Uses the Woo_Custom_My_Account_Page_I18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function set_locale() {
-
-		$plugin_i18n = new Woo_Custom_My_Account_Page_I18n();
-
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 	}
 
 	/**
