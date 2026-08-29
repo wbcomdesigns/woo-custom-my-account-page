@@ -165,6 +165,28 @@ class Woo_Custom_My_Account_Page_Public {
 
 		$inline_css = $overrides ? ':root{' . $overrides . '}' : '';
 
+		// Log out menu item colours. WooCommerce's logout endpoint renders as the
+		// anchor `.wcmp-customer-logout` inside the menu; the four logout_* pickers
+		// target its text/background in normal and hover states. Emitted only for
+		// the values the owner actually changed, so an untouched Style tab leaves
+		// the logout link following the same palette as every other menu item.
+		$logout_selector = '#my-account-menu .myaccount-menu li > a.wcmp-customer-logout';
+		$logout_map      = array(
+			'logout_color'                  => array( $logout_selector, 'color' ),
+			'logout_background_color'       => array( $logout_selector, 'background-color' ),
+			'logout_hover_color'            => array( $logout_selector . ':hover', 'color' ),
+			'logout_background_hover_color' => array( $logout_selector . ':hover', 'background-color' ),
+		);
+
+		foreach ( $logout_map as $key => $rule ) {
+			if ( isset( $settings[ $key ], $defaults[ $key ] ) && strtolower( $settings[ $key ] ) !== strtolower( $defaults[ $key ] ) ) {
+				$color = sanitize_hex_color( $settings[ $key ] );
+				if ( $color ) {
+					$inline_css .= $rule[0] . '{' . $rule[1] . ':' . $color . ';}';
+				}
+			}
+		}
+
 		return apply_filters( 'wcmp_get_custom_css', $inline_css );
 	}
 
