@@ -4,7 +4,7 @@ Donate link: https://wbcomdesigns.com
 Tags: woocommerce my account, custom endpoints, account page customizer, woocommerce tabs, user role menu
 Requires at least: 5.0
 Tested up to: 6.9.1
-Stable tag: 1.6.5
+Stable tag: 1.6.6
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -153,6 +153,14 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 6. Frontend My Account page - tab layout with grouped navigation and custom colors
 
 == Changelog ==
+
+= 1.6.6 - September 2026 =
+
+* Improve  - Admin rebuilt on the shared Wbcom settings shell: Endpoints and FAQ tabs on shell field components, flat getting-started steps and roomier cards.
+* Fix      - Undefined $endpoint PHP warning in the group menu template removed.
+* Fix      - Avatar handling no longer strips other plugins' get_avatar filters.
+* Fix      - Clean uninstall of plugin data, and the Style logout colours now apply.
+* Dev      - Removed the WPPB loader (hooks register directly) and cleared dead code.
 
 = 1.6.5 - August 2026 =
 
