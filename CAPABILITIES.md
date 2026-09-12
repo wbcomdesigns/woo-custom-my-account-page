@@ -1,6 +1,6 @@
 # Custom My Account Page for WooCommerce — Capabilities
 
-**Slug:** `woo-custom-my-account-page` · **Version:** 1.6.5 · **Main file:** `woo-custom-my-account-page.php`
+**Slug:** `woo-custom-my-account-page` · **Version:** 1.6.6 · **Main file:** `woo-custom-my-account-page.php`
 **Requires:** WordPress 6.5+, PHP 8.0+, WooCommerce (active) · **REST:** none · **Custom tables:** none
 
 Turns the default WooCommerce **My Account** page into a branded customer portal. Store owners reorder,
@@ -66,7 +66,7 @@ No custom tables, no REST. State lives in options, one transient, and one user m
 | Store | Kind | Purpose |
 |---|---|---|
 | `wcmp_general_settings` | option | Avatar toggle, menu layout, sidebar position, default endpoint. |
-| `wcmp_style_settings` | option | Six menu colours (menu item + hover bridged to frontend CSS vars; logout colours persisted). |
+| `wcmp_style_settings` | option | Six menu colours. Menu item + hover bridge to frontend CSS vars; all four `logout_*` colours are emitted as scoped rules on `.wcmp-customer-logout` (as of 1.6.6, `public/class-woo-custom-my-account-page-public.php:175-178`). Each colour is printed only when changed from its default. |
 | `wcmp_endpoints_settings` | option | Endpoint / group / link definitions + drag order. On save, default-endpoint slugs are mirrored to WC core `woocommerce_myaccount_*_endpoint` options. |
 | `wcmp-users-avatar-ids` | option | Flat list of uploaded avatar attachment ids (media-library scoping). |
 | `wb-wcmp-avatar` | user meta | The member's uploaded avatar attachment id. |
@@ -82,14 +82,15 @@ backup — noted in `audit/manifest.json` under `data_lifecycle`.
 
 ## Extension seams
 
-Filters (full list in `audit/manifest.json`). The load-bearing ones:
+Full integrator-facing reference (all 25 filters + 6 action hooks, with args) in `docs/HOOKS.md`. The load-bearing ones:
 
 - **`wcmp_get_avatar_filter`** — return `true` to suppress this plugin's avatar for a request (default mirrors the `custom_avatar` setting). The primary seam for handing avatar rendering to another source.
 - **`wcmp_load_public_assets`** — force portal assets onto a surface auto-detection misses.
 - **`wcmp_get_custom_css`** — amend the inline style-token overrides.
 - **`wcmp_default_endpoint`, `wcmp_no_redirect_to_default`, `wcmp_is_my_account_page`, `wcmp_get_current_endpoint`** — steer detection and the default-endpoint redirect.
 - **`wcmp_default_*_settings`, `wcmp_get_default_*_options`** — amend seeded defaults and new-item shapes.
-- Template/class hooks: `wcmp_myaccount_menu_template_args`, `wcmp_print_single_endpoint_args`, `wcmp_print_endpoints_group_group`, `wcmp_endpoint_menu_class`, `wcmp_endpoints_group_class`.
+- Frontend menu class filters: `wcmp_endpoint_anchor_tag_class`, `wcmp_endpoint_menu_class`, `wcmp_endpoints_group_class`; header filters `wcmp_filter_avatar_size`, `wcmp_filter_display_name`.
+- Menu render actions: `wcmp_before_endpoints_menu`, `wcmp_after_endpoints_menu`, `wcmp_before_endpoints_items`, `wcmp_after_endpoints_items`, `wcmp_print_endpoints_group`, `wcmp_print_single_endpoint`.
 
 ---
 
