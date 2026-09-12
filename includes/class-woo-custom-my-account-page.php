@@ -69,8 +69,33 @@ class Woo_Custom_My_Account_Page {
 		$this->plugin_name = 'woo-custom-my-account-page';
 
 		$this->load_dependencies();
+		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+	}
+
+	/**
+	 * Load the plugin text domain for translation.
+	 *
+	 * The plugin ships its own translations under /languages and is distributed
+	 * outside WordPress.org, so those bundled files are not auto-loaded. Hooked
+	 * on `init` to satisfy WordPress 6.7+, which flags text domains loaded any
+	 * earlier.
+	 *
+	 * @since 1.6.7
+	 * @access private
+	 */
+	private function set_locale() {
+		add_action(
+			'init',
+			function () {
+				load_plugin_textdomain(
+					'woo-custom-my-account-page',
+					false,
+					dirname( plugin_basename( __DIR__ ) ) . '/languages'
+				);
+			}
+		);
 	}
 
 	/**
