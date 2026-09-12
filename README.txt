@@ -2,10 +2,10 @@
 Contributors: wbcomdesigns, vapvarun
 Donate link: https://wbcomdesigns.com
 Tags: woocommerce my account, custom endpoints, account page customizer, woocommerce tabs, user role menu
-Requires at least: 5.0
+Requires at least: 6.5
 Tested up to: 6.9.1
 Stable tag: 1.6.6
-Requires PHP: 7.4
+Requires PHP: 8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,7 +34,7 @@ No coding required. Everything is managed from a clean drag-and-drop admin inter
 * **Custom avatar upload** - Let customers upload a profile photo directly from their My Account page
 * **Sidebar or tab layout** - Switch between vertical sidebar navigation and horizontal tab navigation
 * **Sidebar position** - Place the sidebar on the left or right side of the content area
-* **Style customization** - Six color pickers for menu item colors, hover states, active states, logout styling, and backgrounds
+* **Style customization** - Six color pickers: menu item and menu-item hover colors, plus logout text, logout hover, logout background, and logout-background hover colors
 * **Font Awesome icons** - Assign icons to any tab, group, or link for a polished, visual navigation menu
 * **Rename default tabs** - Change the label of any built-in WooCommerce endpoint (Orders, Downloads, Addresses, Account Details)
 * **Disable default tabs** - Hide any default WooCommerce tab you do not need
@@ -66,6 +66,13 @@ All frontend templates can be overridden using the standard WooCommerce template
 
 The plugin uses the `woocommerce_account_navigation` hook to replace the default navigation. All custom endpoints are registered as proper WooCommerce endpoints with rewrite rules.
 
+= Shortcodes =
+
+* `[wcmp_my_account]` - Places the full account portal (custom menu, groups, links, and avatar) on any page, including block themes. It delegates to WooCommerce's `[woocommerce_my_account]` so the menu takeover applies wherever you drop it.
+* `[default_dashboard_content]` - Outputs WooCommerce's stock dashboard (the default "Hello, {name}" panel). Use it inside a custom endpoint's content when you want the built-in dashboard to appear alongside your own content.
+
+Developers can also add and extend the portal through 25 filters and 6 action hooks. The full hooks reference (`docs/HOOKS.md`) lives in the plugin's GitHub repository.
+
 = More WooCommerce Plugins by Wbcom Designs =
 
 * [WooCommerce Document Preview](https://wbcomdesigns.com/downloads/woo-document-preview/) - Let customers preview PDF, DOC, and other document files before purchasing
@@ -78,9 +85,9 @@ Visit [wbcomdesigns.com](https://wbcomdesigns.com) for our full collection of Wo
 
 = Requirements =
 
-* WordPress 5.0 or higher
+* WordPress 6.5 or higher
 * WooCommerce 6.0 or higher (latest recommended)
-* PHP 7.4 or higher
+* PHP 8.0 or higher
 
 == Installation ==
 
