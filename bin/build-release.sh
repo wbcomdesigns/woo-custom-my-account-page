@@ -80,6 +80,17 @@ if [ -n "$PHPCS_RULESET" ]; then
 	fi
 fi
 
+# --- Gate 3b: cross-surface contracts. -------------------------------------
+# Catches key/hook mismatches (one surface writes/reads a name the other does
+# not). Verified false positives (dynamically or cron-fired hooks) are recorded
+# in .contract-audit-baseline.json. Skipped only if the audit script is absent.
+AUDIT="$HOME/.claude/skills/wp-contract-audit/scripts/contract-audit.php"
+if [ -f "$AUDIT" ]; then
+	php "$AUDIT" . > /dev/null && echo "build-release: contract audit clean"
+else
+	echo "build-release: contract audit script not found, skipping" >&2
+fi
+
 # --- Gate 4: shipped bundles must match their sources, when checked. --------
 if [ -f bin/verify-build-freshness.sh ]; then
 	bash bin/verify-build-freshness.sh
