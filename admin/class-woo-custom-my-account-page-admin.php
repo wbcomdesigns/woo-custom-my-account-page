@@ -49,15 +49,6 @@ class Woo_Custom_My_Account_Page_Admin {
 	private $version = '';
 
 	/**
-	 * Plugin_settings_tabs
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 * @var mixed      $plugin_settings_tabs      The settings tab.
-	 */
-	public $plugin_settings_tabs = array();
-
-	/**
 	 * Admin Instance.
 	 */
 	public static function instance() {
@@ -128,15 +119,6 @@ class Woo_Custom_My_Account_Page_Admin {
 			return;
 		}
 		if ( 'wb-plugins_page_woo-custom-myaccount-page' === $screen->base ) {
-			if ( ! wp_script_is( 'jquery-ui', 'enqueued' ) ) {
-				wp_enqueue_script( 'jquery-ui' );
-			}
-			if ( ! wp_script_is( 'jquery-ui-accordion', 'enqueued' ) ) {
-				wp_enqueue_script( 'jquery-ui-accordion' );
-			}
-			if ( ! wp_script_is( 'jquery-ui-sortable', 'enqueued' ) ) {
-				wp_enqueue_script( 'jquery-ui-sortable' );
-			}
 			wp_register_script( 'nestable', plugin_dir_url( __FILE__ ) . 'assets/js/jquery.nestable.js', array( 'jquery' ), $this->version, true );
 			if ( ! wp_style_is( 'select2-css', 'enqueued' ) ) {
 				// Use local Select2 instead of CDN (WordPress.org requirement).

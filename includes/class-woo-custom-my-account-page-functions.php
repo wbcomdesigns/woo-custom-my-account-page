@@ -862,14 +862,8 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @access public
 		 */
 		public function create_field_key( $key ) {
-
-			// Build endpoint key.
-			$field_key = strtolower( $key );
-			$field_key = trim( $field_key );
-			// Clear from space and add dash.
-			$field_key = sanitize_title( $field_key );
-
-			return $field_key;
+			// sanitize_title() already lowercases, trims and dash-separates.
+			return sanitize_title( $key );
 		}
 
 		/**

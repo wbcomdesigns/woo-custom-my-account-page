@@ -27,15 +27,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Woo_Custom_My_Account_Page_Public {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
 	 * The version of this plugin.
 	 *
 	 * @since    1.0.0
@@ -48,13 +39,11 @@ class Woo_Custom_My_Account_Page_Public {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since  1.0.0
-	 * @param  string $plugin_name The name of the plugin.
-	 * @param  string $version     The version of this plugin.
+	 * @param  string $version The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $version ) {
 
-		$this->plugin_name = $plugin_name;
-		$this->version     = $version;
+		$this->version = $version;
 	}
 
 	/**
@@ -366,23 +355,13 @@ class Woo_Custom_My_Account_Page_Public {
 	 * @since  1.0.0
 	 * @access public
 	 * @author Wbcom Designs
-	 * @param  boolean $should_print Whether to print or return avatar form.
-	 * @param  array   $args         Array of argument for the template.
-	 * @return string|void
+	 * @param  array $args Array of argument for the template.
+	 * @return string
 	 */
-	public function wcmp_get_avatar_form( $should_print = false, $args = array() ) {
+	public function wcmp_get_avatar_form( $args = array() ) {
 		ob_start();
 		wc_get_template( 'wcmp-myaccount-avatar-form.php', $args, '', WCMP_PLUGIN_PATH . 'public/templates/' );
-		$form = ob_get_clean();
-
-		if ( $should_print ) {
-			// Use the same allowed HTML tags as in wcmp_print_avatar_form_ajax.
-			$allowed_html = $this->get_form_allowed_html();
-			echo wp_kses( $form, $allowed_html );
-			return;
-		}
-
-		return $form;
+		return ob_get_clean();
 	}
 
 	/**
