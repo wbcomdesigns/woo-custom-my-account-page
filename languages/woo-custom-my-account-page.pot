@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Custom My Account Page for WooCommerce 1.6.4\n"
+"Project-Id-Version: Custom My Account Page for WooCommerce 1.6.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/woo-custom-my-account-page\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-18T15:25:50+00:00\n"
+"POT-Creation-Date: 2026-09-12T05:35:55+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: woo-custom-my-account-page\n"
@@ -39,287 +39,278 @@ msgstr ""
 msgid "https://wbcomdesigns.com"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:161
+#: admin/class-woo-custom-my-account-page-admin.php:158
 #: admin/partials/group-item.php:45
 #: admin/partials/link-item.php:56
 msgid "Show in menu"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:162
+#: admin/class-woo-custom-my-account-page-admin.php:159
 #: admin/partials/endpoint-item.php:75
 #: admin/partials/group-item.php:45
 #: admin/partials/link-item.php:56
 msgid "Hide from menu"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:165
+#: admin/class-woo-custom-my-account-page-admin.php:162
 msgid "This field is required."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:166
+#: admin/class-woo-custom-my-account-page-admin.php:163
 msgid "Are you sure that you want to delete this item from the menu?"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:167
+#: admin/class-woo-custom-my-account-page-admin.php:164
 msgid "Delete menu item"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:168
+#: admin/class-woo-custom-my-account-page-admin.php:165
 msgid "Delete"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:169
+#: admin/class-woo-custom-my-account-page-admin.php:166
 msgid "Cancel"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:189
-#: admin/class-woo-custom-my-account-page-admin.php:190
+#: admin/class-woo-custom-my-account-page-admin.php:186
+#: admin/class-woo-custom-my-account-page-admin.php:187
 #: lib/wbcom-settings/class-wbcom-settings-page.php:210
 msgid "WB Plugins"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:217
+#: admin/class-woo-custom-my-account-page-admin.php:214
 msgid "Woo My Account"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:218
+#: admin/class-woo-custom-my-account-page-admin.php:215
 msgid "My Account Page"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:219
+#: admin/class-woo-custom-my-account-page-admin.php:216
 msgid "Branded customer portal"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:220
+#: admin/class-woo-custom-my-account-page-admin.php:217
 msgid "My Account settings sections"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:238
+#: admin/class-woo-custom-my-account-page-admin.php:235
 msgid "My Account"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:241
+#: admin/class-woo-custom-my-account-page-admin.php:238
 msgid "Overview"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:245
-#: admin/class-woo-custom-my-account-page-admin.php:285
+#: admin/class-woo-custom-my-account-page-admin.php:242
+#: admin/class-woo-custom-my-account-page-admin.php:282
 msgid "Endpoints"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:249
-#: admin/class-woo-custom-my-account-page-admin.php:419
+#: admin/class-woo-custom-my-account-page-admin.php:246
+#: admin/class-woo-custom-my-account-page-admin.php:415
 msgid "General"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:253
-#: admin/class-woo-custom-my-account-page-admin.php:513
+#: admin/class-woo-custom-my-account-page-admin.php:250
+#: admin/class-woo-custom-my-account-page-admin.php:509
 msgid "Style"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:260
+#: admin/class-woo-custom-my-account-page-admin.php:257
 msgid "Help"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:263
+#: admin/class-woo-custom-my-account-page-admin.php:260
 msgid "FAQ"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:286
+#: admin/class-woo-custom-my-account-page-admin.php:283
 msgid "Reorder, rename, group and role-restrict what appears in the My Account menu. WooCommerce defaults work out of the box - custom endpoints are optional."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:298
-msgid "Frequently asked questions"
-msgstr ""
-
-#: admin/class-woo-custom-my-account-page-admin.php:330
+#: admin/class-woo-custom-my-account-page-admin.php:326
 msgid "Not set"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:333
+#: admin/class-woo-custom-my-account-page-admin.php:329
 msgid "Classic shortcode"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:334
+#: admin/class-woo-custom-my-account-page-admin.php:330
 msgid "Block based"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:338
+#: admin/class-woo-custom-my-account-page-admin.php:334
 msgid "Portal status"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:339
+#: admin/class-woo-custom-my-account-page-admin.php:335
 msgid "What this plugin is doing on your store right now."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:344
+#: admin/class-woo-custom-my-account-page-admin.php:340
 msgid "My Account page"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:345
+#: admin/class-woo-custom-my-account-page-admin.php:341
 msgid "How the WooCommerce account page renders. Both modes are supported."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:353
+#: admin/class-woo-custom-my-account-page-admin.php:349
 msgid "Menu entries"
 msgstr ""
 
 #. translators: 1: total menu entries, 2: custom entries, 3: role-restricted entries.
-#: admin/class-woo-custom-my-account-page-admin.php:358
+#: admin/class-woo-custom-my-account-page-admin.php:354
 #, php-format
 msgid "%1$d entries in the My Account menu - %2$d custom, %3$d role-restricted."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:368
+#: admin/class-woo-custom-my-account-page-admin.php:364
 msgid "Manage endpoints"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:374
-#: admin/class-woo-custom-my-account-page-admin.php:467
-#: admin/partials/wcmp-general-settings.php:91
+#: admin/class-woo-custom-my-account-page-admin.php:370
+#: admin/class-woo-custom-my-account-page-admin.php:463
 msgid "Default endpoint"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:375
+#: admin/class-woo-custom-my-account-page-admin.php:371
 msgid "Where members land when they open My Account."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:383
+#: admin/class-woo-custom-my-account-page-admin.php:379
 msgid "Updates"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:384
+#: admin/class-woo-custom-my-account-page-admin.php:380
 msgid "Automatic updates are active - a free license key is preset on activation. Nothing to configure."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:387
+#: admin/class-woo-custom-my-account-page-admin.php:383
 msgid "Active"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:394
+#: admin/class-woo-custom-my-account-page-admin.php:390
 msgid "Support & resources"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:395
+#: admin/class-woo-custom-my-account-page-admin.php:391
 msgid "Documentation and help."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:399
+#: admin/class-woo-custom-my-account-page-admin.php:395
 msgid "Documentation"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:400
+#: admin/class-woo-custom-my-account-page-admin.php:396
 msgid "Support center"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:401
+#: admin/class-woo-custom-my-account-page-admin.php:397
 msgid "Share your feedback"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:420
+#: admin/class-woo-custom-my-account-page-admin.php:416
 msgid "Layout and behaviour of the My Account portal."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:428
+#: admin/class-woo-custom-my-account-page-admin.php:424
 msgid "Member avatar upload"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:429
+#: admin/class-woo-custom-my-account-page-admin.php:425
 msgid "Let members upload their own photo from the account menu header."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:441
+#: admin/class-woo-custom-my-account-page-admin.php:437
 msgid "Menu layout"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:442
+#: admin/class-woo-custom-my-account-page-admin.php:438
 msgid "Sidebar keeps the menu beside the content; Tab places it above."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:446
-#: admin/partials/wcmp-general-settings.php:61
+#: admin/class-woo-custom-my-account-page-admin.php:442
 msgid "Sidebar"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:447
-#: admin/partials/wcmp-general-settings.php:68
+#: admin/class-woo-custom-my-account-page-admin.php:443
 msgid "Tab"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:454
-#: admin/partials/wcmp-general-settings.php:77
+#: admin/class-woo-custom-my-account-page-admin.php:450
 msgid "Sidebar position"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:455
+#: admin/class-woo-custom-my-account-page-admin.php:451
 msgid "Which side the menu sits on when using the sidebar layout."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:459
-#: admin/partials/wcmp-general-settings.php:83
+#: admin/class-woo-custom-my-account-page-admin.php:455
 msgid "Left"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:460
-#: admin/partials/wcmp-general-settings.php:84
+#: admin/class-woo-custom-my-account-page-admin.php:456
 msgid "Right"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:468
+#: admin/class-woo-custom-my-account-page-admin.php:464
 msgid "Members land here when they open My Account. Custom endpoints can be the default too."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:486
-#: admin/class-woo-custom-my-account-page-admin.php:532
+#: admin/class-woo-custom-my-account-page-admin.php:482
+#: admin/class-woo-custom-my-account-page-admin.php:528
+#: admin/partials/wcmp-endpoints-settings.php:101
 msgid "Save Changes"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:504
+#: admin/class-woo-custom-my-account-page-admin.php:500
 msgid "Menu item colour"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:505
+#: admin/class-woo-custom-my-account-page-admin.php:501
 msgid "Menu item hover colour"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:506
+#: admin/class-woo-custom-my-account-page-admin.php:502
 msgid "Log out text colour"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:507
+#: admin/class-woo-custom-my-account-page-admin.php:503
 msgid "Log out hover text colour"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:508
+#: admin/class-woo-custom-my-account-page-admin.php:504
 msgid "Log out background"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:509
+#: admin/class-woo-custom-my-account-page-admin.php:505
 msgid "Log out hover background"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:514
+#: admin/class-woo-custom-my-account-page-admin.php:510
 msgid "Colour overrides. Leave untouched to follow your theme."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:611
+#: admin/class-woo-custom-my-account-page-admin.php:562
 msgid "Security check failed"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:615
+#: admin/class-woo-custom-my-account-page-admin.php:566
 msgid "Insufficient permissions"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:620
+#: admin/class-woo-custom-my-account-page-admin.php:571
 msgid "Invalid request"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:628
+#: admin/class-woo-custom-my-account-page-admin.php:579
 msgid "Invalid target type"
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:662
+#: admin/class-woo-custom-my-account-page-admin.php:613
 msgid "Invalid target"
 msgstr ""
 
@@ -338,56 +329,56 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: admin/partials/endpoint-item.php:96
+#: admin/partials/endpoint-item.php:93
 msgid "Endpoint slug"
 msgstr ""
 
-#: admin/partials/endpoint-item.php:104
+#: admin/partials/endpoint-item.php:94
 msgid "Text appended to your page URLs to manage new contents in account pages. It must be unique for every page."
 msgstr ""
 
-#: admin/partials/endpoint-item.php:120
+#: admin/partials/endpoint-item.php:109
 msgid "Endpoint label"
 msgstr ""
 
-#: admin/partials/endpoint-item.php:128
-#: admin/partials/group-item.php:65
+#: admin/partials/endpoint-item.php:110
+#: admin/partials/group-item.php:55
 msgid "Menu item for this endpoint in \"My Account\"."
 msgstr ""
 
-#: admin/partials/endpoint-item.php:136
+#: admin/partials/endpoint-item.php:119
 msgid "Endpoint icon"
 msgstr ""
 
-#: admin/partials/endpoint-item.php:142
+#: admin/partials/endpoint-item.php:120
 msgid "Endpoint icon for \"My Account\" menu option."
 msgstr ""
 
-#: admin/partials/endpoint-item.php:150
+#: admin/partials/endpoint-item.php:129
 msgid "Endpoint class"
 msgstr ""
 
-#: admin/partials/endpoint-item.php:156
+#: admin/partials/endpoint-item.php:130
 msgid "Add additional classes to endpoint container."
 msgstr ""
 
-#: admin/partials/endpoint-item.php:164
-#: admin/partials/group-item.php:109
-#: admin/partials/link-item.php:144
+#: admin/partials/endpoint-item.php:139
+#: admin/partials/group-item.php:84
+#: admin/partials/link-item.php:107
 msgid "Visible to roles (empty = everyone)"
 msgstr ""
 
-#: admin/partials/endpoint-item.php:194
-#: admin/partials/group-item.php:141
-#: admin/partials/link-item.php:178
+#: admin/partials/endpoint-item.php:140
+#: admin/partials/group-item.php:85
+#: admin/partials/link-item.php:108
 msgid "Select one or many user roles, you want the endpoint to be displayed. Leaving it blank will show the endpoint to all the user roles."
 msgstr ""
 
-#: admin/partials/endpoint-item.php:202
+#: admin/partials/endpoint-item.php:172
 msgid "Endpoint content"
 msgstr ""
 
-#: admin/partials/endpoint-item.php:208
+#: admin/partials/endpoint-item.php:173
 msgid "Custom endpoint content. Leave it black to use default content."
 msgstr ""
 
@@ -395,31 +386,31 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#: admin/partials/group-item.php:57
+#: admin/partials/group-item.php:54
 msgid "Group label"
 msgstr ""
 
-#: admin/partials/group-item.php:75
+#: admin/partials/group-item.php:64
 msgid "Group icon"
 msgstr ""
 
-#: admin/partials/group-item.php:83
+#: admin/partials/group-item.php:65
 msgid "Group icon for \"My Account\" menu option."
 msgstr ""
 
-#: admin/partials/group-item.php:92
+#: admin/partials/group-item.php:74
 msgid "Group class"
 msgstr ""
 
-#: admin/partials/group-item.php:99
+#: admin/partials/group-item.php:75
 msgid "Add additional classes to group container."
 msgstr ""
 
-#: admin/partials/group-item.php:149
+#: admin/partials/group-item.php:118
 msgid "Show open"
 msgstr ""
 
-#: admin/partials/group-item.php:155
+#: admin/partials/group-item.php:119
 msgid "Show the group open by default. (Please note: this option is valid only for \"Sidebar\" style)."
 msgstr ""
 
@@ -427,594 +418,506 @@ msgstr ""
 msgid "Link"
 msgstr ""
 
-#: admin/partials/link-item.php:69
+#: admin/partials/link-item.php:66
 msgid "Link url"
 msgstr ""
 
-#: admin/partials/link-item.php:77
+#: admin/partials/link-item.php:67
 msgid "The url of the menu item."
 msgstr ""
 
-#: admin/partials/link-item.php:88
+#: admin/partials/link-item.php:77
 msgid "Link label"
 msgstr ""
 
-#: admin/partials/link-item.php:97
+#: admin/partials/link-item.php:78
 msgid "Menu label for this link in \"My Account\"."
 msgstr ""
 
-#: admin/partials/link-item.php:107
+#: admin/partials/link-item.php:87
 msgid "Link icon"
 msgstr ""
 
-#: admin/partials/link-item.php:115
+#: admin/partials/link-item.php:88
 msgid "Link icon for \"My Account\" menu option."
 msgstr ""
 
-#: admin/partials/link-item.php:126
+#: admin/partials/link-item.php:97
 msgid "Link class"
 msgstr ""
 
-#: admin/partials/link-item.php:134
+#: admin/partials/link-item.php:98
 msgid "Add additional classes to link container."
 msgstr ""
 
-#: admin/partials/link-item.php:188
+#: admin/partials/link-item.php:143
 msgid "Open link in a new tab?"
 msgstr ""
 
-#: admin/partials/wcmp-endpoints-settings.php:18
-msgid "Manage Endpoints"
-msgstr ""
-
-#: admin/partials/wcmp-endpoints-settings.php:29
+#: admin/partials/wcmp-endpoints-settings.php:25
 msgid "Add group"
 msgstr ""
 
-#: admin/partials/wcmp-endpoints-settings.php:32
+#: admin/partials/wcmp-endpoints-settings.php:28
 msgid "Add endpoint"
 msgstr ""
 
-#: admin/partials/wcmp-endpoints-settings.php:35
+#: admin/partials/wcmp-endpoints-settings.php:31
 msgid "Add link"
 msgstr ""
 
-#: admin/partials/wcmp-endpoints-settings.php:97
+#: admin/partials/wcmp-endpoints-settings.php:92
 msgctxt "Label for new endpoint title"
 msgid "Name"
 msgstr ""
 
-#: admin/partials/wcmp-endpoints-settings.php:99
+#: admin/partials/wcmp-endpoints-settings.php:94
 msgid "Enter a name for your new item. This will appear in the My Account menu."
 msgstr ""
 
-#: admin/partials/wcmp-endpoints-settings.php:100
+#: admin/partials/wcmp-endpoints-settings.php:95
 msgid "e.g., My Orders"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:17
-msgid "Frequently Asked Questions"
+#: admin/partials/wcmp-faq.php:19
+msgid "Getting Started"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:18
+#: admin/partials/wcmp-faq.php:20
 msgid "Find answers to common questions about using the WooCommerce Custom My Account Page plugin."
 msgstr ""
 
 #: admin/partials/wcmp-faq.php:24
-msgid "Getting Started"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:27
 msgid "Q: How do I customize my WooCommerce My Account page?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:28
+#: admin/partials/wcmp-faq.php:25
 msgid "A: Navigate to WooCommerce → Custom My Account Page → Endpoints tab. Here you can:"
 msgstr ""
 
+#: admin/partials/wcmp-faq.php:27
+msgid "Drag and drop to reorder menu items"
+msgstr ""
+
+#: admin/partials/wcmp-faq.php:28
+msgid "Show/hide endpoints using the power icon"
+msgstr ""
+
+#: admin/partials/wcmp-faq.php:29
+msgid "Click on an endpoint to edit its settings"
+msgstr ""
+
 #: admin/partials/wcmp-faq.php:30
-msgid "• Drag and drop to reorder menu items"
+msgid "Use the buttons at the top to add groups, endpoints, or links"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:31
-msgid "• Show/hide endpoints using the power icon"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:32
-msgid "• Click on an endpoint to edit its settings"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:33
-msgid "• Use the buttons at the top to add groups, endpoints, or links"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:38
+#: admin/partials/wcmp-faq.php:35
 msgid "Q: What's the difference between Endpoints, Groups, and Links?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:39
+#: admin/partials/wcmp-faq.php:36
 msgid "Endpoints:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:39
+#: admin/partials/wcmp-faq.php:36
 msgid "These are pages within your My Account area (e.g., Orders, Downloads, Account Details). They display content on the same site."
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:40
+#: admin/partials/wcmp-faq.php:37
 msgid "Groups:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:40
+#: admin/partials/wcmp-faq.php:37
 msgid "Organize multiple endpoints together under a collapsible menu. Perfect for grouping related items like \"My Purchases\" (Orders + Downloads)."
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:41
+#: admin/partials/wcmp-faq.php:38
 msgid "Links:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:41
+#: admin/partials/wcmp-faq.php:38
 msgid "Add external or internal links to your menu (e.g., Support page, Blog, FAQs). They can open in the same tab or a new tab."
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:46
+#: admin/partials/wcmp-faq.php:43
 msgid "Creating & Managing Items"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:49
+#: admin/partials/wcmp-faq.php:46
 msgid "Q: How do I create a new custom endpoint?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:51
+#: admin/partials/wcmp-faq.php:48
 msgid "Go to Endpoints tab"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:52
+#: admin/partials/wcmp-faq.php:49
 msgid "Click \"Add endpoint\" button"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:53
+#: admin/partials/wcmp-faq.php:50
 msgid "Enter a name (e.g., \"Wishlist\")"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:54
+#: admin/partials/wcmp-faq.php:51
 msgid "Click \"Add\" and configure the settings:"
 msgstr ""
 
+#: admin/partials/wcmp-faq.php:54
+msgid "Endpoint slug: URL-friendly version (e.g., wishlist)"
+msgstr ""
+
+#: admin/partials/wcmp-faq.php:55
+msgid "Label: Display name in the menu"
+msgstr ""
+
+#: admin/partials/wcmp-faq.php:56
+msgid "Icon: FontAwesome class (e.g., fa fa-heart)"
+msgstr ""
+
 #: admin/partials/wcmp-faq.php:57
-msgid "• Endpoint slug: URL-friendly version (e.g., wishlist)"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:58
-msgid "• Label: Display name in the menu"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:59
-msgid "• Icon: FontAwesome class (e.g., fa fa-heart)"
+msgid "Content: Custom HTML/shortcode for the page"
 msgstr ""
 
 #: admin/partials/wcmp-faq.php:60
-msgid "• Content: Custom HTML/shortcode for the page"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:63
 msgid "Click \"Save Changes\""
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:68
+#: admin/partials/wcmp-faq.php:65
 msgid "Q: How do I create a group with sub-items?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:70
+#: admin/partials/wcmp-faq.php:67
 msgid "Click \"Add group\" button"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:71
+#: admin/partials/wcmp-faq.php:68
 msgid "Enter a name (e.g., \"My Purchases\")"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:72
+#: admin/partials/wcmp-faq.php:69
 msgid "Drag and drop existing endpoints INTO the group area"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:73
+#: admin/partials/wcmp-faq.php:70
 msgid "The group will now show a dropdown arrow with sub-items"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:74
-#: admin/partials/wcmp-faq.php:91
+#: admin/partials/wcmp-faq.php:71
+#: admin/partials/wcmp-faq.php:88
 msgid "Save your changes"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:79
+#: admin/partials/wcmp-faq.php:76
 msgid "Q: How do I add an external link to the menu?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:81
+#: admin/partials/wcmp-faq.php:78
 msgid "Click \"Add link\" button"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:82
+#: admin/partials/wcmp-faq.php:79
 msgid "Enter a name (e.g., \"Support\")"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:83
+#: admin/partials/wcmp-faq.php:80
 msgid "Configure the link settings:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:86
-msgid "• Link URL: Full URL (e.g., https://example.com/support)"
+#: admin/partials/wcmp-faq.php:83
+msgid "Link URL: Full URL (e.g., https://example.com/support)"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:87
-msgid "• Link label: Display text"
+#: admin/partials/wcmp-faq.php:84
+msgid "Link label: Display text"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:88
-msgid "• Open in new tab: Check to open externally"
+#: admin/partials/wcmp-faq.php:85
+msgid "Open in new tab: Check to open externally"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:96
+#: admin/partials/wcmp-faq.php:93
 msgid "Q: How do I reorder menu items?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:97
+#: admin/partials/wcmp-faq.php:94
 msgid "A: Simply drag and drop items to rearrange them. The order you see in the admin panel is the order customers will see on the frontend. Don't forget to click \"Save Changes\" to apply your new order."
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:101
+#: admin/partials/wcmp-faq.php:98
 msgid "Q: How do I remove an endpoint?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:102
+#: admin/partials/wcmp-faq.php:99
 msgid "A: Click on the endpoint to expand it, then click the \"Remove\" link. This will delete it from your menu. Note: You can also just hide it using the power icon if you want to keep it for later."
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:107
+#: admin/partials/wcmp-faq.php:104
 msgid "Customization Options"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:110
+#: admin/partials/wcmp-faq.php:107
 msgid "Q: How do I add icons to menu items?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:111
+#: admin/partials/wcmp-faq.php:108
 msgid "A: This plugin uses FontAwesome 4.7 icons. To add an icon:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:113
+#: admin/partials/wcmp-faq.php:110
 msgid "Type an icon name from the bundled set (e.g. fa-tag, fa-heart, fa-user) - the picker previews exactly what members will see"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:114
+#: admin/partials/wcmp-faq.php:111
 msgid "Find an icon you like (e.g., \"shopping-cart\")"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:115
+#: admin/partials/wcmp-faq.php:112
 msgid "Copy the class name (e.g., \"fa fa-shopping-cart\")"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:116
+#: admin/partials/wcmp-faq.php:113
 msgid "Paste it into the \"Icon\" field of your endpoint"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:118
+#: admin/partials/wcmp-faq.php:115
 msgid "Popular icons:"
 msgstr ""
 
+#: admin/partials/wcmp-faq.php:117
+msgid "fa fa-user (user profile)"
+msgstr ""
+
+#: admin/partials/wcmp-faq.php:118
+msgid "fa fa-shopping-cart (orders)"
+msgstr ""
+
+#: admin/partials/wcmp-faq.php:119
+msgid "fa fa-download (downloads)"
+msgstr ""
+
 #: admin/partials/wcmp-faq.php:120
-msgid "• fa fa-user (user profile)"
+msgid "fa fa-map-marker (addresses)"
 msgstr ""
 
 #: admin/partials/wcmp-faq.php:121
-msgid "• fa fa-shopping-cart (orders)"
+msgid "fa fa-heart (wishlist)"
 msgstr ""
 
 #: admin/partials/wcmp-faq.php:122
-msgid "• fa fa-download (downloads)"
+msgid "fa fa-life-ring (support)"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:123
-msgid "• fa fa-map-marker (addresses)"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:124
-msgid "• fa fa-heart (wishlist)"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:125
-msgid "• fa fa-life-ring (support)"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:130
+#: admin/partials/wcmp-faq.php:127
 msgid "Q: How do I restrict endpoints to specific user roles?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:131
+#: admin/partials/wcmp-faq.php:128
 msgid "A: Each endpoint has a \"User roles\" dropdown where you can select which roles can see it (e.g., Customer, Subscriber, Administrator). Leave it blank to show to all users. This is useful for:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:133
-msgid "• Showing wholesale pricing only to wholesale customers"
+#: admin/partials/wcmp-faq.php:130
+msgid "Showing wholesale pricing only to wholesale customers"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:134
-msgid "• Displaying admin tools only to administrators"
+#: admin/partials/wcmp-faq.php:131
+msgid "Displaying admin tools only to administrators"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:135
-msgid "• Creating VIP-only sections for premium members"
+#: admin/partials/wcmp-faq.php:132
+msgid "Creating VIP-only sections for premium members"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:140
+#: admin/partials/wcmp-faq.php:137
 msgid "Q: Can I add custom content to an endpoint?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:141
+#: admin/partials/wcmp-faq.php:138
 msgid "A: Yes! The \"Endpoint content\" field accepts:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:143
-msgid "• HTML markup for custom layouts"
+#: admin/partials/wcmp-faq.php:140
+msgid "HTML markup for custom layouts"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:144
-msgid "• Shortcodes from other plugins"
+#: admin/partials/wcmp-faq.php:141
+msgid "Shortcodes from other plugins"
+msgstr ""
+
+#: admin/partials/wcmp-faq.php:142
+msgid "Text with formatting"
+msgstr ""
+
+#: admin/partials/wcmp-faq.php:143
+msgid "Embedded forms or widgets"
 msgstr ""
 
 #: admin/partials/wcmp-faq.php:145
-msgid "• Text with formatting"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:146
-msgid "• Embedded forms or widgets"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:148
 msgid "Example: [contact-form-7 id=\"123\"] to embed a contact form."
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:152
+#: admin/partials/wcmp-faq.php:149
 msgid "Q: How do I change the styling of my menu?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:153
+#: admin/partials/wcmp-faq.php:150
 msgid "A: Go to the \"Style Options\" tab where you can customize:"
 msgstr ""
 
+#: admin/partials/wcmp-faq.php:152
+msgid "Menu layout (vertical/horizontal)"
+msgstr ""
+
+#: admin/partials/wcmp-faq.php:153
+msgid "Colors for menu items, backgrounds, and hover states"
+msgstr ""
+
+#: admin/partials/wcmp-faq.php:154
+msgid "Icon styles and sizes"
+msgstr ""
+
 #: admin/partials/wcmp-faq.php:155
-msgid "• Menu layout (vertical/horizontal)"
+msgid "Typography options"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:156
-msgid "• Colors for menu items, backgrounds, and hover states"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:157
-msgid "• Icon styles and sizes"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:158
-msgid "• Typography options"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:164
+#: admin/partials/wcmp-faq.php:161
 msgid "Troubleshooting"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:167
+#: admin/partials/wcmp-faq.php:164
 msgid "Q: My changes aren't showing on the frontend. What should I do?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:168
+#: admin/partials/wcmp-faq.php:165
 msgid "A: Try these steps:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:170
+#: admin/partials/wcmp-faq.php:167
 msgid "Make sure you clicked \"Save Changes\" in the admin panel"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:171
+#: admin/partials/wcmp-faq.php:168
 msgid "Clear your browser cache and refresh the page"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:172
+#: admin/partials/wcmp-faq.php:169
 msgid "Clear any caching plugins (WP Super Cache, W3 Total Cache, etc.)"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:173
+#: admin/partials/wcmp-faq.php:170
 msgid "Check if the endpoint is enabled (power icon should be ON)"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:174
+#: admin/partials/wcmp-faq.php:171
 msgid "Verify user role restrictions aren't hiding the item"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:179
+#: admin/partials/wcmp-faq.php:176
 msgid "Q: I'm getting a 404 error on my custom endpoint. How do I fix it?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:180
+#: admin/partials/wcmp-faq.php:177
 msgid "A: Go to WordPress Settings → Permalinks and click \"Save Changes\" without changing anything. This will flush the rewrite rules and make your endpoint accessible."
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:184
+#: admin/partials/wcmp-faq.php:181
 msgid "Q: Can I restore the default WooCommerce menu?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:185
+#: admin/partials/wcmp-faq.php:182
 msgid "A: Yes, simply remove all custom endpoints, groups, and links, and leave only the default WooCommerce endpoints (Dashboard, Orders, Downloads, Addresses, Account Details, Logout). You can also deactivate the plugin temporarily to see the default layout."
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:189
+#: admin/partials/wcmp-faq.php:186
 msgid "Q: The drag and drop isn't working. What's wrong?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:190
+#: admin/partials/wcmp-faq.php:187
 msgid "A: This is usually a JavaScript conflict. Try:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:192
-msgid "• Temporarily deactivating other plugins to find the conflict"
+#: admin/partials/wcmp-faq.php:189
+msgid "Temporarily deactivating other plugins to find the conflict"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:193
-msgid "• Switching to a default WordPress theme (like Twenty Twenty-Three) temporarily"
+#: admin/partials/wcmp-faq.php:190
+msgid "Switching to a default WordPress theme (like Twenty Twenty-Three) temporarily"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:194
-msgid "• Checking your browser console for JavaScript errors (F12)"
+#: admin/partials/wcmp-faq.php:191
+msgid "Checking your browser console for JavaScript errors (F12)"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:199
+#: admin/partials/wcmp-faq.php:196
 msgid "Q: My custom endpoint content isn't displaying. Why?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:200
+#: admin/partials/wcmp-faq.php:197
 msgid "A: Check these common issues:"
 msgstr ""
 
+#: admin/partials/wcmp-faq.php:199
+msgid "Make sure the \"Endpoint content\" field has content"
+msgstr ""
+
+#: admin/partials/wcmp-faq.php:200
+msgid "If using a shortcode, verify the shortcode plugin is active"
+msgstr ""
+
+#: admin/partials/wcmp-faq.php:201
+msgid "Check if your theme overrides the My Account template"
+msgstr ""
+
 #: admin/partials/wcmp-faq.php:202
-msgid "• Make sure the \"Endpoint content\" field has content"
+msgid "Ensure there are no HTML errors in your custom content"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:203
-msgid "• If using a shortcode, verify the shortcode plugin is active"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:204
-msgid "• Check if your theme overrides the My Account template"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:205
-msgid "• Ensure there are no HTML errors in your custom content"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:211
+#: admin/partials/wcmp-faq.php:208
 msgid "Advanced Usage"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:214
+#: admin/partials/wcmp-faq.php:211
 msgid "Q: Can I use custom CSS classes?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:215
+#: admin/partials/wcmp-faq.php:212
 msgid "A: Yes! Each endpoint has a \"Class\" field where you can add custom CSS classes. Use these to apply specific styling to individual menu items. For example, add \"highlight-item\" and then add CSS in your theme:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:220
+#: admin/partials/wcmp-faq.php:217
 msgid "Q: Can I add conditional logic to endpoints?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:221
+#: admin/partials/wcmp-faq.php:218
 msgid "A: While the plugin doesn't have built-in conditional logic beyond user roles, you can use WordPress hooks and filters to add custom conditions. For developers:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:230
+#: admin/partials/wcmp-faq.php:227
 msgid "Q: Is this plugin compatible with other WooCommerce plugins?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:231
+#: admin/partials/wcmp-faq.php:228
 msgid "A: Yes! This plugin works with most WooCommerce extensions. Endpoints created by other plugins (like Subscriptions, Bookings, Memberships) will automatically appear in the Endpoints tab where you can customize them."
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:236
+#: admin/partials/wcmp-faq.php:233
 msgid "Need More Help?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:237
+#: admin/partials/wcmp-faq.php:235
 msgid "If your question isn't answered here, please check out these resources:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:239
+#: admin/partials/wcmp-faq.php:237
 msgid "Full Documentation"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:240
+#: admin/partials/wcmp-faq.php:238
 msgid "Support Center"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:241
+#: admin/partials/wcmp-faq.php:239
 msgid "Contact Us"
-msgstr ""
-
-#: admin/partials/wcmp-general-settings.php:17
-msgid "General Settings"
-msgstr ""
-
-#: admin/partials/wcmp-general-settings.php:38
-msgid "Custom Avatar"
-msgstr ""
-
-#: admin/partials/wcmp-general-settings.php:40
-msgid "Let users upload a custom avatar as their profile picture."
-msgstr ""
-
-#: admin/partials/wcmp-general-settings.php:52
-msgid "Menu style"
-msgstr ""
-
-#: admin/partials/wcmp-general-settings.php:54
-msgid "Choose the style for the \"My Account\" page."
-msgstr ""
-
-#: admin/partials/wcmp-general-settings.php:79
-msgid "Choose the position of the menu in \"My Account\" page (only for sidebar style)."
-msgstr ""
-
-#: admin/partials/wcmp-general-settings.php:93
-msgid "Choose the default endpoint for \"My account\" page."
-msgstr ""
-
-#: admin/partials/wcmp-style-settings.php:17
-msgid "Manage Style Options"
-msgstr ""
-
-#: admin/partials/wcmp-style-settings.php:32
-msgid "Menu item color"
-msgstr ""
-
-#: admin/partials/wcmp-style-settings.php:35
-msgid "Choose a color for menu items."
-msgstr ""
-
-#: admin/partials/wcmp-style-settings.php:45
-msgid "Menu item color on hover"
-msgstr ""
-
-#: admin/partials/wcmp-style-settings.php:48
-msgid "Choose colour of menu items on mouse hover."
-msgstr ""
-
-#: admin/partials/wcmp-style-settings.php:58
-msgid "Logout color"
-msgstr ""
-
-#: admin/partials/wcmp-style-settings.php:61
-msgid "Choose the color of the Logout text."
-msgstr ""
-
-#: admin/partials/wcmp-style-settings.php:71
-msgid "Logout color on hover"
-msgstr ""
-
-#: admin/partials/wcmp-style-settings.php:74
-msgid "Choose the color of the Logout text on mouse hover."
-msgstr ""
-
-#: admin/partials/wcmp-style-settings.php:84
-msgid "Logout background color"
-msgstr ""
-
-#: admin/partials/wcmp-style-settings.php:87
-msgid "Choose the color of the Logout background."
-msgstr ""
-
-#: admin/partials/wcmp-style-settings.php:97
-msgid "Logout background color on hover"
-msgstr ""
-
-#: admin/partials/wcmp-style-settings.php:100
-msgid "Choose the color of the Logout background on mouse hover."
 msgstr ""
 
 #. translators: %s: order ID.
@@ -1055,19 +958,19 @@ msgstr ""
 msgid "Visit wbcomdesigns.com for more plugins and themes"
 msgstr ""
 
-#: public/class-woo-custom-my-account-page-public.php:208
+#: public/class-woo-custom-my-account-page-public.php:230
 msgid "Invalid file type. Only JPG, PNG, GIF and WebP images are allowed."
 msgstr ""
 
-#: public/class-woo-custom-my-account-page-public.php:216
+#: public/class-woo-custom-my-account-page-public.php:238
 msgid "Image size must be less than 2MB."
 msgstr ""
 
-#: public/class-woo-custom-my-account-page-public.php:254
+#: public/class-woo-custom-my-account-page-public.php:276
 msgid "Avatar updated successfully!"
 msgstr ""
 
-#: public/class-woo-custom-my-account-page-public.php:313
+#: public/class-woo-custom-my-account-page-public.php:335
 msgid "Avatar removed successfully!"
 msgstr ""
 
@@ -1099,25 +1002,25 @@ msgstr ""
 msgid "Account menu"
 msgstr ""
 
-#: woo-custom-my-account-page.php:185
+#: woo-custom-my-account-page.php:192
 msgid "WooCommerce"
 msgstr ""
 
-#: woo-custom-my-account-page.php:186
+#: woo-custom-my-account-page.php:193
 msgid "WooCommerce Custom My Account Page"
 msgstr ""
 
 #. translators: %1$s: WooCommerce plugin, %2$s: WooCommerce Custom My Account Page plugin
-#: woo-custom-my-account-page.php:200
+#: woo-custom-my-account-page.php:207
 #, php-format
 msgid "%1$s requires %2$s to be installed and active."
 msgstr ""
 
-#: woo-custom-my-account-page.php:201
+#: woo-custom-my-account-page.php:208
 msgid "Dismiss this notice."
 msgstr ""
 
-#: woo-custom-my-account-page.php:217
+#: woo-custom-my-account-page.php:224
 msgid "Settings"
 msgstr ""
 
