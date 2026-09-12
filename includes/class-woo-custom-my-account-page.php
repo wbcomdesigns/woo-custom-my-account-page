@@ -34,15 +34,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Woo_Custom_My_Account_Page {
 
 	/**
-	 * The unique identifier of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
-	 */
-	protected $plugin_name;
-
-	/**
 	 * The current version of the plugin.
 	 *
 	 * @since    1.0.0
@@ -66,7 +57,6 @@ class Woo_Custom_My_Account_Page {
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = 'woo-custom-my-account-page';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -118,15 +108,6 @@ class Woo_Custom_My_Account_Page {
 		require_once plugin_dir_path( __DIR__ ) . 'includes/class-woo-custom-my-account-page-functions.php';
 
 		/**
-		 * Enqueue wbcom plugin settings file.
-		 */
-
-		/**
-		 * The error handler class for improved stability.
-		 */
-		require_once plugin_dir_path( __DIR__ ) . 'includes/class-wcmp-error-handler.php';
-
-		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( __DIR__ ) . 'admin/class-woo-custom-my-account-page-admin.php';
@@ -175,7 +156,7 @@ class Woo_Custom_My_Account_Page {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Woo_Custom_My_Account_Page_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Woo_Custom_My_Account_Page_Public( $this->get_version() );
 
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $plugin_public, 'enqueue_scripts' ) );
@@ -190,17 +171,6 @@ class Woo_Custom_My_Account_Page {
 		add_action( 'wc_ajax_wcmp_print_avatar_form', array( $plugin_public, 'wcmp_print_avatar_form_ajax' ) );
 
 		add_filter( 'woocommerce_account_menu_item_classes', array( $plugin_public, 'wcmp_account_menu_item_classes' ), 999, 2 );
-	}
-
-	/**
-	 * The name of the plugin used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
-	 *
-	 * @since     1.0.0
-	 * @return    string    The name of the plugin.
-	 */
-	public function get_plugin_name() {
-		return $this->plugin_name;
 	}
 
 	/**

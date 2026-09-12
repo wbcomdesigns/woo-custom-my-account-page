@@ -206,10 +206,6 @@ function wcmp_admin_notice() {
 	/* translators: %1$s: WooCommerce plugin, %2$s: WooCommerce Custom My Account Page plugin */
 	echo '<div class="error notice is-dismissible" id="message"><p>' . sprintf( esc_html__( '%1$s requires %2$s to be installed and active.', 'woo-custom-my-account-page' ), '<strong>' . esc_attr( $wcmp_plugin ) . '</strong>', '<strong>' . wp_kses_post( $plugin_install_link ) . '</strong>' ) . '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' .
 	esc_html__( 'Dismiss this notice.', 'woo-custom-my-account-page' ) . '</span></button></div>';
-	if ( null !== filter_input( INPUT_GET, 'activate' ) ) {
-		$activate = filter_input( INPUT_GET, 'activate' );
-		unset( $activate );
-	}
 }
 
 /**
