@@ -42,7 +42,7 @@ class Wbcom_Settings_Page {
 	 * @since 1.0.0
 	 * @var   string
 	 */
-	const VERSION = '1.0.2';
+	const VERSION = '1.0.3';
 
 	/**
 	 * Parent menu slug shared by every Wbcom plugin.
