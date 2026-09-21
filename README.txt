@@ -3,9 +3,11 @@ Contributors: wbcomdesigns, vapvarun
 Donate link: https://wbcomdesigns.com
 Tags: woocommerce my account, custom endpoints, account page customizer, woocommerce tabs, user role menu
 Requires at least: 6.5
-Tested up to: 6.9.1
+Tested up to: 7.1
 Stable tag: 1.6.7
-Requires PHP: 8.0
+Requires PHP: 8.1
+Tested with WooCommerce 11.1.1
+Tested with WooCommerce 11.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
