@@ -276,7 +276,10 @@
 }
 
 .endpoint-header {
-    padding: 0 30px;
+    /* End padding clears the absolutely positioned type badge + toggle. */
+    padding-block: 0;
+    padding-inline: 30px 120px;
+    overflow-wrap: break-word;
     text-transform: uppercase;
     font-weight: bold;
     cursor: move;
@@ -375,6 +378,10 @@ div.new-field-form .loader {
 }
 
 @media( max-width: 480px ) {
+    /* Uppercase widens labels ~15%; show them as typed so long words fit beside the badge. */
+    .endpoint-header {
+        text-transform: none;
+    }
     .button-container {
         position: static;
         margin-left: 10px;

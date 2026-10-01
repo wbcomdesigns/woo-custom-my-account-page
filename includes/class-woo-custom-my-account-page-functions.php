@@ -853,17 +853,35 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		}
 
 		/**
-		 * Create field key.
+		 * Create an ASCII field key (URL slug, DOM id and option key) from a typed name.
+		 *
+		 * Latin names keep core's sanitize_title() result, locale transliteration
+		 * included. For other scripts sanitize_title() returns percent-encoded
+		 * bytes, which 404 as a My Account endpoint and fatal wp_editor(), so the
+		 * name is transliterated with intl when available instead.
 		 *
 		 * @since  1.0.0
-		 * @param  string $key The endpoint slug.
+		 * @since  1.7.0 Always returns ASCII; added $fallback.
+		 * @param  string $name     The typed name or slug.
+		 * @param  string $fallback Returned when no ASCII key can be derived.
 		 * @return string
 		 * @author Wbcom Designs
 		 * @access public
 		 */
-		public function create_field_key( $key ) {
-			// sanitize_title() already lowercases, trims and dash-separates.
-			return sanitize_title( $key );
+		public function create_field_key( $name, $fallback = '' ) {
+			$key = sanitize_title( $name );
+
+			if ( false !== strpos( $key, '%' ) && function_exists( 'transliterator_transliterate' ) ) {
+				$latin = transliterator_transliterate( 'Any-Latin; Latin-ASCII', $name );
+				if ( false !== $latin ) {
+					$key = sanitize_title( $latin );
+				}
+			}
+
+			// Drop any percent-encoded bytes left (no intl, emoji).
+			$key = trim( preg_replace( array( '/%[a-f0-9]{2}/', '/-+/' ), array( '', '-' ), $key ), '-' );
+
+			return '' !== $key ? $key : $fallback;
 		}
 
 		/**
@@ -872,12 +890,14 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @access public
 		 * @since  1.0.0
 		 * @author Wbcom Designs
+		 * @since  1.7.0 Added $label.
 		 * @param  string $endpoint The endpoint slug.
+		 * @param  string $label    The name the store owner typed.
 		 * @return array
 		 */
-		public function wcmp_get_default_endpoint_options( $endpoint ) {
+		public function wcmp_get_default_endpoint_options( $endpoint, $label = '' ) {
 
-			$endpoint_name = $this->wcmp_build_label( $endpoint );
+			$endpoint_name = '' !== $label ? $label : $endpoint;
 			$icon          = $this->wcmp_get_icon( $endpoint );
 
 			// Build endpoint options.
@@ -901,12 +921,14 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @access public
 		 * @since  1.0.0
 		 * @author Wbcom Designs
+		 * @since  1.7.0 Added $label.
 		 * @param  string $group The group slug.
+		 * @param  string $label The name the store owner typed.
 		 * @return array
 		 */
-		public function wcmp_get_default_group_options( $group ) {
+		public function wcmp_get_default_group_options( $group, $label = '' ) {
 
-			$group_name = $this->wcmp_build_label( $group );
+			$group_name = '' !== $label ? $label : $group;
 
 			// Build endpoint options.
 			$options = array(
@@ -930,12 +952,14 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @access public
 		 * @since  1.0.0
 		 * @author Wbcom Designs
-		 * @param  string $endpoint The endpoint slug.
+		 * @since  1.7.0 Added $label.
+		 * @param  string $endpoint The link slug.
+		 * @param  string $label    The name the store owner typed.
 		 * @return array
 		 */
-		public function wcmp_get_default_link_options( $endpoint ) {
+		public function wcmp_get_default_link_options( $endpoint, $label = '' ) {
 
-			$endpoint_name = $this->wcmp_build_label( $endpoint );
+			$endpoint_name = '' !== $label ? $label : $endpoint;
 
 			// Build endpoint options.
 			$options = array(
@@ -953,15 +977,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			return apply_filters( 'wcmp_get_default_link_options', $options );
 		}
 
-		/**
-		 * Build endpoint label by name.
-		 *
-		 * @access public
-		 * @since  1.0.0
-		 * @author Wbcom Designs
-		 * @param  string $name The endpoint name.
-		 * @return string
-		 */
 		/**
 		 * Render the full My Account portal anywhere.
 		 *
@@ -985,13 +1000,17 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			}
 		}
 
+		/**
+		 * Build a label from a slug.
+		 *
+		 * @since      1.0.0
+		 * @deprecated 1.7.0 New items keep the name the store owner typed.
+		 * @param      string $name The slug.
+		 * @return     string
+		 */
 		public function wcmp_build_label( $name ) {
-
-			$label = preg_replace( '/[^a-z]/', ' ', $name );
-			$label = trim( $label );
-			$label = ucfirst( $label );
-
-			return $label;
+			_deprecated_function( __METHOD__, '1.7.0' );
+			return ucfirst( trim( str_replace( '-', ' ', $name ) ) );
 		}
 
 		/**

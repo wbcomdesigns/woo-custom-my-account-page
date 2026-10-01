@@ -22,7 +22,7 @@ Wbcom_Settings_Page::card_open(
 ?>
 <div class="wcmp-faq-item">
 	<h4><?php esc_html_e( 'Q: How do I customize my WooCommerce My Account page?', 'woo-custom-my-account-page' ); ?></h4>
-	<p><?php esc_html_e( 'A: Navigate to WooCommerce → Custom My Account Page → Endpoints tab. Here you can:', 'woo-custom-my-account-page' ); ?></p>
+	<p><?php esc_html_e( 'A: Navigate to WB Plugins → Woo My Account → Endpoints. Here you can:', 'woo-custom-my-account-page' ); ?></p>
 	<ul>
 		<li><?php esc_html_e( 'Drag and drop to reorder menu items', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Show/hide endpoints using the power icon', 'woo-custom-my-account-page' ); ?></li>
@@ -147,13 +147,7 @@ Wbcom_Settings_Page::card_open( __( 'Customization Options', 'woo-custom-my-acco
 
 <div class="wcmp-faq-item">
 	<h4><?php esc_html_e( 'Q: How do I change the styling of my menu?', 'woo-custom-my-account-page' ); ?></h4>
-	<p><?php esc_html_e( 'A: Go to the "Style Options" tab where you can customize:', 'woo-custom-my-account-page' ); ?></p>
-	<ul>
-		<li><?php esc_html_e( 'Menu layout (vertical/horizontal)', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Colors for menu items, backgrounds, and hover states', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Icon styles and sizes', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Typography options', 'woo-custom-my-account-page' ); ?></li>
-	</ul>
+	<p><?php esc_html_e( 'A: The Style tab sets the menu item and hover colours, and the Log out button text, background and hover colours. The General tab sets the menu layout (Sidebar or Tab) and the sidebar position.', 'woo-custom-my-account-page' ); ?></p>
 </div>
 <?php
 Wbcom_Settings_Page::card_close();
@@ -234,7 +228,7 @@ Wbcom_Settings_Page::card_open( __( 'Need More Help?', 'woo-custom-my-account-pa
 ?>
 <p><?php esc_html_e( 'If your question isn\'t answered here, please check out these resources:', 'woo-custom-my-account-page' ); ?></p>
 <ul class="wbcom-feature-list">
-	<li><i data-lucide="book-open"></i><a href="https://docs.wbcomdesigns.com/doc_category/woo-custom-my-account-page/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Full Documentation', 'woo-custom-my-account-page' ); ?></a></li>
+	<li><i data-lucide="book-open"></i><a href="https://docs.wbcomdesigns.com/woo-family/woocommerce-custom-my-account-page/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Full Documentation', 'woo-custom-my-account-page' ); ?></a></li>
 	<li><i data-lucide="life-buoy"></i><a href="https://wbcomdesigns.com/support/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Support Center', 'woo-custom-my-account-page' ); ?></a></li>
 	<li><i data-lucide="message-square"></i><a href="https://wbcomdesigns.com/contact/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Contact Us', 'woo-custom-my-account-page' ); ?></a></li>
 </ul>

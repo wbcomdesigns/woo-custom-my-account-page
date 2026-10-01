@@ -103,11 +103,11 @@ jQuery( document ).ready(
 				{
 					title: title,
 					modal: true,
-					width: 500,
+					width: Math.min( 500, window.innerWidth - 32 ),
 					resizable: false,
 					autoOpen: false,
 					buttons: [{
-						text: "Save",
+						text: wcmp.save_lbl,
 						click: function () {
 
 							$( this ).find( '.wcmp-loader' ).css( 'display', 'inline-flex' );
@@ -156,6 +156,7 @@ jQuery( document ).ready(
 						data: {
 							target: target,
 							field_name: value,
+							existing: endpoints_container.find( '[data-id]' ).map( function () { return $( this ).data( 'id' ); } ).get(),
 							nonce: wcmp.nonce,
 							action: wcmp.action_add
 						},
@@ -166,9 +167,8 @@ jQuery( document ).ready(
 
 							t.find( '.wcmp-loader' ).hide();
 
-							// check for error or if field already exists
-							if ( res.error || endpoints_container.find( '[data-id="' + res.field + '"]' ).length ) {
-								error.text( res.error );
+							if ( ! res || ! res.html ) {
+								error.text( ( res && res.data && res.data.error ) || wcmp.request_failed );
 								return;
 							}
 
@@ -181,6 +181,12 @@ jQuery( document ).ready(
 
 							$( document ).trigger( 'wcmp_field_added' );
 							$( document ).trigger( 'wcmp_field_order' );
+						},
+						error: function( jqXHR, status ) {
+							t.find( '.wcmp-loader' ).hide();
+							if ( 'abort' !== status ) {
+								error.text( wcmp.request_failed );
+							}
 						}
 					}
 				);

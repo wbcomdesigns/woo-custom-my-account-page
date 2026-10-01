@@ -134,14 +134,16 @@ class Woo_Custom_My_Account_Page_Admin {
 					'woo-custom-my-account-page-admin-js',
 					'wcmp',
 					array(
-						'ajaxurl'      => admin_url( 'admin-ajax.php' ),
-						'action_add'   => 'wcmp_add_field',
-						'nonce'        => wp_create_nonce( 'ajax_nonce' ),
-						'show_lbl'     => esc_html__( 'Show in menu', 'woo-custom-my-account-page' ),
-						'hide_lbl'     => esc_html__( 'Hide from menu', 'woo-custom-my-account-page' ),
-						'checked'      => '<span class="dashicons dashicons-yes"></span>',
-						'error_icon'   => '<span class="dashicons dashicons-no"></span>',
-						'empty_field'  => esc_html__( 'This field is required.', 'woo-custom-my-account-page' ),
+						'ajaxurl'        => admin_url( 'admin-ajax.php' ),
+						'action_add'     => 'wcmp_add_field',
+						'nonce'          => wp_create_nonce( 'ajax_nonce' ),
+						'show_lbl'       => esc_html__( 'Show in menu', 'woo-custom-my-account-page' ),
+						'hide_lbl'       => esc_html__( 'Hide from menu', 'woo-custom-my-account-page' ),
+						'checked'        => '<span class="dashicons dashicons-yes"></span>',
+						'error_icon'     => '<span class="dashicons dashicons-no"></span>',
+						'empty_field'    => esc_html__( 'This field is required.', 'woo-custom-my-account-page' ),
+						'request_failed' => esc_html__( 'The item could not be added. Please try again.', 'woo-custom-my-account-page' ),
+						'save_lbl'       => esc_html__( 'Save', 'woo-custom-my-account-page' ),
 						'remove_alert'   => esc_html__( 'Are you sure that you want to delete this item from the menu?', 'woo-custom-my-account-page' ),
 						'remove_title'   => esc_html__( 'Delete menu item', 'woo-custom-my-account-page' ),
 						'remove_confirm' => esc_html__( 'Delete', 'woo-custom-my-account-page' ),
@@ -374,7 +376,7 @@ class Woo_Custom_My_Account_Page_Admin {
 		);
 		?>
 		<ul class="wbcom-feature-list">
-			<li><i data-lucide="book-open"></i><a href="https://docs.wbcomdesigns.com/doc_category/custom-my-account-page-for-woocommerce/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Documentation', 'woo-custom-my-account-page' ); ?></a></li>
+			<li><i data-lucide="book-open"></i><a href="https://docs.wbcomdesigns.com/woo-family/woocommerce-custom-my-account-page/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Documentation', 'woo-custom-my-account-page' ); ?></a></li>
 			<li><i data-lucide="life-buoy"></i><a href="https://wbcomdesigns.com/support/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Support center', 'woo-custom-my-account-page' ); ?></a></li>
 			<li><i data-lucide="message-square"></i><a href="https://wbcomdesigns.com/submit-review/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Share your feedback', 'woo-custom-my-account-page' ); ?></a></li>
 		</ul>
@@ -563,8 +565,28 @@ class Woo_Custom_My_Account_Page_Admin {
 
 		$myaccount_func = instantiate_woo_custom_myaccount_functions();
 
-		// Build field key safely.
-		$field = $myaccount_func->create_field_key( sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) );
+		// Keep the typed name as the label; derive only the key from it.
+		$label    = sanitize_text_field( wp_unslash( $_POST['field_name'] ) );
+		$existing = isset( $_POST['existing'] ) ? array_map( 'sanitize_title', (array) wp_unslash( $_POST['existing'] ) ) : array();
+		$field    = $myaccount_func->create_field_key( $label );
+
+		if ( '' === $field ) {
+			// Nothing ASCII to build a slug from: number it, e.g. "endpoint-2".
+			$n = 1;
+			while ( in_array( $request . '-' . $n, $existing, true ) ) {
+				++$n;
+			}
+			$field = $request . '-' . $n;
+		}
+
+		if ( in_array( $field, $existing, true ) ) {
+			wp_send_json_error(
+				array(
+					/* translators: %s: item slug. */
+					'error' => sprintf( __( 'An item with the slug "%s" already exists.', 'woo-custom-my-account-page' ), $field ),
+				)
+			);
+		}
 
 		// Use switch for safe function calling instead of dynamic calls.
 		$args = array(
@@ -578,17 +600,17 @@ class Woo_Custom_My_Account_Page_Admin {
 		ob_start();
 		switch ( $request ) {
 			case 'endpoint':
-				$args['options'] = $myaccount_func->wcmp_get_default_endpoint_options( $field );
+				$args['options'] = $myaccount_func->wcmp_get_default_endpoint_options( $field, $label );
 				$this->wcmp_admin_print_endpoint_field( $args );
 				break;
 			case 'group':
 				$args['group']   = $field;
-				$args['options'] = $myaccount_func->wcmp_get_default_group_options( $field );
+				$args['options'] = $myaccount_func->wcmp_get_default_group_options( $field, $label );
 				$this->wcmp_admin_print_group_field( $args );
 				break;
 			case 'link':
 				$args['link']    = $field;
-				$args['options'] = $myaccount_func->wcmp_get_default_link_options( $field );
+				$args['options'] = $myaccount_func->wcmp_get_default_link_options( $field, $label );
 				$this->wcmp_admin_print_link_field( $args );
 				break;
 			default:
@@ -805,7 +827,8 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @return array Sanitized array.
 	 */
 	public function wcmp_endpoints_settings_callback( $input ) {
-		$sanitized = array();
+		$sanitized      = array();
+		$myaccount_func = instantiate_woo_custom_myaccount_functions();
 
 		// Handle endpoints marked for removal.
 		$to_remove = array();
@@ -841,7 +864,7 @@ class Woo_Custom_My_Account_Page_Admin {
 				$sanitized['endpoints'][ $key ] = array(
 					'active'    => isset( $endpoint['active'] ) ? sanitize_text_field( $endpoint['active'] ) : '',
 					'label'     => isset( $endpoint['label'] ) ? sanitize_text_field( $endpoint['label'] ) : '',
-					'slug'      => isset( $endpoint['slug'] ) ? sanitize_title( $endpoint['slug'] ) : '',
+					'slug'      => isset( $endpoint['slug'] ) ? $myaccount_func->create_field_key( $endpoint['slug'], sanitize_title( $key ) ) : '',
 					'class'     => isset( $endpoint['class'] ) ? $this->sanitize_css_classes( $endpoint['class'] ) : '',
 					'icon'      => isset( $endpoint['icon'] ) ? sanitize_text_field( $endpoint['icon'] ) : '',
 					'type'      => isset( $endpoint['type'] ) ? sanitize_text_field( $endpoint['type'] ) : 'endpoint',

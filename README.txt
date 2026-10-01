@@ -4,9 +4,8 @@ Donate link: https://wbcomdesigns.com
 Tags: woocommerce my account, custom endpoints, account page customizer, woocommerce tabs, user role menu
 Requires at least: 6.5
 Tested up to: 7.1
-Stable tag: 1.6.7
+Stable tag: 1.7.0
 Requires PHP: 8.1
-Tested with WooCommerce 11.1.1
 Tested with WooCommerce 11.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -162,6 +161,15 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 6. Frontend My Account page - tab layout with grouped navigation and custom colors
 
 == Changelog ==
+
+= 1.7.0 - October 2026 =
+
+* Fix      - Adding an endpoint, group or link now keeps the name exactly as typed, including capitals, acronyms and accented letters.
+* Fix      - Names in non-Latin scripts (Cyrillic, Chinese, Arabic and others) no longer fail with a server error; they get a readable URL slug such as moi-dannye.
+* Fix      - The Add dialog now shows a message when a name is already in use or the request fails, instead of staying silently open.
+* Fix      - FAQ now points to the correct menu (WB Plugins > Woo My Account) and describes the real Style and General options.
+* Fix      - Documentation links now open the current docs page.
+* Compat   - Tested up to WordPress 7.1 and WooCommerce 11.1. Requires PHP 8.1.
 
 = 1.6.7 - September 2026 =
 
