@@ -397,7 +397,7 @@ class Woo_Custom_My_Account_Page_Public {
 			if ( ! empty( $id_or_email->user_id ) ) {
 				$user = get_user_by( 'id', (int) $id_or_email->user_id );
 			}
-			if ( ( ! $user || is_wp_error( $user ) ) && ! empty( $id_or_email->comment_author_email ) ) {
+			if ( ! $user && ! empty( $id_or_email->comment_author_email ) ) {
 				$email = $id_or_email->comment_author_email;
 				$user  = get_user_by( 'email', $email );
 			}
@@ -415,14 +415,14 @@ class Woo_Custom_My_Account_Page_Public {
 		}
 
 		// Maybe resize img.
-		$resized = $this->wcmp_resize_avatar_url( $custom_avatar, $size );
+		$resized = $this->wcmp_resize_avatar_url( $custom_avatar, (int) $size );
 		// If error occurred return.
 		if ( ! $resized ) {
 			$is_processing = false;
 			return $avatar;
 		}
 
-		$src   = $this->wcmp_generate_avatar_url( $custom_avatar, $size );
+		$src   = $this->wcmp_generate_avatar_url( $custom_avatar, (int) $size );
 		$class = array( 'avatar', 'avatar-' . (int) $args['size'], 'photo' );
 
 		$avatar = sprintf(

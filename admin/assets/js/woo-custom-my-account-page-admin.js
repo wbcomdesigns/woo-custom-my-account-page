@@ -349,6 +349,15 @@ jQuery( document ).ready(
 			}
 		}
 
+		// Sidebar position only applies to the Sidebar layout.
+		$( document ).on(
+			'change',
+			'#wcmp-menu-style',
+			function () {
+				$( '#wcmp-sidebar-position-field' ).toggle( 'tab' !== $( this ).val() );
+			}
+		);
+
 		applySelect2( endpoints_container.find( 'select' ), true );
 		applySelect2( general_container.find( 'select' ), true );
 		applySelect2( $( '#yith_wcmap_panel_general' ).find( 'select' ), false );

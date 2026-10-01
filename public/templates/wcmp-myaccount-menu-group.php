@@ -13,6 +13,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Template variables passed in by the caller; defaults guard partial overrides.
+$endpoint   = isset( $endpoint ) ? $endpoint : '';
+$options    = isset( $options ) ? $options : array();
+$classes    = isset( $classes ) ? $classes : array();
+$class_icon = isset( $class_icon ) ? $class_icon : '';
+
 $wcmp_group_open = ( 'yes' === $options['open'] );
 $wcmp_submenu_id = 'wcmp-group-' . sanitize_html_class( $endpoint );
 ?>

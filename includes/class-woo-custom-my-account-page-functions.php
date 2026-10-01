@@ -22,7 +22,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		/**
 		 * The single instance of the class.
 		 *
-		 * @var   Woo_Custom_My_Account_Page_Functions
+		 * @var   Woo_Custom_My_Account_Page_Functions|null
 		 * @since 1.0.0
 		 */
 		protected static $instance = null;
@@ -30,7 +30,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		/**
 		 * Page templates.
 		 *
-		 * @var   string
+		 * @var   bool
 		 * @since 1.0.0
 		 */
 		protected $is_myaccount = false;
@@ -38,7 +38,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		/**
 		 * Boolean to check if account have menu.
 		 *
-		 * @var   string
+		 * @var   bool
 		 * @since 1.0.0
 		 */
 		protected $my_account_have_menu = false;
@@ -46,7 +46,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		/**
 		 * My account endpoint.
 		 *
-		 * @var   string
+		 * @var   array
 		 * @since 1.0.0
 		 */
 		protected $menu_endpoints = array();
@@ -126,7 +126,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// Get active endpoint options by slug.
 			$endpoint = $this->wcmp_get_endpoint_by( $active, 'slug', $this->menu_endpoints );
 
-			if ( empty( $endpoint ) || ! is_array( $endpoint ) ) {
+			if ( empty( $endpoint ) ) {
 				return;
 			}
 
@@ -183,7 +183,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$active = $this->wcmp_get_current_endpoint();
 			// Get active endpoint options by slug.
 			$endpoint = $this->wcmp_get_endpoint_by( $active, 'key', $this->menu_endpoints );
-			if ( empty( $endpoint ) || ! is_array( $endpoint ) ) {
+			if ( empty( $endpoint ) ) {
 				return;
 			}
 			// Get key.
@@ -229,7 +229,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 				return array();
 			}
 			$settings  = $this->wcmp_settings_data();
-			$endpoints = '';
+			$endpoints = array();
 			if ( isset( $settings['endpoints_settings'] ) ) {
 				$endpoints = $settings['endpoints_settings'];
 			}
@@ -264,7 +264,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @since  1.0.0
 		 * @author Wbcom Designs
 		 * @param  string $key   Can be key or slug.
-		 * @return array
+		 * @return string
 		 */
 		public function wcmp_get_icon( $key ) {
 			switch ( $key ) {
@@ -502,7 +502,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 				}
 
 				if ( ! empty( $general_settings['default_endpoint'] ) ) {
-					if ( array_key_exists( $general_settings['default_endpoint'], $endpoints ) ) {
+					if ( array_key_exists( $general_settings['default_endpoint'], $this->wcmp_flatten_endpoints( $endpoints ) ) ) {
 						$general['default_endpoint'] = $general_settings['default_endpoint'];
 					} else {
 						$general['default_endpoint'] = $default_general['default_endpoint'];
@@ -810,22 +810,55 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			}
 
 			$settings = $this->wcmp_settings_data();
-			$roles    = (array) wp_get_current_user()->roles;
+			$flat     = $this->wcmp_flatten_endpoints( $settings['endpoints_settings'] );
 
-			foreach ( (array) $settings['endpoints_settings'] as $key => $item ) {
-				$child = isset( $item['children'][ $current ] ) ? $item['children'][ $current ] : null;
-				if ( $key !== $current && null === $child ) {
-					continue;
-				}
-				// A child inherits its group's restriction.
-				foreach ( array( $item, (array) $child ) as $rule ) {
-					if ( ! empty( $rule['usr_roles'] ) && ! $this->hide_by_usr_roles( (array) $rule['usr_roles'], $roles ) ) {
-						wp_safe_redirect( wc_get_page_permalink( 'myaccount' ) );
-						exit;
-					}
-				}
-				return;
+			if ( isset( $flat[ $current ] ) && ! $this->wcmp_roles_can_view( $current, $flat, (array) wp_get_current_user()->roles ) ) {
+				wp_safe_redirect( wc_get_page_permalink( 'myaccount' ) );
+				exit;
 			}
+		}
+
+		/**
+		 * Every menu item keyed by its key, with group children lifted to the
+		 * top level and tagged with their group in 'parent_group'.
+		 *
+		 * @since  1.7.0
+		 * @param  array $endpoints Endpoints settings (groups carry 'children').
+		 * @return array
+		 */
+		public function wcmp_flatten_endpoints( $endpoints ) {
+			$flat = array();
+			foreach ( (array) $endpoints as $key => $item ) {
+				$flat[ $key ] = $item;
+				foreach ( isset( $item['children'] ) ? (array) $item['children'] : array() as $child_key => $child ) {
+					$child['parent_group'] = $key;
+					$flat[ $child_key ]    = $child;
+				}
+			}
+			return $flat;
+		}
+
+		/**
+		 * Whether these roles pass the item's "Visible to roles" list and, for
+		 * an item inside a group, the group's list too.
+		 *
+		 * @since  1.7.0
+		 * @param  string $key   Item key.
+		 * @param  array  $flat  Output of wcmp_flatten_endpoints().
+		 * @param  array  $roles The user's roles.
+		 * @return bool
+		 */
+		protected function wcmp_roles_can_view( $key, $flat, $roles ) {
+			$keys = array( $key );
+			if ( ! empty( $flat[ $key ]['parent_group'] ) ) {
+				$keys[] = $flat[ $key ]['parent_group'];
+			}
+			foreach ( $keys as $k ) {
+				if ( ! empty( $flat[ $k ]['usr_roles'] ) && ! $this->hide_by_usr_roles( (array) $flat[ $k ]['usr_roles'], $roles ) ) {
+					return false;
+				}
+			}
+			return true;
 		}
 
 		/**
@@ -838,7 +871,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		public function redirect_to_default() {
 
 			// Exit if not my account.
-			if ( ! $this->is_myaccount || ! is_array( $this->menu_endpoints ) ) {
+			if ( ! $this->is_myaccount ) {
 				return;
 			}
 			$current_endpoint = $this->wcmp_get_current_endpoint();
@@ -846,7 +879,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			if ( 'dashboard' !== $current_endpoint || apply_filters( 'wcmp_no_redirect_to_default', false ) ) {
 				return;
 			}
-			$restricted_roles = array();
 			$all_settings     = $this->wcmp_settings_data();
 			$general_settings = $all_settings['general_settings'];
 			$endpoints        = isset( $all_settings['endpoints_settings'] ) ? $all_settings['endpoints_settings'] : array();
@@ -855,25 +887,18 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			$default_endpoint = apply_filters( 'wcmp_default_endpoint', $default_endpoint );
 			$url              = wc_get_page_permalink( 'myaccount' );
 
-			// If NOT in My account dashboard page.
-			$current_user = wp_get_current_user();
-			$user_role    = (array) $current_user->roles;
-			// Read the roles from the RAW settings, not the already
-			// role-filtered menu: for a user outside the allowlist the
-			// endpoint is absent from the menu, which used to leave this
-			// empty and redirect them to an endpoint they cannot see.
-			if ( isset( $endpoints[ $default_endpoint ]['usr_roles'] ) ) {
-				$restricted_roles = (array) $endpoints[ $default_endpoint ]['usr_roles'];
-			} elseif ( array_key_exists( $default_endpoint, $this->menu_endpoints ) ) {
-				$restricted_roles = $this->menu_endpoints[ $default_endpoint ]['usr_roles'];
-			}
-			// Role visibility is an ALLOWLIST (matching the menu): when roles
-			// are selected, only those roles see the endpoint. Never redirect
-			// a member to a default endpoint that is hidden from them.
-			$default_visible = empty( $restricted_roles ) || $this->hide_by_usr_roles( $restricted_roles, $user_role );
-			// Never land members on an endpoint the owner hid from the menu.
-			if ( isset( $endpoints[ $default_endpoint ] ) && empty( $endpoints[ $default_endpoint ]['active'] ) ) {
-				$default_visible = false;
+			// Read the RAW settings, not the role-filtered menu: a user outside
+			// the allowlist has no menu entry, which used to send them to an
+			// endpoint they cannot see. Never land members on an endpoint that
+			// is role-restricted for them or hidden from the menu, including
+			// one inside a group (whose own roles and visibility apply too).
+			$flat            = $this->wcmp_flatten_endpoints( $endpoints );
+			$default_visible = true;
+			if ( isset( $flat[ $default_endpoint ] ) ) {
+				$group           = isset( $flat[ $default_endpoint ]['parent_group'] ) ? $flat[ $default_endpoint ]['parent_group'] : '';
+				$default_visible = $this->wcmp_roles_can_view( $default_endpoint, $flat, (array) wp_get_current_user()->roles )
+					&& ! empty( $flat[ $default_endpoint ]['active'] )
+					&& ( '' === $group || ! empty( $flat[ $group ]['active'] ) );
 			}
 
 			if ( ! is_wc_endpoint_url( $default_endpoint ) ) {
@@ -883,9 +908,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 				// redirect non-deterministic and is no longer consulted.
 				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				if ( ! isset( $_GET['elementor-preview'] ) && $current_endpoint !== $default_endpoint && $default_visible ) {
-					if ( 'dashboard' !== $default_endpoint ) {
-						$url = wc_get_endpoint_url( $default_endpoint, '', $url );
-					}
+					$url = wc_get_endpoint_url( $default_endpoint, '', $url );
 					wp_safe_redirect( $url );
 					exit;
 				}
@@ -1118,7 +1141,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 */
 		public function wcmp_add_custom_endpoints() {
 			$slugs = $this->get_items_slug();
-			if ( empty( $slugs ) || ! is_array( $slugs ) ) {
+			if ( empty( $slugs ) ) {
 					return;
 			}
 

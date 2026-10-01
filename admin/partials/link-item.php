@@ -10,6 +10,10 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+// Template variables passed in by the caller; defaults guard partial overrides.
+$link    = isset( $link ) ? $link : ''; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- included inside Admin::wcmp_admin_print_link_field(), so $link is local.
+$options = isset( $options ) ? $options : array();
 global $wp_roles;
 $user_roles = $wp_roles->roles;
 ?>

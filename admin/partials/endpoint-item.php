@@ -11,6 +11,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Template variables passed in by the caller; defaults guard partial overrides.
+$endpoint = isset( $endpoint ) ? $endpoint : '';
+$options  = isset( $options ) ? $options : array();
+
 global $wp_roles;
 $user_roles                = $wp_roles->roles;
 $myaccount_func            = instantiate_woo_custom_myaccount_functions();

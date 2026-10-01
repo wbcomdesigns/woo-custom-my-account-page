@@ -229,7 +229,7 @@ function wcmp_admin_notice() {
  * @since   1.0.0
  * @author  Wbcom Designs
  *
- * @param string $links Plugin Action Link.
+ * @param array $links Plugin action links.
  */
 function wcmp_admin_page_link( $links ) {
 	$page_link = array( '<a href="' . admin_url( 'admin.php?page=woo-custom-myaccount-page' ) . '">' . esc_html__( 'Settings', 'woo-custom-my-account-page' ) . '</a>' );

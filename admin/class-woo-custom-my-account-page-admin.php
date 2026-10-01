@@ -25,19 +25,10 @@ class Woo_Custom_My_Account_Page_Admin {
 	/**
 	 * The single instance of the class.
 	 *
-	 * @var   Woo_Custom_My_Account_Page_Admin
+	 * @var   Woo_Custom_My_Account_Page_Admin|null
 	 * @since 1.0.0
 	 */
 	protected static $instance = null;
-
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name = '';
 
 	/**
 	 * The version of this plugin.
@@ -64,8 +55,7 @@ class Woo_Custom_My_Account_Page_Admin {
 	 * @since  1.0.0
 	 */
 	public function __construct() {
-		$this->plugin_name = 'woo-custom-my-account-page';
-		$this->version     = WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION;
+		$this->version = WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION;
 	}
 
 	/**
@@ -290,7 +280,7 @@ class Woo_Custom_My_Account_Page_Admin {
 	private function render_overview_tab() {
 		$functions = instantiate_woo_custom_myaccount_functions();
 		$settings  = $functions->wcmp_settings_data();
-		$endpoints = isset( $settings['endpoints_settings'] ) ? $settings['endpoints_settings'] : array();
+		$endpoints = $functions->wcmp_flatten_endpoints( isset( $settings['endpoints_settings'] ) ? $settings['endpoints_settings'] : array() );
 		$general   = isset( $settings['general_settings'] ) ? $settings['general_settings'] : array();
 
 		$custom     = 0;
@@ -355,7 +345,8 @@ class Woo_Custom_My_Account_Page_Admin {
 				<p class="description"><?php esc_html_e( 'Where members land when they open My Account.', 'woo-custom-my-account-page' ); ?></p>
 			</div>
 			<div class="wbcom-field-control">
-				<code><?php echo esc_html( isset( $general['default_endpoint'] ) ? $general['default_endpoint'] : 'dashboard' ); ?></code>
+				<?php $wcmp_default = isset( $general['default_endpoint'] ) ? $general['default_endpoint'] : 'dashboard'; ?>
+				<strong><?php echo esc_html( isset( $endpoints[ $wcmp_default ]['label'] ) ? $endpoints[ $wcmp_default ]['label'] : $wcmp_default ); ?></strong>
 			</div>
 		</div>
 		<div class="wbcom-field wbcom-field-group">
@@ -393,7 +384,8 @@ class Woo_Custom_My_Account_Page_Admin {
 		$functions = instantiate_woo_custom_myaccount_functions();
 		$settings  = $functions->wcmp_settings_data();
 		$general   = isset( $settings['general_settings'] ) ? $settings['general_settings'] : array();
-		$endpoints = isset( $settings['endpoints_settings'] ) ? $settings['endpoints_settings'] : array();
+		// Flattened so endpoints inside groups can be the default too.
+		$endpoints = $functions->wcmp_flatten_endpoints( isset( $settings['endpoints_settings'] ) ? $settings['endpoints_settings'] : array() );
 
 		Wbcom_Settings_Page::card_open(
 			__( 'General', 'woo-custom-my-account-page' ),
@@ -429,7 +421,7 @@ class Woo_Custom_My_Account_Page_Admin {
 				</div>
 			</div>
 
-			<div class="wbcom-field wbcom-field-group">
+			<div class="wbcom-field wbcom-field-group" id="wcmp-sidebar-position-field"<?php echo ( isset( $general['menu_style'] ) && 'tab' === $general['menu_style'] ) ? ' style="display:none"' : ''; ?>>
 				<div class="wbcom-field-info">
 					<label for="wcmp-sidebar-position"><?php esc_html_e( 'Sidebar position', 'woo-custom-my-account-page' ); ?></label>
 					<p class="description"><?php esc_html_e( 'Which side the menu sits on when using the sidebar layout.', 'woo-custom-my-account-page' ); ?></p>
@@ -617,7 +609,6 @@ class Woo_Custom_My_Account_Page_Admin {
 				break;
 			default:
 				wp_send_json_error( array( 'error' => esc_html__( 'Invalid target', 'woo-custom-my-account-page' ) ) );
-				return;
 		}
 		$html = ob_get_clean();
 
