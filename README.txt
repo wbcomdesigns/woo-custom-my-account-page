@@ -6,7 +6,7 @@ Requires at least: 6.5
 Tested up to: 7.1
 Stable tag: 1.7.0
 Requires PHP: 8.1
-Tested with WooCommerce 11.1.1
+WC tested up to: 11.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -176,6 +176,7 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 * Fix      - In the Tab layout the content area no longer runs into the theme sidebar on themes that wrap the account content.
 * Fix      - The avatar popup close button works, and the camera, close and menu icons show on themes without Font Awesome.
 * Fix      - The Add dialog fits on phones and long item names no longer run under the type badge.
+* Fix      - An incomplete plugin install no longer breaks the site; automatic updates switch off with an admin notice instead.
 * Security - "Visible to roles" now also blocks the page when a member opens its URL directly, including default WooCommerce pages and items inside a group.
 * Security - Avatar uploads follow the Member avatar upload setting, and a new avatar replaces the old image instead of adding another file.
 * Security - Endpoint settings are validated more strictly on save, and the add-item request uses its own nonce and the settings capability.
