@@ -161,7 +161,7 @@
     "avatar_upload": "Avatar setting must be on. MIME allowlist [image/jpeg,png,gif,webp] via wp_check_filetype_and_ext, 2MB cap, logged-in gate, wp_handle_upload nonce, media_handle_upload; the previous avatar is deleted so each user keeps one attachment. PRG redirect.",
     "ajax_gate": "wcmp_add_field_ajax: nonce wcmp_add_field + manage_options + target allowlist. wcmp_print_avatar_form_ajax: wp_doing_ajax + is_user_logged_in + avatar setting on.",
     "endpoint_content": "kses_post for non-unfiltered_html users, raw for unfiltered_html — same trust model as post_content.",
-    "role_visibility": "Visible to roles is an allowlist enforced on the request by wcmp_restrict_endpoint_access (template_redirect 20), not only in the menu; Hide from menu is menu-only.",
+    "role_visibility": "Visible to roles is an allowlist enforced on the request by wcmp_restrict_endpoint_access (template_redirect 20), not only in the menu; Hide from menu is menu-only. One rule for the guard and the default-endpoint redirect: wcmp_flatten_endpoints() lifts group children to the top level and wcmp_roles_can_view() applies the item list plus its group list.",
     "settings_sanitize": "wcmp_endpoints_settings_callback: keys sanitize_key, type allowlist [endpoint, group, link], slugs via create_field_key, slug uniqueness against other endpoints and WooCommerce query vars (add_settings_error on conflict), endpoints-order JSON rebuilt from sanitized id/type/children.",
     "notes": "No custom tables, no REST surface — attack surface is the two AJAX actions, two avatar POST flows, and the Settings API screens."
   },

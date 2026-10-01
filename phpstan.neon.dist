@@ -1,0 +1,23 @@
+# PHPStan for this plugin. Paths are relative to PHPStan's own install
+# (%rootDir%), so the same file works in CI (composer require into vendor/)
+# and with a global Composer install.
+includes:
+	- %rootDir%/../../szepeviktor/phpstan-wordpress/extension.neon
+
+parameters:
+	level: 5
+	paths:
+		- .
+	excludePaths:
+		analyseAndScan:
+			- vendor
+			- node_modules (?)
+			- dist (?)
+			- docs (?)
+		analyse:
+			# Bundled Wbcom settings shell: scanned for its symbols, analysed in its own repo.
+			- lib
+	scanFiles:
+		- %rootDir%/../../php-stubs/woocommerce-stubs/woocommerce-stubs.php
+	bootstrapFiles:
+		- bin/phpstan-bootstrap.php

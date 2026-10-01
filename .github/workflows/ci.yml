@@ -30,7 +30,6 @@ jobs:
   phpstan:
     name: PHPStan
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -41,28 +40,12 @@ jobs:
           php-version: '8.3'
           tools: composer
 
-      - name: Install PHPStan and WordPress stubs
-        run: composer require --dev szepeviktor/phpstan-wordpress phpstan/phpstan --no-interaction 2>/dev/null || true
+      - name: Install PHPStan, WordPress and WooCommerce stubs
+        run: composer require --dev szepeviktor/phpstan-wordpress phpstan/phpstan php-stubs/woocommerce-stubs --no-interaction
 
-      - name: Create phpstan.neon if not exists
-        run: |
-          if [ ! -f phpstan.neon ] && [ ! -f phpstan.neon.dist ]; then
-            cat > phpstan.neon << 'NEON'
-          includes:
-            - vendor/szepeviktor/phpstan-wordpress/extension.neon
-          parameters:
-            level: 5
-            paths:
-              - .
-            excludePaths:
-              - vendor
-              - node_modules
-              - tests
-          NEON
-          fi
-
+      # Config is committed (phpstan.neon.dist); this job blocks on any finding.
       - name: Run PHPStan
-        run: vendor/bin/phpstan analyse --no-progress --memory-limit=512M 2>/dev/null || echo "PHPStan completed with warnings"
+        run: vendor/bin/phpstan analyse -c phpstan.neon.dist --no-progress --memory-limit=1G
 
   wpcs:
     name: WordPress Coding Standards

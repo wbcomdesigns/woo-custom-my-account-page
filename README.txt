@@ -177,10 +177,14 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 * Fix      - The avatar popup close button works, and the camera, close and menu icons show on themes without Font Awesome.
 * Fix      - The Add dialog fits on phones and long item names no longer run under the type badge.
 * Fix      - An incomplete plugin install no longer breaks the site; automatic updates switch off with an admin notice instead.
+* Fix      - Endpoints placed inside a group can be the default endpoint, and the Overview counts them.
+* Fix      - The Overview shows the default endpoint's menu label instead of its slug.
+* Fix      - Sidebar position is hidden while the Tab layout is selected, since it has no effect there.
 * Security - "Visible to roles" now also blocks the page when a member opens its URL directly, including default WooCommerce pages and items inside a group.
 * Security - Avatar uploads follow the Member avatar upload setting, and a new avatar replaces the old image instead of adding another file.
 * Security - Endpoint settings are validated more strictly on save, and the add-item request uses its own nonce and the settings capability.
 * Dev      - Hooks reference updated with three template-args filters, and the template override path in template headers corrected to yourtheme/woocommerce/.
+* Dev      - PHPStan level 5 now passes with a committed configuration and blocks CI on any new finding.
 * Compat   - Tested up to WordPress 7.1 and WooCommerce 11.1. Requires PHP 8.1.
 
 = 1.6.7 - September 2026 =

@@ -19,6 +19,7 @@ composer.lock
 
 # Coding-standard + test config
 phpcs.xml
+phpstan.neon.dist
 phpcs.xml.dist
 .phpcs.xml.dist
 phpunit.xml

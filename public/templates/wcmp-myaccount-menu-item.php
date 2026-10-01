@@ -13,6 +13,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Template variables passed in by the caller; defaults guard partial overrides.
+$endpoint = isset( $endpoint ) ? $endpoint : '';
+$options  = isset( $options ) ? $options : array();
+$classes  = isset( $classes ) ? $classes : array();
+$url      = isset( $url ) ? $url : '';
+
 if ( is_array( $classes ) ) {
 	$classes = implode( ' ', $classes );
 }

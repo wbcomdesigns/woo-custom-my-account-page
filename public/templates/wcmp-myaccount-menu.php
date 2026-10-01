@@ -13,6 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Template variables passed in by the caller; defaults guard partial overrides.
+$endpoints = isset( $endpoints ) ? $endpoints : array();
+$avatar    = isset( $avatar ) ? $avatar : false;
+
 global $woocommerce, $wp, $post;
 $current_user_obj = wp_get_current_user();
 ?>
