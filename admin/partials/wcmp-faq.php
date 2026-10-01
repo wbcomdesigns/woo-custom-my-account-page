@@ -25,7 +25,7 @@ Wbcom_Settings_Page::card_open(
 	<p><?php esc_html_e( 'A: Navigate to WB Plugins → Woo My Account → Endpoints. Here you can:', 'woo-custom-my-account-page' ); ?></p>
 	<ul>
 		<li><?php esc_html_e( 'Drag and drop to reorder menu items', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Show/hide endpoints using the power icon', 'woo-custom-my-account-page' ); ?></li>
+		<li><?php esc_html_e( 'Show/hide endpoints using the eye icon', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Click on an endpoint to edit its settings', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Use the buttons at the top to add groups, endpoints, or links', 'woo-custom-my-account-page' ); ?></li>
 	</ul>
@@ -48,7 +48,7 @@ Wbcom_Settings_Page::card_open( __( 'Creating & Managing Items', 'woo-custom-my-
 		<li><?php esc_html_e( 'Go to Endpoints tab', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Click "Add endpoint" button', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Enter a name (e.g., "Wishlist")', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Click "Add" and configure the settings:', 'woo-custom-my-account-page' ); ?></li>
+		<li><?php esc_html_e( 'Click "Save" in the dialog, then expand the new item to configure it:', 'woo-custom-my-account-page' ); ?></li>
 	</ol>
 	<ul>
 		<li><?php esc_html_e( 'Endpoint slug: URL-friendly version (e.g., wishlist)', 'woo-custom-my-account-page' ); ?></li>
@@ -96,7 +96,7 @@ Wbcom_Settings_Page::card_open( __( 'Creating & Managing Items', 'woo-custom-my-
 
 <div class="wcmp-faq-item">
 	<h4><?php esc_html_e( 'Q: How do I remove an endpoint?', 'woo-custom-my-account-page' ); ?></h4>
-	<p><?php esc_html_e( 'A: Click on the endpoint to expand it, then click the "Remove" link. This will delete it from your menu. Note: You can also just hide it using the power icon if you want to keep it for later.', 'woo-custom-my-account-page' ); ?></p>
+	<p><?php esc_html_e( 'A: Click on the endpoint to expand it, then click the "Remove" link. This will delete it from your menu. Note: You can also just hide it using the eye icon if you want to keep it for later.', 'woo-custom-my-account-page' ); ?></p>
 </div>
 <?php
 Wbcom_Settings_Page::card_close();
@@ -105,12 +105,10 @@ Wbcom_Settings_Page::card_open( __( 'Customization Options', 'woo-custom-my-acco
 ?>
 <div class="wcmp-faq-item">
 	<h4><?php esc_html_e( 'Q: How do I add icons to menu items?', 'woo-custom-my-account-page' ); ?></h4>
-	<p><?php esc_html_e( 'A: This plugin uses FontAwesome 4.7 icons. To add an icon:', 'woo-custom-my-account-page' ); ?></p>
+	<p><?php esc_html_e( 'A: The plugin bundles a set of Font Awesome icons. To add an icon:', 'woo-custom-my-account-page' ); ?></p>
 	<ol>
 		<li><?php esc_html_e( 'Type an icon name from the bundled set (e.g. fa-tag, fa-heart, fa-user) - the picker previews exactly what members will see', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Find an icon you like (e.g., "shopping-cart")', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Copy the class name (e.g., "fa fa-shopping-cart")', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Paste it into the "Icon" field of your endpoint', 'woo-custom-my-account-page' ); ?></li>
+		<li><?php esc_html_e( 'Save Changes', 'woo-custom-my-account-page' ); ?></li>
 	</ol>
 	<p><strong><?php esc_html_e( 'Popular icons:', 'woo-custom-my-account-page' ); ?></strong></p>
 	<ul>
@@ -125,7 +123,7 @@ Wbcom_Settings_Page::card_open( __( 'Customization Options', 'woo-custom-my-acco
 
 <div class="wcmp-faq-item">
 	<h4><?php esc_html_e( 'Q: How do I restrict endpoints to specific user roles?', 'woo-custom-my-account-page' ); ?></h4>
-	<p><?php esc_html_e( 'A: Each endpoint has a "User roles" dropdown where you can select which roles can see it (e.g., Customer, Subscriber, Administrator). Leave it blank to show to all users. This is useful for:', 'woo-custom-my-account-page' ); ?></p>
+	<p><?php esc_html_e( 'A: Each item has a "Visible to roles" field where you choose which roles can see and open it (e.g., Customer, Subscriber, Administrator). Leave it empty to show it to everyone. Members outside those roles are sent back to My Account if they open the URL directly. This is useful for:', 'woo-custom-my-account-page' ); ?></p>
 	<ul>
 		<li><?php esc_html_e( 'Showing wholesale pricing only to wholesale customers', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Displaying admin tools only to administrators', 'woo-custom-my-account-page' ); ?></li>
@@ -161,7 +159,7 @@ Wbcom_Settings_Page::card_open( __( 'Troubleshooting', 'woo-custom-my-account-pa
 		<li><?php esc_html_e( 'Make sure you clicked "Save Changes" in the admin panel', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Clear your browser cache and refresh the page', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Clear any caching plugins (WP Super Cache, W3 Total Cache, etc.)', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Check if the endpoint is enabled (power icon should be ON)', 'woo-custom-my-account-page' ); ?></li>
+		<li><?php esc_html_e( 'Check if the endpoint is shown in the menu (eye icon should be ON)', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Verify user role restrictions aren\'t hiding the item', 'woo-custom-my-account-page' ); ?></li>
 	</ol>
 </div>

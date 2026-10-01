@@ -136,7 +136,7 @@ class Woo_Custom_My_Account_Page_Admin {
 					array(
 						'ajaxurl'        => admin_url( 'admin-ajax.php' ),
 						'action_add'     => 'wcmp_add_field',
-						'nonce'          => wp_create_nonce( 'ajax_nonce' ),
+						'nonce'          => wp_create_nonce( 'wcmp_add_field' ),
 						'show_lbl'       => esc_html__( 'Show in menu', 'woo-custom-my-account-page' ),
 						'hide_lbl'       => esc_html__( 'Hide from menu', 'woo-custom-my-account-page' ),
 						'checked'        => '<span class="dashicons dashicons-yes"></span>',
@@ -542,11 +542,11 @@ class Woo_Custom_My_Account_Page_Admin {
 	public function wcmp_add_field_ajax() {
 
 		// Verify nonce first (must be present and valid).
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax_nonce' ) ) {
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'wcmp_add_field' ) ) {
 			wp_die( esc_html__( 'Security check failed', 'woo-custom-my-account-page' ) );
 		}
-		// Capability check.
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+		// Same gate as the settings screen and options.php.
+		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( esc_html__( 'Insufficient permissions', 'woo-custom-my-account-page' ) );
 		}
 
@@ -568,6 +568,8 @@ class Woo_Custom_My_Account_Page_Admin {
 		// Keep the typed name as the label; derive only the key from it.
 		$label    = sanitize_text_field( wp_unslash( $_POST['field_name'] ) );
 		$existing = isset( $_POST['existing'] ) ? array_map( 'sanitize_title', (array) wp_unslash( $_POST['existing'] ) ) : array();
+		// WooCommerce's own account URLs (view-order, order-pay, ...) are taken too.
+		$existing = array_merge( $existing, array_keys( WC()->query->get_query_vars() ), array_values( WC()->query->get_query_vars() ) );
 		$field    = $myaccount_func->create_field_key( $label );
 
 		if ( '' === $field ) {
@@ -750,7 +752,9 @@ class Woo_Custom_My_Account_Page_Admin {
 			if ( ! empty( $new_value['endpoints'] ) ) {
 				foreach ( $new_value['endpoints'] as $endpoint => $endpoint_details ) {
 					if ( ( 'dashboard' !== $endpoint ) && array_key_exists( $endpoint, $default_endpoints ) ) {
-						update_option( 'woocommerce_myaccount_' . str_replace( '-', '_', $endpoint ) . '_endpoint', $endpoint_details['slug'] );
+						// WooCommerce names the logout option differently from the rest.
+						$option = 'customer-logout' === $endpoint ? 'woocommerce_logout_endpoint' : 'woocommerce_myaccount_' . str_replace( '-', '_', $endpoint ) . '_endpoint';
+						update_option( $option, $endpoint_details['slug'] );
 					}
 				}
 			}
@@ -821,6 +825,37 @@ class Woo_Custom_My_Account_Page_Admin {
 	}
 
 	/**
+	 * Sanitize the drag-and-drop order (nestable JSON of id/type/children).
+	 *
+	 * @since  1.7.0
+	 * @param  string $json Raw order JSON.
+	 * @return string
+	 */
+	private function wcmp_sanitize_endpoints_order( $json ) {
+		$clean = function ( $items ) use ( &$clean ) {
+			$out = array();
+			foreach ( (array) $items as $item ) {
+				if ( empty( $item['id'] ) || empty( $item['type'] ) || ! in_array( $item['type'], array( 'endpoint', 'group', 'link' ), true ) ) {
+					continue;
+				}
+				$row = array(
+					'id'   => sanitize_key( $item['id'] ),
+					'type' => $item['type'],
+				);
+				if ( ! empty( $item['children'] ) ) {
+					$row['children'] = $clean( $item['children'] );
+				}
+				$out[] = $row;
+			}
+			return $out;
+		};
+
+		$items = json_decode( (string) $json, true );
+
+		return is_array( $items ) ? wp_json_encode( $clean( $items ) ) : '';
+	}
+
+	/**
 	 * Sanitization callback for endpoints settings
 	 *
 	 * @param array $input The input array to sanitize.
@@ -834,29 +869,29 @@ class Woo_Custom_My_Account_Page_Admin {
 		$to_remove = array();
 		if ( isset( $input['to_remove'] ) && ! empty( $input['to_remove'] ) ) {
 			$to_remove = explode( ',', sanitize_text_field( $input['to_remove'] ) );
-			$to_remove = array_map( 'trim', $to_remove );
+			$to_remove = array_map( 'sanitize_key', $to_remove );
 		}
 
 		// Sanitize endpoints array.
 		if ( isset( $input['endpoints'] ) && is_array( $input['endpoints'] ) ) {
 			foreach ( $input['endpoints'] as $key => $endpoint ) {
-				// Skip if this endpoint is marked for removal.
-				if ( in_array( $key, $to_remove, true ) ) {
+				// Keys become query vars, DOM ids and CSS classes.
+				$key = sanitize_key( $key );
+				if ( '' === $key || in_array( $key, $to_remove, true ) ) {
+					continue;
+				}
+
+				// The type picks a defaults method by name; allow only real ones.
+				if ( ! isset( $endpoint['type'] ) || ! in_array( $endpoint['type'], array( 'endpoint', 'group', 'link' ), true ) ) {
 					continue;
 				}
 
 				// Skip empty/invalid endpoints - must have at least a slug or label.
 				$has_slug  = isset( $endpoint['slug'] ) && ! empty( trim( $endpoint['slug'] ) );
 				$has_label = isset( $endpoint['label'] ) && ! empty( trim( $endpoint['label'] ) );
-				$has_type  = isset( $endpoint['type'] ) && ! empty( $endpoint['type'] );
 
 				// Skip if no meaningful data.
 				if ( ! $has_slug && ! $has_label ) {
-					continue;
-				}
-
-				// Skip if no type specified.
-				if ( ! $has_type ) {
 					continue;
 				}
 
@@ -891,9 +926,35 @@ class Woo_Custom_My_Account_Page_Admin {
 			}
 		}
 
+		// Endpoint slugs are URLs: keep them unique and clear of WooCommerce's own.
+		if ( ! empty( $sanitized['endpoints'] ) ) {
+			$used = array();
+			foreach ( WC()->query->get_query_vars() as $var => $slug ) {
+				if ( ! isset( $sanitized['endpoints'][ $var ] ) ) {
+					$used[] = $slug;
+				}
+			}
+			foreach ( $sanitized['endpoints'] as $key => &$item ) {
+				if ( 'endpoint' !== $item['type'] ) {
+					continue;
+				}
+				if ( in_array( $item['slug'], $used, true ) ) {
+					add_settings_error(
+						'wcmp_endpoints_settings',
+						'wcmp-slug-' . $key,
+						/* translators: 1: rejected slug, 2: endpoint label, 3: slug kept instead. */
+						sprintf( __( 'The slug "%1$s" is already in use, so "%2$s" keeps the slug "%3$s".', 'woo-custom-my-account-page' ), $item['slug'], $item['label'], $key )
+					);
+					$item['slug'] = $key; // ponytail: assumes the key itself is free; it was unique when the item was added.
+				}
+				$used[] = $item['slug'];
+			}
+			unset( $item );
+		}
+
 		// Sanitize endpoints-order field (used for drag-and-drop ordering).
 		if ( isset( $input['endpoints-order'] ) ) {
-			$sanitized['endpoints-order'] = sanitize_text_field( $input['endpoints-order'] );
+			$sanitized['endpoints-order'] = $this->wcmp_sanitize_endpoints_order( $input['endpoints-order'] );
 		}
 
 		return $sanitized;

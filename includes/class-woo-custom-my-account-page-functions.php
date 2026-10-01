@@ -77,6 +77,9 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// Check if is shortcode my-account.
 			add_action( 'template_redirect', array( $this, 'wcmp_check_myaccount' ), 1 );
 
+			// Enforce "Visible to roles" on the URL, not only the menu.
+			add_action( 'template_redirect', array( $this, 'wcmp_restrict_endpoint_access' ), 20 );
+
 			// Redirect to the default endpoint.
 			add_action( 'template_redirect', array( $this, 'redirect_to_default' ), 150 );
 
@@ -387,7 +390,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 					} else {
 						$endpoint_type    = isset( $endpoint['type'] ) ? $endpoint['type'] : 'endpoint';
 						$default_function = "wcmp_get_default_{$endpoint_type}_options";
-						$default_values   = $this->$default_function( $key );
+						$default_values   = method_exists( $this, $default_function ) ? $this->$default_function( $key ) : $this->wcmp_get_default_endpoint_options( $key );
 					}
 					if ( ! array_key_exists( $key, $default_endpoints ) ) {
 						if ( array_key_exists( 'content', $endpoint ) ) {
@@ -677,10 +680,8 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		public function wcmp_print_single_endpoint( $endpoint, $options ) {
 
 			if ( ! isset( $options['url'] ) ) {
-				$url = get_permalink( wc_get_page_id( 'myaccount' ) );
-				if ( 'dashboard' !== $endpoint ) {
-					$url = wc_get_endpoint_url( $endpoint, '', $url );
-				}
+				// Core's builder: also nonces Log out, which otherwise stops at "Are you sure?".
+				$url = wc_get_account_endpoint_url( $endpoint );
 			} else {
 				$url = esc_url( $options['url'] );
 			}
@@ -793,6 +794,41 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		}
 
 		/**
+		 * Send members back to My Account when they open a role-restricted
+		 * endpoint by URL. Hiding the menu item alone left the page reachable.
+		 *
+		 * @access public
+		 * @since  1.7.0
+		 */
+		public function wcmp_restrict_endpoint_access() {
+			if ( ! $this->is_myaccount || ! is_user_logged_in() ) {
+				return;
+			}
+			$current = $this->wcmp_get_current_endpoint();
+			if ( 'dashboard' === $current ) {
+				return;
+			}
+
+			$settings = $this->wcmp_settings_data();
+			$roles    = (array) wp_get_current_user()->roles;
+
+			foreach ( (array) $settings['endpoints_settings'] as $key => $item ) {
+				$child = isset( $item['children'][ $current ] ) ? $item['children'][ $current ] : null;
+				if ( $key !== $current && null === $child ) {
+					continue;
+				}
+				// A child inherits its group's restriction.
+				foreach ( array( $item, (array) $child ) as $rule ) {
+					if ( ! empty( $rule['usr_roles'] ) && ! $this->hide_by_usr_roles( (array) $rule['usr_roles'], $roles ) ) {
+						wp_safe_redirect( wc_get_page_permalink( 'myaccount' ) );
+						exit;
+					}
+				}
+				return;
+			}
+		}
+
+		/**
 		 * Redirect to default endpoint.
 		 *
 		 * @access public
@@ -835,6 +871,10 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// are selected, only those roles see the endpoint. Never redirect
 			// a member to a default endpoint that is hidden from them.
 			$default_visible = empty( $restricted_roles ) || $this->hide_by_usr_roles( $restricted_roles, $user_role );
+			// Never land members on an endpoint the owner hid from the menu.
+			if ( isset( $endpoints[ $default_endpoint ] ) && empty( $endpoints[ $default_endpoint ]['active'] ) ) {
+				$default_visible = false;
+			}
 
 			if ( ! is_wc_endpoint_url( $default_endpoint ) ) {
 				// is_myaccount was already confirmed for THIS request at the

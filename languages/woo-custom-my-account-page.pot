@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-01T11:02:42+00:00\n"
+"POT-Creation-Date: 2026-10-01T11:29:09+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: woo-custom-my-account-page\n"
@@ -271,6 +271,7 @@ msgstr ""
 #: admin/class-woo-custom-my-account-page-admin.php:466
 #: admin/class-woo-custom-my-account-page-admin.php:512
 #: admin/partials/wcmp-endpoints-settings.php:101
+#: admin/partials/wcmp-faq.php:111
 msgid "Save Changes"
 msgstr ""
 
@@ -319,13 +320,19 @@ msgid "Invalid target type"
 msgstr ""
 
 #. translators: %s: item slug.
-#: admin/class-woo-custom-my-account-page-admin.php:586
+#: admin/class-woo-custom-my-account-page-admin.php:588
 #, php-format
 msgid "An item with the slug \"%s\" already exists."
 msgstr ""
 
-#: admin/class-woo-custom-my-account-page-admin.php:617
+#: admin/class-woo-custom-my-account-page-admin.php:619
 msgid "Invalid target"
+msgstr ""
+
+#. translators: 1: rejected slug, 2: endpoint label, 3: slug kept instead.
+#: admin/class-woo-custom-my-account-page-admin.php:946
+#, php-format
+msgid "The slug \"%1$s\" is already in use, so \"%2$s\" keeps the slug \"%3$s\"."
 msgstr ""
 
 #: admin/partials/endpoint-item.php:46
@@ -514,7 +521,7 @@ msgid "Drag and drop to reorder menu items"
 msgstr ""
 
 #: admin/partials/wcmp-faq.php:28
-msgid "Show/hide endpoints using the power icon"
+msgid "Show/hide endpoints using the eye icon"
 msgstr ""
 
 #: admin/partials/wcmp-faq.php:29
@@ -574,7 +581,7 @@ msgid "Enter a name (e.g., \"Wishlist\")"
 msgstr ""
 
 #: admin/partials/wcmp-faq.php:51
-msgid "Click \"Add\" and configure the settings:"
+msgid "Click \"Save\" in the dialog, then expand the new item to configure it:"
 msgstr ""
 
 #: admin/partials/wcmp-faq.php:54
@@ -663,7 +670,7 @@ msgid "Q: How do I remove an endpoint?"
 msgstr ""
 
 #: admin/partials/wcmp-faq.php:99
-msgid "A: Click on the endpoint to expand it, then click the \"Remove\" link. This will delete it from your menu. Note: You can also just hide it using the power icon if you want to keep it for later."
+msgid "A: Click on the endpoint to expand it, then click the \"Remove\" link. This will delete it from your menu. Note: You can also just hide it using the eye icon if you want to keep it for later."
 msgstr ""
 
 #: admin/partials/wcmp-faq.php:104
@@ -675,251 +682,239 @@ msgid "Q: How do I add icons to menu items?"
 msgstr ""
 
 #: admin/partials/wcmp-faq.php:108
-msgid "A: This plugin uses FontAwesome 4.7 icons. To add an icon:"
+msgid "A: The plugin bundles a set of Font Awesome icons. To add an icon:"
 msgstr ""
 
 #: admin/partials/wcmp-faq.php:110
 msgid "Type an icon name from the bundled set (e.g. fa-tag, fa-heart, fa-user) - the picker previews exactly what members will see"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:111
-msgid "Find an icon you like (e.g., \"shopping-cart\")"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:112
-msgid "Copy the class name (e.g., \"fa fa-shopping-cart\")"
-msgstr ""
-
 #: admin/partials/wcmp-faq.php:113
-msgid "Paste it into the \"Icon\" field of your endpoint"
-msgstr ""
-
-#: admin/partials/wcmp-faq.php:115
 msgid "Popular icons:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:117
+#: admin/partials/wcmp-faq.php:115
 msgid "fa fa-user (user profile)"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:118
+#: admin/partials/wcmp-faq.php:116
 msgid "fa fa-shopping-cart (orders)"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:119
+#: admin/partials/wcmp-faq.php:117
 msgid "fa fa-download (downloads)"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:120
+#: admin/partials/wcmp-faq.php:118
 msgid "fa fa-map-marker (addresses)"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:121
+#: admin/partials/wcmp-faq.php:119
 msgid "fa fa-heart (wishlist)"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:122
+#: admin/partials/wcmp-faq.php:120
 msgid "fa fa-life-ring (support)"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:127
+#: admin/partials/wcmp-faq.php:125
 msgid "Q: How do I restrict endpoints to specific user roles?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:128
-msgid "A: Each endpoint has a \"User roles\" dropdown where you can select which roles can see it (e.g., Customer, Subscriber, Administrator). Leave it blank to show to all users. This is useful for:"
+#: admin/partials/wcmp-faq.php:126
+msgid "A: Each item has a \"Visible to roles\" field where you choose which roles can see and open it (e.g., Customer, Subscriber, Administrator). Leave it empty to show it to everyone. Members outside those roles are sent back to My Account if they open the URL directly. This is useful for:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:130
+#: admin/partials/wcmp-faq.php:128
 msgid "Showing wholesale pricing only to wholesale customers"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:131
+#: admin/partials/wcmp-faq.php:129
 msgid "Displaying admin tools only to administrators"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:132
+#: admin/partials/wcmp-faq.php:130
 msgid "Creating VIP-only sections for premium members"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:137
+#: admin/partials/wcmp-faq.php:135
 msgid "Q: Can I add custom content to an endpoint?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:138
+#: admin/partials/wcmp-faq.php:136
 msgid "A: Yes! The \"Endpoint content\" field accepts:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:140
+#: admin/partials/wcmp-faq.php:138
 msgid "HTML markup for custom layouts"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:141
+#: admin/partials/wcmp-faq.php:139
 msgid "Shortcodes from other plugins"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:142
+#: admin/partials/wcmp-faq.php:140
 msgid "Text with formatting"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:143
+#: admin/partials/wcmp-faq.php:141
 msgid "Embedded forms or widgets"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:145
+#: admin/partials/wcmp-faq.php:143
 msgid "Example: [contact-form-7 id=\"123\"] to embed a contact form."
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:149
+#: admin/partials/wcmp-faq.php:147
 msgid "Q: How do I change the styling of my menu?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:150
+#: admin/partials/wcmp-faq.php:148
 msgid "A: The Style tab sets the menu item and hover colours, and the Log out button text, background and hover colours. The General tab sets the menu layout (Sidebar or Tab) and the sidebar position."
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:155
+#: admin/partials/wcmp-faq.php:153
 msgid "Troubleshooting"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:158
+#: admin/partials/wcmp-faq.php:156
 msgid "Q: My changes aren't showing on the frontend. What should I do?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:159
+#: admin/partials/wcmp-faq.php:157
 msgid "A: Try these steps:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:161
+#: admin/partials/wcmp-faq.php:159
 msgid "Make sure you clicked \"Save Changes\" in the admin panel"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:162
+#: admin/partials/wcmp-faq.php:160
 msgid "Clear your browser cache and refresh the page"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:163
+#: admin/partials/wcmp-faq.php:161
 msgid "Clear any caching plugins (WP Super Cache, W3 Total Cache, etc.)"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:164
-msgid "Check if the endpoint is enabled (power icon should be ON)"
+#: admin/partials/wcmp-faq.php:162
+msgid "Check if the endpoint is shown in the menu (eye icon should be ON)"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:165
+#: admin/partials/wcmp-faq.php:163
 msgid "Verify user role restrictions aren't hiding the item"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:170
+#: admin/partials/wcmp-faq.php:168
 msgid "Q: I'm getting a 404 error on my custom endpoint. How do I fix it?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:171
+#: admin/partials/wcmp-faq.php:169
 msgid "A: Go to WordPress Settings → Permalinks and click \"Save Changes\" without changing anything. This will flush the rewrite rules and make your endpoint accessible."
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:175
+#: admin/partials/wcmp-faq.php:173
 msgid "Q: Can I restore the default WooCommerce menu?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:176
+#: admin/partials/wcmp-faq.php:174
 msgid "A: Yes, simply remove all custom endpoints, groups, and links, and leave only the default WooCommerce endpoints (Dashboard, Orders, Downloads, Addresses, Account Details, Logout). You can also deactivate the plugin temporarily to see the default layout."
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:180
+#: admin/partials/wcmp-faq.php:178
 msgid "Q: The drag and drop isn't working. What's wrong?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:181
+#: admin/partials/wcmp-faq.php:179
 msgid "A: This is usually a JavaScript conflict. Try:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:183
+#: admin/partials/wcmp-faq.php:181
 msgid "Temporarily deactivating other plugins to find the conflict"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:184
+#: admin/partials/wcmp-faq.php:182
 msgid "Switching to a default WordPress theme (like Twenty Twenty-Three) temporarily"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:185
+#: admin/partials/wcmp-faq.php:183
 msgid "Checking your browser console for JavaScript errors (F12)"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:190
+#: admin/partials/wcmp-faq.php:188
 msgid "Q: My custom endpoint content isn't displaying. Why?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:191
+#: admin/partials/wcmp-faq.php:189
 msgid "A: Check these common issues:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:193
+#: admin/partials/wcmp-faq.php:191
 msgid "Make sure the \"Endpoint content\" field has content"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:194
+#: admin/partials/wcmp-faq.php:192
 msgid "If using a shortcode, verify the shortcode plugin is active"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:195
+#: admin/partials/wcmp-faq.php:193
 msgid "Check if your theme overrides the My Account template"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:196
+#: admin/partials/wcmp-faq.php:194
 msgid "Ensure there are no HTML errors in your custom content"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:202
+#: admin/partials/wcmp-faq.php:200
 msgid "Advanced Usage"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:205
+#: admin/partials/wcmp-faq.php:203
 msgid "Q: Can I use custom CSS classes?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:206
+#: admin/partials/wcmp-faq.php:204
 msgid "A: Yes! Each endpoint has a \"Class\" field where you can add custom CSS classes. Use these to apply specific styling to individual menu items. For example, add \"highlight-item\" and then add CSS in your theme:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:211
+#: admin/partials/wcmp-faq.php:209
 msgid "Q: Can I add conditional logic to endpoints?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:212
+#: admin/partials/wcmp-faq.php:210
 msgid "A: While the plugin doesn't have built-in conditional logic beyond user roles, you can use WordPress hooks and filters to add custom conditions. For developers:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:221
+#: admin/partials/wcmp-faq.php:219
 msgid "Q: Is this plugin compatible with other WooCommerce plugins?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:222
+#: admin/partials/wcmp-faq.php:220
 msgid "A: Yes! This plugin works with most WooCommerce extensions. Endpoints created by other plugins (like Subscriptions, Bookings, Memberships) will automatically appear in the Endpoints tab where you can customize them."
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:227
+#: admin/partials/wcmp-faq.php:225
 msgid "Need More Help?"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:229
+#: admin/partials/wcmp-faq.php:227
 msgid "If your question isn't answered here, please check out these resources:"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:231
+#: admin/partials/wcmp-faq.php:229
 msgid "Full Documentation"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:232
+#: admin/partials/wcmp-faq.php:230
 msgid "Support Center"
 msgstr ""
 
-#: admin/partials/wcmp-faq.php:233
+#: admin/partials/wcmp-faq.php:231
 msgid "Contact Us"
 msgstr ""
 
 #. translators: %s: order ID.
-#: includes/class-woo-custom-my-account-page-functions.php:137
+#: includes/class-woo-custom-my-account-page-functions.php:140
 #, php-format
 msgid "Quote #%s"
 msgstr ""
@@ -956,19 +951,19 @@ msgstr ""
 msgid "Visit wbcomdesigns.com for more plugins and themes"
 msgstr ""
 
-#: public/class-woo-custom-my-account-page-public.php:219
+#: public/class-woo-custom-my-account-page-public.php:223
 msgid "Invalid file type. Only JPG, PNG, GIF and WebP images are allowed."
 msgstr ""
 
-#: public/class-woo-custom-my-account-page-public.php:227
+#: public/class-woo-custom-my-account-page-public.php:231
 msgid "Image size must be less than 2MB."
 msgstr ""
 
-#: public/class-woo-custom-my-account-page-public.php:265
+#: public/class-woo-custom-my-account-page-public.php:270
 msgid "Avatar updated successfully!"
 msgstr ""
 
-#: public/class-woo-custom-my-account-page-public.php:324
+#: public/class-woo-custom-my-account-page-public.php:307
 msgid "Avatar removed successfully!"
 msgstr ""
 

@@ -187,6 +187,10 @@ class Woo_Custom_My_Account_Page_Public {
 	 * @author Wbcom Designs
 	 */
 	public function wcmp_add_avatar() {
+		if ( $this->get_avatar_filter() ) {
+			return;
+		}
+
 		// Fixed: Proper nonce handling and initialization.
 		$nonce = isset( $_POST['_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_nonce'] ) ) : '';
 
@@ -257,8 +261,9 @@ class Woo_Custom_My_Account_Page_Public {
 			update_option( 'wcmp-users-avatar-ids', $medias, false );
 		}
 
-		// Save user meta.
+		// Replace, never accumulate: one avatar per user.
 		$user = get_current_user_id();
+		$this->wcmp_delete_user_avatar( $user );
 		update_user_meta( $user, 'wb-wcmp-avatar', $media_id );
 
 		// Add success message.
@@ -293,33 +298,11 @@ class Woo_Custom_My_Account_Page_Public {
 			return;
 		}
 
-		// Get user id.
-		$user     = get_current_user_id();
-		$media_id = get_user_meta( $user, 'wb-wcmp-avatar', true );
-
-		if ( ! $media_id ) {
+		$user = get_current_user_id();
+		if ( ! get_user_meta( $user, 'wb-wcmp-avatar', true ) ) {
 			return;
 		}
-
-		// Remove id from global list.
-		$medias = get_option( 'wcmp-users-avatar-ids', array() );
-		if ( is_array( $medias ) ) {
-			foreach ( $medias as $key => $media ) {
-				if ( (int) $media === (int) $media_id ) {
-					unset( $medias[ $key ] );
-					break;
-				}
-			}
-			// Re-index array and save.
-			$medias = array_values( $medias );
-			update_option( 'wcmp-users-avatar-ids', $medias, false );
-		}
-
-		// Then delete user meta.
-		delete_user_meta( $user, 'wb-wcmp-avatar' );
-
-		// Delete the attachment file from server to free space.
-		wp_delete_attachment( $media_id, true );
+		$this->wcmp_delete_user_avatar( $user );
 
 		wc_add_notice( __( 'Avatar removed successfully!', 'woo-custom-my-account-page' ), 'success' );
 		// Redirect.
@@ -335,7 +318,7 @@ class Woo_Custom_My_Account_Page_Public {
 	 * @author Wbcom Designs
 	 */
 	public function wcmp_print_avatar_form_ajax() {
-		if ( ! is_ajax() || ! is_user_logged_in() ) {
+		if ( ! wp_doing_ajax() || ! is_user_logged_in() || $this->get_avatar_filter() ) {
 			return;
 		}
 		// Get the avatar form HTML.
@@ -455,6 +438,38 @@ class Woo_Custom_My_Account_Page_Public {
 		$is_processing = false;
 
 		return $avatar;
+	}
+
+	/**
+	 * Delete a user's custom avatar: attachment, square copies and registry entry.
+	 *
+	 * @since 1.7.0
+	 * @param int $user_id User ID.
+	 */
+	private function wcmp_delete_user_avatar( $user_id ) {
+		$media_id = (int) get_user_meta( $user_id, 'wb-wcmp-avatar', true );
+		delete_user_meta( $user_id, 'wb-wcmp-avatar' );
+		if ( ! $media_id ) {
+			return;
+		}
+
+		$medias = get_option( 'wcmp-users-avatar-ids', array() );
+		if ( is_array( $medias ) ) {
+			update_option( 'wcmp-users-avatar-ids', array_values( array_diff( array_map( 'intval', $medias ), array( $media_id ) ) ), false );
+		}
+
+		// Square copies from wcmp_resize_avatar_url() are not in attachment metadata.
+		$file = get_attached_file( $media_id );
+		if ( $file ) {
+			$info = pathinfo( $file );
+			foreach ( (array) glob( $info['dirname'] . '/' . $info['filename'] . '-*x*.' . $info['extension'] ) as $copy ) {
+				if ( preg_match( '/^' . preg_quote( $info['filename'], '/' ) . '-(\d+)x\1$/', pathinfo( $copy, PATHINFO_FILENAME ) ) ) {
+					wp_delete_file( $copy );
+				}
+			}
+		}
+
+		wp_delete_attachment( $media_id, true );
 	}
 
 	/**

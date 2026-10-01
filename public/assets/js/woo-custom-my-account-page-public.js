@@ -47,10 +47,15 @@ jQuery(document).ready(function($) {
             dataType: 'html',
             success: function( res ) {
 
+                if ( ! $.trim( res ) ) {
+                    $( '#wcmp-avatar-form-overlay' ).remove();
+                    return;
+                }
+
                 $('body').append( res ).find('#wcmp-avatar-form-overlay').removeClass('loading');
                 center_popup();
 
-                $('#wcmp-avatar-form-overlay, i.close-form').click(function(){
+                $('#wcmp-avatar-form-overlay, #wcmp-avatar-form .close-form').click(function(){
                     close_popup();
                 })
             },

@@ -72,7 +72,7 @@ The plugin uses the `woocommerce_account_navigation` hook to replace the default
 * `[wcmp_my_account]` - Places the full account portal (custom menu, groups, links, and avatar) on any page, including block themes. It delegates to WooCommerce's `[woocommerce_my_account]` so the menu takeover applies wherever you drop it.
 * `[default_dashboard_content]` - Outputs WooCommerce's stock dashboard (the default "Hello, {name}" panel). Use it inside a custom endpoint's content when you want the built-in dashboard to appear alongside your own content.
 
-Developers can also add and extend the portal through 25 filters and 6 action hooks. The full hooks reference (`docs/HOOKS.md`) lives in the plugin's GitHub repository.
+Developers can also add and extend the portal through 28 filters and 6 action hooks. The full hooks reference (`docs/HOOKS.md`) lives in the plugin's GitHub repository.
 
 = More WooCommerce Plugins by Wbcom Designs =
 
@@ -88,7 +88,7 @@ Visit [wbcomdesigns.com](https://wbcomdesigns.com) for our full collection of Wo
 
 * WordPress 6.5 or higher
 * WooCommerce 6.0 or higher (latest recommended)
-* PHP 8.0 or higher
+* PHP 8.1 or higher
 
 == Installation ==
 
@@ -169,6 +169,17 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 * Fix      - The Add dialog now shows a message when a name is already in use or the request fails, instead of staying silently open.
 * Fix      - FAQ now points to the correct menu (WB Plugins > Woo My Account) and describes the real Style and General options.
 * Fix      - Documentation links now open the current docs page.
+* Fix      - Log out in the account menu now logs the customer out instead of stopping at "Are you sure?".
+* Fix      - Changing the Log out slug now changes the WooCommerce logout URL.
+* Fix      - Two endpoints can no longer share a slug or take a WooCommerce account URL such as view-order; saving explains which slug was kept.
+* Fix      - Members are never redirected to a default endpoint that is hidden from the menu.
+* Fix      - In the Tab layout the content area no longer runs into the theme sidebar on themes that wrap the account content.
+* Fix      - The avatar popup close button works, and the camera, close and menu icons show on themes without Font Awesome.
+* Fix      - The Add dialog fits on phones and long item names no longer run under the type badge.
+* Security - "Visible to roles" now also blocks the page when a member opens its URL directly, including default WooCommerce pages and items inside a group.
+* Security - Avatar uploads follow the Member avatar upload setting, and a new avatar replaces the old image instead of adding another file.
+* Security - Endpoint settings are validated more strictly on save, and the add-item request uses its own nonce and the settings capability.
+* Dev      - Hooks reference updated with three template-args filters, and the template override path in template headers corrected to yourtheme/woocommerce/.
 * Compat   - Tested up to WordPress 7.1 and WooCommerce 11.1. Requires PHP 8.1.
 
 = 1.6.7 - September 2026 =
