@@ -40,6 +40,11 @@ plan
 .DS_Store
 Thumbs.db
 
+# Audit + gate data. Unanchored: macOS openrsync ignores a leading '/'; no bundled library has an audit/ folder
+# (build-release.sh Gate 6 fails the build if the root audit/ ever leaks).
+audit
+.contract-audit-baseline.json
+
 # Release tooling + output
 bin
 .distignore

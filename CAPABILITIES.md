@@ -1,7 +1,7 @@
 # Custom My Account Page for WooCommerce — Capabilities
 
-**Slug:** `woo-custom-my-account-page` · **Version:** 1.6.6 · **Main file:** `woo-custom-my-account-page.php`
-**Requires:** WordPress 6.5+, PHP 8.0+, WooCommerce (active) · **REST:** none · **Custom tables:** none
+**Slug:** `woo-custom-my-account-page` · **Version:** 1.7.0 · **Main file:** `woo-custom-my-account-page.php`
+**Requires:** WordPress 6.5+, PHP 8.1+, WooCommerce (active) · **REST:** none · **Custom tables:** none
 
 Turns the default WooCommerce **My Account** page into a branded customer portal. Store owners reorder,
 rename, disable, and add account-menu items (endpoints, collapsible groups, external links), restrict any
@@ -11,7 +11,7 @@ shortcode, on block-based account pages, and anywhere the `[wcmp_my_account]` sh
 Account** block is placed.
 
 Maturity legend: **Stable** (shipped long-lived, unchanged) · **Rebuilt 1.6.4** (re-architected in the last
-cycle) · **Hardened 1.6.5** (fixed/tightened this release).
+cycle) · **Hardened 1.6.5** / **Hardened 1.7.0** (fixed/tightened in that release).
 
 ---
 
@@ -19,11 +19,11 @@ cycle) · **Hardened 1.6.5** (fixed/tightened this release).
 
 | Capability | What it does | Maturity |
 |---|---|---|
-| Endpoint builder | Reorder / rename / disable default WC endpoints and add custom endpoints, collapsible groups, and external links via drag-and-drop (jQuery Nestable). Per-item icon, CSS class, and user-role allowlist. | Stable |
+| Endpoint builder | Reorder / rename / disable default WC endpoints and add custom endpoints, collapsible groups, and external links via drag-and-drop (jQuery Nestable). Per-item icon, CSS class, and user-role allowlist. The typed name is kept as the label; the slug is ASCII for every script (WordPress slug, intl transliteration, else `{type}-N`) and unique against other items and WooCommerce's own account URLs. | Hardened 1.7.0 |
 | Custom endpoint content | Each custom endpoint has a content area (HTML, shortcodes, page-builder output). Stored content is `wp_kses_post`-sanitized (raw for `unfiltered_html` users) then shortcode-expanded, so form-plugin controls survive. | Hardened 1.6.4 |
 | Custom WC endpoints | Custom items register as real WooCommerce rewrite endpoints (`add_rewrite_endpoint` + injected query vars); rewrite flush deferred through a 60s transient after save. | Stable |
-| Role visibility | Any endpoint / group / link carries a role **allowlist** (empty = everyone). Applied to both the menu and the default-endpoint redirect. | Stable (redirect gap fixed 1.6.4) |
-| Member avatar upload | Members upload a photo from the account menu header; it replaces their Gravatar site-wide. MIME allowlist (JPEG/PNG/GIF/WebP), 2MB cap, logged-in + nonce gated, PRG redirect. Reset restores Gravatar. | Hardened 1.6.5 |
+| Role visibility | Any endpoint / group / link carries a role **allowlist** (empty = everyone). Enforced on the request (`wcmp_restrict_endpoint_access`), not only in the menu: a member outside the list who opens the URL is sent to My Account. Children inherit their group's roles. Also applied to the default-endpoint redirect. | Hardened 1.7.0 |
+| Member avatar upload | Members upload a photo from the account menu header; it replaces their Gravatar site-wide. Only when the avatar setting is on. MIME allowlist (JPEG/PNG/GIF/WebP), 2MB cap, logged-in + nonce gated, PRG redirect; a new upload deletes the previous one. Reset restores Gravatar. | Hardened 1.7.0 |
 | Menu layout | Sidebar (left/right) or horizontal Tab layout; collapsible Account menu on phones. | Rebuilt 1.6.4 |
 | Style overrides | Six colour pickers. Frontend colours follow the active theme through a CSS-custom-property token bridge; pickers act as overrides only when changed from the default. | Rebuilt 1.6.4 |
 | Portal placement | `[wcmp_my_account]` shortcode and `wcmp/my-account` block place the full portal on any page, including block themes (both delegate to `[woocommerce_my_account]`). | Rebuilt 1.6.4 |
@@ -41,7 +41,7 @@ Shared Wbcom **Pattern A** settings shell (`Wbcom_Settings_Page::boot`, prefix `
 | Tab | Group | Contents |
 |---|---|---|
 | **Overview** | main | Read-only portal status: account-page render mode (classic shortcode vs block-based), menu entry counts (total / custom / role-restricted), default endpoint, update state, support links. |
-| **Endpoints** | main | Drag-and-drop builder — reorder, rename, disable, add endpoints / groups / links; per-item icon, CSS class, role allowlist. Backed by AJAX `wcmp_add_field` (nonce `ajax_nonce`, cap `manage_woocommerce`). |
+| **Endpoints** | main | Drag-and-drop builder — reorder, rename, disable, add endpoints / groups / links; per-item icon, CSS class, role allowlist. Backed by AJAX `wcmp_add_field` (nonce `wcmp_add_field`, cap `manage_options`). |
 | **General** | main | Avatar-upload toggle, menu layout (sidebar / tab), sidebar position (left / right), default endpoint. |
 | **Style** | main | Six colour pickers (menu item, menu hover, logout text/hover, logout background/hover). |
 | **FAQ** | help | Static help content. |
@@ -52,7 +52,7 @@ Shared Wbcom **Pattern A** settings shell (`Wbcom_Settings_Page::boot`, prefix `
 
 - **Custom menu** — replaces WooCommerce's default account navigation (`woocommerce_account_navigation`; core nav removed in `Functions::init`). Renders custom endpoints, collapsible groups, and links in sidebar or tab layout.
 - **Custom avatar** — a change-photo control in the menu header opens an upload/reset form (WC-AJAX `wcmp_print_avatar_form`); the uploaded image flows through the `get_avatar` filter everywhere WordPress shows the avatar.
-- **Endpoints** — custom endpoints render their stored content in `woocommerce_account_content`; default-endpoint redirect is role-aware and works on block-based account pages (`is_account_page()` detection).
+- **Endpoints** — custom endpoints render their stored content in `woocommerce_account_content`; default-endpoint redirect is role- and hidden-aware and works on block-based account pages (`is_account_page()` detection).
 - **Dashboard** — `[default_dashboard_content]` embeds WooCommerce's stock dashboard template inside a custom endpoint.
 - **Assets load conditionally** — only on the account page, on the portal shortcode/block, or when `wcmp_load_public_assets` forces it (`wcmp_should_load_assets`).
 - **Overridable templates** — `public/templates/{wcmp-myaccount-menu, wcmp-myaccount-menu-item, wcmp-myaccount-menu-group, wcmp-myaccount-avatar-form}.php` via the standard `yourtheme/woocommerce/` override path.
@@ -67,22 +67,21 @@ No custom tables, no REST. State lives in options, one transient, and one user m
 |---|---|---|
 | `wcmp_general_settings` | option | Avatar toggle, menu layout, sidebar position, default endpoint. |
 | `wcmp_style_settings` | option | Six menu colours. Menu item + hover bridge to frontend CSS vars; all four `logout_*` colours are emitted as scoped rules on `.wcmp-customer-logout` (as of 1.6.6, `public/class-woo-custom-my-account-page-public.php:175-178`). Each colour is printed only when changed from its default. |
-| `wcmp_endpoints_settings` | option | Endpoint / group / link definitions + drag order. On save, default-endpoint slugs are mirrored to WC core `woocommerce_myaccount_*_endpoint` options. |
+| `wcmp_endpoints_settings` | option | Endpoint / group / link definitions + drag order. On save, default-endpoint slugs are mirrored to WC core `woocommerce_myaccount_*_endpoint` options (`woocommerce_logout_endpoint` for Log out). |
 | `wcmp-users-avatar-ids` | option | Flat list of uploaded avatar attachment ids (media-library scoping). |
 | `wb-wcmp-avatar` | user meta | The member's uploaded avatar attachment id. |
 | `wcmp_flush_rewrite_rules` | transient (60s) | Defers a rewrite flush to the next `init` after endpoints change. |
 | `wcmp_endpoint`, `wcmp_endpoint_backup_pre_*` | option | Legacy store + one-time migration backup. |
 | `woo-custom-my-account-page_license`, `…_license_key` | option | Preset free EDD license for auto-updates. |
 
-Uninstall removes the settings/license/avatar-index options and the transient and flushes rewrites. It does
-**not** remove `wb-wcmp-avatar` user meta, uploaded avatar attachments, the legacy `wcmp_endpoint`, or its
-backup — noted in `audit/manifest.json` under `data_lifecycle`.
+Uninstall removes every option above, every uploaded avatar attachment and all `wb-wcmp-avatar` user meta,
+the legacy `wcmp_endpoint` and its backups, then flushes rewrites (`audit/manifest.json` → `data_lifecycle`).
 
 ---
 
 ## Extension seams
 
-Full integrator-facing reference (all 25 filters + 6 action hooks, with args) in `docs/HOOKS.md`. The load-bearing ones:
+Full integrator-facing reference (all 28 filters + 6 action hooks, with args) in `docs/HOOKS.md`. The load-bearing ones:
 
 - **`wcmp_get_avatar_filter`** — return `true` to suppress this plugin's avatar for a request (default mirrors the `custom_avatar` setting). The primary seam for handing avatar rendering to another source.
 - **`wcmp_load_public_assets`** — force portal assets onto a surface auto-detection misses.

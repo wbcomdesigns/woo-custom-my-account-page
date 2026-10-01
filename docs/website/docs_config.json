@@ -1,0 +1,14 @@
+{
+  "product": "Custom My Account Page for WooCommerce",
+  "productType": "plugin",
+  "shortId": "wcmp",
+  "sections": [
+    { "name": "Getting Started", "folder": "getting-started" },
+    { "name": "Manage the Account Menu", "folder": "manage-the-account-menu" },
+    { "name": "Settings", "folder": "settings" },
+    { "name": "Shortcodes and Blocks", "folder": "shortcodes-and-blocks" },
+    { "name": "Developer Guide", "folder": "developer-guide" },
+    { "name": "FAQ", "folder": "faq" },
+    { "name": "Troubleshooting", "folder": "troubleshooting" }
+  ]
+}

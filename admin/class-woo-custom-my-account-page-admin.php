@@ -134,14 +134,16 @@ class Woo_Custom_My_Account_Page_Admin {
 					'woo-custom-my-account-page-admin-js',
 					'wcmp',
 					array(
-						'ajaxurl'      => admin_url( 'admin-ajax.php' ),
-						'action_add'   => 'wcmp_add_field',
-						'nonce'        => wp_create_nonce( 'ajax_nonce' ),
-						'show_lbl'     => esc_html__( 'Show in menu', 'woo-custom-my-account-page' ),
-						'hide_lbl'     => esc_html__( 'Hide from menu', 'woo-custom-my-account-page' ),
-						'checked'      => '<span class="dashicons dashicons-yes"></span>',
-						'error_icon'   => '<span class="dashicons dashicons-no"></span>',
-						'empty_field'  => esc_html__( 'This field is required.', 'woo-custom-my-account-page' ),
+						'ajaxurl'        => admin_url( 'admin-ajax.php' ),
+						'action_add'     => 'wcmp_add_field',
+						'nonce'          => wp_create_nonce( 'wcmp_add_field' ),
+						'show_lbl'       => esc_html__( 'Show in menu', 'woo-custom-my-account-page' ),
+						'hide_lbl'       => esc_html__( 'Hide from menu', 'woo-custom-my-account-page' ),
+						'checked'        => '<span class="dashicons dashicons-yes"></span>',
+						'error_icon'     => '<span class="dashicons dashicons-no"></span>',
+						'empty_field'    => esc_html__( 'This field is required.', 'woo-custom-my-account-page' ),
+						'request_failed' => esc_html__( 'The item could not be added. Please try again.', 'woo-custom-my-account-page' ),
+						'save_lbl'       => esc_html__( 'Save', 'woo-custom-my-account-page' ),
 						'remove_alert'   => esc_html__( 'Are you sure that you want to delete this item from the menu?', 'woo-custom-my-account-page' ),
 						'remove_title'   => esc_html__( 'Delete menu item', 'woo-custom-my-account-page' ),
 						'remove_confirm' => esc_html__( 'Delete', 'woo-custom-my-account-page' ),
@@ -374,7 +376,7 @@ class Woo_Custom_My_Account_Page_Admin {
 		);
 		?>
 		<ul class="wbcom-feature-list">
-			<li><i data-lucide="book-open"></i><a href="https://docs.wbcomdesigns.com/doc_category/custom-my-account-page-for-woocommerce/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Documentation', 'woo-custom-my-account-page' ); ?></a></li>
+			<li><i data-lucide="book-open"></i><a href="https://docs.wbcomdesigns.com/woo-family/woocommerce-custom-my-account-page/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Documentation', 'woo-custom-my-account-page' ); ?></a></li>
 			<li><i data-lucide="life-buoy"></i><a href="https://wbcomdesigns.com/support/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Support center', 'woo-custom-my-account-page' ); ?></a></li>
 			<li><i data-lucide="message-square"></i><a href="https://wbcomdesigns.com/submit-review/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Share your feedback', 'woo-custom-my-account-page' ); ?></a></li>
 		</ul>
@@ -540,11 +542,11 @@ class Woo_Custom_My_Account_Page_Admin {
 	public function wcmp_add_field_ajax() {
 
 		// Verify nonce first (must be present and valid).
-		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax_nonce' ) ) {
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'wcmp_add_field' ) ) {
 			wp_die( esc_html__( 'Security check failed', 'woo-custom-my-account-page' ) );
 		}
-		// Capability check.
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+		// Same gate as the settings screen and options.php.
+		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( esc_html__( 'Insufficient permissions', 'woo-custom-my-account-page' ) );
 		}
 
@@ -563,8 +565,30 @@ class Woo_Custom_My_Account_Page_Admin {
 
 		$myaccount_func = instantiate_woo_custom_myaccount_functions();
 
-		// Build field key safely.
-		$field = $myaccount_func->create_field_key( sanitize_text_field( wp_unslash( $_POST['field_name'] ) ) );
+		// Keep the typed name as the label; derive only the key from it.
+		$label    = sanitize_text_field( wp_unslash( $_POST['field_name'] ) );
+		$existing = isset( $_POST['existing'] ) ? array_map( 'sanitize_title', (array) wp_unslash( $_POST['existing'] ) ) : array();
+		// WooCommerce's own account URLs (view-order, order-pay, ...) are taken too.
+		$existing = array_merge( $existing, array_keys( WC()->query->get_query_vars() ), array_values( WC()->query->get_query_vars() ) );
+		$field    = $myaccount_func->create_field_key( $label );
+
+		if ( '' === $field ) {
+			// Nothing ASCII to build a slug from: number it, e.g. "endpoint-2".
+			$n = 1;
+			while ( in_array( $request . '-' . $n, $existing, true ) ) {
+				++$n;
+			}
+			$field = $request . '-' . $n;
+		}
+
+		if ( in_array( $field, $existing, true ) ) {
+			wp_send_json_error(
+				array(
+					/* translators: %s: item slug. */
+					'error' => sprintf( __( 'An item with the slug "%s" already exists.', 'woo-custom-my-account-page' ), $field ),
+				)
+			);
+		}
 
 		// Use switch for safe function calling instead of dynamic calls.
 		$args = array(
@@ -578,17 +602,17 @@ class Woo_Custom_My_Account_Page_Admin {
 		ob_start();
 		switch ( $request ) {
 			case 'endpoint':
-				$args['options'] = $myaccount_func->wcmp_get_default_endpoint_options( $field );
+				$args['options'] = $myaccount_func->wcmp_get_default_endpoint_options( $field, $label );
 				$this->wcmp_admin_print_endpoint_field( $args );
 				break;
 			case 'group':
 				$args['group']   = $field;
-				$args['options'] = $myaccount_func->wcmp_get_default_group_options( $field );
+				$args['options'] = $myaccount_func->wcmp_get_default_group_options( $field, $label );
 				$this->wcmp_admin_print_group_field( $args );
 				break;
 			case 'link':
 				$args['link']    = $field;
-				$args['options'] = $myaccount_func->wcmp_get_default_link_options( $field );
+				$args['options'] = $myaccount_func->wcmp_get_default_link_options( $field, $label );
 				$this->wcmp_admin_print_link_field( $args );
 				break;
 			default:
@@ -728,7 +752,9 @@ class Woo_Custom_My_Account_Page_Admin {
 			if ( ! empty( $new_value['endpoints'] ) ) {
 				foreach ( $new_value['endpoints'] as $endpoint => $endpoint_details ) {
 					if ( ( 'dashboard' !== $endpoint ) && array_key_exists( $endpoint, $default_endpoints ) ) {
-						update_option( 'woocommerce_myaccount_' . str_replace( '-', '_', $endpoint ) . '_endpoint', $endpoint_details['slug'] );
+						// WooCommerce names the logout option differently from the rest.
+						$option = 'customer-logout' === $endpoint ? 'woocommerce_logout_endpoint' : 'woocommerce_myaccount_' . str_replace( '-', '_', $endpoint ) . '_endpoint';
+						update_option( $option, $endpoint_details['slug'] );
 					}
 				}
 			}
@@ -799,41 +825,73 @@ class Woo_Custom_My_Account_Page_Admin {
 	}
 
 	/**
+	 * Sanitize the drag-and-drop order (nestable JSON of id/type/children).
+	 *
+	 * @since  1.7.0
+	 * @param  string $json Raw order JSON.
+	 * @return string
+	 */
+	private function wcmp_sanitize_endpoints_order( $json ) {
+		$clean = function ( $items ) use ( &$clean ) {
+			$out = array();
+			foreach ( (array) $items as $item ) {
+				if ( empty( $item['id'] ) || empty( $item['type'] ) || ! in_array( $item['type'], array( 'endpoint', 'group', 'link' ), true ) ) {
+					continue;
+				}
+				$row = array(
+					'id'   => sanitize_key( $item['id'] ),
+					'type' => $item['type'],
+				);
+				if ( ! empty( $item['children'] ) ) {
+					$row['children'] = $clean( $item['children'] );
+				}
+				$out[] = $row;
+			}
+			return $out;
+		};
+
+		$items = json_decode( (string) $json, true );
+
+		return is_array( $items ) ? wp_json_encode( $clean( $items ) ) : '';
+	}
+
+	/**
 	 * Sanitization callback for endpoints settings
 	 *
 	 * @param array $input The input array to sanitize.
 	 * @return array Sanitized array.
 	 */
 	public function wcmp_endpoints_settings_callback( $input ) {
-		$sanitized = array();
+		$sanitized      = array();
+		$myaccount_func = instantiate_woo_custom_myaccount_functions();
 
 		// Handle endpoints marked for removal.
 		$to_remove = array();
 		if ( isset( $input['to_remove'] ) && ! empty( $input['to_remove'] ) ) {
 			$to_remove = explode( ',', sanitize_text_field( $input['to_remove'] ) );
-			$to_remove = array_map( 'trim', $to_remove );
+			$to_remove = array_map( 'sanitize_key', $to_remove );
 		}
 
 		// Sanitize endpoints array.
 		if ( isset( $input['endpoints'] ) && is_array( $input['endpoints'] ) ) {
 			foreach ( $input['endpoints'] as $key => $endpoint ) {
-				// Skip if this endpoint is marked for removal.
-				if ( in_array( $key, $to_remove, true ) ) {
+				// Keys become query vars, DOM ids and CSS classes.
+				$key = sanitize_key( $key );
+				if ( '' === $key || in_array( $key, $to_remove, true ) ) {
+					continue;
+				}
+
+				// The type picks a defaults method by name; allow only real ones.
+				if ( ! isset( $endpoint['type'] ) || ! in_array( $endpoint['type'], array( 'endpoint', 'group', 'link' ), true ) ) {
 					continue;
 				}
 
 				// Skip empty/invalid endpoints - must have at least a slug or label.
 				$has_slug  = isset( $endpoint['slug'] ) && ! empty( trim( $endpoint['slug'] ) );
 				$has_label = isset( $endpoint['label'] ) && ! empty( trim( $endpoint['label'] ) );
-				$has_type  = isset( $endpoint['type'] ) && ! empty( $endpoint['type'] );
 
 				// Skip if no meaningful data.
 				if ( ! $has_slug && ! $has_label ) {
-					continue;
-				}
-
-				// Skip if no type specified.
-				if ( ! $has_type ) {
 					continue;
 				}
 
@@ -841,7 +899,7 @@ class Woo_Custom_My_Account_Page_Admin {
 				$sanitized['endpoints'][ $key ] = array(
 					'active'    => isset( $endpoint['active'] ) ? sanitize_text_field( $endpoint['active'] ) : '',
 					'label'     => isset( $endpoint['label'] ) ? sanitize_text_field( $endpoint['label'] ) : '',
-					'slug'      => isset( $endpoint['slug'] ) ? sanitize_title( $endpoint['slug'] ) : '',
+					'slug'      => isset( $endpoint['slug'] ) ? $myaccount_func->create_field_key( $endpoint['slug'], sanitize_title( $key ) ) : '',
 					'class'     => isset( $endpoint['class'] ) ? $this->sanitize_css_classes( $endpoint['class'] ) : '',
 					'icon'      => isset( $endpoint['icon'] ) ? sanitize_text_field( $endpoint['icon'] ) : '',
 					'type'      => isset( $endpoint['type'] ) ? sanitize_text_field( $endpoint['type'] ) : 'endpoint',
@@ -868,9 +926,35 @@ class Woo_Custom_My_Account_Page_Admin {
 			}
 		}
 
+		// Endpoint slugs are URLs: keep them unique and clear of WooCommerce's own.
+		if ( ! empty( $sanitized['endpoints'] ) ) {
+			$used = array();
+			foreach ( WC()->query->get_query_vars() as $var => $slug ) {
+				if ( ! isset( $sanitized['endpoints'][ $var ] ) ) {
+					$used[] = $slug;
+				}
+			}
+			foreach ( $sanitized['endpoints'] as $key => &$item ) {
+				if ( 'endpoint' !== $item['type'] ) {
+					continue;
+				}
+				if ( in_array( $item['slug'], $used, true ) ) {
+					add_settings_error(
+						'wcmp_endpoints_settings',
+						'wcmp-slug-' . $key,
+						/* translators: 1: rejected slug, 2: endpoint label, 3: slug kept instead. */
+						sprintf( __( 'The slug "%1$s" is already in use, so "%2$s" keeps the slug "%3$s".', 'woo-custom-my-account-page' ), $item['slug'], $item['label'], $key )
+					);
+					$item['slug'] = $key; // ponytail: assumes the key itself is free; it was unique when the item was added.
+				}
+				$used[] = $item['slug'];
+			}
+			unset( $item );
+		}
+
 		// Sanitize endpoints-order field (used for drag-and-drop ordering).
 		if ( isset( $input['endpoints-order'] ) ) {
-			$sanitized['endpoints-order'] = sanitize_text_field( $input['endpoints-order'] );
+			$sanitized['endpoints-order'] = $this->wcmp_sanitize_endpoints_order( $input['endpoints-order'] );
 		}
 
 		return $sanitized;

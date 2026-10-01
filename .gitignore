@@ -11,5 +11,9 @@ BUGFIX-LOG.md
 CHANGELOG.md
 market-audit.md
 competitive-analysis.md
-docs/
+# Internal notes stay local; published docs (hub source), hooks reference and QA gate are tracked.
+docs/*
+!docs/website/
+!docs/HOOKS.md
+!docs/qa/
 dist/

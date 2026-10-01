@@ -170,7 +170,7 @@ $editor_options            = array(
 				<?php if ( ! array_key_exists( $endpoint, $default_endpoint_settings ) ) { ?>
 				<div class="wbcom-field">
 					<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_content' ); ?>"><?php esc_html_e( 'Endpoint content', 'woo-custom-my-account-page' ); ?></label>
-					<p class="description"><?php esc_html_e( 'Custom endpoint content. Leave it black to use default content.', 'woo-custom-my-account-page' ); ?></p>
+					<p class="description"><?php esc_html_e( 'Custom endpoint content. Leave it blank to use default content.', 'woo-custom-my-account-page' ); ?></p>
 					<?php wp_editor( $options['content'], $endpoint . '_content', $editor_options ); ?>
 				</div>
 				<?php } ?>

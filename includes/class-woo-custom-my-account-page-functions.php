@@ -77,6 +77,9 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// Check if is shortcode my-account.
 			add_action( 'template_redirect', array( $this, 'wcmp_check_myaccount' ), 1 );
 
+			// Enforce "Visible to roles" on the URL, not only the menu.
+			add_action( 'template_redirect', array( $this, 'wcmp_restrict_endpoint_access' ), 20 );
+
 			// Redirect to the default endpoint.
 			add_action( 'template_redirect', array( $this, 'redirect_to_default' ), 150 );
 
@@ -387,7 +390,7 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 					} else {
 						$endpoint_type    = isset( $endpoint['type'] ) ? $endpoint['type'] : 'endpoint';
 						$default_function = "wcmp_get_default_{$endpoint_type}_options";
-						$default_values   = $this->$default_function( $key );
+						$default_values   = method_exists( $this, $default_function ) ? $this->$default_function( $key ) : $this->wcmp_get_default_endpoint_options( $key );
 					}
 					if ( ! array_key_exists( $key, $default_endpoints ) ) {
 						if ( array_key_exists( 'content', $endpoint ) ) {
@@ -677,10 +680,8 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		public function wcmp_print_single_endpoint( $endpoint, $options ) {
 
 			if ( ! isset( $options['url'] ) ) {
-				$url = get_permalink( wc_get_page_id( 'myaccount' ) );
-				if ( 'dashboard' !== $endpoint ) {
-					$url = wc_get_endpoint_url( $endpoint, '', $url );
-				}
+				// Core's builder: also nonces Log out, which otherwise stops at "Are you sure?".
+				$url = wc_get_account_endpoint_url( $endpoint );
 			} else {
 				$url = esc_url( $options['url'] );
 			}
@@ -793,6 +794,41 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		}
 
 		/**
+		 * Send members back to My Account when they open a role-restricted
+		 * endpoint by URL. Hiding the menu item alone left the page reachable.
+		 *
+		 * @access public
+		 * @since  1.7.0
+		 */
+		public function wcmp_restrict_endpoint_access() {
+			if ( ! $this->is_myaccount || ! is_user_logged_in() ) {
+				return;
+			}
+			$current = $this->wcmp_get_current_endpoint();
+			if ( 'dashboard' === $current ) {
+				return;
+			}
+
+			$settings = $this->wcmp_settings_data();
+			$roles    = (array) wp_get_current_user()->roles;
+
+			foreach ( (array) $settings['endpoints_settings'] as $key => $item ) {
+				$child = isset( $item['children'][ $current ] ) ? $item['children'][ $current ] : null;
+				if ( $key !== $current && null === $child ) {
+					continue;
+				}
+				// A child inherits its group's restriction.
+				foreach ( array( $item, (array) $child ) as $rule ) {
+					if ( ! empty( $rule['usr_roles'] ) && ! $this->hide_by_usr_roles( (array) $rule['usr_roles'], $roles ) ) {
+						wp_safe_redirect( wc_get_page_permalink( 'myaccount' ) );
+						exit;
+					}
+				}
+				return;
+			}
+		}
+
+		/**
 		 * Redirect to default endpoint.
 		 *
 		 * @access public
@@ -835,6 +871,10 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			// are selected, only those roles see the endpoint. Never redirect
 			// a member to a default endpoint that is hidden from them.
 			$default_visible = empty( $restricted_roles ) || $this->hide_by_usr_roles( $restricted_roles, $user_role );
+			// Never land members on an endpoint the owner hid from the menu.
+			if ( isset( $endpoints[ $default_endpoint ] ) && empty( $endpoints[ $default_endpoint ]['active'] ) ) {
+				$default_visible = false;
+			}
 
 			if ( ! is_wc_endpoint_url( $default_endpoint ) ) {
 				// is_myaccount was already confirmed for THIS request at the
@@ -853,17 +893,35 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		}
 
 		/**
-		 * Create field key.
+		 * Create an ASCII field key (URL slug, DOM id and option key) from a typed name.
+		 *
+		 * Latin names keep core's sanitize_title() result, locale transliteration
+		 * included. For other scripts sanitize_title() returns percent-encoded
+		 * bytes, which 404 as a My Account endpoint and fatal wp_editor(), so the
+		 * name is transliterated with intl when available instead.
 		 *
 		 * @since  1.0.0
-		 * @param  string $key The endpoint slug.
+		 * @since  1.7.0 Always returns ASCII; added $fallback.
+		 * @param  string $name     The typed name or slug.
+		 * @param  string $fallback Returned when no ASCII key can be derived.
 		 * @return string
 		 * @author Wbcom Designs
 		 * @access public
 		 */
-		public function create_field_key( $key ) {
-			// sanitize_title() already lowercases, trims and dash-separates.
-			return sanitize_title( $key );
+		public function create_field_key( $name, $fallback = '' ) {
+			$key = sanitize_title( $name );
+
+			if ( false !== strpos( $key, '%' ) && function_exists( 'transliterator_transliterate' ) ) {
+				$latin = transliterator_transliterate( 'Any-Latin; Latin-ASCII', $name );
+				if ( false !== $latin ) {
+					$key = sanitize_title( $latin );
+				}
+			}
+
+			// Drop any percent-encoded bytes left (no intl, emoji).
+			$key = trim( preg_replace( array( '/%[a-f0-9]{2}/', '/-+/' ), array( '', '-' ), $key ), '-' );
+
+			return '' !== $key ? $key : $fallback;
 		}
 
 		/**
@@ -872,12 +930,14 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @access public
 		 * @since  1.0.0
 		 * @author Wbcom Designs
+		 * @since  1.7.0 Added $label.
 		 * @param  string $endpoint The endpoint slug.
+		 * @param  string $label    The name the store owner typed.
 		 * @return array
 		 */
-		public function wcmp_get_default_endpoint_options( $endpoint ) {
+		public function wcmp_get_default_endpoint_options( $endpoint, $label = '' ) {
 
-			$endpoint_name = $this->wcmp_build_label( $endpoint );
+			$endpoint_name = '' !== $label ? $label : $endpoint;
 			$icon          = $this->wcmp_get_icon( $endpoint );
 
 			// Build endpoint options.
@@ -901,12 +961,14 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @access public
 		 * @since  1.0.0
 		 * @author Wbcom Designs
+		 * @since  1.7.0 Added $label.
 		 * @param  string $group The group slug.
+		 * @param  string $label The name the store owner typed.
 		 * @return array
 		 */
-		public function wcmp_get_default_group_options( $group ) {
+		public function wcmp_get_default_group_options( $group, $label = '' ) {
 
-			$group_name = $this->wcmp_build_label( $group );
+			$group_name = '' !== $label ? $label : $group;
 
 			// Build endpoint options.
 			$options = array(
@@ -930,12 +992,14 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 		 * @access public
 		 * @since  1.0.0
 		 * @author Wbcom Designs
-		 * @param  string $endpoint The endpoint slug.
+		 * @since  1.7.0 Added $label.
+		 * @param  string $endpoint The link slug.
+		 * @param  string $label    The name the store owner typed.
 		 * @return array
 		 */
-		public function wcmp_get_default_link_options( $endpoint ) {
+		public function wcmp_get_default_link_options( $endpoint, $label = '' ) {
 
-			$endpoint_name = $this->wcmp_build_label( $endpoint );
+			$endpoint_name = '' !== $label ? $label : $endpoint;
 
 			// Build endpoint options.
 			$options = array(
@@ -953,15 +1017,6 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			return apply_filters( 'wcmp_get_default_link_options', $options );
 		}
 
-		/**
-		 * Build endpoint label by name.
-		 *
-		 * @access public
-		 * @since  1.0.0
-		 * @author Wbcom Designs
-		 * @param  string $name The endpoint name.
-		 * @return string
-		 */
 		/**
 		 * Render the full My Account portal anywhere.
 		 *
@@ -985,13 +1040,17 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 			}
 		}
 
+		/**
+		 * Build a label from a slug.
+		 *
+		 * @since      1.0.0
+		 * @deprecated 1.7.0 New items keep the name the store owner typed.
+		 * @param      string $name The slug.
+		 * @return     string
+		 */
 		public function wcmp_build_label( $name ) {
-
-			$label = preg_replace( '/[^a-z]/', ' ', $name );
-			$label = trim( $label );
-			$label = ucfirst( $label );
-
-			return $label;
+			_deprecated_function( __METHOD__, '1.7.0' );
+			return ucfirst( trim( str_replace( '-', ' ', $name ) ) );
 		}
 
 		/**

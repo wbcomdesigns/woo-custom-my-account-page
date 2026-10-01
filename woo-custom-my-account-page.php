@@ -10,10 +10,10 @@
  * Plugin Name:       Custom My Account Page for WooCommerce
  * Plugin URI:        https://wbcomdesigns.com/downloads/woocommerce-custom-my-account-page/
  * Description:       This plugin helps you to customize the layout of the "My Account" page, adds new endpoints, groups, links and manage its content easily.
- * Version:           1.6.7
+ * Version:           1.7.0
  * Requires at least: 6.5
- * Requires PHP:      8.0
- * WC tested up to:   9.8
+ * Requires PHP:      8.1
+ * WC tested up to:   11.1
  * WC requires at least: 6.0
  * Author:            Wbcom Designs
  * Author URI:        https://wbcomdesigns.com
@@ -32,7 +32,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Currently plugin version.
  */
 if ( ! defined( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION' ) ) {
-	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.6.7' );
+	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.7.0' );
 }
 
 /**
@@ -141,9 +141,24 @@ add_action(
 		);
 	}
 );
-if ( file_exists( __DIR__ . '/vendor/edd-sl-sdk/edd-sl-sdk.php' ) ) {
-	require_once __DIR__ . '/vendor/edd-sl-sdk/edd-sl-sdk.php';
+// Load the SDK only when it is complete: its classes autoload from src/, so a
+// partial copy would fatal every request. Updates are optional, the site is not.
+$wcmp_sdk_dir = __DIR__ . '/vendor/edd-sl-sdk/';
+if ( file_exists( $wcmp_sdk_dir . 'edd-sl-sdk.php' ) && file_exists( $wcmp_sdk_dir . 'vendor/autoload.php' ) && file_exists( $wcmp_sdk_dir . 'src/Versions.php' ) ) {
+	require_once $wcmp_sdk_dir . 'edd-sl-sdk.php';
+} else {
+	add_action(
+		'admin_notices',
+		function () {
+			if ( current_user_can( 'activate_plugins' ) && ! class_exists( '\\EasyDigitalDownloads\\Updater\\Versions' ) ) {
+				/* translators: %s: plugin name. */
+				$message = sprintf( __( '%s: the update library is incomplete, so automatic updates are off. Reinstall the plugin to restore them.', 'woo-custom-my-account-page' ), 'Custom My Account Page for WooCommerce' );
+				echo '<div class="notice notice-warning"><p>' . esc_html( $message ) . '</p></div>';
+			}
+		}
+	);
 }
+unset( $wcmp_sdk_dir );
 
 /**
  * Begins execution of the plugin.

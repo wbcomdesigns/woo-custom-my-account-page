@@ -1,14 +1,14 @@
 # Developer hooks reference - Custom My Account Page for WooCommerce
 
-**Plugin:** `woo-custom-my-account-page` · **Version:** 1.6.6 · **Requires:** WordPress 6.5+, PHP 8.0+
+**Plugin:** `woo-custom-my-account-page` · **Version:** 1.7.0 · **Requires:** WordPress 6.5+, PHP 8.1+
 
-This is the integrator-facing list of every extension point the plugin exposes: 25 filters and 6 action
+This is the integrator-facing list of every extension point the plugin exposes: 28 filters and 6 action
 hooks, all prefixed `wcmp_`. Use filters to change a value the plugin computes, and actions to inject or
 replace markup in the frontend menu. Templates can also be overridden the standard WooCommerce way (copy
 from `public/templates/` into `yourtheme/woocommerce/`); the hooks below are for cases where an override is
 more than you need.
 
-Every hook is verified against the 1.6.6 source. File and line references point to where each one fires.
+Every hook is verified against the 1.7.0 source. File and line references point to where each one fires.
 
 ## How to read this
 
@@ -58,10 +58,13 @@ Filters that shape the markup and text of the account menu.
 | Filter | Passed | What it does |
 |---|---|---|
 | `wcmp_endpoint_anchor_tag_class` | `string $class` (default `wcmp-{endpoint}`) | Filter the CSS class on a menu item's anchor tag. |
-| `wcmp_endpoint_menu_class` | `array $classes, array $endpoint, array $options` | Filter the CSS classes on a single endpoint's list item. |
-| `wcmp_endpoints_group_class` | `array $classes, array $endpoint, array $options` | Filter the CSS classes on a group's list item. |
+| `wcmp_endpoint_menu_class` | `array $classes, string $endpoint, array $options` | Filter the CSS classes on a single endpoint's list item. |
+| `wcmp_endpoints_group_class` | `array $classes, string $endpoint, array $options` | Filter the CSS classes on a group's list item. |
 | `wcmp_filter_avatar_size` | `int $size` (default `120`) | Change the avatar size in pixels shown in the menu header. |
 | `wcmp_filter_display_name` | `string $display_name` | Change the member name shown in the menu header. |
+| `wcmp_myaccount_menu_template_args` | `array $args` (`endpoints`, `my_account_url`, `avatar`) | Amend the args passed to the `wcmp-myaccount-menu.php` template. |
+| `wcmp_print_single_endpoint_args` | `array $args` (`url`, `endpoint`, `options`, `classes`) | Amend the args passed to the `wcmp-myaccount-menu-item.php` template. |
+| `wcmp_print_endpoints_group_group` | `array $args` (`endpoint`, `options`, `classes`, `class_icon`) | Amend the args passed to the `wcmp-myaccount-menu-group.php` template. |
 
 ## Assets, style, and avatar
 
@@ -99,7 +102,7 @@ that markup rather than add to it.
 |---|---|---|
 | `wcmp_before_endpoints_menu` | none | Before the entire menu wrapper. |
 | `wcmp_before_endpoints_items` | none | Before the list of menu items. |
-| `wcmp_print_endpoints_group` | `array $endpoint, array $options` | To render one group and its children. Default callback prints the group template. |
-| `wcmp_print_single_endpoint` | `array $endpoint, array $options` | To render one endpoint or link item. Default callback prints the item template. Also fired per child inside a group. |
+| `wcmp_print_endpoints_group` | `string $endpoint, array $options` | To render one group and its children. Default callback prints the group template. |
+| `wcmp_print_single_endpoint` | `string $endpoint, array $options` | To render one endpoint or link item. Default callback prints the item template. Also fired per child inside a group. |
 | `wcmp_after_endpoints_items` | none | After the list of menu items. |
 | `wcmp_after_endpoints_menu` | none | After the entire menu wrapper. |

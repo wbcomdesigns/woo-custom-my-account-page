@@ -2,7 +2,7 @@
 /**
  * MY ACCOUNT TEMPLATE MENU GROUP
  *
- * Override by copying to {your-theme}/woo-custom-my-account-page/.
+ * Override by copying to {your-theme}/woocommerce/.
  *
  * @since   1.0.0
  * @package Woo_Custom_My_Account_Page

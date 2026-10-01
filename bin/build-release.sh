@@ -142,7 +142,7 @@ for f in "${REQUIRED[@]}"; do
 done
 
 # --- Gate 6: dev artefacts must NOT be in the artifact. ---------------------
-LEAKED="$( printf '%s\n' "$ZIP_CONTENTS" | grep -E "/(node_modules|\.git|bin|dist)/|/(CLAUDE\.md|package\.json|package-lock\.json|Gruntfile\.js|gruntfile\.js|\.distignore)$" || true )"
+LEAKED="$( printf '%s\n' "$ZIP_CONTENTS" | grep -E "/(node_modules|\.git|bin|dist)/|^[^/]+/audit/|/(CLAUDE\.md|package\.json|package-lock\.json|Gruntfile\.js|gruntfile\.js|\.distignore|\.contract-audit-baseline\.json)$" || true )"
 if [ -n "$LEAKED" ]; then
 	echo "build-release: FAILED - dev artefacts leaked into the zip:" >&2
 	printf '%s\n' "$LEAKED" >&2

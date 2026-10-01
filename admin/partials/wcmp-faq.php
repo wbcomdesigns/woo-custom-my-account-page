@@ -22,10 +22,10 @@ Wbcom_Settings_Page::card_open(
 ?>
 <div class="wcmp-faq-item">
 	<h4><?php esc_html_e( 'Q: How do I customize my WooCommerce My Account page?', 'woo-custom-my-account-page' ); ?></h4>
-	<p><?php esc_html_e( 'A: Navigate to WooCommerce → Custom My Account Page → Endpoints tab. Here you can:', 'woo-custom-my-account-page' ); ?></p>
+	<p><?php esc_html_e( 'A: Navigate to WB Plugins → Woo My Account → Endpoints. Here you can:', 'woo-custom-my-account-page' ); ?></p>
 	<ul>
 		<li><?php esc_html_e( 'Drag and drop to reorder menu items', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Show/hide endpoints using the power icon', 'woo-custom-my-account-page' ); ?></li>
+		<li><?php esc_html_e( 'Show/hide endpoints using the eye icon', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Click on an endpoint to edit its settings', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Use the buttons at the top to add groups, endpoints, or links', 'woo-custom-my-account-page' ); ?></li>
 	</ul>
@@ -48,7 +48,7 @@ Wbcom_Settings_Page::card_open( __( 'Creating & Managing Items', 'woo-custom-my-
 		<li><?php esc_html_e( 'Go to Endpoints tab', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Click "Add endpoint" button', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Enter a name (e.g., "Wishlist")', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Click "Add" and configure the settings:', 'woo-custom-my-account-page' ); ?></li>
+		<li><?php esc_html_e( 'Click "Save" in the dialog, then expand the new item to configure it:', 'woo-custom-my-account-page' ); ?></li>
 	</ol>
 	<ul>
 		<li><?php esc_html_e( 'Endpoint slug: URL-friendly version (e.g., wishlist)', 'woo-custom-my-account-page' ); ?></li>
@@ -96,7 +96,7 @@ Wbcom_Settings_Page::card_open( __( 'Creating & Managing Items', 'woo-custom-my-
 
 <div class="wcmp-faq-item">
 	<h4><?php esc_html_e( 'Q: How do I remove an endpoint?', 'woo-custom-my-account-page' ); ?></h4>
-	<p><?php esc_html_e( 'A: Click on the endpoint to expand it, then click the "Remove" link. This will delete it from your menu. Note: You can also just hide it using the power icon if you want to keep it for later.', 'woo-custom-my-account-page' ); ?></p>
+	<p><?php esc_html_e( 'A: Click on the endpoint to expand it, then click the "Remove" link. This will delete it from your menu. Note: You can also just hide it using the eye icon if you want to keep it for later.', 'woo-custom-my-account-page' ); ?></p>
 </div>
 <?php
 Wbcom_Settings_Page::card_close();
@@ -105,12 +105,10 @@ Wbcom_Settings_Page::card_open( __( 'Customization Options', 'woo-custom-my-acco
 ?>
 <div class="wcmp-faq-item">
 	<h4><?php esc_html_e( 'Q: How do I add icons to menu items?', 'woo-custom-my-account-page' ); ?></h4>
-	<p><?php esc_html_e( 'A: This plugin uses FontAwesome 4.7 icons. To add an icon:', 'woo-custom-my-account-page' ); ?></p>
+	<p><?php esc_html_e( 'A: The plugin bundles a set of Font Awesome icons. To add an icon:', 'woo-custom-my-account-page' ); ?></p>
 	<ol>
 		<li><?php esc_html_e( 'Type an icon name from the bundled set (e.g. fa-tag, fa-heart, fa-user) - the picker previews exactly what members will see', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Find an icon you like (e.g., "shopping-cart")', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Copy the class name (e.g., "fa fa-shopping-cart")', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Paste it into the "Icon" field of your endpoint', 'woo-custom-my-account-page' ); ?></li>
+		<li><?php esc_html_e( 'Save Changes', 'woo-custom-my-account-page' ); ?></li>
 	</ol>
 	<p><strong><?php esc_html_e( 'Popular icons:', 'woo-custom-my-account-page' ); ?></strong></p>
 	<ul>
@@ -125,7 +123,7 @@ Wbcom_Settings_Page::card_open( __( 'Customization Options', 'woo-custom-my-acco
 
 <div class="wcmp-faq-item">
 	<h4><?php esc_html_e( 'Q: How do I restrict endpoints to specific user roles?', 'woo-custom-my-account-page' ); ?></h4>
-	<p><?php esc_html_e( 'A: Each endpoint has a "User roles" dropdown where you can select which roles can see it (e.g., Customer, Subscriber, Administrator). Leave it blank to show to all users. This is useful for:', 'woo-custom-my-account-page' ); ?></p>
+	<p><?php esc_html_e( 'A: Each item has a "Visible to roles" field where you choose which roles can see and open it (e.g., Customer, Subscriber, Administrator). Leave it empty to show it to everyone. Members outside those roles are sent back to My Account if they open the URL directly. This is useful for:', 'woo-custom-my-account-page' ); ?></p>
 	<ul>
 		<li><?php esc_html_e( 'Showing wholesale pricing only to wholesale customers', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Displaying admin tools only to administrators', 'woo-custom-my-account-page' ); ?></li>
@@ -147,13 +145,7 @@ Wbcom_Settings_Page::card_open( __( 'Customization Options', 'woo-custom-my-acco
 
 <div class="wcmp-faq-item">
 	<h4><?php esc_html_e( 'Q: How do I change the styling of my menu?', 'woo-custom-my-account-page' ); ?></h4>
-	<p><?php esc_html_e( 'A: Go to the "Style Options" tab where you can customize:', 'woo-custom-my-account-page' ); ?></p>
-	<ul>
-		<li><?php esc_html_e( 'Menu layout (vertical/horizontal)', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Colors for menu items, backgrounds, and hover states', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Icon styles and sizes', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Typography options', 'woo-custom-my-account-page' ); ?></li>
-	</ul>
+	<p><?php esc_html_e( 'A: The Style tab sets the menu item and hover colours, and the Log out button text, background and hover colours. The General tab sets the menu layout (Sidebar or Tab) and the sidebar position.', 'woo-custom-my-account-page' ); ?></p>
 </div>
 <?php
 Wbcom_Settings_Page::card_close();
@@ -167,7 +159,7 @@ Wbcom_Settings_Page::card_open( __( 'Troubleshooting', 'woo-custom-my-account-pa
 		<li><?php esc_html_e( 'Make sure you clicked "Save Changes" in the admin panel', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Clear your browser cache and refresh the page', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Clear any caching plugins (WP Super Cache, W3 Total Cache, etc.)', 'woo-custom-my-account-page' ); ?></li>
-		<li><?php esc_html_e( 'Check if the endpoint is enabled (power icon should be ON)', 'woo-custom-my-account-page' ); ?></li>
+		<li><?php esc_html_e( 'Check if the endpoint is shown in the menu (eye icon should be ON)', 'woo-custom-my-account-page' ); ?></li>
 		<li><?php esc_html_e( 'Verify user role restrictions aren\'t hiding the item', 'woo-custom-my-account-page' ); ?></li>
 	</ol>
 </div>
@@ -234,7 +226,7 @@ Wbcom_Settings_Page::card_open( __( 'Need More Help?', 'woo-custom-my-account-pa
 ?>
 <p><?php esc_html_e( 'If your question isn\'t answered here, please check out these resources:', 'woo-custom-my-account-page' ); ?></p>
 <ul class="wbcom-feature-list">
-	<li><i data-lucide="book-open"></i><a href="https://docs.wbcomdesigns.com/doc_category/woo-custom-my-account-page/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Full Documentation', 'woo-custom-my-account-page' ); ?></a></li>
+	<li><i data-lucide="book-open"></i><a href="https://docs.wbcomdesigns.com/woo-family/woocommerce-custom-my-account-page/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Full Documentation', 'woo-custom-my-account-page' ); ?></a></li>
 	<li><i data-lucide="life-buoy"></i><a href="https://wbcomdesigns.com/support/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Support Center', 'woo-custom-my-account-page' ); ?></a></li>
 	<li><i data-lucide="message-square"></i><a href="https://wbcomdesigns.com/contact/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Contact Us', 'woo-custom-my-account-page' ); ?></a></li>
 </ul>

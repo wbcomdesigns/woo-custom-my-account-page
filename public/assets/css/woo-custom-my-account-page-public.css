@@ -453,10 +453,14 @@ div#wcmp-avatar-form-overlay.loading:before {
 #my-account-menu-tab .user-info p.username {
 	margin-bottom: 15px;
 }
+/* :has() reaches the content whatever wrapper the theme adds (Reign nests it). */
 #my-account-menu-tab ~ .woocommerce-MyAccount-content,
-#my-account-menu-tab ~ .woocommerce-MyAccount-content .woocommerce-MyAccount-content {
+#my-account-menu-tab ~ .woocommerce-MyAccount-content .woocommerce-MyAccount-content,
+.woocommerce:has(#my-account-menu-tab) .woocommerce-MyAccount-content {
 	float: none;
 	width: 100%;
+	margin: 0;
+	box-sizing: border-box;
 }
 #my-account-menu-tab .myaccount-menu li.active > a,
 #my-account-menu-tab .myaccount-menu li.is-active > a {
