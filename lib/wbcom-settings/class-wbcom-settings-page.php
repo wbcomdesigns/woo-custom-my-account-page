@@ -24,7 +24,7 @@
  * added by a Pro plugin from being laid out differently to one added by its free half.
  *
  * @package Wbcom_Settings
- * @version 1.0.4
+ * @version 1.0.5
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -42,7 +42,7 @@ class Wbcom_Settings_Page {
 	 * @since 1.0.0
 	 * @var   string
 	 */
-	const VERSION = '1.0.4';
+	const VERSION = '1.0.5';
 
 	/**
 	 * Parent menu slug shared by every Wbcom plugin.
@@ -151,6 +151,25 @@ class Wbcom_Settings_Page {
 	}
 
 	/**
+	 * Load translations for the hub's own strings. They use the shared "wbcom-settings" domain
+	 * because any plugin's copy may be the one rendering the hub. Looks in
+	 * wp-content/languages/plugins/wbcom-settings-{locale}.mo, then this copy's languages/ folder.
+	 *
+	 * @since 1.0.5
+	 */
+	private static function load_textdomain() {
+		if ( is_textdomain_loaded( 'wbcom-settings' ) ) {
+			return;
+		}
+
+		$mofile = 'wbcom-settings-' . determine_locale() . '.mo';
+
+		if ( ! load_textdomain( 'wbcom-settings', WP_LANG_DIR . '/plugins/' . $mofile ) ) {
+			load_textdomain( 'wbcom-settings', __DIR__ . '/languages/' . $mofile );
+		}
+	}
+
+	/**
 	 * Render the hub at the shared "WB Plugins" menu.
 	 *
 	 * Built from the WordPress submenu table, NOT from this library's own registry. That matters
@@ -166,6 +185,8 @@ class Wbcom_Settings_Page {
 	 * @since 1.0.0
 	 */
 	public static function render_welcome() {
+		self::load_textdomain();
+
 		$entries = isset( $GLOBALS['submenu'][ self::PARENT ] ) && is_array( $GLOBALS['submenu'][ self::PARENT ] )
 			? $GLOBALS['submenu'][ self::PARENT ]
 			: array();
