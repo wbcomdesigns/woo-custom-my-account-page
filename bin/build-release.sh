@@ -116,6 +116,8 @@ rsync -a "${EXCLUDES[@]}" --exclude "/$DIST" ./ "$STAGE/"
 # Sweep OS metadata as a second guard behind the .distignore rule.
 find "$STAGE" \( -name '.DS_Store' -o -name 'Thumbs.db' \) -delete
 
+# zip adds to an existing archive, so a file removed since the last build would survive. Start fresh.
+rm -f "$ZIP"
 ( cd "$DIST" && zip -qr "$SLUG-$VERSION.zip" "$SLUG" )
 
 # --- Gate 5: the artifact must contain what the plugin needs to run. --------
