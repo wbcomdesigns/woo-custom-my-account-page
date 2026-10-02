@@ -6,7 +6,7 @@
  * two products cannot drift into looking like two different admin experiences.
  *
  * @package Wbcom_Settings
- * @version 1.0.2
+ * @version 1.0.4
  */
 
 .wbcom-admin *,
@@ -24,6 +24,10 @@
 	--wbcom-accent-strong: var(--wp-admin-theme-color-darker-10, #135e96);
 	--wbcom-success: #16a34a;
 	--wbcom-sidebar-bg: #f6f7f7;
+	--wbcom-surface-alt: #fafafa;
+	--wbcom-toggle-off: #c3c4c7;
+	--wbcom-accent-soft: #eef2ff;
+	--wbcom-on-accent: #fff;
 	margin-inline-end: 20px;
 }
 
@@ -40,7 +44,8 @@
 .wbcom-admin .notice.settings-error {
 	position: relative;
 	margin: 0 0 16px;
-	padding: 12px 16px 12px 40px;
+	padding-block: 12px;
+	padding-inline: 16px 40px;
 	background: var(--wbcom-surface);
 	border: 1px solid var(--wbcom-border);
 	border-inline-start: 4px solid var(--wbcom-success);
@@ -99,7 +104,7 @@
 	height: 34px;
 	border-radius: 8px;
 	background: var(--wbcom-accent);
-	color: #fff;
+	color: var(--wbcom-on-accent);
 	flex: 0 0 auto;
 }
 
@@ -157,7 +162,7 @@
 
 .wbcom-settings-nav-item.is-active {
 	background: var(--wbcom-accent);
-	color: #fff;
+	color: var(--wbcom-on-accent);
 	font-weight: 600;
 }
 
@@ -172,8 +177,8 @@
 
 .wbcom-pro-badge {
 	flex: 0 0 auto;
-	background: linear-gradient(-135deg, #6366f1, #8b5cf6);
-	color: #fff;
+	background: linear-gradient(135deg, #6366f1, #8b5cf6);
+	color: var(--wbcom-on-accent);
 	font-size: 9px;
 	font-weight: 700;
 	padding: 1px 6px;
@@ -212,7 +217,7 @@
 .wbcom-card__head {
 	padding: 14px 20px 12px;
 	border-bottom: 1px solid var(--wbcom-border);
-	background: #fafafa;
+	background: var(--wbcom-surface-alt);
 }
 
 .wbcom-card__title {
@@ -310,7 +315,7 @@
 	height: 7px;
 	border-inline-start: 2px solid var(--wbcom-accent);
 	border-bottom: 2px solid var(--wbcom-accent);
-	transform: rotate(45deg);
+	transform: rotate(-45deg);
 }
 
 .wbcom-cta__action {
@@ -374,7 +379,7 @@
 .wbcom-toggle-slider {
 	position: absolute;
 	inset: 0;
-	background: #c3c4c7;
+	background: var(--wbcom-toggle-off);
 	border-radius: 999px;
 	transition: background 0.15s ease;
 	pointer-events: none;
@@ -387,7 +392,7 @@
 	height: 18px;
 	inset-block-start: 3px;
 	inset-inline-start: 3px;
-	background: #fff;
+	background: var(--wbcom-surface);
 	border-radius: 50%;
 	transition: transform 0.15s ease;
 }
@@ -397,7 +402,7 @@
 }
 
 .wbcom-toggle input:checked + .wbcom-toggle-slider::before {
-	transform: translateX(-20px);
+	transform: translateX(20px);
 }
 
 .wbcom-toggle input:focus-visible + .wbcom-toggle-slider {
@@ -430,10 +435,11 @@
 	}
 
 	/* The nav becomes a scrollable row rather than a tall column that buries the content. */
+	/* Wrap rather than scroll: a scrolling row hid the last tabs with no visual hint. */
 	.wbcom-settings-nav-group {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 6px;
-		overflow-x: auto;
 	}
 
 	.wbcom-settings-nav-group + .wbcom-settings-nav-group {
@@ -478,6 +484,14 @@
 	text-decoration: none;
 }
 
+/* Core's `.wp-core-ui .button` (0,2,0) otherwise wins and drops the flex layout, so icons sit high. */
+.wp-core-ui .wbcom-admin .button.wbcom-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	min-height: 40px;
+}
+
 .wbcom-btn:hover {
 	background: var(--wbcom-sidebar-bg);
 	color: var(--wbcom-text);
@@ -488,15 +502,18 @@
 	outline-offset: 2px;
 }
 
-.wbcom-btn--primary {
+.wbcom-admin .wbcom-btn--primary,
+.wp-core-ui .wbcom-admin .button.wbcom-btn--primary {
 	background: var(--wbcom-accent);
 	border-color: var(--wbcom-accent);
-	color: #fff;
+	color: var(--wbcom-on-accent);
 }
 
-.wbcom-btn--primary:hover {
+.wbcom-admin .wbcom-btn--primary:hover,
+.wp-core-ui .wbcom-admin .button.wbcom-btn--primary:hover,
+.wp-core-ui .wbcom-admin .button.wbcom-btn--primary:focus {
 	background: var(--wbcom-accent-strong);
-	color: #fff;
+	color: var(--wbcom-on-accent);
 }
 
 /* Getting-started steps ------------------------------------------------------------------ */
@@ -529,7 +546,7 @@
 	height: 26px;
 	border-radius: 50%;
 	background: var(--wbcom-accent);
-	color: #fff;
+	color: var(--wbcom-on-accent);
 	font-size: 12px;
 	font-weight: 700;
 	flex: 0 0 auto;
@@ -583,7 +600,7 @@
 	border: 1px solid var(--wbcom-border);
 	border-radius: 6px;
 	margin-bottom: 8px;
-	background: #fbfbfc;
+	background: var(--wbcom-surface-alt);
 }
 
 .wbcom-faq__item summary {
@@ -615,7 +632,8 @@
 .wbcom-faq__item ul,
 .wbcom-faq__item ol {
 	margin: 0 0 12px;
-	padding: 0 34px 0 14px;
+	padding-block: 0;
+	padding-inline: 34px 14px;
 	color: var(--wbcom-muted);
 }
 
@@ -700,7 +718,7 @@
 	margin: 0 -20px 12px;
 	padding: 14px 20px 12px;
 	border-bottom: 1px solid var(--wbcom-border);
-	background: #fafafa;
+	background: var(--wbcom-surface-alt);
 	font-size: 13px;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -751,6 +769,22 @@
 .wbcom-settings-body .wbcom-field-group {
 	flex-direction: row;
 	align-items: center;
+	/*
+	 * Keep the control beside its label in a bounded column, not pinned to the
+	 * far card edge. The old justify-content:space-between + flex:0 0 auto pushed
+	 * every control hundreds of px right of its label on wide screens.
+	 */
+	justify-content: flex-start;
+}
+
+.wbcom-settings-body .wbcom-field-group > .wbcom-field-info {
+	flex: 0 1 260px;
+}
+
+.wbcom-settings-body .wbcom-field-group > .wbcom-field-control {
+	flex: 1 1 auto;
+	max-width: 420px;
+	min-width: 0;
 }
 
 /*
@@ -766,6 +800,15 @@
 .wbcom-settings-body .wbcom-field-group.wbcom-field--stacked .wbcom-field-control {
 	flex: 1 1 auto;
 	width: 100%;
+}
+
+/*
+ * When the group stacks (column), the label must NOT keep its row flex-basis:
+ * flex-basis is read along the main axis, so a 260px width basis becomes a 260px
+ * HEIGHT here, opening a large gap above the control. Reset to natural height.
+ */
+.wbcom-settings-body .wbcom-field-group.wbcom-field--stacked > .wbcom-field-info {
+	flex: 0 0 auto;
 }
 
 .wbcom-settings-body .wbcom-field-info {
@@ -788,10 +831,55 @@
 	min-height: 90px;
 }
 
+/*
+ * Choice groups (radio lists) inside a field control render as inline-flex
+ * chips: each option stays on one line so a long option label
+ * ("With an \"Apply filters\" button") never breaks mid-phrase, and the group
+ * wraps BETWEEN whole options when the column is narrow. Before this, options
+ * were display:inline + white-space:normal, so long labels split across lines
+ * and read as broken. Scoped to radio inputs, so .wbcom-toggle switches and
+ * single checkboxes are untouched.
+ */
+.wbcom-settings-body .wbcom-field-control:has(> label input[type="radio"]) {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 18px;
+}
+
+.wbcom-settings-body .wbcom-field-control > label:has(input[type="radio"]) {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	margin: 0;
+	white-space: nowrap;
+}
+
 @media screen and (max-width: 782px) {
 	.wbcom-settings-body .wbcom-field-group {
 		flex-direction: row;
 		align-items: flex-start;
+	}
+}
+
+/*
+ * Phone: stack the label over a full-width control. The two-column row starves
+ * the control column on a narrow screen, so a bounded input or a nowrap radio
+ * chip ("With an \"Apply filters\" button") clips at the viewport edge. Stacking
+ * gives every control the full width and lets choice chips wrap cleanly.
+ */
+@media screen and (max-width: 600px) {
+	.wbcom-settings-body .wbcom-field-group {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.wbcom-settings-body .wbcom-field-group > .wbcom-field-info {
+		flex: 0 0 auto;
+	}
+
+	.wbcom-settings-body .wbcom-field-group > .wbcom-field-control {
+		max-width: none;
 	}
 }
 
@@ -917,7 +1005,7 @@
 	width: 44px;
 	height: 44px;
 	border-radius: 8px;
-	background: #eef2ff;
+	background: var(--wbcom-accent-soft);
 	color: var(--wbcom-accent);
 	margin-bottom: 14px;
 }
@@ -1022,4 +1110,14 @@
 	padding: 14px 0 4px;
 	border-top: 1px solid var(--wbcom-border);
 	margin-top: 8px;
+}
+
+/* RTL: the two transforms that logical properties cannot express. settings-rtl.css is a plain
+ * copy of this file, kept only because hosts enqueue it with wp_style_add_data( 'rtl', 'replace' ). */
+.rtl .wbcom-cta__benefits li::before {
+	transform: rotate(45deg);
+}
+
+.rtl .wbcom-toggle input:checked + .wbcom-toggle-slider::before {
+	transform: translateX(-20px);
 }
