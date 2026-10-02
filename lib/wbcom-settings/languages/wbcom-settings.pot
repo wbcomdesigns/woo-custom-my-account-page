@@ -1,0 +1,49 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Wbcom Settings\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-02T12:43:30+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: wbcom-settings\n"
+
+#: class-wbcom-settings-page.php:233
+msgid "WB Plugins"
+msgstr ""
+
+#. translators: %d: number of active Wbcom plugins.
+#: class-wbcom-settings-page.php:239
+#, php-format
+msgid "%d Wbcom plugin active on this site."
+msgid_plural "%d Wbcom plugins active on this site."
+msgstr[0] ""
+msgstr[1] ""
+
+#: class-wbcom-settings-page.php:251
+msgid "No Wbcom plugins attached to this hub yet"
+msgstr ""
+
+#: class-wbcom-settings-page.php:252
+msgid "Activate one and it will appear here automatically."
+msgstr ""
+
+#: class-wbcom-settings-page.php:264
+msgid "Open settings"
+msgstr ""
+
+#: class-wbcom-settings-page.php:273
+msgid "About WB Plugins"
+msgstr ""
+
+#: class-wbcom-settings-page.php:276
+msgid "This hub is the single entry point for every Wbcom Designs plugin installed on your site. Each plugin lives on its own page under this menu and keeps its own settings, licence, and data."
+msgstr ""
+
+#: class-wbcom-settings-page.php:280
+msgid "Visit wbcomdesigns.com for more plugins and themes"
+msgstr ""

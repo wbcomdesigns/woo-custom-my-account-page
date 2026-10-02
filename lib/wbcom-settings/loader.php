@@ -18,7 +18,7 @@
  *     wbcom_settings_register( '1.0.0', __DIR__ . '/lib/wbcom-settings/class-wbcom-settings-page.php' );
  *
  * @package Wbcom_Settings
- * @version 1.0.4
+ * @version 1.0.5
  */
 
 defined( 'ABSPATH' ) || exit;
