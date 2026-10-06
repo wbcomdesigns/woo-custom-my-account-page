@@ -98,6 +98,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	</div>
 	<div class="wbcom-save-bar">
-		<?php submit_button( __( 'Save Changes', 'woo-custom-my-account-page' ), 'wbcom-btn wbcom-btn--primary', 'submit', false ); ?>
+		<?php submit_button( __( 'Save Changes', 'woo-custom-my-account-page' ), 'wbcom-btn wbcom-btn--primary', 'submit', false, array( 'id' => 'wcmp-save-endpoints' ) ); ?>
 	</div>
 </form>

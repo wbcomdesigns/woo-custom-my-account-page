@@ -367,7 +367,7 @@ class Woo_Custom_My_Account_Page_Admin {
 		);
 		?>
 		<ul class="wbcom-feature-list">
-			<li><i data-lucide="book-open"></i><a href="https://docs.wbcomdesigns.com/woo-family/woocommerce-custom-my-account-page/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Documentation', 'woo-custom-my-account-page' ); ?></a></li>
+			<li><i data-lucide="book-open"></i><a href="https://github.com/wbcomdesigns/woo-custom-my-account-page/tree/master/docs/website" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Documentation', 'woo-custom-my-account-page' ); ?></a></li>
 			<li><i data-lucide="life-buoy"></i><a href="https://wbcomdesigns.com/support/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Support center', 'woo-custom-my-account-page' ); ?></a></li>
 			<li><i data-lucide="message-square"></i><a href="https://wbcomdesigns.com/submit-review/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Share your feedback', 'woo-custom-my-account-page' ); ?></a></li>
 		</ul>
@@ -455,7 +455,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			</div>
 
 			<div class="wbcom-save-bar">
-				<?php submit_button( __( 'Save Changes', 'woo-custom-my-account-page' ), 'wbcom-btn wbcom-btn--primary', 'submit', false ); ?>
+				<?php submit_button( __( 'Save Changes', 'woo-custom-my-account-page' ), 'wbcom-btn wbcom-btn--primary', 'submit', false, array( 'id' => 'wcmp-save-general' ) ); ?>
 			</div>
 		</form>
 		<?php
@@ -501,7 +501,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			<?php endforeach; ?>
 
 			<div class="wbcom-save-bar">
-				<?php submit_button( __( 'Save Changes', 'woo-custom-my-account-page' ), 'wbcom-btn wbcom-btn--primary', 'submit', false ); ?>
+				<?php submit_button( __( 'Save Changes', 'woo-custom-my-account-page' ), 'wbcom-btn wbcom-btn--primary', 'submit', false, array( 'id' => 'wcmp-save-style' ) ); ?>
 			</div>
 		</form>
 		<?php
@@ -774,14 +774,15 @@ class Woo_Custom_My_Account_Page_Admin {
 			$sanitized['default_endpoint'] = sanitize_title( $input['default_endpoint'] );
 		}
 
-		// Sanitize menu style (sidebar or tab).
+		// Both selects store one of a fixed set; anything else keeps the default.
+		$defaults = instantiate_woo_custom_myaccount_functions()->default_general_settings();
+
 		if ( isset( $input['menu_style'] ) ) {
-			$sanitized['menu_style'] = sanitize_text_field( $input['menu_style'] );
+			$sanitized['menu_style'] = in_array( $input['menu_style'], array( 'sidebar', 'tab' ), true ) ? $input['menu_style'] : $defaults['menu_style'];
 		}
 
-		// Sanitize sidebar position (left or right) - matches form field name.
 		if ( isset( $input['sidebar_position'] ) ) {
-			$sanitized['sidebar_position'] = sanitize_text_field( $input['sidebar_position'] );
+			$sanitized['sidebar_position'] = in_array( $input['sidebar_position'], array( 'left', 'right' ), true ) ? $input['sidebar_position'] : $defaults['sidebar_position'];
 		}
 
 		return $sanitized;
