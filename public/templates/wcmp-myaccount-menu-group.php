@@ -21,10 +21,12 @@ $class_icon = isset( $class_icon ) ? $class_icon : '';
 
 $wcmp_group_open = ( 'yes' === $options['open'] );
 $wcmp_submenu_id = 'wcmp-group-' . sanitize_html_class( $endpoint );
+// Tab layout keeps groups "open" for the hover CSS, but they start hidden.
+$wcmp_expanded = $wcmp_group_open && ! in_array( 'is-tab', $classes, true );
 ?>
 <li class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 
-	<button type="button" class="group-opener" aria-expanded="<?php echo $wcmp_group_open ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $wcmp_submenu_id ); ?>">
+	<button type="button" class="group-opener" aria-expanded="<?php echo $wcmp_expanded ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $wcmp_submenu_id ); ?>">
 		<?php
 		if ( ! empty( $options['icon'] ) ) :
 			// Prevent double fa-.

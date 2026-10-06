@@ -135,6 +135,18 @@ jQuery( document ).ready(
 			// Update dialog title to include required asterisk
 			content.closest('.ui-dialog').find('.ui-dialog-title').html(title + '<span class="wcmp-required">*</span>');
 
+			// Enter in the name field saves, same as clicking Save.
+			content.on(
+				'keydown',
+				'.wcmp-field-input',
+				function( e ) {
+					if ( 'Enter' === e.key ) {
+						e.preventDefault();
+						content.closest( '.ui-dialog' ).find( '.ui-dialog-buttonpane button' ).first().trigger( 'click' );
+					}
+				}
+			);
+
 		};
 
 		$.fn.add_new_field_handler = function( target ){
@@ -218,8 +230,11 @@ jQuery( document ).ready(
 		$( document ).on(
 			'keyup',
 			'.new-field-form .wcmp-field-input',
-			function(){
-				$( this ).parents('.new-field-form').find('.error-msg').empty();
+			function( e ){
+				// Enter submits; clearing on its keyup would wipe the message it just set.
+				if ( 'Enter' !== e.key ) {
+					$( this ).parents('.new-field-form').find('.error-msg').empty();
+				}
 			}
 		);
 
@@ -270,8 +285,12 @@ jQuery( document ).ready(
 				confirm_box.dialog( {
 					title: wcmp.remove_title,
 					modal: true,
-					width: 420,
+					width: Math.min( 420, window.innerWidth - 32 ),
 					resizable: false,
+					// Destructive dialog: start on Cancel so Enter never deletes by accident.
+					open: function() {
+						$( this ).closest( '.ui-dialog' ).find( '.ui-dialog-buttonpane button' ).last().trigger( 'focus' );
+					},
 					buttons: [
 						{
 							text: wcmp.remove_confirm,

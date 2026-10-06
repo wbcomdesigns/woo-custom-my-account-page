@@ -124,7 +124,7 @@ alone resolves to nothing on BuddyX.
     --wcmp-accent: var(--bx-color-accent,
                   var(--reign-accent-color,
                   var(--wp--preset--color--primary,
-                  var(--wp--preset--color--accent, #157dfd))));
+                  var(--wp--preset--color--accent, #1565c0))));
 
     --wcmp-bg:     var(--bx-color-bg-page,
                   var(--reign-site-body-bg-color,
