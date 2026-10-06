@@ -25,7 +25,7 @@ $wcmp_types      = Woo_Custom_My_Account_Page_Public::AVATAR_TYPES;
 	</div>
 	<div class="wcmp-popup-content">
 		<form id="wcmp-avatar-upload" class="wcmp-avatar-upload" enctype="multipart/form-data" method="post"
-			data-max-bytes="<?php echo esc_attr( $wcmp_max_bytes ); ?>"
+			data-max-bytes="<?php echo esc_attr( (string) $wcmp_max_bytes ); ?>"
 			data-types="<?php echo esc_attr( implode( ',', $wcmp_types ) ); ?>"
 			data-size-error="<?php esc_attr_e( 'Image size must be less than 2MB.', 'woo-custom-my-account-page' ); ?>"
 			data-type-error="<?php esc_attr_e( 'Invalid file type. Only JPG, PNG, GIF and WebP images are allowed.', 'woo-custom-my-account-page' ); ?>">
