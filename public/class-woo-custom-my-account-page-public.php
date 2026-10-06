@@ -27,6 +27,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Woo_Custom_My_Account_Page_Public {
 
 	/**
+	 * Largest avatar upload accepted, in bytes. The upload form reads it too,
+	 * so the browser-side check and this server-side one never disagree.
+	 *
+	 * @since 1.7.1
+	 */
+	const AVATAR_MAX_BYTES = 2097152;
+
+	/**
+	 * Avatar MIME types accepted (upload handler and the form's accept list).
+	 *
+	 * @since 1.7.1
+	 */
+	const AVATAR_TYPES = array( 'image/jpeg', 'image/png', 'image/gif', 'image/webp' );
+
+	/**
 	 * The version of this plugin.
 	 *
 	 * @since    1.0.0
@@ -214,7 +229,7 @@ class Woo_Custom_My_Account_Page_Public {
 		}
 
 		// Security: Enhanced file type validation with MIME check.
-		$allowed_types = array( 'image/jpeg', 'image/png', 'image/gif', 'image/webp' );
+		$allowed_types = self::AVATAR_TYPES;
 		$file_tmp_name = isset( $avatar_file['tmp_name'] ) ? $avatar_file['tmp_name'] : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$file_name     = isset( $avatar_file['name'] ) ? sanitize_file_name( $avatar_file['name'] ) : '';
 		$file_type     = wp_check_filetype_and_ext( $file_tmp_name, $file_name );
@@ -224,8 +239,8 @@ class Woo_Custom_My_Account_Page_Public {
 			return;
 		}
 
-		// Check file size (max 2MB).
-		$max_size  = 2 * 1024 * 1024;
+		// Check file size.
+		$max_size  = self::AVATAR_MAX_BYTES;
 		$file_size = isset( $avatar_file['size'] ) ? absint( $avatar_file['size'] ) : 0;
 		if ( $file_size > $max_size ) {
 			wc_add_notice( __( 'Image size must be less than 2MB.', 'woo-custom-my-account-page' ), 'error' );
@@ -612,19 +627,21 @@ class Woo_Custom_My_Account_Page_Public {
 				'enctype' => array(),
 				'class'   => array(),
 				'id'      => array(),
+				'data-*'  => true,
 			),
 			'input'  => array(
-				'type'        => array(),
-				'name'        => array(),
-				'value'       => array(),
-				'class'       => array(),
-				'id'          => array(),
-				'placeholder' => array(),
-				'required'    => array(),
-				'checked'     => array(),
-				'disabled'    => array(),
-				'readonly'    => array(),
-				'accept'      => array(),
+				'type'             => array(),
+				'name'             => array(),
+				'value'            => array(),
+				'class'            => array(),
+				'id'               => array(),
+				'placeholder'      => array(),
+				'required'         => array(),
+				'checked'          => array(),
+				'disabled'         => array(),
+				'readonly'         => array(),
+				'accept'           => array(),
+				'aria-describedby' => array(),
 			),
 			'button' => array(
 				'type'     => array(),
@@ -633,26 +650,39 @@ class Woo_Custom_My_Account_Page_Public {
 				'name'     => array(),
 				'value'    => array(),
 				'disabled' => array(),
+				'form'     => array(),
 			),
 			'label'  => array(
 				'for'   => array(),
 				'class' => array(),
 			),
 			'div'    => array(
-				'class' => array(),
-				'id'    => array(),
+				'class'           => array(),
+				'id'              => array(),
+				'role'            => array(),
+				'aria-modal'      => array(),
+				'aria-labelledby' => array(),
 			),
 			'span'   => array(
-				'class' => array(),
+				'class'     => array(),
+				'id'        => array(),
+				'aria-live' => array(),
+			),
+			'h2'     => array(
 				'id'    => array(),
+				'class' => array(),
 			),
 			'img'    => array(
-				'src'    => array(),
-				'alt'    => array(),
-				'class'  => array(),
-				'id'     => array(),
-				'width'  => array(),
-				'height' => array(),
+				'src'      => array(),
+				'alt'      => array(),
+				'class'    => array(),
+				'id'       => array(),
+				'width'    => array(),
+				'height'   => array(),
+				'srcset'   => array(),
+				'loading'  => array(),
+				'decoding' => array(),
+				'hidden'   => array(),
 			),
 			'a'      => array(
 				'href'   => array(),
@@ -662,13 +692,17 @@ class Woo_Custom_My_Account_Page_Public {
 				'rel'    => array(),
 			),
 			'p'      => array(
-				'class' => array(),
+				'class'  => array(),
+				'id'     => array(),
+				'role'   => array(),
+				'hidden' => array(),
 			),
 			'br'     => array(),
 			'strong' => array(),
 			'em'     => array(),
 			'i'      => array(
-				'class' => array(),
+				'class'       => array(),
+				'aria-hidden' => array(),
 			),
 		);
 	}

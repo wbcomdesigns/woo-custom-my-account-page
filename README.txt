@@ -164,6 +164,9 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 
 = 1.7.1 - October 2026 =
 
+* Improve  - The avatar upload popup is redesigned: a drag-and-drop image picker with a preview, size and type checks before uploading, one clear Upload button, and full keyboard support.
+* Improve  - The Endpoints builder now matches the rest of the settings screen: the same icons, colours that follow your admin colour scheme, and larger tap targets on phones.
+* Improve  - A custom page with no content now says so instead of showing the Dashboard text; admins get a link to add content.
 * Fix      - A removed menu item no longer leaves PHP warnings or an empty entry inside its group; saving the Endpoints screen cleans up the stored menu order.
 * Fix      - With the sidebar set to the right, the account page now stacks correctly on phones and small tablets on Reign instead of squeezing the content off the screen.
 * Fix      - Documentation links now open the plugin documentation instead of a missing page.
@@ -172,6 +175,8 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 * Fix      - The Delete confirmation now starts on Cancel, so Enter never removes an item by accident, and it fits on phone screens.
 * Fix      - In the Tab layout, group dropdowns stay on screen on tablets and report their open state correctly to screen readers.
 * Fix      - The active menu item colour now meets WCAG AA contrast on themes that do not set an accent colour.
+* Fix      - The Endpoints builder no longer overlaps item names with their type labels in right-to-left languages.
+* Fix      - Row controls in the Endpoints builder (expand, Hide from menu, Remove) now work from the keyboard.
 * Security - Menu layout and sidebar position only accept their listed values; anything else falls back to the default.
 * Dev      - Updated build-tool dependencies.
 

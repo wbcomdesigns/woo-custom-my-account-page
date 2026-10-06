@@ -207,6 +207,20 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 				 * model core uses for post_content.
 				 */
 				echo do_shortcode( wp_kses_post( $content ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Stored content is kses-sanitized before shortcode expansion, matching core post rendering.
+			} elseif ( 'dashboard' !== $key && ! has_action( 'woocommerce_account_' . $key . '_endpoint' ) ) {
+				/*
+				 * A custom page with no content and nothing else rendering it:
+				 * WooCommerce would fall back to the Dashboard text, so the menu
+				 * would highlight one page while showing another. Say it is empty,
+				 * in WooCommerce's own notice style; admins also get a way to fill it.
+				 */
+				remove_action( 'woocommerce_account_content', 'woocommerce_account_content' );
+
+				$message = esc_html__( 'There is nothing on this page yet.', 'woo-custom-my-account-page' );
+				if ( current_user_can( 'manage_options' ) ) {
+					$message .= ' <a href="' . esc_url( admin_url( 'admin.php?page=woo-custom-myaccount-page&tab=wcmp-endpoints' ) ) . '">' . esc_html__( 'Add content to this page', 'woo-custom-my-account-page' ) . '</a>';
+				}
+				wc_print_notice( $message, 'notice' );
 			}
 		}
 

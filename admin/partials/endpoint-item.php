@@ -42,24 +42,29 @@ $editor_options            = array(
 <li class="dd-item endpoint" data-id="<?php echo esc_attr( $endpoint ); ?>" data-type="endpoint">
 	<label class="on-off-endpoint" for="<?php echo esc_attr( 'wcmp_endpoint_' . esc_attr( $endpoint ) . '_active' ); ?>">
 		<input type="checkbox" class="hide-show-check" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $endpoint ); ?>][active]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $endpoint . '_active' ); ?>" value="<?php echo esc_attr( $endpoint ); ?>" <?php checked( esc_attr( $options['active'] ), $endpoint ); ?>>
-		<span class="dashicons dashicons-visibility"></span>
+		<i class="wcmp-eye" data-lucide="eye" aria-hidden="true"></i>
+		<span class="screen-reader-text"><?php esc_html_e( 'Show in menu', 'woo-custom-my-account-page' ); ?></span>
 	</label>
-	<div class="open-options field-type">
+	<button type="button" class="open-options field-type" aria-expanded="false">
 		<span class="wcmp-type-badge wcmp-type-endpoint">
 			<?php
 			esc_html_e( 'Endpoint', 'woo-custom-my-account-page' );
 			?>
 		</span>
-		<span class="dashicons dashicons-arrow-down-alt2"></span>
-	</div>
+		<i class="wcmp-chevron" data-lucide="chevron-down" aria-hidden="true"></i>
+		<span class="screen-reader-text"><?php echo esc_html( sprintf( /* translators: %s: menu item label. */ __( 'Edit %s', 'woo-custom-my-account-page' ), $options['label'] ) ); ?></span>
+	</button>
 	<div class="dd-handle endpoint-content">
 		<!-- Header -->
 		<div class="endpoint-header">
 			<?php
-			$icon_class = isset( $options['icon'] ) ? $options['icon'] : '';
-			$dashicon   = Woo_Custom_My_Account_Page_Admin::wcmp_fa_to_dashicon( $icon_class );
-			?>
-			<span class="wcmp-icon-preview dashicons dashicons-<?php echo esc_attr( $dashicon ); ?>"></span>
+			$icon_class = isset( $options['icon'] ) ? (string) $options['icon'] : '';
+			if ( '' !== $icon_class ) :
+				// Same rule as the front-end menu templates, so the preview matches what customers see.
+				$icon_class = false === strpos( $icon_class, 'fa-' ) ? 'fa-' . $icon_class : $icon_class;
+				?>
+				<i class="wcmp-icon-preview fa <?php echo esc_attr( $icon_class ); ?>" aria-hidden="true"></i>
+			<?php endif; ?>
 			<?php echo esc_html( $options['label'] ); ?>
 			<span class="sub-item-label">
 				<i>
@@ -74,17 +79,17 @@ $editor_options            = array(
 		<div class="endpoint-options" style="display: none;">
 
 			<div class="options-row">
-				<span class="hide-show-trigger">
+				<button type="button" class="wcmp-link-btn hide-show-trigger">
 					<?php
 					esc_html_e( 'Hide from menu', 'woo-custom-my-account-page' );
 					?>
 
-				</span>
+				</button>
 				<?php if ( ! array_key_exists( $endpoint, $default_endpoint_settings ) ) { ?>
-					<span class="sep">|</span>
-					<span class="remove-trigger" data-endpoint="<?php echo esc_attr( $endpoint ); ?>">
+					<span class="sep" aria-hidden="true">|</span>
+					<button type="button" class="wcmp-link-btn remove-trigger" data-endpoint="<?php echo esc_attr( $endpoint ); ?>">
 						<?php esc_html_e( 'Remove', 'woo-custom-my-account-page' ); ?>
-					</span>
+					</button>
 				<?php } ?>
 			</div>
 

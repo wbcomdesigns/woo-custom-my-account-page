@@ -129,8 +129,6 @@ class Woo_Custom_My_Account_Page_Admin {
 						'nonce'          => wp_create_nonce( 'wcmp_add_field' ),
 						'show_lbl'       => esc_html__( 'Show in menu', 'woo-custom-my-account-page' ),
 						'hide_lbl'       => esc_html__( 'Hide from menu', 'woo-custom-my-account-page' ),
-						'checked'        => '<span class="dashicons dashicons-yes"></span>',
-						'error_icon'     => '<span class="dashicons dashicons-no"></span>',
 						'empty_field'    => esc_html__( 'This field is required.', 'woo-custom-my-account-page' ),
 						'request_failed' => esc_html__( 'The item could not be added. Please try again.', 'woo-custom-my-account-page' ),
 						'save_lbl'       => esc_html__( 'Save', 'woo-custom-my-account-page' ),
@@ -509,7 +507,6 @@ class Woo_Custom_My_Account_Page_Admin {
 	}
 
 
-
 	/**
 	 * Register all settings.
 	 *
@@ -522,7 +519,6 @@ class Woo_Custom_My_Account_Page_Admin {
 		register_setting( 'wcmp_style_settings', 'wcmp_style_settings', array( $this, 'wcmp_style_settings_callback' ) );
 		register_setting( 'wcmp_endpoints_settings', 'wcmp_endpoints_settings', array( $this, 'wcmp_endpoints_settings_callback' ) );
 	}
-
 
 	/**
 	 * Add a new field using ajax.
@@ -618,60 +614,6 @@ class Woo_Custom_My_Account_Page_Admin {
 				'field' => $field,
 			)
 		);
-	}
-
-	/**
-	 * Map a Font Awesome class name to its Dashicons equivalent for admin preview.
-	 *
-	 * @since  1.7.0
-	 * @param  string $fa_class The Font Awesome icon class (e.g. 'fa-shopping-cart').
-	 * @return string The Dashicons class name (without 'dashicons-' prefix).
-	 */
-	public static function wcmp_fa_to_dashicon( $fa_class ) {
-		$fa_class = str_replace( array( 'fa ', 'fa-' ), '', trim( $fa_class ) );
-
-		$map = array(
-			'tachometer'       => 'dashboard',
-			'dashboard'        => 'dashboard',
-			'shopping-cart'    => 'cart',
-			'tag'              => 'tag',
-			'download'         => 'download',
-			'address-card'     => 'id-alt',
-			'address-card-o'   => 'id-alt',
-			'vcard'            => 'id-alt',
-			'edit'             => 'edit',
-			'pencil-square-o'  => 'edit',
-			'sign-out'         => 'migrate',
-			'link'             => 'admin-links',
-			'cubes'            => 'screenoptions',
-			'heart'            => 'heart',
-			'star'             => 'star-filled',
-			'user'             => 'admin-users',
-			'cog'              => 'admin-generic',
-			'cogs'             => 'admin-generic',
-			'home'             => 'admin-home',
-			'envelope'         => 'email',
-			'bell'             => 'bell',
-			'bookmark'         => 'bookmark',
-			'calendar'         => 'calendar-alt',
-			'credit-card'      => 'money-alt',
-			'file'             => 'media-default',
-			'file-text'        => 'media-text',
-			'gift'             => 'tickets-alt',
-			'list'             => 'editor-ul',
-			'map-marker'       => 'location',
-			'power-off'        => 'visibility',
-			'question-circle'  => 'editor-help',
-			'refresh'          => 'update',
-			'shield'           => 'shield',
-			'shopping-bag'     => 'cart',
-			'thumbs-up'        => 'thumbs-up',
-			'trophy'           => 'awards',
-			'truck'            => 'car',
-			'wrench'           => 'admin-tools',
-		);
-
-		return isset( $map[ $fa_class ] ) ? $map[ $fa_class ] : 'marker';
 	}
 
 	/**

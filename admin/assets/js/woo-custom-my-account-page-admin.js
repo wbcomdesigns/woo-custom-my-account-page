@@ -61,7 +61,7 @@ jQuery( document ).ready(
 
 				var item = $( this ).closest( '.endpoint' );
 
-				$( this ).find( '.dashicons' ).toggleClass( 'dashicons-arrow-down-alt2' ).toggleClass( 'dashicons-arrow-up-alt2' );
+				$( this ).attr( 'aria-expanded', 'true' === $( this ).attr( 'aria-expanded' ) ? 'false' : 'true' );
 
 				item.find( '.endpoint-content' ).first().toggleClass( 'dd-nodrag' );
 				item.find( '.endpoint-options' ).first().slideToggle();
@@ -103,6 +103,7 @@ jQuery( document ).ready(
 				{
 					title: title,
 					modal: true,
+					dialogClass: 'wcmp-dialog',
 					width: Math.min( 500, window.innerWidth - 32 ),
 					resizable: false,
 					autoOpen: false,
@@ -186,6 +187,9 @@ jQuery( document ).ready(
 
 							var new_content = $( res.html );
 							$( '.endpoints-container > ol.endpoints > li.endpoint' ).last().after( new_content );
+							if ( window.lucide ) {
+								window.lucide.createIcons();
+							}
 
 							// reinit select
 							applySelect2( new_content.find( 'select' ), true );
@@ -238,15 +242,6 @@ jQuery( document ).ready(
 			}
 		);
 
-		var selected = $( ".wcmp_menu_style" );
-	    selected.change(function(){
-	    	if( 'tab' == this.value ) {
-	    		$( '.wcmp_sidebar_position_wrapper' ).addClass( 'wcmp_option_hide' );
-	    	} else {
-	    		$( '.wcmp_sidebar_position_wrapper' ).removeClass( 'wcmp_option_hide' );	    		
-	    	}
-	    });
-
 		// event listener
 		$( document ).on(
 			'change',
@@ -285,6 +280,7 @@ jQuery( document ).ready(
 				confirm_box.dialog( {
 					title: wcmp.remove_title,
 					modal: true,
+					dialogClass: 'wcmp-dialog',
 					width: Math.min( 420, window.innerWidth - 32 ),
 					resizable: false,
 					// Destructive dialog: start on Cancel so Enter never deletes by accident.
@@ -294,7 +290,7 @@ jQuery( document ).ready(
 					buttons: [
 						{
 							text: wcmp.remove_confirm,
-							'class': 'button button-primary',
+							'class': 'wcmp-dialog-danger',
 							click: function() {
 								var item        = t.closest( '.dd-item' ),
 								is_group        = item.find( 'ol.endpoints' ),

@@ -11,7 +11,7 @@ shortcode, on block-based account pages, and anywhere the `[wcmp_my_account]` sh
 Account** block is placed.
 
 Maturity legend: **Stable** (shipped long-lived, unchanged) · **Rebuilt 1.6.4** (re-architected in the last
-cycle) · **Hardened 1.6.5** / **Hardened 1.7.0** (fixed/tightened in that release).
+cycle) · **Hardened 1.6.5** / **Hardened 1.7.0** / **Hardened 1.7.1** (fixed/tightened in that release).
 
 ---
 
@@ -19,12 +19,12 @@ cycle) · **Hardened 1.6.5** / **Hardened 1.7.0** (fixed/tightened in that relea
 
 | Capability | What it does | Maturity |
 |---|---|---|
-| Endpoint builder | Reorder / rename / disable default WC endpoints and add custom endpoints, collapsible groups, and external links via drag-and-drop (jQuery Nestable). Per-item icon, CSS class, and user-role allowlist. The typed name is kept as the label; the slug is ASCII for every script (WordPress slug, intl transliteration, else `{type}-N`) and unique against other items and WooCommerce's own account URLs. | Hardened 1.7.0 |
-| Custom endpoint content | Each custom endpoint has a content area (HTML, shortcodes, page-builder output). Stored content is `wp_kses_post`-sanitized (raw for `unfiltered_html` users) then shortcode-expanded, so form-plugin controls survive. | Hardened 1.6.4 |
+| Endpoint builder | Reorder / rename / disable default WC endpoints and add custom endpoints, collapsible groups, and external links via drag-and-drop (jQuery Nestable). Per-item icon, CSS class, and user-role allowlist. The typed name is kept as the label; the slug is ASCII for every script (WordPress slug, intl transliteration, else `{type}-N`) and unique against other items and WooCommerce's own account URLs. Builder UI follows the shared settings shell (Lucide icons, admin colour scheme, RTL, keyboard-reachable row controls); a stale menu-order id is pruned instead of rendering an empty child. | Hardened 1.7.1 |
+| Custom endpoint content | Each custom endpoint has a content area (HTML, shortcodes, page-builder output). Stored content is `wp_kses_post`-sanitized (raw for `unfiltered_html` users) then shortcode-expanded, so form-plugin controls survive. A custom endpoint with no content shows a "nothing here yet" notice (plus an admin link) instead of the Dashboard text. | Hardened 1.7.1 |
 | Custom WC endpoints | Custom items register as real WooCommerce rewrite endpoints (`add_rewrite_endpoint` + injected query vars); rewrite flush deferred through a 60s transient after save. | Stable |
 | Role visibility | Any endpoint / group / link carries a role **allowlist** (empty = everyone). Enforced on the request (`wcmp_restrict_endpoint_access`), not only in the menu: a member outside the list who opens the URL is sent to My Account. Children inherit their group's roles. Also applied to the default-endpoint redirect. | Hardened 1.7.0 |
-| Member avatar upload | Members upload a photo from the account menu header; it replaces their Gravatar site-wide. Only when the avatar setting is on. MIME allowlist (JPEG/PNG/GIF/WebP), 2MB cap, logged-in + nonce gated, PRG redirect; a new upload deletes the previous one. Reset restores Gravatar. | Hardened 1.7.0 |
-| Menu layout | Sidebar (left/right) or horizontal Tab layout; collapsible Account menu on phones. | Rebuilt 1.6.4 |
+| Member avatar upload | Members upload a photo from the account menu header; it replaces their Gravatar site-wide. Only when the avatar setting is on. MIME allowlist (JPEG/PNG/GIF/WebP), 2MB cap, logged-in + nonce gated, PRG redirect; a new upload deletes the previous one. Reset restores Gravatar. Popup is an accessible dialog with a drag-and-drop picker, preview, and size/type check before upload using the same limits as the server. | Hardened 1.7.1 |
+| Menu layout | Sidebar (left/right) or horizontal Tab layout; collapsible Account menu on phones. Right sidebar stacks correctly on Reign below 768px; Tab-layout dropdowns stay on screen. | Hardened 1.7.1 |
 | Style overrides | Six colour pickers. Frontend colours follow the active theme through a CSS-custom-property token bridge; pickers act as overrides only when changed from the default. | Rebuilt 1.6.4 |
 | Portal placement | `[wcmp_my_account]` shortcode and `wcmp/my-account` block place the full portal on any page, including block themes (both delegate to `[woocommerce_my_account]`). | Rebuilt 1.6.4 |
 | Scoped icon font | Bundled "WCMP Icons" font scoped to `.wcmp-myaccount-template`, so it never clashes with a theme's own Font Awesome. Admin icon picker previews the same set the storefront renders. | Stable |

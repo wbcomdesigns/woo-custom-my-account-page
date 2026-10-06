@@ -5,39 +5,68 @@ jQuery(document).ready(function($) {
         $('body').append( '<div id="wcmp-avatar-form-overlay" class="loading"></div>' );
     }
 
-    function center_popup() {
-        var p = $( '#wcmp-avatar-form');
-
-        if( ! p.length ) {
-            return false;
-        }
-
-        var window_w = $(window).width(),
-            window_h = $(window).height(),
-            o_width  = p.data('width') || 500,  // Default to 500px if data attribute missing
-            o_height = p.data('height') || 280, // Default to 280px if data attribute missing
-            width    = ( ( window_w - 60 ) > o_width ) ? o_width : ( window_w - 60 ),
-            height   = ( ( window_h - 120 ) > o_height ) ? o_height : ( window_h - 120 );
-
-        p.css({
-            'left'   : (( window_w/2 ) - ( width/2 )),
-            'top'    : (( window_h/2 ) - ( height/2 )),
-            'width'  : width + 'px',
-            'height' : height + 'px'
-        });
-    }
+    // The dialog is centred in CSS; JS only handles focus, Escape and the file check.
+    var popup_opener = null;
 
     function close_popup() {
-        $( '#wcmp-avatar-form, #wcmp-avatar-form-overlay' ).fadeOut('slow', function(){
-            $(this).remove();
+        $( document ).off( 'keydown.wcmpAvatar' );
+        $( '#wcmp-avatar-form, #wcmp-avatar-form-overlay' ).fadeOut( 'fast', function(){
+            $( this ).remove();
         });
+        if ( popup_opener ) {
+            popup_opener.focus();
+        }
     }
 
-    $(window).on( 'resize', center_popup );
+    function focusables( dialog ) {
+        return dialog.find( 'button, [href], input:not([type="hidden"]), select, textarea' ).filter( ':visible:not(:disabled)' );
+    }
+
+    function check_file( form, file ) {
+        var error   = form.find( '.wcmp-field-error' ),
+            submit  = $( 'button[form="wcmp-avatar-upload"]' ),
+            types   = String( form.data( 'types' ) || '' ).split( ',' ),
+            message = '';
+
+        if ( file && -1 === types.indexOf( file.type ) ) {
+            message = form.data( 'type-error' );
+        } else if ( file && file.size > Number( form.data( 'max-bytes' ) ) ) {
+            message = form.data( 'size-error' );
+        }
+
+        error.text( message ).prop( 'hidden', ! message );
+        form.find( '.wcmp-file-drop' ).toggleClass( 'has-error', !! message );
+        submit.prop( 'disabled', ! file || !! message );
+        return ! message;
+    }
+
+    $( document ).on( 'change', '#wcmp-avatar-form .wcmp-file-input', function() {
+        var form    = $( this ).closest( 'form' ),
+            file    = this.files && this.files[0],
+            preview = form.find( '.wcmp-avatar-new' );
+
+        form.find( '.wcmp-file-drop__name' ).text( file ? file.name : '' );
+
+        if ( preview.attr( 'src' ) ) {
+            URL.revokeObjectURL( preview.attr( 'src' ) );
+        }
+        if ( check_file( form, file ) ) {
+            preview.attr( 'src', URL.createObjectURL( file ) ).prop( 'hidden', false );
+        } else {
+            preview.removeAttr( 'src' ).prop( 'hidden', true );
+        }
+    });
+
+    $( document ).on( 'dragenter dragover', '#wcmp-avatar-form .wcmp-file-drop', function() {
+        $( this ).addClass( 'is-dragover' );
+    }).on( 'dragleave drop', '#wcmp-avatar-form .wcmp-file-drop', function() {
+        $( this ).removeClass( 'is-dragover' );
+    });
 
     $('#load-avatar').click( function (ev) {
         
         ev.preventDefault();
+        popup_opener = this;
         preload_popup();
 
         $.ajax({
@@ -53,11 +82,34 @@ jQuery(document).ready(function($) {
                 }
 
                 $('body').append( res ).find('#wcmp-avatar-form-overlay').removeClass('loading');
-                center_popup();
+
+                var dialog = $( '#wcmp-avatar-form' );
+                dialog.find( '.wcmp-file-input' ).trigger( 'focus' );
 
                 $('#wcmp-avatar-form-overlay, #wcmp-avatar-form .close-form').click(function(){
                     close_popup();
-                })
+                });
+
+                // Escape closes; Tab stays inside the dialog.
+                $( document ).on( 'keydown.wcmpAvatar', function( e ) {
+                    if ( 'Escape' === e.key ) {
+                        close_popup();
+                        return;
+                    }
+                    if ( 'Tab' !== e.key ) {
+                        return;
+                    }
+                    var items = focusables( dialog ),
+                        first = items.first()[0],
+                        last  = items.last()[0];
+                    if ( e.shiftKey && document.activeElement === first ) {
+                        e.preventDefault();
+                        last.focus();
+                    } else if ( ! e.shiftKey && document.activeElement === last ) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                });
             },
             error: function() {
                 $( '#wcmp-avatar-form-overlay' ).remove();
