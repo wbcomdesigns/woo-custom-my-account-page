@@ -7,7 +7,7 @@
  *
  * Rules: colours come from the tokens below (which read the shell's --wbcom-*
  * tokens, so the builder follows the user's admin colour scheme), logical
- * properties only (RTL mirrors for free), one mobile breakpoint at the bottom.
+ * properties only (RTL mirrors for free), the two standard breakpoints at the bottom.
  */
 
 /*--------------------------------------------------------------
@@ -47,12 +47,8 @@ that match the shell's own defaults.
 	margin-block-end: 16px;
 }
 
-/* Every control gets the same column width so text inputs and the role
-   picker line up instead of collapsing. */
-.wcmp-endpoint-fields .wbcom-field-group .wbcom-field-control {
-	flex: 0 0 280px;
-	max-width: 280px;
-}
+/* Field widths come from the shell (same as every other tab); the role
+   picker just fills its control. */
 .wcmp-endpoint-fields .wbcom-field-control .select2-container {
 	width: 100% !important;
 }
@@ -580,16 +576,20 @@ physical: logical ones would add a second, conflicting edge in RTL.
 /*--------------------------------------------------------------
 # Responsive
 --------------------------------------------------------------*/
-@media (max-width: 640px) {
-	/* Stack label above a full-width control instead of overflowing the card. */
+@media (max-width: 1024px) {
+	/* Rows sit inside a narrower card here; stack label above a full-width
+	   control instead of squeezing both into one line. */
 	.wbcom-settings-body .wcmp-endpoint-fields .wbcom-field-group {
 		flex-direction: column;
 		align-items: stretch;
 	}
-	.wcmp-endpoint-fields .wbcom-field-group .wbcom-field-control {
+	.wbcom-settings-body .wcmp-endpoint-fields .wbcom-field-group .wbcom-field-control {
 		flex: 1 1 auto;
 		max-width: 100%;
 	}
+}
+
+@media (max-width: 640px) {
 	.endpoints-container {
 		padding-inline: 0;
 	}
