@@ -462,21 +462,17 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 
 			if ( isset( $endpoints_settings['endpoints-order'] ) && ! empty( $endpoints_settings['endpoints-order'] ) ) {
 				$endpoint_orders = json_decode( $endpoints_settings['endpoints-order'], true );
-				if ( is_array( $endpoint_orders ) ) {
-					foreach ( $endpoint_orders as $key => $endpoint_data ) {
-						if ( 'group' === $endpoint_data['type'] && isset( $endpoint_data['children'] ) ) {
-							if ( ! empty( $endpoint_data['children'] ) ) {
-								foreach ( $endpoint_data['children'] as $index => $child_endpoint ) {
-									$child_data_arr = $endpoints[ $child_endpoint['id'] ];
-									$group_id       = $endpoint_data['id'];
-									$endpoints[ $group_id ]['children'][ $child_endpoint['id'] ] = $child_data_arr;
-									unset( $endpoints[ $child_endpoint['id'] ] );
-								}
-							}
+				$endpoint_orders = is_array( $endpoint_orders ) ? $this->wcmp_prune_endpoint_order( $endpoint_orders, $endpoints ) : array();
+				foreach ( $endpoint_orders as $endpoint_data ) {
+					if ( 'group' === $endpoint_data['type'] && ! empty( $endpoint_data['children'] ) ) {
+						foreach ( $endpoint_data['children'] as $child_endpoint ) {
+							$endpoints[ $endpoint_data['id'] ]['children'][ $child_endpoint['id'] ] = $endpoints[ $child_endpoint['id'] ];
+							unset( $endpoints[ $child_endpoint['id'] ] );
 						}
 					}
 				}
-				$endpoint_order = $endpoints_settings['endpoints-order'];
+				// The admin form posts this back, so the next save stores the clean order.
+				$endpoint_order = wp_json_encode( $endpoint_orders );
 			} else {
 				$endpoint_order = '';
 			}
@@ -816,6 +812,34 @@ if ( ! class_exists( 'Woo_Custom_My_Account_Page_Functions' ) ) {
 				wp_safe_redirect( wc_get_page_permalink( 'myaccount' ) );
 				exit;
 			}
+		}
+
+		/**
+		 * Drop order entries whose item no longer exists (removed, or dropped by
+		 * the save sanitizer), so a stale id cannot render as an empty child.
+		 *
+		 * @since  1.7.1
+		 * @param  array $order     Decoded endpoints-order tree.
+		 * @param  array $endpoints Endpoints keyed by id.
+		 * @return array
+		 */
+		private function wcmp_prune_endpoint_order( $order, $endpoints ) {
+			$out = array();
+			foreach ( $order as $item ) {
+				$children = ! empty( $item['children'] ) ? $this->wcmp_prune_endpoint_order( $item['children'], $endpoints ) : array();
+				if ( empty( $item['id'] ) || empty( $item['type'] ) || ! isset( $endpoints[ $item['id'] ] ) ) {
+					// A vanished group keeps its surviving children, one level up.
+					$out = array_merge( $out, $children );
+					continue;
+				}
+				if ( $children ) {
+					$item['children'] = $children;
+				} else {
+					unset( $item['children'] );
+				}
+				$out[] = $item;
+			}
+			return $out;
 		}
 
 		/**
