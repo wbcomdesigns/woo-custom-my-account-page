@@ -1,7 +1,7 @@
 {
   "$schema": "https://wpmediaverse.com/schemas/wp-plugin-manifest-v2.json",
-  "generated": "2026-10-01",
-  "generated_from": "source read of master @ 8b8c3be (v1.6.5); targeted delta verified against release/1.7.0 (v1.7.0)",
+  "generated": "2026-10-06",
+  "generated_from": "source read of master @ 8b8c3be (v1.6.5); targeted delta verified against release/1.7.0 (v1.7.0); targeted delta verified against 1.7.1 @ 4502a9d (no AJAX/option/hook/template/meta added or removed)",
   "plugin": {
     "slug": "woo-custom-my-account-page",
     "name": "Custom My Account Page for WooCommerce",
@@ -63,7 +63,7 @@
     { "key": "wcmp_flush_rewrite_rules", "ttl": "60s", "purpose": "Set when endpoint settings save; wcmp_maybe_flush_rewrite_rules flushes on next init then deletes." }
   ],
   "user_meta": [
-    { "key": "wb-wcmp-avatar", "value": "attachment id", "written": "wcmp_add_avatar", "deleted": "wcmp_reset_default_avatar", "read": "wcmp_get_avatar (get_avatar filter)", "purpose": "The member's uploaded avatar; overrides Gravatar site-wide when custom_avatar is enabled." }
+    { "key": "wb-wcmp-avatar", "value": "attachment id", "written": "wcmp_add_avatar", "deleted": "wcmp_reset_default_avatar", "read": "wcmp_get_avatar (get_avatar filter); wcmp-myaccount-avatar-form.php (Reset to default shown only when set)", "purpose": "The member's uploaded avatar; overrides Gravatar site-wide when custom_avatar is enabled." }
   ],
   "shortcodes": [
     { "tag": "wcmp_my_account",             "handler": "Woo_Custom_My_Account_Page_Functions::wcmp_render_my_account_shortcode", "attrs": [], "purpose": "Place the full portal on any page — delegates to [woocommerce_my_account] so the navigation takeover applies." },
@@ -158,11 +158,11 @@
     "uninstall": "uninstall.php deletes every avatar attachment in wcmp-users-avatar-ids, all wb-wcmp-avatar user meta, wcmp_general_settings, wcmp_endpoints_settings, wcmp_style_settings, wcmp_endpoint_order, wcmp_is_my_account, wcmp-users-avatar-ids, legacy wcmp_endpoint, every wcmp_endpoint_backup_pre_* backup and the three license options, then flushes rewrite rules."
   },
   "security": {
-    "avatar_upload": "Avatar setting must be on. MIME allowlist [image/jpeg,png,gif,webp] via wp_check_filetype_and_ext, 2MB cap, logged-in gate, wp_handle_upload nonce, media_handle_upload; the previous avatar is deleted so each user keeps one attachment. PRG redirect.",
+    "avatar_upload": "Avatar setting must be on. MIME allowlist [image/jpeg,png,gif,webp] via wp_check_filetype_and_ext, 2MB cap, logged-in gate, wp_handle_upload nonce, media_handle_upload; the previous avatar is deleted so each user keeps one attachment. PRG redirect. 1.7.1: limits live in Woo_Custom_My_Account_Page_Public::AVATAR_MAX_BYTES / AVATAR_TYPES, used by the upload handler and printed into the avatar form (data-max-bytes, data-types, accept) for a browser-side pre-check; the server check stays authoritative. The AJAX form output passes through wp_kses with get_form_allowed_html(); new template attributes must be added there.",
     "ajax_gate": "wcmp_add_field_ajax: nonce wcmp_add_field + manage_options + target allowlist. wcmp_print_avatar_form_ajax: wp_doing_ajax + is_user_logged_in + avatar setting on.",
-    "endpoint_content": "kses_post for non-unfiltered_html users, raw for unfiltered_html — same trust model as post_content.",
+    "endpoint_content": "kses_post for non-unfiltered_html users, raw for unfiltered_html — same trust model as post_content. 1.7.1: a custom endpoint with no content and no woocommerce_account_{key}_endpoint handler prints a wc_print_notice() empty state (admin link gated on manage_options) instead of WooCommerce's dashboard fallback.",
     "role_visibility": "Visible to roles is an allowlist enforced on the request by wcmp_restrict_endpoint_access (template_redirect 20), not only in the menu; Hide from menu is menu-only. One rule for the guard and the default-endpoint redirect: wcmp_flatten_endpoints() lifts group children to the top level and wcmp_roles_can_view() applies the item list plus its group list.",
-    "settings_sanitize": "wcmp_endpoints_settings_callback: keys sanitize_key, type allowlist [endpoint, group, link], slugs via create_field_key, slug uniqueness against other endpoints and WooCommerce query vars (add_settings_error on conflict), endpoints-order JSON rebuilt from sanitized id/type/children.",
+    "settings_sanitize": "wcmp_endpoints_settings_callback: keys sanitize_key, type allowlist [endpoint, group, link], slugs via create_field_key, slug uniqueness against other endpoints and WooCommerce query vars (add_settings_error on conflict), endpoints-order JSON rebuilt from sanitized id/type/children. wcmp_general_settings_callback (1.7.1): menu_style allowlist [sidebar, tab] and sidebar_position allowlist [left, right], unknown values fall back to default_general_settings(); default_endpoint is validated on read in wcmp_settings_data(). wcmp_settings_data() (1.7.1) prunes endpoints-order entries whose item no longer exists (wcmp_prune_endpoint_order) and returns the pruned order, so the next admin save stores it.",
     "notes": "No custom tables, no REST surface — attack surface is the two AJAX actions, two avatar POST flows, and the Settings API screens."
   },
   "known_contract_baseline": "See .contract-audit-baseline.json: eight suppressions (wcmp_endpoint_order / wcmp_is_my_account written-never-read; wcmp_endpoint dual-key; wcmp_settings_nav_groups / wcmp_settings_tab_content consumed-never-fired — these are fired by the bundled Wbcom_Settings_Page shell, not this plugin's own code, so the static audit cannot see the producer; ajax-action-no-handler:wcmp_reset_avatar — actually a template_redirect POST form, not admin-ajax; ajax-handler-unreferenced:wcmp_add_field — referenced via JS localize action_add; dom-action-no-handler:delete). All carry TODO 'justify or fix' reasons and should be resolved before the next release."
