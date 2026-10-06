@@ -11,7 +11,7 @@
 - **Plugin Name:** Custom My Account Page for WooCommerce
 - **Main File:** `woo-custom-my-account-page.php`
 - **Text Domain:** `woo-custom-my-account-page`
-- **Version:** 1.6.3
+- **Version:** 1.7.1
 - **Author:** Wbcom Designs
 - **License:** GPL-2.0+
 - **Requires WordPress:** 5.0+
@@ -55,7 +55,7 @@ Two places, deliberately, and they reconcile:
 
 Ordered by how many store owners are affected, not by how interesting the code is.
 Derived from a code audit on 2026-08-08 that verified every open Basecamp card against this branch.
-**Work happens on this branch (`1.6.4`).**
+**Branching: one development branch at a time.** Cut branch `X.Y.Z` from `master`, land every card for that version on it, merge with one PR (master is protected), tag `vX.Y.Z`, delete the branch. Never run side branches alongside it.
 
 ### 1. Regression we shipped - fix first
 - [ ] **`wp_kses_post()` strips `<form>` and `<input>` from endpoint content**, silently breaking every embedded form (Contact Form 7, Gravity, Formidable, login). `includes/class-woo-custom-my-account-page-functions.php:193`. **This is self-inflicted:** the line was plain `do_shortcode()` until 1.6.3 added kses (`d62ba2f`, the "security fixes" commit). Content is already kses'd on save at `admin/...-admin.php:717`, so render-time kses is redundant - drop it and gate the save on `unfiltered_html`.
@@ -292,7 +292,7 @@ Codebase: ~6,100 PHP LOC across 29 files.
 
 | Constant | Value |
 |----------|-------|
-| `WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION` | `'1.6.3'` |
+| `WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION` | `'1.7.1'` |
 | `WCMP_PLUGIN_NAME` | `'woo-custom-my-account-page'` |
 | `WCMP_PLUGIN_FILE` | `__FILE__` |
 | `WCMP_PLUGIN_PATH` | `plugin_dir_path( __FILE__ )` |

@@ -1,6 +1,6 @@
 # Developer hooks reference - Custom My Account Page for WooCommerce
 
-**Plugin:** `woo-custom-my-account-page` · **Version:** 1.7.0 · **Requires:** WordPress 6.5+, PHP 8.1+
+**Plugin:** `woo-custom-my-account-page` · **Version:** 1.7.1 · **Requires:** WordPress 6.5+, PHP 8.1+
 
 This is the integrator-facing list of every extension point the plugin exposes: 28 filters and 6 action
 hooks, all prefixed `wcmp_`. Use filters to change a value the plugin computes, and actions to inject or

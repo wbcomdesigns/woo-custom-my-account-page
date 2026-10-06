@@ -1,6 +1,6 @@
 # Custom My Account Page for WooCommerce — Capabilities
 
-**Slug:** `woo-custom-my-account-page` · **Version:** 1.7.0 · **Main file:** `woo-custom-my-account-page.php`
+**Slug:** `woo-custom-my-account-page` · **Version:** 1.7.1 · **Main file:** `woo-custom-my-account-page.php`
 **Requires:** WordPress 6.5+, PHP 8.1+, WooCommerce (active) · **REST:** none · **Custom tables:** none
 
 Turns the default WooCommerce **My Account** page into a branded customer portal. Store owners reorder,

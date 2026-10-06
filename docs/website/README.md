@@ -1,6 +1,6 @@
 # Custom My Account Page for WooCommerce
 
-Custom My Account Page for WooCommerce (version 1.7.0) replaces the WooCommerce My Account menu with a menu you control. You add pages, groups and links, set their order, hide them, and limit them to user roles. Customers can also upload a profile photo.
+Custom My Account Page for WooCommerce (version 1.7.1) replaces the WooCommerce My Account menu with a menu you control. You add pages, groups and links, set their order, hide them, and limit them to user roles. Customers can also upload a profile photo.
 
 ## What you can do
 

@@ -552,9 +552,12 @@ body #my-account-menu-tab ~ .woocommerce-MyAccount-content {
 	width: 100%;
 }
 /* Reign lays the two columns out with flex; honour the plugin's
-   sidebar-position setting there too. */
-.rg-my-account-content-wrapper:has(#my-account-menu.position-right) {
-	flex-direction: row-reverse;
+   sidebar-position setting there too. Only above Reign's 768px breakpoint: below it the
+   columns stack, and row-reverse would squeeze the content beside the menu. */
+@media( min-width: 769px ) {
+	.rg-my-account-content-wrapper:has(#my-account-menu.position-right) {
+		flex-direction: row-reverse;
+	}
 }
 .rg-my-account-content-wrapper #my-account-menu.position-left {
 	padding-inline-end: 0;

@@ -4,7 +4,7 @@ Donate link: https://wbcomdesigns.com
 Tags: woocommerce my account, custom endpoints, account page customizer, woocommerce tabs, user role menu
 Requires at least: 6.5
 Tested up to: 7.1
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 Requires PHP: 8.1
 WC tested up to: 11.1
 License: GPLv2 or later
@@ -161,6 +161,15 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 6. Frontend My Account page - tab layout with grouped navigation and custom colors
 
 == Changelog ==
+
+= 1.7.1 - October 2026 =
+
+* Fix      - A removed menu item no longer leaves PHP warnings or an empty entry inside its group; saving the Endpoints screen cleans up the stored menu order.
+* Fix      - With the sidebar set to the right, the account page now stacks correctly on phones and small tablets on Reign instead of squeezing the content off the screen.
+* Fix      - Documentation links now open the plugin documentation instead of a missing page.
+* Fix      - Each settings tab's Save button now has its own id, so labels and screen readers reach the right button.
+* Security - Menu layout and sidebar position only accept their listed values; anything else falls back to the default.
+* Dev      - Updated build-tool dependencies.
 
 = 1.7.0 - October 2026 =
 

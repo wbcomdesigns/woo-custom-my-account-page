@@ -455,7 +455,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			</div>
 
 			<div class="wbcom-save-bar">
-				<?php submit_button( __( 'Save Changes', 'woo-custom-my-account-page' ), 'wbcom-btn wbcom-btn--primary', 'submit', false ); ?>
+				<?php submit_button( __( 'Save Changes', 'woo-custom-my-account-page' ), 'wbcom-btn wbcom-btn--primary', 'submit', false, array( 'id' => 'wcmp-save-general' ) ); ?>
 			</div>
 		</form>
 		<?php
@@ -501,7 +501,7 @@ class Woo_Custom_My_Account_Page_Admin {
 			<?php endforeach; ?>
 
 			<div class="wbcom-save-bar">
-				<?php submit_button( __( 'Save Changes', 'woo-custom-my-account-page' ), 'wbcom-btn wbcom-btn--primary', 'submit', false ); ?>
+				<?php submit_button( __( 'Save Changes', 'woo-custom-my-account-page' ), 'wbcom-btn wbcom-btn--primary', 'submit', false, array( 'id' => 'wcmp-save-style' ) ); ?>
 			</div>
 		</form>
 		<?php
