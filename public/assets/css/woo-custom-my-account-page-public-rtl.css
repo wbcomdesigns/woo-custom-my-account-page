@@ -52,6 +52,18 @@ only when the owner changes them from the defaults.
 
 	--wcmp-radius: 8px;
 	--wcmp-tap: 40px;
+	--wcmp-on-accent: #fff;
+
+	/* Primary buttons wear the theme's own button colours, which flip with its dark mode. */
+	--wcmp-btn-bg: var(--bx-color-button-bg,
+				var(--reign-site-button-bg-color, var(--wcmp-accent)));
+	--wcmp-btn-fg: var(--bx-color-button-fg,
+				var(--reign-site-button-text-color, var(--wcmp-on-accent)));
+
+	--wcmp-danger: #b32d2e;
+	--wcmp-overlay: rgb(0 0 0 / 0.5);
+	--wcmp-scrim: rgb(0 0 0 / 0.55);
+	--wcmp-scrim-strong: rgb(0 0 0 / 0.75);
 }
 
 /* Only when NO theme is driving the mode. Our themes flip dark mode with
@@ -241,7 +253,7 @@ button#load-avatar {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	background: color-mix(in srgb, #000000 55%, transparent);
+	background: var(--wcmp-scrim);
 	border: 0;
 	border-radius: 50%;
 	cursor: pointer;
@@ -249,10 +261,10 @@ button#load-avatar {
 	padding: 0;
 }
 button#load-avatar:hover {
-	background: color-mix(in srgb, #000000 75%, transparent);
+	background: var(--wcmp-scrim-strong);
 }
 button#load-avatar i {
-	color: #ffffff;
+	color: var(--wcmp-on-accent);
 	font-size: 15px;
 }
 
@@ -274,13 +286,6 @@ button#load-avatar i {
 	cursor: pointer;
 }
 
-.wcmp-avatar-form-popup p {
-	margin-bottom: 0;
-}
-.wcmp-avatar-form-popup .submit {
-	text-align: end;
-}
-
 #my-account-content .waitlist-title-section {
 	display: none;
 }
@@ -291,23 +296,20 @@ button#load-avatar i {
 #wcmp-avatar-form-overlay {
 	position: fixed;
 	inset: 0;
-	background-color: color-mix(in srgb, #000000 50%, transparent);
+	background-color: var(--wcmp-overlay);
 	z-index: 99999;
 }
 div#wcmp-avatar-form-overlay.loading:before {
-	border: 4px double #f3f3f3;
-	border-top: 4px solid #333333;
-	border-radius: 50%;
+	content: '';
+	position: absolute;
+	inset: 0;
+	margin: auto;
 	width: 40px;
 	height: 40px;
-	animation: wcmp-spin 2s linear infinite;
-	content: '';
-	display: inline-block;
-	position: absolute;
-	top: 50%;
-	margin-top: -20px;
-	inset-inline-start: 50%;
-	margin-inline-start: -20px;
+	border: 4px solid color-mix(in srgb, var(--wcmp-surface) 40%, transparent);
+	border-block-start-color: var(--wcmp-surface);
+	border-radius: 50%;
+	animation: wcmp-spin 1s linear infinite;
 }
 
 @keyframes wcmp-spin {
@@ -319,59 +321,236 @@ div#wcmp-avatar-form-overlay.loading:before {
 	}
 }
 
+/* Centred by the box model, so it works in RTL and needs no resize JS. */
 #wcmp-avatar-form {
-	background-color: var(--wcmp-surface);
-	color: var(--wcmp-text);
-	padding: 0;
 	position: fixed;
-	border: 1px solid var(--wcmp-border);
+	inset: 0;
 	z-index: 9999999;
-	border-radius: 10px;
+	width: min(480px, calc(100vw - 32px));
+	height: fit-content;
+	max-height: calc(100vh - 32px);
+	margin: auto;
+	overflow: auto;
+	color: var(--wcmp-text);
+	background-color: var(--wcmp-surface);
+	border: 1px solid var(--wcmp-border);
+	border-radius: 12px;
+	box-shadow: 0 16px 48px rgb(0 0 0 / 0.2);
+	font-size: 15px;
+	line-height: 1.5;
 }
 
 .wcmp-popup-title {
-	background-color: color-mix(in srgb, var(--wcmp-text) 4%, var(--wcmp-surface));
-	border-bottom: 1px solid var(--wcmp-border);
-	padding: 15px 25px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	gap: 12px;
+	padding-block: 12px;
+	padding-inline: 24px 12px;
+	border-block-end: 1px solid var(--wcmp-border);
+}
+#wcmp-avatar-form .wcmp-popup-title h2 {
+	margin: 0;
+	padding: 0;
+	font-size: 18px;
 	font-weight: 600;
+	line-height: 1.3;
+	letter-spacing: 0;
+	text-transform: none;
 	color: var(--wcmp-text);
 }
-
-.wcmp-popup-content {
-	padding: 25px;
-}
-
-#wcmp-avatar-form input[type='submit'] {
-	font-size: 14px;
-	padding: 10px 25px;
-	min-height: var(--wcmp-tap);
-	border-radius: 7px;
-	transition: all 0.3s ease;
-}
-#wcmp-avatar-form p.submit {
-	text-align: end;
-	margin-bottom: 10px;
-}
 #wcmp-avatar-form button.close-form {
+	flex: none;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 32px;
-	height: 32px;
+	width: var(--wcmp-tap);
+	height: var(--wcmp-tap);
+	min-height: 0;
+	padding: 0;
 	background: transparent;
 	border: 0;
 	border-radius: var(--wcmp-radius);
-	cursor: pointer;
+	box-shadow: none;
 	color: var(--wcmp-muted);
-	font-size: 17px;
-	transition: color 0.2s ease;
-	padding: 0;
+	font-size: 18px;
+	cursor: pointer;
 }
 #wcmp-avatar-form button.close-form:hover {
 	color: var(--wcmp-text);
+	background: color-mix(in srgb, var(--wcmp-text) 6%, transparent);
+}
+
+.wcmp-popup-content {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	padding: 24px;
+}
+#wcmp-avatar-form form {
+	margin: 0;
+}
+
+/* Current avatar (or the new one, once picked) beside the drop zone. */
+.wcmp-avatar-picker {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+.wcmp-avatar-current {
+	position: relative;
+	flex: none;
+	width: 88px;
+	height: 88px;
+	border-radius: 50%;
+	overflow: hidden;
+	background: color-mix(in srgb, var(--wcmp-text) 6%, var(--wcmp-surface));
+}
+.wcmp-avatar-current img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	margin: 0;
+	border-radius: 50%;
+}
+.wcmp-avatar-current .wcmp-avatar-new {
+	position: absolute;
+	inset: 0;
+}
+
+/* The real file input covers the zone, so click, keyboard and drag-and-drop
+   all use the browser's own picker. */
+.wcmp-file-drop {
+	position: relative;
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	padding: 20px 16px;
+	text-align: center;
+	color: var(--wcmp-muted);
+	background: color-mix(in srgb, var(--wcmp-accent) 4%, var(--wcmp-surface));
+	border: 2px dashed var(--wcmp-border);
+	border-radius: var(--wcmp-radius);
+	transition: border-color 150ms ease, background-color 150ms ease;
+}
+.wcmp-file-drop:hover,
+.wcmp-file-drop.is-dragover {
+	border-color: var(--wcmp-accent);
+	background: color-mix(in srgb, var(--wcmp-accent) 8%, var(--wcmp-surface));
+}
+.wcmp-file-drop:focus-within {
+	border-color: var(--wcmp-accent);
+	outline: 2px solid var(--wcmp-accent);
+	outline-offset: 2px;
+}
+.wcmp-file-drop.has-error {
+	border-color: var(--wcmp-danger);
+}
+#wcmp-avatar-form .wcmp-file-input {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	opacity: 0;
+	cursor: pointer;
+}
+#wcmp-avatar-form .wcmp-file-input:focus-visible {
+	outline: 0;
+}
+.wcmp-file-drop .fa {
+	font-size: 22px;
+	color: var(--wcmp-accent);
+}
+.wcmp-file-drop__title {
+	margin: 0;
+	font-weight: 600;
+	color: var(--wcmp-text);
+}
+.wcmp-file-drop__hint {
+	font-size: 13px;
+	/* Some themes' muted colour sits just under 4.5:1 on the tinted zone;
+	   leaning it toward the body text only ever raises contrast. */
+	color: color-mix(in srgb, var(--wcmp-muted) 70%, var(--wcmp-text));
+}
+.wcmp-file-drop__name {
+	max-width: 100%;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--wcmp-text);
+	overflow-wrap: anywhere;
+}
+.wcmp-file-drop__name:empty {
+	display: none;
+}
+
+#wcmp-avatar-form .wcmp-field-error {
+	margin: 0;
+	padding-block: 8px;
+	padding-inline: 12px;
+	font-size: 14px;
+	color: var(--wcmp-text);
+	background: color-mix(in srgb, var(--wcmp-danger) 10%, var(--wcmp-surface));
+	border-inline-start: 4px solid var(--wcmp-danger);
+	border-radius: 4px;
+}
+
+/* One primary action; Reset is secondary and sits before it. */
+.wcmp-popup-actions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: 8px;
+}
+#wcmp-avatar-form .wcmp-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: var(--wcmp-tap);
+	margin: 0;
+	padding-block: 0;
+	padding-inline: 20px;
+	font: inherit;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1;
+	text-transform: none;
+	border: 1px solid transparent;
+	border-radius: var(--wcmp-radius);
+	box-shadow: none;
+	cursor: pointer;
+}
+#wcmp-avatar-form .wcmp-btn--primary {
+	color: var(--wcmp-btn-fg);
+	background: var(--wcmp-btn-bg);
+	border-color: var(--wcmp-btn-bg);
+}
+#wcmp-avatar-form .wcmp-btn--primary:hover {
+	filter: brightness(0.92);
+}
+#wcmp-avatar-form .wcmp-btn--primary:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+#wcmp-avatar-form .wcmp-btn--ghost {
+	color: var(--wcmp-text);
+	background: transparent;
+	border-color: var(--wcmp-border);
+}
+#wcmp-avatar-form .wcmp-btn--ghost:hover {
+	background: color-mix(in srgb, var(--wcmp-text) 6%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	div#wcmp-avatar-form-overlay.loading:before,
+	.wcmp-file-drop {
+		animation: none;
+		transition: none;
+	}
 }
 
 /*--------------------------------------------------------------

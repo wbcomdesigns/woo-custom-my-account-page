@@ -23,32 +23,37 @@ $myaccount_func = instantiate_woo_custom_myaccount_functions();
 
 	<label class="on-off-endpoint" for="<?php echo esc_attr( 'wcmp_endpoint_' . esc_attr( $group ) . '_active' ); ?>">
 		<input type="checkbox" class="hide-show-check" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $group ); ?>][active]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $group . '_active' ); ?>" value="<?php echo esc_attr( $group ); ?>" <?php checked( esc_attr( $options['active'] ), $group ); ?>/>
-		<span class="dashicons dashicons-visibility"></span>
+		<i class="wcmp-eye" data-lucide="eye" aria-hidden="true"></i>
+		<span class="screen-reader-text"><?php esc_html_e( 'Show in menu', 'woo-custom-my-account-page' ); ?></span>
 	</label>
 
-	<div class="open-options field-type">
+	<button type="button" class="open-options field-type" aria-expanded="false">
 		<span class="wcmp-type-badge wcmp-type-group"><?php esc_html_e( 'Group', 'woo-custom-my-account-page' ); ?></span>
-		<span class="dashicons dashicons-arrow-down-alt2"></span>
-	</div>
+		<i class="wcmp-chevron" data-lucide="chevron-down" aria-hidden="true"></i>
+		<span class="screen-reader-text"><?php echo esc_html( sprintf( /* translators: %s: menu item label. */ __( 'Edit %s', 'woo-custom-my-account-page' ), $options['label'] ) ); ?></span>
+	</button>
 
 	<div class="dd-handle endpoint-content">
 
 		<!-- Header -->
 		<div class="endpoint-header">
 			<?php
-			$icon_class = isset( $options['icon'] ) ? $options['icon'] : '';
-			$dashicon   = Woo_Custom_My_Account_Page_Admin::wcmp_fa_to_dashicon( $icon_class );
-			?>
-			<span class="wcmp-icon-preview dashicons dashicons-<?php echo esc_attr( $dashicon ); ?>"></span>
+			$icon_class = isset( $options['icon'] ) ? (string) $options['icon'] : '';
+			if ( '' !== $icon_class ) :
+				// Same rule as the front-end menu templates, so the preview matches what customers see.
+				$icon_class = false === strpos( $icon_class, 'fa-' ) ? 'fa-' . $icon_class : $icon_class;
+				?>
+				<i class="wcmp-icon-preview fa <?php echo esc_attr( $icon_class ); ?>" aria-hidden="true"></i>
+			<?php endif; ?>
 			<?php echo esc_html( $options['label'] ); ?>
 		</div>
 
 		<div class="endpoint-options" style="display: none;">
 
 			<div class="options-row">
-				<span class="hide-show-trigger"><?php echo $options['active'] ? esc_html__( 'Hide from menu', 'woo-custom-my-account-page' ) : esc_html__( 'Show in menu', 'woo-custom-my-account-page' ); ?></span>
-				<span class="sep">|</span>
-				<span class="remove-trigger" data-endpoint="<?php echo esc_attr( $group ); ?>"><?php esc_html_e( 'Remove', 'woo-custom-my-account-page' ); ?></span>
+				<button type="button" class="wcmp-link-btn hide-show-trigger"><?php echo $options['active'] ? esc_html__( 'Hide from menu', 'woo-custom-my-account-page' ) : esc_html__( 'Show in menu', 'woo-custom-my-account-page' ); ?></button>
+				<span class="sep" aria-hidden="true">|</span>
+				<button type="button" class="wcmp-link-btn remove-trigger" data-endpoint="<?php echo esc_attr( $group ); ?>"><?php esc_html_e( 'Remove', 'woo-custom-my-account-page' ); ?></button>
 			</div>
 
 			<div class="wcmp-endpoint-fields">

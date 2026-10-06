@@ -1,719 +1,605 @@
 /**
- * All of the CSS for your admin-specific functionality should be
- * included in this file.
+ * Custom My Account Page - admin styles.
+ *
+ * Layered on the shared wbcom-settings shell (lib/wbcom-settings/settings.css):
+ * this file only styles what the shell does not - the Endpoints builder rows,
+ * the Add / Delete dialogs and the FAQ items.
+ *
+ * Rules: colours come from the tokens below (which read the shell's --wbcom-*
+ * tokens, so the builder follows the user's admin colour scheme), logical
+ * properties only (RTL mirrors for free), one mobile breakpoint at the bottom.
  */
- .nav-tab-wrapper ul li a#wcmp-general.nav-tab:before {
-    content: "\f111";
+
+/*--------------------------------------------------------------
+# Tokens
+--------------------------------------------------------------
+jQuery UI appends dialogs to <body>, outside .wbcom-admin, so the dialog
+class carries the same tokens; there the shell values fall back to literals
+that match the shell's own defaults.
+--------------------------------------------------------------*/
+.wbcom-admin,
+.wcmp-dialog {
+	--wcmp-border: var(--wbcom-border, #e2e8f0);
+	--wcmp-surface: var(--wbcom-surface, #fff);
+	--wcmp-surface-alt: var(--wbcom-surface-alt, #fafafa);
+	--wcmp-text: var(--wbcom-text, #1e1e1e);
+	--wcmp-muted: var(--wbcom-muted, #646970);
+	--wcmp-accent: var(--wbcom-accent, var(--wp-admin-theme-color, #2271b1));
+	--wcmp-accent-strong: var(--wbcom-accent-strong, var(--wp-admin-theme-color-darker-10, #135e96));
+	--wcmp-on-accent: var(--wbcom-on-accent, #fff);
+	--wcmp-danger: #b32d2e;
+	--wcmp-danger-soft: #fcf0f1;
+	--wcmp-badge-group: #6b3fa0;
+	--wcmp-badge-link: #00701a;
+	--wcmp-overlay: rgb(0 0 0 / 0.6);
+	--wcmp-shadow: 0 8px 24px rgb(0 0 0 / 0.16);
+	--wcmp-radius: 8px;
+	--wcmp-tap: 40px;
 }
-.nav-tab-wrapper ul li a#wcmp-style.nav-tab:before {
-    content: "\f108";
-}
-.nav-tab-wrapper ul li a#wcmp-endpoints.nav-tab:before {
-    content: "\f109";
-}
-.nav-tab-wrapper ul li a#wcmp-faq.nav-tab:before {
-    content: "\f125";
-}
-.nav-tab-wrapper ul li a#wcmp-license.nav-tab:before {
-    content: "\f112";
-}
-.form-table.wcmp_general_settings span.select2-selection,
-.form-table.wcmp_general_settings .select2-container--default .select2-selection__arrow {
-    height: 38px;
-    border-radius: 8px;
-    background-color: #F4F5F7;
-    border-color: #e2e2e2;
-}
-.form-table.wcmp_general_settings .select2-selection--single .select2-selection__rendered{
-    line-height: 38px;
-}
-.dd-handle.endpoint-content input[type="text"] {
-    width: 100%;
-    border-radius: 8px;
-    background-color: #F4F5F7;
-    border-color: #e2e2e2;
-    height: 38px;
-}
-.wbcom-admin-option-wrap.wbcom-admin-option-wrap-view table.form-table tr {
-    padding: 0;
-    border-bottom: 1px solid #eee;
-}
-.wbcom-admin-option-wrap.wbcom-admin-option-wrap-view table.form-table tr:last-of-type {
-    border-bottom: 0;
-}
-.dd-handle.endpoint-content .select2-container--default .select2-selection--multiple{
-    border-color: #e2e2e2;
-    border-radius: 8px;
-}
+
+/*--------------------------------------------------------------
+# Endpoints tab - toolbar and field layout
+--------------------------------------------------------------*/
 .wbcom-btn-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-block-end: 16px;
 }
-/* Endpoint builder fields - give every control a shared column width so text
-   inputs and the select2 role picker line up instead of collapsing. */
+
+/* Every control gets the same column width so text inputs and the role
+   picker line up instead of collapsing. */
 .wcmp-endpoint-fields .wbcom-field-group .wbcom-field-control {
-    flex: 0 0 280px;
-    max-width: 280px;
+	flex: 0 0 280px;
+	max-width: 280px;
 }
 .wcmp-endpoint-fields .wbcom-field-control .select2-container {
-    width: 100% !important;
+	width: 100% !important;
 }
 .wcmp-endpoint-fields .wbcom-field-control .wbcom-input {
-    max-width: 100%;
+	max-width: 100%;
 }
-/* On small screens stack the label above a full-width control instead of
-   letting the fixed 280px column overflow the card. */
-@media screen and (max-width: 600px) {
-    .wbcom-settings-body .wcmp-endpoint-fields .wbcom-field-group {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .wcmp-endpoint-fields .wbcom-field-group .wbcom-field-control {
-        flex: 1 1 auto;
-        max-width: 100%;
-    }
+.wcmp-endpoint-fields .select2-container--default .select2-selection--multiple {
+	min-height: var(--wcmp-tap);
+	border-color: var(--wcmp-border);
+	border-radius: var(--wcmp-radius);
 }
-/* FAQ tab - items render inside shared settings cards, tokens only. */
-.wcmp-faq-item {
-    padding: 16px 0;
-    border-bottom: 1px solid var(--wbcom-border, #e2e8f0);
-}
-.wcmp-faq-item:first-child {
-    padding-top: 0;
-}
-.wcmp-faq-item:last-child {
-    padding-bottom: 0;
-    border-bottom: 0;
-}
-.wcmp-faq-item h4 {
-    margin: 0 0 10px;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--wbcom-text, #1e293b);
-}
-.wcmp-faq-item p {
-    margin: 8px 0;
-    line-height: 1.6;
-}
-.wcmp-faq-item ul,
-.wcmp-faq-item ol {
-    margin: 8px 0 8px 20px;
-    line-height: 1.7;
-}
-.wcmp-faq-item ul {
-    list-style: disc;
-}
-.wcmp-faq-code {
-    background: var(--wbcom-surface, #fff);
-    border: 1px solid var(--wbcom-border, #e2e8f0);
-    border-radius: 6px;
-    padding: 12px;
-    margin: 10px 0;
-    font-size: 13px;
-    line-height: 1.5;
-    overflow-x: auto;
-}
-.wbcom-wrap .notice.notice-error.is-dismissible.learndash-license-is-dismissible {
-    display: none !important;
+textarea.wp-editor-area {
+	width: 100% !important;
 }
 
-/**
-* NESTABLE
-*/
-.dd { position: relative; display: block; margin: 0; padding: 0; /*max-width: 600px; */list-style: none; font-size: 13px; line-height: 20px; }
-.dd-list { display: block; position: relative; margin: 0; padding: 0; list-style: none; }
-.dd-list .dd-list { padding-left: 30px; }
-.dd-collapsed .dd-list { display: none; }
+/*--------------------------------------------------------------
+# Nestable (drag and drop)
+--------------------------------------------------------------*/
+.endpoints-container {
+	padding: 16px;
+	margin-block-end: 8px;
+}
+.dd {
+	position: relative;
+	display: block;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 13px;
+	line-height: 20px;
+}
+.dd-list {
+	display: block;
+	position: relative;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.dd-list .dd-list {
+	padding-inline-start: 32px;
+}
+.dd-collapsed .dd-list {
+	display: none;
+}
 .dd-item,
 .dd-empty,
-.dd-placeholder { display: block; position: relative; margin: 0; padding: 0; min-height: 20px; font-size: 13px; line-height: 20px; }
-.dd-handle { display: block; height: 30px; margin: 5px 0; padding: 5px 10px; color: #333; text-decoration: none; font-weight: bold; border: 1px solid #ccc;
-             background: #fafafa;
-             background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
-             background:    -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
-             background:         linear-gradient(top, #fafafa 0%, #eee 100%);
-             -webkit-border-radius: 3px;
-             border-radius: 3px;
-             box-sizing: border-box; -moz-box-sizing: border-box;
+.dd-placeholder {
+	display: block;
+	position: relative;
+	margin: 0;
+	padding: 0;
+	min-height: 20px;
+	font-size: 13px;
+	line-height: 20px;
 }
-/*.dd-handle:hover { color: #2ea8e5; background: #fff; }*/
-.dd-item > button { display: block; position: relative; cursor: pointer; float: left; width: 25px; height: 20px; margin: 5px 0; padding: 0; text-indent: 100%; white-space: nowrap; overflow: hidden; border: 0; background: transparent; font-size: 12px; line-height: 1; text-align: center; font-weight: bold; }
-.dd-item > button:before { content: '+'; display: block; position: absolute; width: 100%; text-align: center; text-indent: 0; }
-.dd-item > button[data-action="collapse"]:before { content: '-'; }
 .dd-placeholder,
-.dd-empty { margin: 5px 0; padding: 0; min-height: 30px; background: #f2fbff; border: 1px dashed #b6bcbf; box-sizing: border-box; -moz-box-sizing: border-box; }
-.dd-empty { border: 1px dashed #bbb; min-height: 100px; background-color: #e5e5e5;
-            background-image: -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
-                -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
-            background-image:    -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
-                -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
-            background-image:         linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
-                linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
-            background-size: 60px 60px;
-            background-position: 0 0, 30px 30px;
+.dd-empty {
+	margin-block: 6px;
+	min-height: var(--wcmp-tap);
+	background: var(--wcmp-surface-alt);
+	background: color-mix(in srgb, var(--wcmp-accent) 8%, var(--wcmp-surface));
+	border: 1px dashed var(--wcmp-accent);
+	border-radius: var(--wcmp-radius);
 }
-.dd-dragel { position: absolute; pointer-events: none; z-index: 9999; }
-.dd-dragel > .dd-item .dd-handle { margin-top: 0; }
+.dd-empty {
+	min-height: 100px;
+}
+.dd-dragel {
+	position: absolute;
+	pointer-events: none;
+	z-index: 9999;
+}
+.dd-dragel > .dd-item .dd-handle {
+	margin-block-start: 0;
+}
 .dd-dragel .dd-handle {
-    -webkit-box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
-    box-shadow: 2px 4px 6px 0 rgba(0,0,0,.1);
+	box-shadow: var(--wcmp-shadow);
 }
-/**
- * Nestable Extras
- */
-.nestable-lists { display: block; clear: both; padding: 30px 0; width: 100%; border: 0; border-top: 2px solid #ddd; border-bottom: 2px solid #ddd; }
-#nestable-menu { padding: 0; margin: 20px 0; }
-#nestable-output,
-#nestable2-output { width: 100%; height: 7em; font-size: 0.75em; line-height: 1.333333em; font-family: Consolas, monospace; padding: 5px; box-sizing: border-box; -moz-box-sizing: border-box; }
-#nestable2 .dd-handle {
-    color: #fff;
-    border: 1px solid #999;
-    background: #bbb;
-    background: -webkit-linear-gradient(top, #bbb 0%, #999 100%);
-    background:    -moz-linear-gradient(top, #bbb 0%, #999 100%);
-    background:         linear-gradient(top, #bbb 0%, #999 100%);
-}
-#nestable2 .dd-handle:hover { background: #bbb; }
-#nestable2 .dd-item > button:before { color: #fff; }
-/*@media only screen and (min-width: 700px) {*/
-/*.dd { float: left; width: 48%; }*/
-/*.dd + .dd { margin-left: 2%; }*/
-/*}*/
-.dd-hover > .dd-handle { background: #2ea8e5 !important; }
-/**
- * Nestable Draggable Handles
- */
-.dd3-content { display: block; height: 30px; margin: 5px 0; padding: 5px 10px 5px 40px; color: #333; text-decoration: none; font-weight: bold; border: 1px solid #ccc;
-               background: #fafafa;
-               background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
-               background:    -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
-               background:         linear-gradient(top, #fafafa 0%, #eee 100%);
-               -webkit-border-radius: 3px;
-               border-radius: 3px;
-               box-sizing: border-box; -moz-box-sizing: border-box;
-}
-.dd3-content:hover { color: #2ea8e5; background: #fff; }
-.dd-dragel > .dd3-item > .dd3-content { margin: 0; }
-.dd3-item > button { margin-left: 30px; }
-.dd3-handle { position: absolute; margin: 0; left: 0; top: 0; cursor: pointer; width: 30px; text-indent: 100%; white-space: nowrap; overflow: hidden;
-              border: 1px solid #aaa;
-              background: #ddd;
-              background: -webkit-linear-gradient(top, #ddd 0%, #bbb 100%);
-              background:    -moz-linear-gradient(top, #ddd 0%, #bbb 100%);
-              background:         linear-gradient(top, #ddd 0%, #bbb 100%);
-              border-top-right-radius: 0;
-              border-bottom-right-radius: 0;
-}
-.dd3-handle:before { content: '≡'; display: block; position: absolute; left: 0; top: 3px; width: 100%; text-align: center; text-indent: 0; color: #fff; font-size: 20px; font-weight: normal; }
-.dd3-handle:hover { background: #ddd; }
 
-/**
- * PLUGIN STYLE
- **/
-
-.section-title-container {
-    position: relative;
-    overflow: hidden;
-}
-.section-title {
-    text-transform: uppercase;
-}
-.button-container {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-.endpoints-container {
-    padding: 15px;
-    margin-bottom: 10px;
-}
+/*--------------------------------------------------------------
+# Builder rows
+--------------------------------------------------------------
+Row = visibility toggle (start) + label (middle, drag handle) +
+type badge and expander (end). The toggle and expander sit over the
+row's header band; the header pads both sides to clear them.
+--------------------------------------------------------------*/
 .dd-handle.endpoint-content {
-    background: #fff;
-    border:1px solid #dcdcdc;
-    border-radius: 10px;
-    padding: 10px;
-    height: auto;
-    font-weight: normal;
-}
-
-.on-off-endpoint, .open-options {
-    position: absolute;
-    top: 6px;
-    text-align: center;
-    padding: 5px 0;
-    right: 15px;
-    cursor: pointer;
-    opacity: 0.7;
-    height: 30px;
-    box-sizing: border-box;
-}
-.on-off-endpoint {
-    right: auto;
-    left: 15px;
-}
-.open-options {
-    padding: 8px 0;
-    line-height: normal;
-}
-.open-options span {
-    margin-right: 5px;
-}
-.on-off-endpoint:hover, .open-options:hover {
-    opacity: 1;
-}
-
-.on-off-endpoint input[type="checkbox"] {
-    margin-left: -25px;
-    opacity: 0;
-}
-.on-off-endpoint input[type="checkbox"] ~ .dashicons {
-    opacity: 0.2;
-}
-.on-off-endpoint input[type="checkbox"]:checked ~ .dashicons {
-    opacity: 1;
+	display: block;
+	margin-block: 6px;
+	padding: 0;
+	color: var(--wcmp-text);
+	background: var(--wcmp-surface);
+	border: 1px solid var(--wcmp-border);
+	border-radius: var(--wcmp-radius);
+	font-weight: 400;
 }
 
 .endpoint-header {
-    /* End padding clears the absolutely positioned type badge + toggle. */
-    padding-block: 0;
-    padding-inline: 30px 120px;
-    overflow-wrap: break-word;
-    text-transform: uppercase;
-    font-weight: bold;
-    cursor: move;
+	padding-block: 10px;
+	padding-inline: 48px 160px;
+	min-height: var(--wcmp-tap);
+	overflow-wrap: break-word;
+	text-transform: uppercase;
+	font-weight: 600;
+	color: var(--wcmp-text);
+	cursor: move;
+}
+.dd-nodrag .endpoint-header {
+	cursor: default;
+	color: var(--wcmp-accent);
 }
 .endpoint-header .sub-item-label {
-    display: none;
-    text-transform: none;
-    color: #c0c0c0;
-    margin-left: 10px;
-    font-size: 12px;
+	display: none;
+	margin-inline-start: 8px;
+	text-transform: none;
+	font-size: 12px;
+	font-weight: 400;
+	color: var(--wcmp-muted);
 }
 .group .endpoint-header .sub-item-label {
-    display: inline-block;
+	display: inline-block;
 }
 
-.dd-nodrag .endpoint-header {
-    cursor: default;
-    color: #2ea8e5;
-}
-
-.endpoint-options .options-row {
-    text-align: right;
-    padding-top: 5px;
-}
-
-.endpoint-options .options-row span:not(.sep) {
-    font-size: 12px;
-    padding: 1px 2px;
-    color: #2ea8e5;
-    cursor: pointer;
-}
-
-.endpoint-options .options-row span:not(.sep):hover {
-    color: #32bde5;
-}
-
-.endpoint-options .options-row span.remove-trigger {
-    color: #a00;
-}
-
-.endpoint-options .options-row span.remove-trigger:hover {
-    color: #f00;
-}
-
-div.new-field-form .loader {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #3498db;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin 2s linear infinite;
-    display: none;
-    vertical-align: middle;
-    margin-left: 10px;
-}
-.ui-dialog .ui-dialog-titlebar {
-    background: #fff;
-    border: 0;
-}
-/*.ui-button.ui-dialog-titlebar-close:before {
-    display: none;
-}*/
-.ui-dialog .ui-dialog-buttonpane button {
-    display: inline-block;
-    text-decoration: none;
-    font-size: 13px;
-    line-height: 26px;
-    height: 28px;
-    padding: 0 10px 1px;
-    cursor: pointer;
-    border-width: 1px;
-    border-style: solid;
-    -webkit-appearance: none;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    white-space: nowrap;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    background: #0085ba;
-    border-color: #0073aa #006799 #006799;
-    -webkit-box-shadow: 0 1px 0 #006799;
-    box-shadow: 0 1px 0 #006799;
-    color: #fff;
-    text-decoration: none;
-    text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
-}
-.ui-dialog .ui-dialog-buttonpane button:hover {
-    background: #008ec2;
-    border-color: #006799;
-    color: #fff;
-}
-.ui-dialog p.error-msg {
-    color: #f00;
-    font-size: 12px;
-}
-
-@media( max-width: 480px ) {
-    /* Uppercase widens labels ~15%; show them as typed so long words fit beside the badge. */
-    .endpoint-header {
-        text-transform: none;
-    }
-    .button-container {
-        position: static;
-        margin-left: 10px;
-    }
-}
-
-textarea.wp-editor-area {
-    width: 100% !important;
-}
-
-.woocommerce .endpoint-options table.form-table th label {
-    display: inline-block;
-}
-.woocommerce .endpoint-options table.form-table th img {
-    margin: 0;
-}
-
-/** This plugin css **/
-.wbcom-tab-content .section-title-container .button-container {
-    float: right;
-    position: relative;
-}
-
-/* Popup Box CSS */
-.ui-dialog {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 100102;
-    background-color: #fff;
-    box-shadow: 0 3px 6px rgba(0,0,0,.3);
-}
-
-.ui-draggable .ui-dialog-titlebar {
-    cursor: move;
-}
-
-.ui-dialog-titlebar {
-    background: #fcfcfc;
-    border-bottom: 1px solid #dfdfdf;
-    height: 36px;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 36px;
-    padding: 0 16px 0 16px;
-}
-
-.ui-dialog-titlebar-close {
-    float: right;
-    margin: 10px 0 0;
-    font-size: 14px;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.ui-dialog .ui-dialog-titlebar {
-    background: #fff;
-    border: 0;
-}
-
-.ui-dialog-content {
-    padding: 16px;
-    overflow: auto;
-}
-
-.ui-dialog-buttonpane {
-    background: #fcfcfc;
-    border-top: 1px solid #dfdfdf;
-    padding: 16px;
-    text-align: right;
-}
-
-.ui-widget-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    min-height: 360px;
-    background: #000;
-    opacity: .7;
-    filter: alpha(opacity=70);
-    z-index: 100101;
-}
-
-.wcmp-loader {
-    display: none;
-}
-
-.wcmp-loader i {
-    font-size: 18px;
-}
-
-.wcmp_option_hide {
-    display: none;
-}
-.wb-plugins_page_woo-custom-myaccount-page .ui-dialog-title{
-  line-height: 1.3;
-}
-.wb-plugins_page_woo-custom-myaccount-page input#wcmp-new-field {
-    width: 100%;
-}
-
-/* ===================================
-   Modal Dialog - Clean & Simple
-   =================================== */
-
-/* Modal Body */
-.wcmp-modal-body {
-    padding: 8px 0;
-}
-
-.wcmp-field-label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: #1d2327;
-    margin-bottom: 6px;
-}
-
-.wcmp-required {
-    color: #d63638;
-}
-
-.wcmp-field-desc {
-    font-size: 12px;
-    color: #646970;
-    margin: 4px 0 8px 0;
-    line-height: 1.4;
-}
-
-.wcmp-field-input {
-    width: 100% !important;
-    padding: 8px 12px !important;
-    font-size: 14px !important;
-    border: 1px solid #8c8f94 !important;
-    border-radius: 4px !important;
-    box-shadow: 0 0 0 transparent !important;
-    transition: border-color 0.1s ease-in-out, box-shadow 0.1s linear !important;
-}
-
-.wcmp-field-input:focus {
-    border-color: #2271b1 !important;
-    box-shadow: 0 0 0 1px #2271b1 !important;
-    outline: 2px solid transparent !important;
-}
-
-.wcmp-field-input::placeholder {
-    color: #8c8f94;
-}
-
-.wcmp-loader {
-    display: inline-block;
-    margin-top: 8px;
-    color: #2271b1;
-    font-size: 13px;
-}
-
-.wcmp-loader i {
-    margin-right: 6px;
-}
-
-.wcmp-modal-body .error-msg {
-    background: #fcf0f1;
-    border-left: 4px solid #d63638;
-    padding: 8px 12px;
-    margin: 10px 0 0;
-    color: #50575e;
-    font-size: 13px;
-}
-
-.wcmp-modal-body .error-msg:empty {
-    display: none;
-}
-
-/* Dialog Improvements */
-.ui-dialog {
-    border: 1px solid #c3c4c7 !important;
-    border-radius: 4px !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-}
-
-.ui-dialog .ui-dialog-titlebar {
-    background: #fff !important;
-    border: 0 !important;
-    border-bottom: 1px solid #dcdcde !important;
-    padding: 12px 16px !important;
-}
-
-.ui-dialog .ui-dialog-title {
-    font-size: 16px !important;
-    font-weight: 600 !important;
-    color: #1d2327 !important;
-}
-
-.ui-dialog .ui-dialog-titlebar-close {
-    top: 4px !important;
-    right: 8px !important;
-    width: 28px !important;
-    height: 28px !important;
-    border-radius: 4px !important;
-    border: 0 !important;
-    background: transparent !important;
-    text-indent: -9999px !important;
-    overflow: hidden !important;
-    position: relative !important;
-    margin: 0 !important;
-}
-
-.ui-dialog .ui-dialog-titlebar-close:hover {
-    background: #f0f0f1 !important;
-}
-
-.ui-dialog .ui-dialog-titlebar-close:before {
-    content: "\f335" !important;
-    font-family: "dashicons" !important;
-    font-size: 18px !important;
-    color: #50575e !important;
-    display: block !important;
-    position: absolute !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    text-indent: 0 !important;
-    line-height: 1 !important;
-}
-
-.ui-dialog .ui-dialog-titlebar-close:hover:before {
-    color: #1d2327 !important;
-}
-
-.ui-dialog .ui-dialog-titlebar-close span {
-    display: none !important;
-    visibility: hidden !important;
-}
-
-.ui-dialog .ui-dialog-content {
-    padding: 16px !important;
-}
-
-.ui-dialog .ui-dialog-buttonpane {
-    background: #f6f7f7;
-    border-top: 1px solid #dcdcde;
-    padding: 12px 16px !important;
-}
-
-.ui-dialog .ui-dialog-buttonpane button {
-    background: #2271b1 !important;
-    border: 1px solid #2271b1 !important;
-    border-radius: 4px !important;
-    color: #fff !important;
-    padding: 0 16px !important;
-    height: 32px !important;
-    font-size: 13px !important;
-    line-height: 30px !important;
-    font-weight: 400 !important;
-    box-shadow: none !important;
-}
-
-.ui-dialog .ui-dialog-buttonpane button:hover {
-    background: #135e96 !important;
-    border-color: #135e96 !important;
-}
-
-.ui-dialog .ui-dialog-buttonpane button:active {
-    background: #0a4b78 !important;
-    border-color: #0a4b78 !important;
-}
-
-.ui-widget-overlay {
-    background: #000 !important;
-    opacity: 0.7 !important;
-}
-
-button.notice-dismiss:before{
-    color: red !important;
-}
-
-/* Endpoint Icon Preview */
+/* Preview of the icon customers will see in the menu. The bundled icon
+   subset scopes its font to the storefront wrappers, so name it here too;
+   an icon missing from the subset stays blank, exactly as on the storefront. */
 .wcmp-icon-preview {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
-    line-height: 16px;
-    vertical-align: middle;
-    margin-right: 6px;
-    color: #646970;
+	display: inline-block;
+	font-family: "WCMP Icons";
+	font-style: normal;
+	font-weight: 900;
+	line-height: 1;
+	width: 16px;
+	margin-inline-end: 6px;
+	font-size: 14px;
+	text-align: center;
+	color: var(--wcmp-muted);
+	vertical-align: middle;
 }
 
-/* Type Badges */
-.wcmp-type-badge {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    line-height: 1;
-    padding: 3px 8px;
-    border-radius: 3px;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    vertical-align: middle;
+/* Visibility toggle: the whole 40px box is the checkbox's label. */
+.on-off-endpoint {
+	position: absolute;
+	inset-block-start: 6px;
+	inset-inline-start: 4px;
+	z-index: 1;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--wcmp-tap);
+	height: var(--wcmp-tap);
+	border-radius: var(--wcmp-radius);
+	color: var(--wcmp-muted);
+	cursor: pointer;
 }
-.wcmp-type-endpoint {
-    background: #e7f0f8;
-    color: #2271b1;
+.on-off-endpoint input[type="checkbox"] {
+	position: absolute;
+	inset: 0;
+	margin: 0;
+	opacity: 0;
+	cursor: pointer;
+}
+.on-off-endpoint .wcmp-eye {
+	width: 18px;
+	height: 18px;
+	opacity: 0.35;
+}
+.on-off-endpoint input[type="checkbox"]:checked ~ .wcmp-eye {
+	opacity: 1;
+	color: var(--wcmp-text);
+}
+.on-off-endpoint:hover {
+	background: var(--wcmp-surface-alt);
+}
+.on-off-endpoint:focus-within {
+	outline: 2px solid var(--wcmp-accent);
+	outline-offset: -2px;
+}
+
+/* Expander: type badge + chevron, one button. */
+.open-options {
+	position: absolute;
+	inset-block-start: 6px;
+	inset-inline-end: 4px;
+	z-index: 1;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	height: var(--wcmp-tap);
+	padding-inline: 8px;
+	margin: 0;
+	background: none;
+	border: 0;
+	border-radius: var(--wcmp-radius);
+	color: var(--wcmp-muted);
+	font: inherit;
+	cursor: pointer;
+}
+.open-options:hover {
+	background: var(--wcmp-surface-alt);
+	color: var(--wcmp-text);
+}
+.open-options:focus-visible {
+	outline: 2px solid var(--wcmp-accent);
+	outline-offset: -2px;
+}
+.open-options .wcmp-chevron {
+	width: 18px;
+	height: 18px;
+	transition: transform 150ms ease;
+}
+.open-options[aria-expanded="true"] .wcmp-chevron {
+	transform: rotate(180deg);
+}
+
+/* Type badges. */
+.wcmp-type-badge {
+	display: inline-block;
+	padding: 3px 8px;
+	border-radius: 4px;
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 1;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+	color: var(--wcmp-accent);
+	background: var(--wcmp-surface-alt);
+	background: color-mix(in srgb, var(--wcmp-accent) 12%, var(--wcmp-surface));
 }
 .wcmp-type-group {
-    background: #f0e7f8;
-    color: #8c5fc4;
+	color: var(--wcmp-badge-group);
+	background: color-mix(in srgb, var(--wcmp-badge-group) 12%, var(--wcmp-surface));
 }
 .wcmp-type-link {
-    background: #e7f8ea;
-    color: #00a32a;
+	color: var(--wcmp-badge-link);
+	background: color-mix(in srgb, var(--wcmp-badge-link) 12%, var(--wcmp-surface));
 }
 
-/* Dashicons alignment in on-off and open-options */
-.on-off-endpoint .dashicons,
-.open-options .dashicons {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
-    line-height: 18px;
-    vertical-align: middle;
+/* Expanded panel. */
+.endpoint-options {
+	padding-block: 0 16px;
+	padding-inline: 16px;
+	border-block-start: 1px solid var(--wcmp-border);
 }
-.open-options .dashicons {
-    color: #646970;
+.endpoint-options .options-row {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 4px;
+	padding-block: 8px;
+	color: var(--wcmp-muted);
+}
+.wcmp-link-btn {
+	padding: 4px 6px;
+	margin: 0;
+	background: none;
+	border: 0;
+	border-radius: 4px;
+	color: var(--wcmp-accent);
+	font-size: 13px;
+	cursor: pointer;
+}
+.wcmp-link-btn:hover {
+	color: var(--wcmp-accent-strong);
+	text-decoration: underline;
+}
+.wcmp-link-btn:focus-visible {
+	outline: 2px solid var(--wcmp-accent);
+	outline-offset: 1px;
+}
+.wcmp-link-btn.remove-trigger {
+	color: var(--wcmp-danger);
 }
 
-/* Spinner animation for loader */
+/*--------------------------------------------------------------
+# Add / Delete dialogs
+--------------------------------------------------------------
+Positioned by jQuery UI with inline top/left, so the base offsets stay
+physical: logical ones would add a second, conflicting edge in RTL.
+--------------------------------------------------------------*/
+.ui-widget-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 100101;
+	background: var(--wcmp-overlay, rgb(0 0 0 / 0.6));
+}
+.wcmp-dialog.ui-dialog {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 100102;
+	max-width: calc(100vw - 32px);
+	padding: 0;
+	color: var(--wcmp-text);
+	background: var(--wcmp-surface);
+	border: 1px solid var(--wcmp-border);
+	border-radius: var(--wcmp-radius);
+	box-shadow: var(--wcmp-shadow);
+	overflow: hidden;
+}
+.wcmp-dialog .ui-dialog-titlebar {
+	position: relative;
+	display: flex;
+	align-items: center;
+	min-height: 48px;
+	padding-block: 8px;
+	padding-inline: 16px 56px;
+	background: var(--wcmp-surface);
+	border-block-end: 1px solid var(--wcmp-border);
+	cursor: move;
+}
+.wcmp-dialog .ui-dialog-title {
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.3;
+	color: var(--wcmp-text);
+}
+.wcmp-dialog .wcmp-required {
+	margin-inline-start: 2px;
+	color: var(--wcmp-danger);
+}
+/* jQuery UI keeps "Close" as the button text; hide it visually, keep it for
+   screen readers, and draw the cross without an icon font. */
+.wcmp-dialog .ui-dialog-titlebar-close {
+	position: absolute;
+	inset-block-start: 4px;
+	inset-inline-end: 4px;
+	width: var(--wcmp-tap);
+	height: var(--wcmp-tap);
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	border: 0;
+	border-radius: var(--wcmp-radius);
+	color: var(--wcmp-muted);
+	text-indent: -9999px;
+	overflow: hidden;
+	cursor: pointer;
+}
+.wcmp-dialog .ui-dialog-titlebar-close::before {
+	content: "\00d7";
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-indent: 0;
+	font-size: 24px;
+	line-height: 1;
+}
+.wcmp-dialog .ui-dialog-titlebar-close .ui-icon,
+.wcmp-dialog .ui-dialog-titlebar-close .ui-button-icon-space {
+	display: none;
+}
+.wcmp-dialog .ui-dialog-titlebar-close:hover {
+	background: var(--wcmp-surface-alt);
+	color: var(--wcmp-text);
+}
+.wcmp-dialog .ui-dialog-content {
+	padding: 16px;
+	overflow: auto;
+}
+.wcmp-dialog .ui-dialog-content label {
+	display: block;
+	margin-block-end: 4px;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--wcmp-text);
+}
+.wcmp-dialog .ui-dialog-content .description {
+	margin-block: 0 8px;
+	font-size: 12px;
+	color: var(--wcmp-muted);
+}
+.wcmp-dialog .wcmp-field-input {
+	width: 100%;
+	min-height: var(--wcmp-tap);
+	padding-block: 8px;
+	padding-inline: 12px;
+	font-size: 14px;
+	color: var(--wcmp-text);
+	background: var(--wcmp-surface);
+	border: 1px solid var(--wcmp-border);
+	border-radius: var(--wcmp-radius);
+	box-shadow: none;
+}
+.wcmp-dialog .wcmp-field-input:focus {
+	border-color: var(--wcmp-accent);
+	box-shadow: 0 0 0 1px var(--wcmp-accent);
+	outline: 2px solid transparent;
+}
+.wcmp-dialog .error-msg {
+	margin-block: 10px 0;
+	padding-block: 8px;
+	padding-inline: 12px;
+	font-size: 13px;
+	color: var(--wcmp-text);
+	background: var(--wcmp-danger-soft);
+	border-inline-start: 4px solid var(--wcmp-danger);
+	border-radius: 4px;
+}
+.wcmp-dialog .error-msg:empty {
+	display: none;
+}
+.wcmp-loader {
+	display: inline-flex;
+	align-items: center;
+	margin-block-start: 8px;
+	color: var(--wcmp-accent);
+}
+.wcmp-loader .wcmp-spin {
+	width: 18px;
+	height: 18px;
+}
 .wcmp-spin {
-    animation: wcmp-spin 1.5s linear infinite;
+	animation: wcmp-spin 1.2s linear infinite;
 }
 @keyframes wcmp-spin {
-    100% { transform: rotate(360deg); }
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+/* Buttons: secondary by default, the first one is the primary action. */
+.wcmp-dialog .ui-dialog-buttonpane {
+	display: flex;
+	justify-content: flex-end;
+	padding-block: 12px;
+	padding-inline: 16px;
+	margin: 0;
+	background: var(--wcmp-surface-alt);
+	border-block-start: 1px solid var(--wcmp-border);
+}
+.wcmp-dialog .ui-dialog-buttonset {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+.wcmp-dialog .ui-dialog-buttonpane button {
+	min-height: var(--wcmp-tap);
+	padding-block: 0;
+	padding-inline: 16px;
+	margin: 0;
+	font-size: 13px;
+	font-weight: 500;
+	color: var(--wcmp-accent);
+	background: var(--wcmp-surface);
+	border: 1px solid var(--wcmp-accent);
+	border-radius: var(--wcmp-radius);
+	box-shadow: none;
+	text-shadow: none;
+	cursor: pointer;
+}
+.wcmp-dialog .ui-dialog-buttonpane button:first-child {
+	color: var(--wcmp-on-accent);
+	background: var(--wcmp-accent);
+}
+.wcmp-dialog .ui-dialog-buttonpane button:first-child:hover {
+	background: var(--wcmp-accent-strong);
+	border-color: var(--wcmp-accent-strong);
+}
+.wcmp-dialog .ui-dialog-buttonpane button.wcmp-dialog-danger {
+	color: var(--wcmp-on-accent);
+	background: var(--wcmp-danger);
+	border-color: var(--wcmp-danger);
+}
+.wcmp-dialog .ui-dialog-buttonpane button:focus-visible,
+.wcmp-dialog .ui-dialog-titlebar-close:focus-visible {
+	outline: 2px solid var(--wcmp-accent);
+	outline-offset: 2px;
+}
+
+/*--------------------------------------------------------------
+# FAQ tab
+--------------------------------------------------------------*/
+.wcmp-faq-item {
+	padding-block: 16px;
+	border-block-end: 1px solid var(--wcmp-border);
+}
+.wcmp-faq-item:first-child {
+	padding-block-start: 0;
+}
+.wcmp-faq-item:last-child {
+	padding-block-end: 0;
+	border-block-end: 0;
+}
+.wcmp-faq-item h4 {
+	margin-block: 0 10px;
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--wcmp-text);
+}
+.wcmp-faq-item p {
+	margin-block: 8px;
+	line-height: 1.6;
+}
+.wcmp-faq-item ul,
+.wcmp-faq-item ol {
+	margin-block: 8px;
+	margin-inline: 20px 0;
+	line-height: 1.7;
+}
+.wcmp-faq-item ul {
+	list-style: disc;
+}
+.wcmp-faq-code {
+	margin-block: 10px;
+	padding: 12px;
+	font-size: 13px;
+	line-height: 1.5;
+	background: var(--wcmp-surface);
+	border: 1px solid var(--wcmp-border);
+	border-radius: 6px;
+	overflow-x: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wcmp-spin,
+	.open-options .wcmp-chevron {
+		animation: none;
+		transition: none;
+	}
+}
+
+/*--------------------------------------------------------------
+# Responsive
+--------------------------------------------------------------*/
+@media (max-width: 640px) {
+	/* Stack label above a full-width control instead of overflowing the card. */
+	.wbcom-settings-body .wcmp-endpoint-fields .wbcom-field-group {
+		flex-direction: column;
+		align-items: stretch;
+	}
+	.wcmp-endpoint-fields .wbcom-field-group .wbcom-field-control {
+		flex: 1 1 auto;
+		max-width: 100%;
+	}
+	.endpoints-container {
+		padding-inline: 0;
+	}
+	/* Uppercase widens labels about 15%; show them as typed so they fit. */
+	.endpoint-header {
+		text-transform: none;
+		padding-inline-end: 132px;
+	}
+	.wcmp-link-btn {
+		min-height: var(--wcmp-tap);
+		padding-inline: 10px;
+	}
 }
