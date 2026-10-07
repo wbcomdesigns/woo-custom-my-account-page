@@ -14,9 +14,6 @@ parameters:
 			- node_modules (?)
 			- dist (?)
 			- docs (?)
-		analyse:
-			# Bundled Wbcom settings shell: scanned for its symbols, analysed in its own repo.
-			- lib
 	scanFiles:
 		- %rootDir%/../../php-stubs/woocommerce-stubs/woocommerce-stubs.php
 	bootstrapFiles:

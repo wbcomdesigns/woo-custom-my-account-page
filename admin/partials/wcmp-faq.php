@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	// Exit if accessed directly.
 }
 
-Wbcom_Settings_Page::card_open(
+Woo_Custom_My_Account_Page_Admin::card_open(
 	__( 'Getting Started', 'woo-custom-my-account-page' ),
 	__( 'Find answers to common questions about using the WooCommerce Custom My Account Page plugin.', 'woo-custom-my-account-page' )
 );
@@ -38,9 +38,9 @@ Wbcom_Settings_Page::card_open(
 	<p><strong><?php esc_html_e( 'Links:', 'woo-custom-my-account-page' ); ?></strong> <?php esc_html_e( 'Add external or internal links to your menu (e.g., Support page, Blog, FAQs). They can open in the same tab or a new tab.', 'woo-custom-my-account-page' ); ?></p>
 </div>
 <?php
-Wbcom_Settings_Page::card_close();
+Woo_Custom_My_Account_Page_Admin::card_close();
 
-Wbcom_Settings_Page::card_open( __( 'Creating & Managing Items', 'woo-custom-my-account-page' ) );
+Woo_Custom_My_Account_Page_Admin::card_open( __( 'Creating & Managing Items', 'woo-custom-my-account-page' ) );
 ?>
 <div class="wcmp-faq-item">
 	<h4><?php esc_html_e( 'Q: How do I create a new custom endpoint?', 'woo-custom-my-account-page' ); ?></h4>
@@ -99,9 +99,9 @@ Wbcom_Settings_Page::card_open( __( 'Creating & Managing Items', 'woo-custom-my-
 	<p><?php esc_html_e( 'A: Click on the endpoint to expand it, then click the "Remove" link. This will delete it from your menu. Note: You can also just hide it using the eye icon if you want to keep it for later.', 'woo-custom-my-account-page' ); ?></p>
 </div>
 <?php
-Wbcom_Settings_Page::card_close();
+Woo_Custom_My_Account_Page_Admin::card_close();
 
-Wbcom_Settings_Page::card_open( __( 'Customization Options', 'woo-custom-my-account-page' ) );
+Woo_Custom_My_Account_Page_Admin::card_open( __( 'Customization Options', 'woo-custom-my-account-page' ) );
 ?>
 <div class="wcmp-faq-item">
 	<h4><?php esc_html_e( 'Q: How do I add icons to menu items?', 'woo-custom-my-account-page' ); ?></h4>
@@ -148,9 +148,9 @@ Wbcom_Settings_Page::card_open( __( 'Customization Options', 'woo-custom-my-acco
 	<p><?php esc_html_e( 'A: The Style tab sets the menu item and hover colours, and the Log out button text, background and hover colours. The General tab sets the menu layout (Sidebar or Tab) and the sidebar position.', 'woo-custom-my-account-page' ); ?></p>
 </div>
 <?php
-Wbcom_Settings_Page::card_close();
+Woo_Custom_My_Account_Page_Admin::card_close();
 
-Wbcom_Settings_Page::card_open( __( 'Troubleshooting', 'woo-custom-my-account-page' ) );
+Woo_Custom_My_Account_Page_Admin::card_open( __( 'Troubleshooting', 'woo-custom-my-account-page' ) );
 ?>
 <div class="wcmp-faq-item">
 	<h4><?php esc_html_e( 'Q: My changes aren\'t showing on the frontend. What should I do?', 'woo-custom-my-account-page' ); ?></h4>
@@ -195,9 +195,9 @@ Wbcom_Settings_Page::card_open( __( 'Troubleshooting', 'woo-custom-my-account-pa
 	</ul>
 </div>
 <?php
-Wbcom_Settings_Page::card_close();
+Woo_Custom_My_Account_Page_Admin::card_close();
 
-Wbcom_Settings_Page::card_open( __( 'Advanced Usage', 'woo-custom-my-account-page' ) );
+Woo_Custom_My_Account_Page_Admin::card_open( __( 'Advanced Usage', 'woo-custom-my-account-page' ) );
 ?>
 <div class="wcmp-faq-item">
 	<h4><?php esc_html_e( 'Q: Can I use custom CSS classes?', 'woo-custom-my-account-page' ); ?></h4>
@@ -220,15 +220,15 @@ function custom_menu_logic( $items ) {
 	<p><?php esc_html_e( 'A: Yes! This plugin works with most WooCommerce extensions. Endpoints created by other plugins (like Subscriptions, Bookings, Memberships) will automatically appear in the Endpoints tab where you can customize them.', 'woo-custom-my-account-page' ); ?></p>
 </div>
 <?php
-Wbcom_Settings_Page::card_close();
+Woo_Custom_My_Account_Page_Admin::card_close();
 
-Wbcom_Settings_Page::card_open( __( 'Need More Help?', 'woo-custom-my-account-page' ) );
+Woo_Custom_My_Account_Page_Admin::card_open( __( 'Need More Help?', 'woo-custom-my-account-page' ) );
 ?>
 <p><?php esc_html_e( 'If your question isn\'t answered here, please check out these resources:', 'woo-custom-my-account-page' ); ?></p>
-<ul class="wbcom-feature-list">
+<ul class="wcmp-feature-list">
 	<li><i data-lucide="book-open"></i><a href="https://github.com/wbcomdesigns/woo-custom-my-account-page/tree/master/docs/website" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Full Documentation', 'woo-custom-my-account-page' ); ?></a></li>
 	<li><i data-lucide="life-buoy"></i><a href="https://wbcomdesigns.com/support/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Support Center', 'woo-custom-my-account-page' ); ?></a></li>
 	<li><i data-lucide="message-square"></i><a href="https://wbcomdesigns.com/contact/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Contact Us', 'woo-custom-my-account-page' ); ?></a></li>
 </ul>
 <?php
-Wbcom_Settings_Page::card_close();
+Woo_Custom_My_Account_Page_Admin::card_close();

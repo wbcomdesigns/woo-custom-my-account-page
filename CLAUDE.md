@@ -2,7 +2,7 @@
 
 > **2026-08-18 status:** the 18-card Bugs program shipped on branch `1.6.4`
 > (P0 kses order + block-aware detection + custom default endpoint,
-> zero-config activation, Pattern A admin on `lib/wbcom-settings/`, portal
+> zero-config activation, card-panel admin (`admin/views/shell.php`), portal
 > chrome with token bridge + RTL + a11y + one icon vocabulary, `wcmp/my-account`
 > block + `[wcmp_my_account]` shortcode). The checklist below predates that
 > work - treat it as historical audit context, not open items.
@@ -278,9 +278,12 @@ WordPress Plugin Boilerplate. `Woo_Custom_My_Account_Page` registers every admin
 | `includes/class-woo-custom-my-account-page-deactivator.php` | Deactivation routine |
 | `admin/class-woo-custom-my-account-page-admin.php` | Endpoint builder, settings, styling |
 | `public/class-woo-custom-my-account-page-public.php` | Front-end menu + endpoint content rendering |
-| `admin/wbcom/` | Shared Wbcom admin header/nav framework |
+| `admin/views/shell.php` | Card-panel admin shell: page header, sidebar from `get_tabs()`, body slot (same pattern as Open Graph, WP Stories) |
+| `admin/views/hub.php` | WB Plugins hub landing (reclaimed at `admin_menu` priority 999) |
 
 ### Assets
+- `admin/assets/css/admin.css` - card-panel shell, `--wcmp-admin-*` tokens (accent follows the admin colour scheme), field rows, badges, save bar
+- `admin/assets/css/woo-custom-my-account-page-admin.css` - Endpoints builder, Add/Delete dialogs, FAQ; reads the shell tokens
 - `admin/assets/js/jquery.nestable.js` - drag-and-drop ordering of endpoints/groups
 - `admin/assets/js/woo-custom-my-account-page-admin.js`
 - `public/assets/js/woo-custom-my-account-page-public.js`

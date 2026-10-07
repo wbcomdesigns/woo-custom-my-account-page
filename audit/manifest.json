@@ -94,7 +94,7 @@
     { "key": "public",       "class": "Woo_Custom_My_Account_Page_Public",   "file": "public/class-woo-custom-my-account-page-public.php",     "purpose": "Frontend assets (conditional), get_avatar filter, avatar upload/reset/form, menu-item classes, style token bridge." },
     { "key": "activator",    "class": "Woo_Custom_My_Account_Page_Activator","file": "includes/class-woo-custom-my-account-page-activator.php","purpose": "Activation hook (seeds defaults / rewrite)." },
     { "key": "deactivator",  "class": "Woo_Custom_My_Account_Page_Deactivator","file": "includes/class-woo-custom-my-account-page-deactivator.php","purpose": "Deactivation hook." },
-    { "key": "settings_shell","class": "Wbcom_Settings_Page",                "file": "lib/wbcom-settings/ (bundled, registered v1.0.2)",      "purpose": "Shared Wbcom Pattern A admin shell — highest bundled version across active Wbcom plugins wins." }
+    { "key": "settings_shell","class": "Woo_Custom_My_Account_Page_Admin",   "file": "admin/views/shell.php + admin/views/hub.php",            "purpose": "Card-panel admin shell (get_tabs() registry, render_page(), card_open()/card_close()) and the WB Plugins hub landing, reclaimed at admin_menu 999." }
   ],
   "frontend_hooks": [
     { "hook": "woocommerce_account_navigation",         "type": "action", "callback": "Woo_Custom_My_Account_Page_Functions::wcmp_add_my_account_menu (10)", "purpose": "Render the custom menu; core woocommerce_account_navigation is removed in Functions::init." },
@@ -124,6 +124,7 @@
     { "hook": "wcmp_is_my_account_page",         "type": "filter", "purpose": "Override account-page detection." },
     { "hook": "wcmp_get_current_endpoint",       "type": "filter", "purpose": "Override the current endpoint resolution." },
     { "hook": "wcmp_default_general_settings / wcmp_default_style_settings / wcmp_default_endpoints_settings", "type": "filter", "purpose": "Amend seeded defaults." },
+    { "hook": "wcmp_admin_tabs", "type": "filter", "purpose": "Add or reorder settings screen tabs (label, Dashicon, group). Since 1.7.1." },
     { "hook": "wcmp_get_default_endpoint_options / _group_options / _link_options", "type": "filter", "purpose": "Amend the option shape for a new builder item." },
     { "hook": "wcmp_myaccount_menu_template_args + wcmp_print_single_endpoint_args + wcmp_print_endpoints_group_group + wcmp_endpoint_menu_class + wcmp_endpoints_group_class", "type": "filter", "purpose": "Template arg / class hooks for the frontend menu." },
     { "hook": "wcmp_admin_print_endpoint_field / _endpoints_group / _link_field", "type": "filter", "purpose": "Amend builder-row template args in admin." },
@@ -141,7 +142,6 @@
   },
   "bundled_libraries": [
     { "name": "EDD Software Licensing SDK", "path": "vendor/edd-sl-sdk/edd-sl-sdk.php", "runtime": true, "purpose": "Self-hosted automatic updates (item_id 110615)." },
-    { "name": "Wbcom Settings shell",        "path": "lib/wbcom-settings/",              "runtime": true, "version": "1.0.2", "purpose": "Shared Pattern A admin shell + assets (settings.css/js, RTL)." },
     { "name": "Scoped icon font",            "path": "assets/vendor/font-awesome/",      "runtime": true, "purpose": "Custom 'WCMP Icons' font scoped to .wcmp-myaccount-template so it never clashes with a theme's own Font Awesome." },
     { "name": "Select2",                     "path": "assets/vendor/select2/",           "runtime": true, "purpose": "Role multiselect in the endpoint builder (local, not CDN)." },
     { "name": "Lucide",                      "path": "assets/vendor/lucide.min.js",      "runtime": true, "purpose": "Icons in the shared settings shell." },

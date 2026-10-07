@@ -132,8 +132,10 @@ class Woo_Custom_My_Account_Page {
 
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
-		add_action( 'init', array( $plugin_admin, 'boot_settings_page' ), 1 );
 		add_action( 'admin_menu', array( $plugin_admin, 'wcmp_add_plugin_menu_page' ), 5 );
+		// Priority 999 reclaims the shared hub landing render when a plugin on an
+		// older Wbcom admin framework registered wbcomplugins first.
+		add_action( 'admin_menu', array( $plugin_admin, 'takeover_hub_landing' ), 999 );
 		add_action( 'admin_init', array( $plugin_admin, 'wcmp_add_plugin_register_settings' ) );
 
 		// Update WooCommerce tab slugs after save endpoint settings.
@@ -141,7 +143,7 @@ class Woo_Custom_My_Account_Page {
 
 		// Add endpoint ajax (admin-only, no nopriv handler needed).
 		add_action( 'wp_ajax_wcmp_add_field', array( $plugin_admin, 'wcmp_add_field_ajax' ) );
-		add_action( 'in_admin_header', array( $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' ) );
+		add_action( 'in_admin_header', array( $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' ), 1 );
 
 		add_action( 'update_option_wcmp_endpoints_settings', array( $plugin_admin, 'wcmp_schedule_flush_rewrite_on_endpoint_save' ) );
 		add_action( 'init', array( $plugin_admin, 'wcmp_maybe_flush_rewrite_rules' ), 30 );

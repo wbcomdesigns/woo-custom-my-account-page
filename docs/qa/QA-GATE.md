@@ -29,7 +29,7 @@ Frontend — My Account custom menu, custom avatar, custom endpoints, dashboard,
 - [ ] **[code]** Activates on a clean WP + WooCommerce install with no PHP notice/warning/fatal in `debug.log`.
 - [ ] **[code]** Bootstraps **exactly once** — `run_woo_custom_my_account_page()` runs only through the `plugins_loaded` → `wcmp_plugins_files` WooCommerce-active branch; no duplicate hook registration on admin loads.
 - [ ] **[code]** `Requires Plugins: woocommerce` header present; the runtime `is_plugin_active_for_network` self-deactivation notice fires only when WooCommerce is genuinely absent (don't double-guard).
-- [ ] **[code]** Bundled `lib/wbcom-settings` shell registers via `wbcom_settings_register('1.0.2', …)`; with a second Wbcom plugin shipping a different copy active, the highest version loads and there is no fatal / no double menu.
+- [ ] **[code]** Card-panel admin (`admin/views/shell.php`): with a second Wbcom plugin active, WB Plugins shows one hub and one "Woo My Account" entry, the hub lists both plugins, and there is no fatal.
 - [ ] **[code]** Textdomain loads on `plugins_loaded` (i18n), not earlier; no output before headers.
 - [ ] **[code]** Deactivate → reactivate is clean. `uninstall.php` removes the plugin's own options + license + `wcmp-users-avatar-ids` + transient and flushes rewrites. **Known gap:** it does not remove `wb-wcmp-avatar` user meta, uploaded avatar attachments, legacy `wcmp_endpoint`, or `wcmp_endpoint_backup_pre_*` — confirm this is still the intended scope or fix.
 - [ ] **[code]** PHP lint (8.0–8.4) + PHPStan clean; WPCS clean.
@@ -80,7 +80,7 @@ Frontend — My Account custom menu, custom avatar, custom endpoints, dashboard,
 
 - [ ] **[code]** Version agrees across the main-file header, `WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION`, `readme.txt`/`README.txt` stable tag, `package.json`, and `blocks/my-account/block.json`.
 - [ ] **[code]** Built zip (via `bin/build-release.sh`, reading `.distignore`) contains no `bin/`, `.distignore`, `node_modules/`, `dist/`, `audit/`, `docs/`, `*.md`, tests, or grunt config.
-- [ ] **[code]** Bundled runtime libraries **are present** in the zip, asserted by named file: `vendor/edd-sl-sdk/edd-sl-sdk.php`, `lib/wbcom-settings/class-wbcom-settings-page.php`, the scoped icon font under `assets/vendor/font-awesome/`, `assets/vendor/select2/`, `assets/vendor/lucide.min.js`, and `blocks/my-account/render.php`.
+- [ ] **[code]** Bundled runtime libraries **are present** in the zip, asserted by named file: `vendor/edd-sl-sdk/edd-sl-sdk.php`, `admin/views/shell.php`, the scoped icon font under `assets/vendor/font-awesome/`, `assets/vendor/select2/`, `assets/vendor/lucide.min.js`, and `blocks/my-account/render.php`.
 - [ ] **[code][browser]** Pristine install from the **built zip** (fresh WP + WooCommerce): activates, lands on the Endpoints builder, My Account returns 200, the EDD SDK + Wbcom shell classes load, no fatal.
 - [ ] **[code]** Changelog in WooCommerce action-prefix style (New/Improve/Fix/Security/Dev/Compat), no em-dashes, no emoji.
 
