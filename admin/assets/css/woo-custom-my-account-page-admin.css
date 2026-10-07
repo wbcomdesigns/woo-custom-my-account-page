@@ -1,32 +1,32 @@
 /**
  * Custom My Account Page - admin styles.
  *
- * Layered on the shared wbcom-settings shell (lib/wbcom-settings/settings.css):
- * this file only styles what the shell does not - the Endpoints builder rows,
- * the Add / Delete dialogs and the FAQ items.
+ * Layered on the card-panel shell (admin.css): this file only styles what the
+ * shell does not - the Endpoints builder rows, the Add / Delete dialogs and the
+ * FAQ items.
  *
- * Rules: colours come from the tokens below (which read the shell's --wbcom-*
- * tokens, so the builder follows the user's admin colour scheme), logical
+ * Rules: colours come from the tokens below (which read the shell's
+ * --wcmp-admin-* tokens, so the builder follows the user's admin colour scheme), logical
  * properties only (RTL mirrors for free), the two standard breakpoints at the bottom.
  */
 
 /*--------------------------------------------------------------
 # Tokens
 --------------------------------------------------------------
-jQuery UI appends dialogs to <body>, outside .wbcom-admin, so the dialog
+jQuery UI appends dialogs to <body>, outside .wcmp-admin, so the dialog
 class carries the same tokens; there the shell values fall back to literals
 that match the shell's own defaults.
 --------------------------------------------------------------*/
-.wbcom-admin,
+.wcmp-admin,
 .wcmp-dialog {
-	--wcmp-border: var(--wbcom-border, #e2e8f0);
-	--wcmp-surface: var(--wbcom-surface, #fff);
-	--wcmp-surface-alt: var(--wbcom-surface-alt, #fafafa);
-	--wcmp-text: var(--wbcom-text, #1e1e1e);
-	--wcmp-muted: var(--wbcom-muted, #646970);
-	--wcmp-accent: var(--wbcom-accent, var(--wp-admin-theme-color, #2271b1));
-	--wcmp-accent-strong: var(--wbcom-accent-strong, var(--wp-admin-theme-color-darker-10, #135e96));
-	--wcmp-on-accent: var(--wbcom-on-accent, #fff);
+	--wcmp-border: var(--wcmp-admin-border, #e2e8f0);
+	--wcmp-surface: var(--wcmp-admin-white, #fff);
+	--wcmp-surface-alt: var(--wcmp-admin-surface-1, #f8fafc);
+	--wcmp-text: var(--wcmp-admin-text, #1e293b);
+	--wcmp-muted: var(--wcmp-admin-text-3, #64748b);
+	--wcmp-accent: var(--wcmp-admin-accent, var(--wp-admin-theme-color, #2563eb));
+	--wcmp-accent-strong: var(--wcmp-admin-accent-hover, var(--wp-admin-theme-color-darker-10, #1d4ed8));
+	--wcmp-on-accent: var(--wcmp-admin-on-accent, #fff);
 	--wcmp-danger: #b32d2e;
 	--wcmp-danger-soft: #fcf0f1;
 	--wcmp-badge-group: #6b3fa0;
@@ -40,7 +40,7 @@ that match the shell's own defaults.
 /*--------------------------------------------------------------
 # Endpoints tab - toolbar and field layout
 --------------------------------------------------------------*/
-.wbcom-btn-group {
+.wcmp-btn-group {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px;
@@ -49,10 +49,10 @@ that match the shell's own defaults.
 
 /* Field widths come from the shell (same as every other tab); the role
    picker just fills its control. */
-.wcmp-endpoint-fields .wbcom-field-control .select2-container {
+.wcmp-endpoint-fields .wcmp-field-control .select2-container {
 	width: 100% !important;
 }
-.wcmp-endpoint-fields .wbcom-field-control .wbcom-input {
+.wcmp-endpoint-fields .wcmp-field-control .wcmp-input {
 	max-width: 100%;
 }
 .wcmp-endpoint-fields .select2-container--default .select2-selection--multiple {
@@ -528,9 +528,6 @@ physical: logical ones would add a second, conflicting edge in RTL.
 	padding-block: 16px;
 	border-block-end: 1px solid var(--wcmp-border);
 }
-.wcmp-faq-item:first-child {
-	padding-block-start: 0;
-}
 .wcmp-faq-item:last-child {
 	padding-block-end: 0;
 	border-block-end: 0;
@@ -579,11 +576,11 @@ physical: logical ones would add a second, conflicting edge in RTL.
 @media (max-width: 1024px) {
 	/* Rows sit inside a narrower card here; stack label above a full-width
 	   control instead of squeezing both into one line. */
-	.wbcom-settings-body .wcmp-endpoint-fields .wbcom-field-group {
+	.wcmp-admin .wcmp-endpoint-fields .wcmp-field-group {
 		flex-direction: column;
 		align-items: stretch;
 	}
-	.wbcom-settings-body .wcmp-endpoint-fields .wbcom-field-group .wbcom-field-control {
+	.wcmp-admin .wcmp-endpoint-fields .wcmp-field-group .wcmp-field-control {
 		flex: 1 1 auto;
 		max-width: 100%;
 	}

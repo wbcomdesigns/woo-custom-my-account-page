@@ -70,54 +70,54 @@ $user_roles = $wp_roles->roles;
 			<div class="wcmp-endpoint-fields">
 
 				<?php if ( 'dashboard' !== $link ) : ?>
-				<div class="wbcom-field wbcom-field-group">
-					<div class="wbcom-field-info">
+				<div class="wcmp-field wcmp-field-group">
+					<div class="wcmp-field-info">
 						<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_url' ); ?>"><?php esc_html_e( 'Link url', 'woo-custom-my-account-page' ); ?></label>
 						<p class="description"><?php esc_html_e( 'The url of the menu item.', 'woo-custom-my-account-page' ); ?></p>
 					</div>
-					<div class="wbcom-field-control">
-						<input type="text" class="wbcom-input" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][url]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_url' ); ?>" value="<?php echo esc_attr( isset( $options['url'] ) ? $options['url'] : '#' ); ?>">
+					<div class="wcmp-field-control">
+						<input type="text" class="wcmp-input" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][url]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_url' ); ?>" value="<?php echo esc_attr( isset( $options['url'] ) ? $options['url'] : '#' ); ?>">
 					</div>
 				</div>
 				<?php endif; ?>
 
-				<div class="wbcom-field wbcom-field-group">
-					<div class="wbcom-field-info">
+				<div class="wcmp-field wcmp-field-group">
+					<div class="wcmp-field-info">
 						<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_label' ); ?>"><?php esc_html_e( 'Link label', 'woo-custom-my-account-page' ); ?></label>
 						<p class="description"><?php esc_html_e( 'Menu label for this link in "My Account".', 'woo-custom-my-account-page' ); ?></p>
 					</div>
-					<div class="wbcom-field-control">
-						<input type="text" class="wbcom-input" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][label]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_label' ); ?>" value="<?php echo esc_attr( isset( $options['label'] ) ? $options['label'] : '' ); ?>">
+					<div class="wcmp-field-control">
+						<input type="text" class="wcmp-input" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][label]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_label' ); ?>" value="<?php echo esc_attr( isset( $options['label'] ) ? $options['label'] : '' ); ?>">
 					</div>
 				</div>
 
-				<div class="wbcom-field wbcom-field-group">
-					<div class="wbcom-field-info">
+				<div class="wcmp-field wcmp-field-group">
+					<div class="wcmp-field-info">
 						<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_icon' ); ?>"><?php esc_html_e( 'Link icon', 'woo-custom-my-account-page' ); ?></label>
 						<p class="description"><?php esc_html_e( 'Link icon for "My Account" menu option.', 'woo-custom-my-account-page' ); ?></p>
 					</div>
-					<div class="wbcom-field-control">
-						<input type="text" class="wbcom-input" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][icon]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_icon' ); ?>" value="<?php echo esc_attr( $options['icon'] ); ?>">
+					<div class="wcmp-field-control">
+						<input type="text" class="wcmp-input" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][icon]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_icon' ); ?>" value="<?php echo esc_attr( $options['icon'] ); ?>">
 					</div>
 				</div>
 
-				<div class="wbcom-field wbcom-field-group">
-					<div class="wbcom-field-info">
+				<div class="wcmp-field wcmp-field-group">
+					<div class="wcmp-field-info">
 						<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_class' ); ?>"><?php esc_html_e( 'Link class', 'woo-custom-my-account-page' ); ?></label>
 						<p class="description"><?php esc_html_e( 'Add additional classes to link container.', 'woo-custom-my-account-page' ); ?></p>
 					</div>
-					<div class="wbcom-field-control">
-						<input type="text" class="wbcom-input" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][class]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_class' ); ?>" value="<?php echo esc_attr( $options['class'] ); ?>">
+					<div class="wcmp-field-control">
+						<input type="text" class="wcmp-input" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][class]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_class' ); ?>" value="<?php echo esc_attr( $options['class'] ); ?>">
 					</div>
 				</div>
 
-				<div class="wbcom-field wbcom-field-group">
-					<div class="wbcom-field-info">
+				<div class="wcmp-field wcmp-field-group">
+					<div class="wcmp-field-info">
 						<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_usr_roles' ); ?>"><?php esc_html_e( 'Visible to roles (empty = everyone)', 'woo-custom-my-account-page' ); ?></label>
 						<p class="description"><?php esc_html_e( 'Select one or many user roles, you want the endpoint to be displayed. Leaving it blank will show the endpoint to all the user roles.', 'woo-custom-my-account-page' ); ?></p>
 					</div>
-					<div class="wbcom-field-control">
-						<select class="wbcom-select" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][usr_roles][]" multiple="multiple">
+					<div class="wcmp-field-control">
+						<select class="wcmp-select" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][usr_roles][]" multiple="multiple">
 							<?php
 							if ( $user_roles ) {
 								foreach ( $user_roles as $usrrole_slug => $usrrole_arr ) {
@@ -147,14 +147,14 @@ $user_roles = $wp_roles->roles;
 					</div>
 				</div>
 
-				<div class="wbcom-field wbcom-field-group">
-					<div class="wbcom-field-info">
+				<div class="wcmp-field wcmp-field-group">
+					<div class="wcmp-field-info">
 						<label for="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_target_blank' ); ?>"><?php esc_html_e( 'Open link in a new tab?', 'woo-custom-my-account-page' ); ?></label>
 					</div>
-					<div class="wbcom-field-control">
-						<label class="wbcom-toggle">
+					<div class="wcmp-field-control">
+						<label class="wcmp-switch">
 							<input type="checkbox" name="wcmp_endpoints_settings[endpoints][<?php echo esc_attr( $link ); ?>][target_blank]" id="<?php echo esc_attr( 'wcmp_endpoint_' . $link . '_target_blank' ); ?>" value="yes" <?php checked( $options['target_blank'], 'yes' ); ?>>
-							<span class="wbcom-toggle-slider"></span>
+							<span class="wcmp-slider"></span>
 						</label>
 					</div>
 				</div>

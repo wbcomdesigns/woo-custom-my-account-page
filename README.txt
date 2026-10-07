@@ -164,6 +164,7 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 
 = 1.7.1 - October 2026 =
 
+* Improve  - The settings screen uses the same card-panel layout as our other plugins under WB Plugins, with a page header and version badge; every setting, tab and URL is unchanged.
 * Improve  - The avatar upload popup is redesigned: a drag-and-drop image picker with a preview, size and type checks before uploading, one clear Upload button, and full keyboard support.
 * Improve  - The Endpoints builder now matches the rest of the settings screen: the same icons, colours that follow your admin colour scheme, and larger tap targets on phones.
 * Improve  - A custom page with no content now says so instead of showing the Dashboard text; admins get a link to add content.

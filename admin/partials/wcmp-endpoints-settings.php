@@ -2,7 +2,7 @@
 /**
  * This file is used for rendering and saving plugin endpoint settings.
  *
- * The shell (Wbcom_Settings_Page::card_open) already draws the card and title
+ * The shell (Woo_Custom_My_Account_Page_Admin::card_open) already draws the card and title
  * around this partial, so it renders only the card body.
  *
  * @since   1.0.0
@@ -20,14 +20,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	settings_fields( 'wcmp_endpoints_settings' );
 	do_settings_sections( 'wcmp_endpoints_settings' );
 	?>
-	<div class="wbcom-btn-group">
-		<button type="button" class="wbcom-btn add_new_field" data-target="group">
+	<div class="wcmp-btn-group">
+		<button type="button" class="wcmp-btn wcmp-btn-secondary add_new_field" data-target="group">
 			<?php esc_html_e( 'Add group', 'woo-custom-my-account-page' ); ?>
 		</button>
-		<button type="button" class="wbcom-btn add_new_field" data-target="endpoint">
+		<button type="button" class="wcmp-btn wcmp-btn-secondary add_new_field" data-target="endpoint">
 			<?php esc_html_e( 'Add endpoint', 'woo-custom-my-account-page' ); ?>
 		</button>
-		<button type="button" class="wbcom-btn add_new_field" data-target="link">
+		<button type="button" class="wcmp-btn wcmp-btn-secondary add_new_field" data-target="link">
 			<?php esc_html_e( 'Add link', 'woo-custom-my-account-page' ); ?>
 		</button>
 	</div>
@@ -87,17 +87,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</ol>
 	</div>
 	<div class="new-field-form" style="display: none;">
-		<div class="wbcom-field">
+		<div class="wcmp-field">
 			<label for="wcmp-new-field">
 				<?php echo esc_html_x( 'Name', 'Label for new endpoint title', 'woo-custom-my-account-page' ); ?>
 			</label>
 			<p class="description"><?php esc_html_e( 'Enter a name for your new item. This will appear in the My Account menu.', 'woo-custom-my-account-page' ); ?></p>
-			<input type="text" id="wcmp-new-field" name="wcmp-new-field" value="" class="wbcom-input wcmp-field-input" placeholder="<?php esc_attr_e( 'e.g., My Orders', 'woo-custom-my-account-page' ); ?>">
+			<input type="text" id="wcmp-new-field" name="wcmp-new-field" value="" class="wcmp-input wcmp-field-input" placeholder="<?php esc_attr_e( 'e.g., My Orders', 'woo-custom-my-account-page' ); ?>">
 			<span class="wcmp-loader" style="display: none;"><i class="wcmp-spin" data-lucide="loader-circle" aria-hidden="true"></i></span>
 			<p class="error-msg"></p>
 		</div>
 	</div>
-	<div class="wbcom-save-bar">
-		<?php submit_button( __( 'Save Changes', 'woo-custom-my-account-page' ), 'wbcom-btn wbcom-btn--primary', 'submit', false, array( 'id' => 'wcmp-save-endpoints' ) ); ?>
+	<div class="wcmp-save-bar">
+		<?php submit_button( __( 'Save Changes', 'woo-custom-my-account-page' ), 'primary', 'submit', false, array( 'id' => 'wcmp-save-endpoints' ) ); ?>
 	</div>
 </form>
