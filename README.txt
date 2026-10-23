@@ -43,12 +43,12 @@ No coding required. Everything is managed from a clean drag-and-drop admin inter
 * **Theme compatible** - Works with Storefront, BuddyBoss Theme, BuddyX, and standard WordPress themes
 * **Conflict-free icons** - Scoped icon font prevents conflicts with themes that load their own Font Awesome version
 * **Automatic updates** - Receives updates directly from wbcomdesigns.com
-* **PHP 8.2+ compatible** - Tested and ready for modern PHP versions
+* **Modern PHP** - Requires PHP 8.1 and is tested on PHP 8.1 to 8.5
 
 = How It Works =
 
 1. Install and activate the plugin (WooCommerce must be active)
-2. Go to **WB Plugins > Custom My Account** in your WordPress admin
+2. Go to **WB Plugins > Woo My Account** in your WordPress admin
 3. Open the **Endpoints** tab to see the current account navigation, then drag and drop to reorder
 4. Click **Add Endpoint** to create a new custom account page, **Add Group** for a collapsible section, or **Add Link** for an external URL
 5. Open the **General** tab to pick sidebar or tab layout, set the sidebar position, and toggle avatar uploads
