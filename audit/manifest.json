@@ -142,6 +142,7 @@
   },
   "bundled_libraries": [
     { "name": "EDD Software Licensing SDK", "path": "libs/edd-sl-sdk/edd-sl-sdk.php", "runtime": true, "purpose": "Our EDD SL SDK fork 1.0.4-wbcom.4 (registers 1.0.4.3). Self-hosted automatic updates (item_id 110615) via WCMP_LICENCE_HOST (updates.wbcomdesigns.com) with fallback_url wbcomdesigns.com; direct licence calls go through wcmp_licence_request()." },
+    { "name": "EDD SDK upgrade shim",        "path": "vendor/edd-sl-sdk/src/Requests/API.php", "runtime": true, "purpose": "Loaded only during the 1.7.2 -> 1.7.3 update: the old in-memory SDK autoloader asks for Requests\\API at the old path after the swap; this requires libs/ copy. vendor/edd-sl-sdk/vendor/composer/index.php keeps the ../.. path resolvable. Build gate requires both." },
     { "name": "Package Signatures",          "path": "libs/package-signatures/package-signatures.php", "runtime": true, "purpose": "vapvarun/package-signatures 1.0.2, warn mode, product = store slug woocommerce-custom-my-account-page." },
     { "name": "Scoped icon font",            "path": "assets/vendor/font-awesome/",      "runtime": true, "purpose": "Custom 'WCMP Icons' font scoped to .wcmp-myaccount-template so it never clashes with a theme's own Font Awesome." },
     { "name": "Select2",                     "path": "assets/vendor/select2/",           "runtime": true, "purpose": "Role multiselect in the endpoint builder (local, not CDN)." },
