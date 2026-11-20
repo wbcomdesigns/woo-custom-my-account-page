@@ -10,10 +10,13 @@ parameters:
 		- .
 	excludePaths:
 		analyseAndScan:
-			- vendor
+			- vendor (?)
 			- node_modules (?)
 			- dist (?)
 			- docs (?)
+		# Bundled libraries (our SDK fork, package-signatures) are scanned for symbols, never analysed: they are patched upstream only.
+		analyse:
+			- libs
 	scanFiles:
 		- %rootDir%/../../php-stubs/woocommerce-stubs/woocommerce-stubs.php
 	bootstrapFiles:

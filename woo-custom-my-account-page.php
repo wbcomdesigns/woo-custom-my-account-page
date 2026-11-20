@@ -10,7 +10,7 @@
  * Plugin Name:       Custom My Account Page for WooCommerce
  * Plugin URI:        https://wbcomdesigns.com/downloads/woocommerce-custom-my-account-page/
  * Description:       This plugin helps you to customize the layout of the "My Account" page, adds new endpoints, groups, links and manage its content easily.
- * Version:           1.7.2
+ * Version:           1.7.3
  * Requires at least: 6.5
  * Tested up to:      7.1
  * Requires PHP:      8.1
@@ -34,7 +34,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Currently plugin version.
  */
 if ( ! defined( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION' ) ) {
-	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.7.2' );
+	define( 'WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION', '1.7.3' );
 }
 
 /**
@@ -120,25 +120,55 @@ function wcmp_preset_free_license() {
 // Preset free license key for automatic updates (runs once for existing installs).
 add_action( 'admin_init', 'wcmp_preset_free_license' );
 
-// EDD Software Licensing SDK.
+// Licence and update host (since 1.7.3). The SDK falls back to https://wbcomdesigns.com when it cannot be reached.
+if ( ! defined( 'WCMP_LICENCE_HOST' ) ) {
+	define( 'WCMP_LICENCE_HOST', 'https://updates.wbcomdesigns.com' );
+}
+
+/**
+ * One licence-server request (activate, deactivate or check) for this plugin. Goes through the bundled SDK, so it
+ * uses the same host as update checks and falls back to the old host when the new one cannot be reached. Every
+ * direct licence call must use this helper; the SDK's own Licence screen already goes through the same API class.
+ *
+ * @since 1.7.3
+ *
+ * @param array $params EDD Software Licensing parameters (edd_action, license, item_id).
+ * @return object|false The decoded reply, or false when no host answered.
+ */
+function wcmp_licence_request( array $params ) {
+	if ( ! class_exists( '\EasyDigitalDownloads\Updater\Requests\API' ) ) {
+		return false;
+	}
+	// Name the fallback here as well: on an early request (plugin activation) the SDK registry has not run yet.
+	// The guard is for a newer upstream EDD copy winning the version contest, which has no set_fallback(). It reads
+	// the loaded class at runtime: static analysis only sees our bundled copy, where the method always exists.
+	if ( in_array( 'set_fallback', get_class_methods( '\EasyDigitalDownloads\Updater\Requests\API' ), true ) ) {
+		\EasyDigitalDownloads\Updater\Requests\API::set_fallback( WCMP_LICENCE_HOST, 'https://wbcomdesigns.com' );
+	}
+	return ( new \EasyDigitalDownloads\Updater\Requests\API( WCMP_LICENCE_HOST ) )->make_request( $params );
+}
+
+// EDD Software Licensing SDK. The licence options (woo-custom-my-account-page_license_key, _license) are keyed by
+// the id, not the host, so activated sites stay activated.
 add_action(
 	'edd_sl_sdk_registry',
 	function ( $registry ) {
 		$registry->register(
 			array(
-				'id'      => 'woo-custom-my-account-page',
-				'url'     => 'https://wbcomdesigns.com',
-				'item_id' => 110615,
-				'version' => WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION,
-				'file'    => WCMP_PLUGIN_FILE,
+				'id'           => 'woo-custom-my-account-page',
+				'url'          => WCMP_LICENCE_HOST,
+				'fallback_url' => 'https://wbcomdesigns.com',
+				'item_id'      => 110615,
+				'version'      => WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION,
+				'file'         => WCMP_PLUGIN_FILE,
 			)
 		);
 	}
 );
 // Load the SDK only when it is complete: its classes autoload from src/, so a
 // partial copy would fatal every request. Updates are optional, the site is not.
-$wcmp_sdk_dir = __DIR__ . '/vendor/edd-sl-sdk/';
-if ( file_exists( $wcmp_sdk_dir . 'edd-sl-sdk.php' ) && file_exists( $wcmp_sdk_dir . 'vendor/autoload.php' ) && file_exists( $wcmp_sdk_dir . 'src/Versions.php' ) ) {
+$wcmp_sdk_dir = __DIR__ . '/libs/edd-sl-sdk/';
+if ( file_exists( $wcmp_sdk_dir . 'edd-sl-sdk.php' ) && file_exists( $wcmp_sdk_dir . 'src/Versions.php' ) ) {
 	require_once $wcmp_sdk_dir . 'edd-sl-sdk.php';
 } else {
 	add_action(
@@ -153,6 +183,23 @@ if ( file_exists( $wcmp_sdk_dir . 'edd-sl-sdk.php' ) && file_exists( $wcmp_sdk_d
 	);
 }
 unset( $wcmp_sdk_dir );
+
+// Package Signatures (libs/package-signatures, vapvarun/package-signatures): checks that each update package carries
+// the release signature before WordPress installs it. Warn mode: the result is logged (option
+// package_signatures_log) and the update installs either way. Product = the store slug, never the repo name.
+if ( file_exists( __DIR__ . '/libs/package-signatures/package-signatures.php' ) ) {
+	require_once __DIR__ . '/libs/package-signatures/package-signatures.php';
+	package_signatures_register(
+		array(
+			'product'  => 'woocommerce-custom-my-account-page',
+			'plugin'   => plugin_basename( __FILE__ ),
+			'hosts'    => array( 'wbcomdesigns.com', 'updates.wbcomdesigns.com' ),
+			'keys'     => array( 'wbcom-2026-1' => 'kr+2P1WqRbENpZw0BXZmwFnA2tMLi6MlHbBa6jB13U4=' ),
+			'mode'     => 'warn',
+			'fallback' => 'https://wbcomdesigns.com/package-signatures/{product}/{version}/',
+		)
+	);
+}
 
 /**
  * Begins execution of the plugin.

@@ -4,7 +4,7 @@ Donate link: https://wbcomdesigns.com
 Tags: woocommerce my account, custom endpoints, account page customizer, woocommerce tabs, user role menu
 Requires at least: 6.5
 Tested up to: 7.1
-Stable tag: 1.7.2
+Stable tag: 1.7.3
 Requires PHP: 8.1
 WC requires at least: 6.0
 WC tested up to: 11.2
@@ -162,6 +162,11 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 6. Frontend My Account page - tab layout with grouped navigation and custom colors
 
 == Changelog ==
+
+= 1.7.3 - November 2026 =
+
+* Security - Licence screen requests now require an administrator and a valid security token.
+* Dev      - Moved licence updates to the signed update flow with a fallback host.
 
 = 1.7.2 - October 2026 =
 
