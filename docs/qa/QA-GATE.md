@@ -80,7 +80,7 @@ Frontend — My Account custom menu, custom avatar, custom endpoints, dashboard,
 
 - [ ] **[code]** Version agrees across the main-file header, `WOO_CUSTOM_MY_ACCOUNT_PAGE_VERSION`, `readme.txt`/`README.txt` stable tag, `package.json`, and `blocks/my-account/block.json`.
 - [ ] **[code]** Built zip (via `bin/build-release.sh`, reading `.distignore`) contains no `bin/`, `.distignore`, `node_modules/`, `dist/`, `audit/`, `docs/`, `*.md`, tests, or grunt config.
-- [ ] **[code]** Bundled runtime libraries **are present** in the zip, asserted by named file: `vendor/edd-sl-sdk/edd-sl-sdk.php`, `admin/views/shell.php`, the scoped icon font under `assets/vendor/font-awesome/`, `assets/vendor/select2/`, `assets/vendor/lucide.min.js`, and `blocks/my-account/render.php`.
+- [ ] **[code]** Bundled runtime libraries **are present** in the zip, asserted by named file: `libs/edd-sl-sdk/edd-sl-sdk.php`, `admin/views/shell.php`, the scoped icon font under `assets/vendor/font-awesome/`, `assets/vendor/select2/`, `assets/vendor/lucide.min.js`, and `blocks/my-account/render.php`.
 - [ ] **[code][browser]** Pristine install from the **built zip** (fresh WP + WooCommerce): activates, lands on the Endpoints builder, My Account returns 200, the EDD SDK + Wbcom shell classes load, no fatal.
 - [ ] **[code]** Changelog in WooCommerce action-prefix style (New/Improve/Fix/Security/Dev/Compat), no em-dashes, no emoji.
 

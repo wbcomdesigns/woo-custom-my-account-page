@@ -125,6 +125,8 @@ rm -f "$ZIP"
 # an unanchored exclude that strips it fails the build instead of the customer.
 ZIP_CONTENTS="$( unzip -Z1 "$ZIP" )"
 REQUIRED=( "$SLUG/$MAIN_FILE" )
+# The vendor/edd-sl-sdk upgrade shim: without it the 1.7.2 -> 1.7.3 update fatals once the files are swapped.
+REQUIRED+=( "$SLUG/vendor/edd-sl-sdk/src/Requests/API.php" "$SLUG/vendor/edd-sl-sdk/vendor/composer/index.php" )
 [ -n "$README" ] && REQUIRED+=( "$SLUG/$README" )
 # Here-strings, not pipes: `grep -q` exits on the first match and a piped
 # upstream then takes SIGPIPE, which under `set -o pipefail` reports the whole

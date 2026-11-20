@@ -28,7 +28,7 @@ cycle) · **Hardened 1.6.5** / **Hardened 1.7.0** / **Hardened 1.7.1** (fixed/ti
 | Style overrides | Six colour pickers. Frontend colours follow the active theme through a CSS-custom-property token bridge; pickers act as overrides only when changed from the default. | Rebuilt 1.6.4 |
 | Portal placement | `[wcmp_my_account]` shortcode and `wcmp/my-account` block place the full portal on any page, including block themes (both delegate to `[woocommerce_my_account]`). | Rebuilt 1.6.4 |
 | Scoped icon font | Bundled "WCMP Icons" font scoped to `.wcmp-myaccount-template`, so it never clashes with a theme's own Font Awesome. Admin icon picker previews the same set the storefront renders. | Stable |
-| Self-hosted updates | Automatic updates via the bundled EDD SL SDK; a free license key is preset on activation — nothing to configure. | Stable |
+| Self-hosted updates | Automatic updates via the bundled EDD SL SDK (signed update flow, updates host with fallback); a free license key is preset on activation — nothing to configure. | Stable |
 | Legacy migration | One-time in-place migration of the pre-1.x `wcmp_endpoint` store (with a version-suffixed backup). | Stable |
 
 ---
