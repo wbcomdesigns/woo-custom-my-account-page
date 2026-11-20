@@ -15,6 +15,8 @@ gruntfile.js
 webpack.config.js
 composer.json
 composer.lock
+# Bundled SDK build metadata, never read at runtime (named so the zip-vs-repo gate knows the exclusion is intended).
+libs/edd-sl-sdk/composer.json
 .editorconfig
 
 # Coding-standard + test config
