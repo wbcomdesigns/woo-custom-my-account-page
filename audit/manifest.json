@@ -94,7 +94,7 @@
     { "key": "public",       "class": "Woo_Custom_My_Account_Page_Public",   "file": "public/class-woo-custom-my-account-page-public.php",     "purpose": "Frontend assets (conditional), get_avatar filter, avatar upload/reset/form, menu-item classes, style token bridge." },
     { "key": "activator",    "class": "Woo_Custom_My_Account_Page_Activator","file": "includes/class-woo-custom-my-account-page-activator.php","purpose": "Activation hook (seeds defaults / rewrite)." },
     { "key": "deactivator",  "class": "Woo_Custom_My_Account_Page_Deactivator","file": "includes/class-woo-custom-my-account-page-deactivator.php","purpose": "Deactivation hook." },
-    { "key": "settings_shell","class": "Woo_Custom_My_Account_Page_Admin",   "file": "admin/views/shell.php + admin/views/hub.php",            "purpose": "Card-panel admin shell (get_tabs() registry, render_page(), card_open()/card_close()) and the WB Plugins hub landing, reclaimed at admin_menu 999." }
+    { "key": "settings_shell","class": "Woo_Custom_My_Account_Page_Admin",   "file": "admin/views/settings-frame.php + admin/views/hub.php",            "purpose": "Card-panel admin shell (get_tabs() registry, render_page(), card_open()/card_close()) and the WB Plugins hub landing, reclaimed at admin_menu 999." }
   ],
   "frontend_hooks": [
     { "hook": "woocommerce_account_navigation",         "type": "action", "callback": "Woo_Custom_My_Account_Page_Functions::wcmp_add_my_account_menu (10)", "purpose": "Render the custom menu; core woocommerce_account_navigation is removed in Functions::init." },

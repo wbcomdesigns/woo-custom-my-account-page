@@ -655,6 +655,12 @@ div#wcmp-avatar-form-overlay.loading:before {
 /*--------------------------------------------------------------
 # Theme compatibility
 --------------------------------------------------------------*/
+/* Space between the Password change fieldset and Save changes. Themes such as
+   Reign scope their own fieldset spacing to WooCommerce's navigation wrapper,
+   which this plugin's menu replaces, so the button would sit on the border. */
+.woocommerce:has(#my-account-menu, #my-account-menu-tab) .woocommerce-EditAccountForm fieldset {
+	margin-block-end: 1.5em;
+}
 .theme-buddyx #my-account-menu ~ .woocommerce-MyAccount-content,
 .theme-buddyx-pro #my-account-menu ~ .woocommerce-MyAccount-content {
 	padding: 20px;
@@ -801,15 +807,25 @@ own tokens; a theme that drives tokens makes this a no-op.
 	.wcmp-nav-toggle {
 		display: flex;
 	}
-	#my-account-menu .myaccount-menu {
+	#my-account-menu .myaccount-menu,
+	#my-account-menu-tab .myaccount-menu {
 		display: none;
 		margin: 10px 0 0;
 		border: 1px solid var(--wcmp-border);
 		border-radius: var(--wcmp-radius);
 		padding: 5px;
 	}
-	#my-account-menu .myaccount-menu.is-open {
+	#my-account-menu .myaccount-menu.is-open,
+	#my-account-menu-tab .myaccount-menu.is-open {
 		display: block;
+	}
+	/* Stacked, the tab layout's items drop their tab outline and read as a list. */
+	#my-account-menu-tab .myaccount-menu > li > a,
+	#my-account-menu-tab .myaccount-menu > li > button.group-opener {
+		width: 100%;
+		box-sizing: border-box;
+		border: 0;
+		border-radius: 0;
 	}
 
 	#my-account-menu .myaccount-menu li,

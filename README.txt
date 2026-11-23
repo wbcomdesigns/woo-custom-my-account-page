@@ -165,6 +165,11 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 
 = 1.7.3 - November 2026 =
 
+* Fix      - The plugin now installs and updates on hosts whose upload firewall (Imunify360, ModSecurity, Cloudflare WAF) blocked one of its file names.
+* Fix      - In the Horizontal Tab layout the account menu now folds behind the Account menu button on phones.
+* Fix      - Custom Log out colours from the Style tab now apply in the Horizontal Tab layout, and the text colour now applies together with a new background.
+* Fix      - The Save changes button on Account details no longer touches the Password change box on themes such as Reign.
+* Fix      - Documentation links in the settings screen now open the plugin documentation site.
 * Security - Licence screen requests now require an administrator and a valid security token.
 * Dev      - Moved licence updates to the signed update flow with a fallback host.
 

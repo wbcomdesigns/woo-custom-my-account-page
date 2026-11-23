@@ -66,6 +66,13 @@ class Woo_Custom_My_Account_Page_Admin {
 	const MENU_SLUG = 'woo-custom-myaccount-page';
 
 	/**
+	 * Customer documentation on the Wbcom docs hub (every admin Documentation link).
+	 *
+	 * @since 1.7.3
+	 */
+	const DOCS_URL = 'https://docs.wbcomdesigns.com/woo-family/woocommerce-custom-my-account-page/';
+
+	/**
 	 * True on our settings screen or the shared hub landing (we own its render).
 	 *
 	 * @since  1.7.1
@@ -270,7 +277,7 @@ class Woo_Custom_My_Account_Page_Admin {
 		$page_url   = admin_url( 'admin.php?page=' . self::MENU_SLUG );
 		$wcmp_admin = $this;
 
-		include WCMP_PLUGIN_PATH . 'admin/views/shell.php';
+		include WCMP_PLUGIN_PATH . 'admin/views/settings-frame.php';
 	}
 
 	/**
@@ -425,7 +432,7 @@ class Woo_Custom_My_Account_Page_Admin {
 		);
 		?>
 		<ul class="wcmp-feature-list">
-			<li><i data-lucide="book-open"></i><a href="https://github.com/wbcomdesigns/woo-custom-my-account-page/tree/master/docs/website" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Documentation', 'woo-custom-my-account-page' ); ?></a></li>
+			<li><i data-lucide="book-open"></i><a href="<?php echo esc_url( self::DOCS_URL ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Documentation', 'woo-custom-my-account-page' ); ?></a></li>
 			<li><i data-lucide="life-buoy"></i><a href="https://wbcomdesigns.com/support/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Support center', 'woo-custom-my-account-page' ); ?></a></li>
 			<li><i data-lucide="message-square"></i><a href="https://wbcomdesigns.com/submit-review/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Share your feedback', 'woo-custom-my-account-page' ); ?></a></li>
 		</ul>
