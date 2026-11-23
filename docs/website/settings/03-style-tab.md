@@ -14,7 +14,7 @@ The Style tab lets you override six colors. By default the account menu follows 
 | Option | Default value | What it does |
 |--------|---------------|--------------|
 | Menu item colour | `#777777` | Color of the menu items. |
-| Menu item hover colour | `#000000` | Color of a menu item when the pointer is over it. |
+| Menu item hover colour | `#000000` | Color of a menu item when the pointer is over it or it has keyboard focus, in both the Sidebar and Tab layouts. The menu item for the current page also uses it. |
 | Log out text colour | `#ffffff` | Text color of the Log out item. |
 | Log out hover text colour | `#ffffff` | Text color of the Log out item on hover. |
 | Log out background | `#c0c0c0` | Background color of the Log out item. |

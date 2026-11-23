@@ -168,6 +168,7 @@ The plugin receives automatic updates directly from wbcomdesigns.com. You will s
 * Fix      - The plugin now installs and updates on hosts whose upload firewall (Imunify360, ModSecurity, Cloudflare WAF) blocked one of its file names.
 * Fix      - In the Horizontal Tab layout the account menu now folds behind the Account menu button on phones.
 * Fix      - Custom Log out colours from the Style tab now apply in the Horizontal Tab layout, and the text colour now applies together with a new background.
+* Fix      - The Menu item hover colour from the Style tab now shows on hover and keyboard focus in the Horizontal Tab layout, and on keyboard focus in the Sidebar layout.
 * Fix      - The Save changes button on Account details no longer touches the Password change box on themes such as Reign.
 * Fix      - Documentation links in the settings screen now open the plugin documentation site.
 * Security - Licence screen requests now require an administrator and a valid security token.
