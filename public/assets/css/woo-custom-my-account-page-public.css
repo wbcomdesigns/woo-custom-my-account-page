@@ -170,7 +170,9 @@ only when the owner changes them from the defaults.
 #my-account-menu .myaccount-menu li.active > a,
 #my-account-menu .myaccount-menu li.is-active > a,
 #my-account-menu .myaccount-menu li > a:hover,
-#my-account-menu .myaccount-menu li > button.group-opener:hover {
+#my-account-menu .myaccount-menu li > a:focus-visible,
+#my-account-menu .myaccount-menu li > button.group-opener:hover,
+#my-account-menu .myaccount-menu li > button.group-opener:focus-visible {
 	font-weight: 600;
 	background: var(--wcmp-menu-item-active-bg);
 	border-radius: var(--wcmp-radius);
@@ -649,6 +651,14 @@ div#wcmp-avatar-form-overlay.loading:before {
 #my-account-menu-tab .myaccount-menu li.active > a,
 #my-account-menu-tab .myaccount-menu li.is-active > a {
 	font-weight: 600;
+	color: var(--wcmp-menu-item-hover-color);
+}
+/* Hover and keyboard focus take the hover colour, as in the sidebar layout.
+   Colour only: a bolder label would widen the tab and shift the row. */
+#my-account-menu-tab .myaccount-menu li > a:hover,
+#my-account-menu-tab .myaccount-menu li > a:focus-visible,
+#my-account-menu-tab .myaccount-menu li > button.group-opener:hover,
+#my-account-menu-tab .myaccount-menu li > button.group-opener:focus-visible {
 	color: var(--wcmp-menu-item-hover-color);
 }
 
