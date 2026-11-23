@@ -77,7 +77,7 @@ defined( 'ABSPATH' ) || exit;
 
 				<div class="wcmp-snav-divider" role="separator"></div>
 				<p class="wcmp-snav-section-label"><?php esc_html_e( 'Resources', 'woo-custom-my-account-page' ); ?></p>
-				<a href="https://github.com/wbcomdesigns/woo-custom-my-account-page/tree/master/docs/website" class="wcmp-snav-link" target="_blank" rel="noopener noreferrer">
+				<a href="<?php echo esc_url( Woo_Custom_My_Account_Page_Admin::DOCS_URL ); ?>" class="wcmp-snav-link" target="_blank" rel="noopener noreferrer">
 					<span class="dashicons dashicons-book" aria-hidden="true"></span>
 					<?php esc_html_e( 'Documentation', 'woo-custom-my-account-page' ); ?>
 					<span class="dashicons dashicons-external wcmp-snav-link__ext" aria-hidden="true"></span>

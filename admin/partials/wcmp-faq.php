@@ -226,7 +226,7 @@ Woo_Custom_My_Account_Page_Admin::card_open( __( 'Need More Help?', 'woo-custom-
 ?>
 <p><?php esc_html_e( 'If your question isn\'t answered here, please check out these resources:', 'woo-custom-my-account-page' ); ?></p>
 <ul class="wcmp-feature-list">
-	<li><i data-lucide="book-open"></i><a href="https://github.com/wbcomdesigns/woo-custom-my-account-page/tree/master/docs/website" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Full Documentation', 'woo-custom-my-account-page' ); ?></a></li>
+	<li><i data-lucide="book-open"></i><a href="<?php echo esc_url( Woo_Custom_My_Account_Page_Admin::DOCS_URL ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Full Documentation', 'woo-custom-my-account-page' ); ?></a></li>
 	<li><i data-lucide="life-buoy"></i><a href="https://wbcomdesigns.com/support/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Support Center', 'woo-custom-my-account-page' ); ?></a></li>
 	<li><i data-lucide="message-square"></i><a href="https://wbcomdesigns.com/contact/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Contact Us', 'woo-custom-my-account-page' ); ?></a></li>
 </ul>

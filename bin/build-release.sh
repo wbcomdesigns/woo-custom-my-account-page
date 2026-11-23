@@ -153,6 +153,16 @@ if [ -n "$LEAKED" ]; then
 	rm -f "$ZIP"; exit 1
 fi
 
+# --- Gate 7: no file names that upload firewalls block. ----------------------
+# Imunify360, ModSecurity and Cloudflare WAF reject an upload holding a file named
+# like a web shell, whatever it contains, and the customer sees a generic error.
+WAF_NAMES="$( printf '%s\n' "$ZIP_CONTENTS" | grep -iE '/(shell|c99|r57|webshell|backdoor|b374k|wso)[^/]*\.php$' || true )"
+if [ -n "$WAF_NAMES" ]; then
+	echo "build-release: FAILED - file names that upload firewalls block:" >&2
+	printf '%s\n' "$WAF_NAMES" >&2
+	rm -f "$ZIP"; exit 1
+fi
+
 SIZE="$( du -h "$ZIP" | cut -f1 | tr -d ' ' )"
 COUNT="$( printf '%s\n' "$ZIP_CONTENTS" | grep -c . )"
 echo "build-release: OK - $ZIP ($SIZE), $COUNT files"
