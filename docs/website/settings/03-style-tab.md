@@ -22,14 +22,16 @@ The Style tab lets you override six colors. By default the account menu follows 
 
 ## Only changed colors apply
 
-The plugin applies a color only when it differs from the default value shown above. If you leave a field at its default, the menu keeps following your theme.
+The two menu item colors apply only when they differ from the default value shown above. If you leave one at its default, the menu keeps following your theme.
 
-To set a color that matches a default value exactly, pick a color that is slightly different. The default value itself has no effect.
+The four Log out colors work as one group. While all four are at their defaults, the Log out item follows the menu colors. Once you change any one of them, all four apply together, so a new background never ends up beside your theme's text color.
+
+To set a menu item color that matches a default value exactly, pick a color that is slightly different. The default value itself has no effect.
 
 ## Where the colors apply
 
-- The menu item colors apply to the account menu.
-- The four Log out colors apply to the Log out item only.
+- The menu item colors apply to the account menu in both the Sidebar and Tab layouts, including the collapsed menu on phones.
+- The four Log out colors apply to the Log out item only, in both layouts.
 
 ## Other styling
 
